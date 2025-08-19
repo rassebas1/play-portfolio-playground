@@ -1,6 +1,7 @@
 import React from 'react';
 import { useParams, Navigate } from 'react-router-dom';
 import TicTacToe from '@/games/tic-tac-toe/TicTacToe';
+import Game2048 from '@/games/2048/Game2048';
 import type { GameType } from '@/types/global';
 
 /**
@@ -31,14 +32,7 @@ const GamePage: React.FC = () => {
       case 'tic-tac-toe':
         return <TicTacToe />;
       case '2048':
-        return (
-          <div className="min-h-screen bg-background flex items-center justify-center">
-            <div className="text-center">
-              <h1 className="text-4xl font-bold mb-4">🔢 2048</h1>
-              <p className="text-muted-foreground">Coming Soon!</p>
-            </div>
-          </div>
-        );
+        return <Game2048 />;
       case 'flappy-bird':
         return (
           <div className="min-h-screen bg-background flex items-center justify-center">
