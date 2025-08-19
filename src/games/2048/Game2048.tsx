@@ -2,7 +2,8 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Trophy, RotateCcw, Undo2, PlayCircle, ArrowUp, ArrowDown, ArrowLeft, ArrowRight } from 'lucide-react';
+import { Trophy, RotateCcw, Undo2, PlayCircle, ArrowUp, ArrowDown, ArrowLeft, ArrowRight, Home } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { use2048 } from './hooks/use2048';
 import GameBoard from './components/GameBoard';
 import { cn } from '@/lib/utils';
@@ -13,6 +14,14 @@ import { cn } from '@/lib/utils';
  */
 const Game2048: React.FC = () => {
   const { gameState, makeMove, restartGame, undoMove, continueGame } = use2048();
+  const navigate = useNavigate();
+
+  /**
+   * Navigates back to the main portfolio page
+   */
+  const goHome = () => {
+    navigate('/');
+  };
 
   /**
    * Handles swipe gestures for mobile play
@@ -88,6 +97,16 @@ const Game2048: React.FC = () => {
 
         {/* Game Controls */}
         <div className="flex justify-center gap-2 mb-6 flex-wrap">
+          <Button
+            onClick={goHome}
+            variant="outline"
+            size="sm"
+            className="gap-2"
+          >
+            <Home className="w-4 h-4" />
+            Home
+          </Button>
+
           <Button
             onClick={restartGame}
             variant="outline"
@@ -229,6 +248,14 @@ const Game2048: React.FC = () => {
                   >
                     <RotateCcw className="w-4 h-4" />
                     Play Again
+                  </Button>
+                  <Button
+                    onClick={goHome}
+                    variant="outline"
+                    className="gap-2"
+                  >
+                    <Home className="w-4 h-4" />
+                    Home
                   </Button>
                 </div>
               </CardContent>
