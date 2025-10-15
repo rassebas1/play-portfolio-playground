@@ -17,11 +17,11 @@ This document tracks the features and tasks that need to be completed for the pr
 
 **2048**
 
-- [ ] Extract the header section into a `GameHeader` component.
-- [ ] Extract the score section into a `Scoreboard` component.
-- [ ] Extract the game controls section into a `GameControls` component.
-- [ ] Extract the mobile controls section into a `MobileControls` component.
-- [ ] Extract the game over modal into a `GameOverModal` component.
+- [x] Extract the header section into a `GameHeader` component.
+- [x] Extract the score section into a `Scoreboard` component.
+- [x] Extract the game controls section into a `GameControls` component.
+- [x] Extract the mobile controls section into a `MobileControls` component.
+- [x] Extract the game over modal into a `GameOverModal` component.
 
 **Flappy Bird**
 
@@ -40,9 +40,9 @@ This document tracks the features and tasks that need to be completed for the pr
 
 **2048**
 
-- [ ] Separate pure game logic from the `use2048` hook into a `gameLogic.ts` file.
-- [ ] Use the `Tile` type in the `use2048` hook to represent the board as a `Tile[][]`.
-- [ ] Implement tile animations using the `TileAnimation` type.
+- [x] Separate pure game logic from the `use2048` hook into a `gameLogic.ts` file.
+- [x] Use the `Tile` type in the `use2048` hook to represent the board as a `Tile[][]`.
+- [x] Implement tile animations using the `TileAnimation` type.
 
 **Flappy Bird**
 

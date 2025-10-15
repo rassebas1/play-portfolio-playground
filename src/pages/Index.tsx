@@ -71,7 +71,7 @@ const Index: React.FC = () => {
       {/* Hero Section */}
       <div className="container mx-auto px-4 py-16">
         <div className="text-center mb-20 pt-10">
-          <h1 class="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
+          <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
             Welcome to the Game Zone
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-10">
@@ -86,7 +86,7 @@ const Index: React.FC = () => {
         </div>
 
         {/* Games Grid */}
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {games.map((game) => (
             <Card
               key={game.id}

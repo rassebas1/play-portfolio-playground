@@ -13,13 +13,15 @@ export interface Tile {
   col: number;
   isNew?: boolean;
   isMerged?: boolean;
+  previousPosition?: { row: number; col: number };
+  mergedFrom?: string[]; // IDs of tiles that merged into this one
 }
 
 /**
- * Game board represented as a 2D array of tile values
- * 0 represents an empty cell
+ * Game board represented as a 2D array of Tile objects
+ * null represents an empty cell
  */
-export type Board = number[][];
+export type Board = (Tile | null)[][];
 
 /**
  * Available movement directions
@@ -37,6 +39,7 @@ export interface Game2048State {
   isWon: boolean;
   canUndo: boolean;
   moveCount: number;
+  animations: TileAnimation[];
 }
 
 /**
@@ -47,6 +50,7 @@ export interface MoveResult {
   score: number;
   moved: boolean;
   hasWon?: boolean;
+  animations: TileAnimation[];
 }
 
 /**
