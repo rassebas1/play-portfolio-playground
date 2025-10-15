@@ -66,7 +66,8 @@ export const useFlappyBird = () => {
   const lastPipeRef = useRef<number>(0);
 
   /**
-   * Checks collision between bird and pipes or boundaries
+   * Checks for collisions between the bird and the game boundaries (ground, ceiling) or pipes.
+   * Returns an object indicating whether a collision occurred and its type.
    */
   const checkCollision = (bird: Bird, pipes: Pipe[]): CollisionResult => {
     const birdLeft = bird.x - GAME_DIMENSIONS.birdSize / 2;
@@ -74,45 +75,49 @@ export const useFlappyBird = () => {
     const birdTop = bird.y - GAME_DIMENSIONS.birdSize / 2;
     const birdBottom = bird.y + GAME_DIMENSIONS.birdSize / 2;
 
-    // Check ground collision
+    // 1. Check for collision with the ground.
     if (birdBottom >= GAME_DIMENSIONS.height - GAME_DIMENSIONS.groundHeight) {
       return { hasCollision: true, collisionType: 'ground' };
     }
 
-    // Check ceiling collision
+    // 2. Check for collision with the ceiling.
     if (birdTop <= 0) {
       return { hasCollision: true, collisionType: 'ceiling' };
     }
 
-    // Check pipe collisions
+    // 3. Check for collisions with each of the pipes.
     for (const pipe of pipes) {
       const pipeLeft = pipe.x;
       const pipeRight = pipe.x + pipe.width;
 
-      // Check if bird is horizontally aligned with pipe
+      // Check if the bird is horizontally aligned with the current pipe.
       if (birdRight > pipeLeft && birdLeft < pipeRight) {
-        // Check top pipe collision
+        // Check for collision with the top pipe.
         if (birdTop < pipe.topHeight) {
           return { hasCollision: true, collisionType: 'pipe' };
         }
-        // Check bottom pipe collision
+        // Check for collision with the bottom pipe.
         if (birdBottom > pipe.bottomY) {
           return { hasCollision: true, collisionType: 'pipe' };
         }
       }
     }
 
+    // 4. If no collisions are detected, return a negative result.
     return { hasCollision: false };
   };
 
   /**
-   * Updates bird physics based on gravity and velocity
+   * Updates the bird's physics, including its vertical velocity, position, and rotation.
+   * This function simulates gravity and terminal velocity.
    */
   const updateBirdPhysics = (bird: Bird): Bird => {
+    // Apply gravity to the current velocity, respecting terminal velocity.
     const newVelocity = Math.min(bird.velocity + PHYSICS.gravity, PHYSICS.terminalVelocity);
+    // Update the bird's vertical position based on the new velocity.
     const newY = bird.y + newVelocity;
     
-    // Calculate rotation based on velocity (-30 to 90 degrees)
+    // Calculate the bird's rotation based on its vertical velocity for a visual effect.
     const rotation = Math.max(-30, Math.min(90, newVelocity * 3));
 
     return {
@@ -161,32 +166,34 @@ export const useFlappyBird = () => {
   };
 
   /**
-   * Main game loop function
+   * Main game loop function, running on every animation frame.
+   * This function is the heart of the game, updating the state of the bird, pipes, and checking for collisions.
    */
   const gameLoop = useCallback(() => {
     if (!gameState.isPlaying || gameState.isGameOver) return;
 
     setGameState(prevState => {
-      // Update bird physics
+      // 1. Update bird's vertical position and rotation based on gravity.
       const updatedBird = updateBirdPhysics(prevState.bird);
       
-      // Update pipes
+      // 2. Move pipes to the left and check if any have been passed by the bird.
       const { pipes: updatedPipes, scoreIncrease } = updatePipes(prevState.pipes);
       
-      // Generate new pipes
+      // 3. Generate new pipes when the last one has moved a certain distance.
       const pipesWithNew = generatePipesIfNeeded(updatedPipes, Date.now());
       
-      // Check collisions
+      // 4. Check for collisions with the ground, ceiling, or pipes.
       const collision = checkCollision(updatedBird, pipesWithNew);
       
       const newScore = prevState.score + scoreIncrease;
       const newBestScore = Math.max(prevState.bestScore, newScore);
       
-      // Save best score
+      // 5. Save the best score to local storage if it has been surpassed.
       if (newBestScore > prevState.bestScore) {
         localStorage.setItem('flappy-bird-best-score', newBestScore.toString());
       }
 
+      // 6. Update the game state with the new values.
       return {
         ...prevState,
         bird: updatedBird,
@@ -198,6 +205,7 @@ export const useFlappyBird = () => {
       };
     });
 
+    // Request the next animation frame to continue the loop.
     gameLoopRef.current = requestAnimationFrame(gameLoop);
   }, [gameState.isPlaying, gameState.isGameOver]);
 

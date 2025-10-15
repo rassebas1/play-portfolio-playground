@@ -1,73 +1,63 @@
-# Welcome to your Lovable project
+# Gaming Portfolio
 
-## Project info
+This is an interactive gaming portfolio showcasing a collection of classic and modern games built with React, TypeScript, and other modern web technologies.
 
-**URL**: https://lovable.dev/projects/22f21f76-8770-4f83-9683-040162cc9321
+## About the Project
 
-## How can I edit this code?
+This project serves as a personal portfolio to demonstrate my skills in web development, particularly in building interactive and engaging user experiences. Each game is developed as a self-contained module with its own components, hooks, and type definitions, showcasing a clean and scalable code architecture.
 
-There are several ways of editing your application.
+## Built With
 
-**Use Lovable**
+* [React](https://reactjs.org/)
+* [Vite](https://vitejs.dev/)
+* [TypeScript](https://www.typescriptlang.org/)
+* [Tailwind CSS](https://tailwindcss.com/)
+* [shadcn/ui](https://ui.shadcn.com/)
+* [React Router](https://reactrouter.com/)
+* [next-themes](https://github.com/pacocoursey/next-themes)
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/22f21f76-8770-4f83-9683-040162cc9321) and start prompting.
+## Getting Started
 
-Changes made via Lovable will be committed automatically to this repo.
+To get a local copy up and running, follow these simple steps.
 
-**Use your preferred IDE**
+### Prerequisites
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+* npm
+  ```sh
+  npm install npm@latest -g
+  ```
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Installation
 
-Follow these steps:
+1. Clone the repo
+   ```sh
+   git clone https://github.com/your_username_/Project-Name.git
+   ```
+2. Install NPM packages
+   ```sh
+   npm install
+   ```
+3. Run the development server
+   ```sh
+   npm run dev
+   ```
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## Games
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+This portfolio features the following games:
 
-# Step 3: Install the necessary dependencies.
-npm i
+*   **Tic Tac Toe:** A classic strategy game where two players take turns marking spaces in a 3x3 grid. The player who succeeds in placing three of their marks in a horizontal, vertical, or diagonal row wins the game.
+*   **2048:** A single-player sliding block puzzle game. The objective is to slide numbered tiles on a grid to combine them to create a tile with the number 2048.
+*   **Flappy Bird:** A popular side-scrolling game where the player controls a bird, attempting to fly between columns of green pipes without hitting them.
+*   **Snake (Coming Soon):** The player controls a snake which grows in length, with the snake itself being the primary obstacle.
+*   **Memory Game (Coming Soon):** A card game in which all of the cards are laid face down on a surface and two cards are flipped face up over each turn. The object of the game is to turn over pairs of matching cards.
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+## Contributing
 
-**Edit a file directly in GitHub**
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/22f21f76-8770-4f83-9683-040162cc9321) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request

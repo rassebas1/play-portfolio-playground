@@ -67,26 +67,27 @@ export const use2048 = () => {
   const [previousState, setPreviousState] = useState<Game2048State | null>(null);
 
   /**
-   * Moves and merges tiles in a single row/column
+   * Moves and merges tiles in a single row/column.
+   * This function is the core of the game logic, handling the sliding and merging of tiles.
    */
   const moveAndMergeArray = (arr: number[]): { newArray: number[]; scoreGained: number } => {
-    // Remove zeros and move tiles to the left
+    // 1. Filter out zeros to compact the array.
     const filtered = arr.filter(val => val !== 0);
     let scoreGained = 0;
     
-    // Merge adjacent equal tiles
+    // 2. Merge adjacent equal tiles.
     for (let i = 0; i < filtered.length - 1; i++) {
       if (filtered[i] === filtered[i + 1]) {
-        filtered[i] *= 2;
-        scoreGained += filtered[i];
-        filtered[i + 1] = 0;
+        filtered[i] *= 2; // Double the value of the first tile.
+        scoreGained += filtered[i]; // Add the merged value to the score.
+        filtered[i + 1] = 0; // Mark the second tile for removal.
       }
     }
     
-    // Remove zeros again after merging
+    // 3. Filter out zeros again after merging.
     const merged = filtered.filter(val => val !== 0);
     
-    // Pad with zeros to maintain array length
+    // 4. Pad with zeros to maintain the array length of 4.
     while (merged.length < 4) {
       merged.push(0);
     }
@@ -95,7 +96,7 @@ export const use2048 = () => {
   };
 
   /**
-   * Processes a move in the specified direction
+   * Processes a move in the specified direction by applying the moveAndMergeArray logic to each row or column.
    */
   const processMove = (board: Board, direction: Direction): MoveResult => {
     const newBoard = board.map(row => [...row]);
@@ -112,7 +113,6 @@ export const use2048 = () => {
         newBoard[row] = newArray;
         totalScore += scoreGained;
         
-        // Check for 2048 tile
         if (newArray.includes(2048)) {
           hasWon = true;
         }
@@ -174,13 +174,14 @@ export const use2048 = () => {
   };
 
   /**
-   * Checks if any moves are possible
+   * Checks if any moves are possible on the board.
+   * This is used to determine if the game is over.
    */
   const canMove = (board: Board): boolean => {
-    // Check for empty cells
+    // 1. Check for any empty cells. If there is at least one, a move is possible.
     if (getEmptyPositions(board).length > 0) return true;
     
-    // Check for possible merges
+    // 2. Check for possible merges by comparing adjacent cells.
     for (let row = 0; row < 4; row++) {
       for (let col = 0; col < 4; col++) {
         const current = board[row][col];
@@ -191,6 +192,7 @@ export const use2048 = () => {
       }
     }
     
+    // 3. If no empty cells and no possible merges, no move is possible.
     return false;
   };
 
