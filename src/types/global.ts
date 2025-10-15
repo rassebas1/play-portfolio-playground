@@ -19,6 +19,7 @@ export interface GameInfo {
   category: 'Strategy' | 'Arcade' | 'Puzzle';
   icon: string;
   color: string;
+  status: 'Ready to Play' | 'Coming Soon';
 }
 
 /**

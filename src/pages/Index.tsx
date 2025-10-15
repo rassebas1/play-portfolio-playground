@@ -16,7 +16,8 @@ const games: GameInfo[] = [
     difficulty: 'Easy',
     category: 'Strategy',
     icon: '🎯',
-    color: 'hsl(var(--game-info))'
+    color: 'hsl(var(--game-info))',
+    status: 'Ready to Play',
   },
   {
     id: '2048',
@@ -25,7 +26,8 @@ const games: GameInfo[] = [
     difficulty: 'Medium',
     category: 'Puzzle',
     icon: '🔢',
-    color: 'hsl(var(--game-warning))'
+    color: 'hsl(var(--game-warning))',
+    status: 'Ready to Play',
   },
   {
     id: 'flappy-bird',
@@ -34,7 +36,8 @@ const games: GameInfo[] = [
     difficulty: 'Hard',
     category: 'Arcade',
     icon: '🐦',
-    color: 'hsl(var(--game-winner))'
+    color: 'hsl(var(--game-winner))',
+    status: 'Ready to Play',
   },
   {
     id: 'snake',
@@ -43,7 +46,8 @@ const games: GameInfo[] = [
     difficulty: 'Medium',
     category: 'Arcade',
     icon: '🐍',
-    color: 'hsl(var(--primary))'
+    color: 'hsl(var(--primary))',
+    status: 'Coming Soon',
   },
   {
     id: 'memory',
@@ -52,8 +56,9 @@ const games: GameInfo[] = [
     difficulty: 'Easy',
     category: 'Puzzle',
     icon: '🧩',
-    color: 'hsl(var(--game-danger))'
-  }
+    color: 'hsl(var(--game-danger))',
+    status: 'Coming Soon',
+  },
 ];
 
 /**
@@ -62,70 +67,78 @@ const games: GameInfo[] = [
  */
 const Index: React.FC = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       {/* Hero Section */}
       <div className="container mx-auto px-4 py-16">
-        <div className="text-center mb-16">
-          <h1 className="text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
-            Gaming Portfolio
+        <div className="text-center mb-20 pt-10">
+          <h1 class="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
+            Welcome to the Game Zone
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-            Welcome to my interactive gaming portfolio! Explore these classic games built with React, 
-            TypeScript, and modern web technologies to showcase my development skills.
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-10">
+            Explore a collection of classic and modern games, built with React, TypeScript, and Tailwind CSS.
+            Showcasing my passion for development and gaming.
           </p>
-          <div className="flex flex-wrap justify-center gap-4 mb-8">
-            <Badge variant="secondary" className="text-sm">React</Badge>
-            <Badge variant="secondary" className="text-sm">TypeScript</Badge>
-            <Badge variant="secondary" className="text-sm">Tailwind CSS</Badge>
-            <Badge variant="secondary" className="text-sm">Custom Hooks</Badge>
-            <Badge variant="secondary" className="text-sm">Clean Architecture</Badge>
+          <div className="flex justify-center">
+            <Button size="lg" onClick={() => window.scrollTo({ top: 600, behavior: 'smooth' })}>
+              Explore Games
+            </Button>
           </div>
         </div>
 
         {/* Games Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {games.map((game) => (
-            <Card 
-              key={game.id} 
-              className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 bg-gradient-to-br from-card to-muted border-border"
+            <Card
+              key={game.id}
+              className="group relative overflow-hidden rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
             >
-              <CardHeader className="text-center">
-                <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
+              <CardHeader className="text-center p-6">
+                <div className="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">
                   {game.icon}
                 </div>
-                <CardTitle className="text-xl mb-2">{game.name}</CardTitle>
-                <div className="flex justify-center gap-2 mb-3">
-                  <Badge 
-                    variant="outline" 
-                    className="text-xs"
+                <CardTitle className="text-2xl mb-2">{game.name}</CardTitle>
+                <div className="flex justify-center gap-2 mb-4">
+                  <Badge
+                    variant="outline"
+                    className="text-xs font-semibold"
                     style={{ borderColor: game.color, color: game.color }}
                   >
                     {game.difficulty}
                   </Badge>
-                  <Badge variant="secondary" className="text-xs">
+                  <Badge variant="secondary" className="text-xs font-semibold">
                     {game.category}
                   </Badge>
                 </div>
               </CardHeader>
-              <CardContent>
-                <CardDescription className="text-center mb-6 text-sm leading-relaxed">
+              <CardContent className="p-6">
+                <CardDescription className="text-center mb-6">
                   {game.description}
                 </CardDescription>
-                <Link to={`/game/${game.id}`} className="block">
-                  <Button 
-                    className="w-full bg-primary hover:bg-primary-glow transition-colors"
+                {game.status === 'Coming Soon' ? (
+                  <Button
+                    className="w-full"
                     size="lg"
+                    disabled
                   >
-                    Play Game
+                    Coming Soon
                   </Button>
-                </Link>
+                ) : (
+                  <Link to={`/game/${game.id}`} className="block">
+                    <Button
+                      className="w-full bg-primary hover:bg-primary-glow transition-colors"
+                      size="lg"
+                    >
+                      Play Game
+                    </Button>
+                  </Link>
+                )}
               </CardContent>
             </Card>
           ))}
         </div>
 
         {/* Developer Info */}
-        <div className="text-center">
+        <div className="text-center mt-20">
           <div className="bg-card border border-border rounded-lg p-8 max-w-3xl mx-auto">
             <h2 className="text-2xl font-semibold mb-4">About This Portfolio</h2>
             <p className="text-muted-foreground leading-relaxed">

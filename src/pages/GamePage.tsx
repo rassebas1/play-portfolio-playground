@@ -1,32 +1,37 @@
 import React from 'react';
-import { useParams, Navigate } from 'react-router-dom';
+import { useParams, useNavigate, Navigate } from 'react-router-dom';
 import TicTacToe from '@/games/tic-tac-toe/TicTacToe';
 import Game2048 from '@/games/2048/Game2048';
 import FlappyBird from '@/games/flappy-bird/FlappyBird';
 import type { GameType } from '@/types/global';
+import useTitle from '@/hooks/use-title';
+import { Button } from '@/components/ui/button';
 
 /**
- * Game page wrapper component
- * Routes to the appropriate game component based on URL parameters
+ * Renders the game page, routing to the appropriate game component based on the URL.
  */
 const GamePage: React.FC = () => {
   const { gameId } = useParams<{ gameId: string }>();
+  const navigate = useNavigate();
 
   /**
-   * Validates if the provided game ID is supported
+   * Validates if the provided game ID is a valid and supported game.
    */
   const isValidGameId = (id: string | undefined): id is GameType => {
     const validGames: GameType[] = ['tic-tac-toe', '2048', 'flappy-bird', 'snake', 'memory'];
     return id !== undefined && validGames.includes(id as GameType);
   };
 
-  // Redirect to home if invalid game ID
+  // Set the document title based on the game ID
+  useTitle(gameId ? `Playing ${gameId.replace('-', ' ')} | Portfolio` : 'Game | Portfolio');
+
+  // Redirect to home if the game ID is invalid
   if (!isValidGameId(gameId)) {
     return <Navigate to="/" replace />;
   }
 
   /**
-   * Renders the appropriate game component based on game ID
+   * Renders the selected game component or a coming soon message.
    */
   const renderGame = () => {
     switch (gameId) {
@@ -59,7 +64,17 @@ const GamePage: React.FC = () => {
     }
   };
 
-  return renderGame();
+  return (
+    <div className="relative min-h-screen bg-background">
+      <Button
+        onClick={() => navigate('/')}
+        className="absolute top-4 left-4 bg-secondary text-secondary-foreground hover:bg-secondary/80 text-xs sm:text-base px-2 sm:px-4"
+      >
+        &larr; Go back
+      </Button>
+      {renderGame()}
+    </div>
+  );
 };
 
 export default GamePage;

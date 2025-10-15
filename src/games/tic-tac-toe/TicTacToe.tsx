@@ -59,12 +59,7 @@ const TicTacToe: React.FC = () => {
       <div className="container mx-auto px-4 py-8">
         {/* Header with navigation */}
         <div className="flex items-center justify-between mb-8">
-          <Link to="/">
-            <Button variant="outline" size="sm">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Portfolio
-            </Button>
-          </Link>
+          
           
           <div className="text-center">
             <h1 className="text-3xl font-bold mb-2">🎯 Tic Tac Toe</h1>
@@ -83,10 +78,10 @@ const TicTacToe: React.FC = () => {
         </div>
 
         <div className="max-w-4xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-8">
+          <div class="grid lg:grid-cols-3 gap-8">
             
             {/* Game Status Card */}
-            <Card className="md:col-span-1">
+            <Card className="lg:col-span-1">
               <CardHeader className="text-center">
                 <CardTitle className="text-lg">Game Status</CardTitle>
               </CardHeader>
@@ -115,7 +110,7 @@ const TicTacToe: React.FC = () => {
             </Card>
 
             {/* Game Board */}
-            <Card className="md:col-span-2">
+            <Card className="lg:col-span-2">
               <CardHeader className="text-center">
                 <CardTitle className="text-lg">Game Board</CardTitle>
                 <CardDescription>

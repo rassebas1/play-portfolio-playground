@@ -66,15 +66,7 @@ const FlappyBird: React.FC = () => {
 
         {/* Game Controls */}
         <div className="flex justify-center gap-2 mb-6 flex-wrap">
-          <Button
-            onClick={goHome}
-            variant="outline"
-            size="sm"
-            className="gap-2"
-          >
-            <Home className="w-4 h-4" />
-            Home
-          </Button>
+          
           
           <Button
             onClick={startNewGame}
@@ -149,14 +141,7 @@ const FlappyBird: React.FC = () => {
                     <RotateCcw className="w-4 h-4" />
                     Play Again
                   </Button>
-                  <Button
-                    onClick={goHome}
-                    variant="outline"
-                    className="gap-2"
-                  >
-                    <Home className="w-4 h-4" />
-                    Home
-                  </Button>
+                  
                 </div>
               </CardContent>
             </Card>
