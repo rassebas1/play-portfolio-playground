@@ -13,7 +13,7 @@ import { cn } from '@/lib/utils';
  * Integrates the game board, controls, and state management
  */
 const Game2048: React.FC = () => {
-  const { gameState, makeMove, restartGame, undoMove, continueGame } = use2048();
+  const { isGameOver, isWon, makeMove, restartGame, undoMove, continueGame, animatedTiles, score, highScore, canUndo } = use2048();
   const navigate = useNavigate();
 
   /**
@@ -75,7 +75,7 @@ const Game2048: React.FC = () => {
             </CardHeader>
             <CardContent className="pt-0">
               <div className="text-2xl font-bold text-primary">
-                {gameState.score.toLocaleString()}
+                {score.toLocaleString()}
               </div>
             </CardContent>
           </Card>
@@ -89,7 +89,7 @@ const Game2048: React.FC = () => {
             </CardHeader>
             <CardContent className="pt-0">
               <div className="text-2xl font-bold text-accent">
-                {gameState.bestScore.toLocaleString()}
+                {highScore.toLocaleString()}
               </div>
             </CardContent>
           </Card>
@@ -111,7 +111,7 @@ const Game2048: React.FC = () => {
           
           <Button
             onClick={undoMove}
-            disabled={!gameState.canUndo}
+            disabled={!canUndo}
             variant="outline"
             size="sm"
             className="gap-2"
@@ -119,10 +119,6 @@ const Game2048: React.FC = () => {
             <Undo2 className="w-4 h-4" />
             Undo
           </Button>
-
-          <Badge variant="secondary" className="px-3 py-1">
-            Moves: {gameState.moveCount}
-          </Badge>
         </div>
 
         {/* Game Board */}
@@ -132,7 +128,7 @@ const Game2048: React.FC = () => {
             onTouchEnd={handleTouchEnd}
             className="touch-none"
           >
-            <GameBoard board={gameState.board} />
+            <GameBoard animatedTiles={animatedTiles} />
           </div>
         </div>
 
@@ -148,7 +144,7 @@ const Game2048: React.FC = () => {
                 variant="outline"
                 size="sm"
                 className="w-full"
-                disabled={gameState.isGameOver}
+                disabled={isGameOver}
               >
                 <ArrowUp className="w-4 h-4" />
               </Button>
@@ -157,7 +153,7 @@ const Game2048: React.FC = () => {
               onClick={() => makeMove('left')}
               variant="outline"
               size="sm"
-              disabled={gameState.isGameOver}
+              disabled={isGameOver}
             >
               <ArrowLeft className="w-4 h-4" />
             </Button>
@@ -165,7 +161,7 @@ const Game2048: React.FC = () => {
               onClick={() => makeMove('down')}
               variant="outline"
               size="sm"
-              disabled={gameState.isGameOver}
+              disabled={isGameOver}
             >
               <ArrowDown className="w-4 h-4" />
             </Button>
@@ -173,7 +169,7 @@ const Game2048: React.FC = () => {
               onClick={() => makeMove('right')}
               variant="outline"
               size="sm"
-              disabled={gameState.isGameOver}
+              disabled={isGameOver}
             >
               <ArrowRight className="w-4 h-4" />
             </Button>
@@ -192,31 +188,31 @@ const Game2048: React.FC = () => {
         </Card>
 
         {/* Game Over Modal */}
-        {(gameState.isGameOver || gameState.isWon) && (
+        {(isGameOver || isWon) && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
             <Card className={cn(
               "text-center max-w-sm w-full",
-              gameState.isWon && !gameState.isGameOver 
+              isWon && !isGameOver 
                 ? "bg-gradient-to-br from-accent/20 to-accent/10 border-accent/30" 
                 : "bg-gradient-to-br from-destructive/20 to-destructive/10 border-destructive/30"
             )}>
               <CardHeader>
                 <CardTitle className={cn(
                   "text-2xl",
-                  gameState.isWon && !gameState.isGameOver 
+                  isWon && !isGameOver 
                     ? "text-accent" 
                     : "text-destructive"
                 )}>
-                  {gameState.isWon && !gameState.isGameOver ? "🎉 You Win!" : "💔 Game Over"}
+                  {isWon && !isGameOver ? "🎉 You Win!" : "💔 Game Over"}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
                   <p className="text-lg font-semibold">Final Score</p>
                   <p className="text-3xl font-bold text-primary">
-                    {gameState.score.toLocaleString()}
+                    {score.toLocaleString()}
                   </p>
-                  {gameState.score === gameState.bestScore && (
+                  {score === highScore && (
                     <Badge className="mt-2 bg-accent text-accent-foreground">
                       New Best! 🏆
                     </Badge>
@@ -224,7 +220,7 @@ const Game2048: React.FC = () => {
                 </div>
 
                 <div className="flex gap-2 justify-center">
-                  {gameState.isWon && !gameState.isGameOver && (
+                  {isWon && !isGameOver && (
                     <Button
                       onClick={continueGame}
                       className="gap-2"

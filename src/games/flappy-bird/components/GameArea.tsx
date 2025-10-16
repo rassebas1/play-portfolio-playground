@@ -84,7 +84,7 @@ const GameArea: React.FC<GameAreaProps> = ({
       <Ground dimensions={dimensions} />
 
       {/* Start instruction overlay */}
-      {!gameState.gameStarted && !gameState.isGameOver && (
+      {!gameState.gameStarted && !state.isGameOver && (
         <div className="absolute inset-0 bg-black/30 flex items-center justify-center z-30">
           <div className="text-center text-white">
             <div className="text-4xl mb-4 animate-bounce">🐦</div>
