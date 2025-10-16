@@ -1,4 +1,4 @@
-import type { Board, Direction, MoveResult, Tile } from './types';
+import type { Board, Direction, MoveResult, Tile } from '../types';
 import { createEmptyBoard, getEmptyPositions } from './boardUtils';
 import { moveAndMergeLine } from './lineProcessor';
 

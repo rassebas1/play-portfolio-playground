@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Trophy, RotateCcw, Undo2, PlayCircle, ArrowUp, ArrowDown, ArrowLeft, ArrowRight, Home } from 'lucide-react';
+import { Trophy, RotateCcw, Undo2, PlayCircle, ArrowUp, ArrowDown, ArrowLeft, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { use2048 } from './hooks/use2048';
 import GameBoard from './components/GameBoard';
@@ -15,14 +15,6 @@ import { cn } from '@/lib/utils';
 const Game2048: React.FC = () => {
   const { isGameOver, isWon, makeMove, restartGame, undoMove, continueGame, animatedTiles, score, highScore, canUndo } = use2048();
   const navigate = useNavigate();
-
-  /**
-   * Navigates back to the main portfolio page
-   */
-  const goHome = () => {
-    navigate('/');
-  };
-
   /**
    * Handles swipe gestures for mobile play
    */

@@ -1,4 +1,4 @@
-import type { Tile } from './types';
+import type { Tile } from '../types';
 
 /**
  * Moves and merges tiles in a single row/column.

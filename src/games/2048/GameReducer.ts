@@ -9,6 +9,7 @@ export interface GameState {
     highScore: number;
     isGameOver: boolean;
     isWon: boolean;
+    canUndo: boolean;
     previousState: GameState | null;
 }
 
@@ -21,6 +22,7 @@ export const initialState: GameState = {
     highScore: 0,
     isGameOver: false,
     isWon: false,
+    canUndo: false,
     previousState: null,
 };
 
@@ -42,7 +44,6 @@ type Action =
 export const GameReducer = (state: GameState, action: Action): GameState => {
     switch (action.type) {
         case "ADD_TILE":
-            console.log("ADD_TILE dispatched", action.tile);
             return {
                 ...state,
                 tiles: {
@@ -92,6 +93,7 @@ export const GameReducer = (state: GameState, action: Action): GameState => {
                 ...state,
                 inMotion: true,
                 hasChanged: false,
+                canUndo: true,
                 previousState: state, // Save current state for undo
             };
         case "END_MOVE":
@@ -128,7 +130,10 @@ export const GameReducer = (state: GameState, action: Action): GameState => {
                 highScore: Math.max(state.highScore, state.score + action.score),
             };
         case "UNDO_MOVE":
-            return action.previousState || state;
+            return {
+                ...(action.previousState || state),
+                canUndo: false,
+            };
         case "CONTINUE_GAME":
             return {
                 ...state,

@@ -28,5 +28,3 @@ export type Board = (Tile | null)[][];
  * Available movement directions
  */
 export type Direction = 'up' | 'down' | 'left' | 'right';
-
-export const tileCountPerRowOrColumn = 4;

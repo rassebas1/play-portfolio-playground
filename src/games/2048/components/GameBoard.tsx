@@ -1,6 +1,5 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
-import type { Tile } from '../types';
 import { Tile } from './Tile';
 
 /**

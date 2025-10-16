@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
-import type { Board, Direction, Game2048State, Tile } from '../types';
-import { initializeBoard, isBoardFull } from '../boardUtils';
-import { processMove } from '../moveProcessor';
-import { canMove } from '../moveProcessor2';
-import { addRandomTile } from '../tileUtils';
+import { useCallback, useEffect, useMemo, useReducer, useRef } from 'react';
+import type { Board, Direction, Tile } from '../types';
+import { initializeBoard, isBoardFull } from '../utils/boardUtils';
+import { processMove } from '../utils/moveProcessor';
+import { canMove } from '../utils/moveProcessor2';
+import { addRandomTile } from '../utils/tileUtils';
+import { ANIMATION_DURATION } from '../constants';
 import { GameReducer, initialState } from '../GameReducer';
 import { useIds } from '../useIds';
 
@@ -26,7 +27,6 @@ export const use2048 = () => {
   }, [state]);
 
   const generateRandomTile = useCallback(() => {
-    console.log("generateRandomTile called");
     const newTile = addRandomTile(stateRef.current.tiles, stateRef.current.byIds, getNextId());
     if (newTile) {
       dispatch({ type: "ADD_TILE", tile: newTile });
@@ -98,7 +98,7 @@ export const use2048 = () => {
    */
   const undoMove = useCallback(() => {
     if (canUndo) {
-      dispatch({ type: "UNDO_MOVE" });
+      dispatch({ type: "UNDO_MOVE", previousState: stateRef.current.previousState });
     }
   }, [canUndo, dispatch]);
 

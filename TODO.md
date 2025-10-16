@@ -44,9 +44,18 @@ This document tracks the features and tasks that need to be completed for the pr
 
 **2048**
 
-- [ ] Separate pure game logic from the `use2048` hook into a `gameLogic.ts` file.
-- [ ] Use the `Tile` type in the `use2048` hook to represent the board as a `Tile[][]`.
-- [ ] Implement tile animations using the `TileAnimation` type.
+- [x] Implemented Reducer for State Management: Replaced `useState` with `useReducer` for managing the game state (`tiles`, `byIds`, `score`, `highScore`, `isGameOver`, `isWon`, `canUndo`, `inMotion`, `hasChanged`, `previousState`).
+- [x] Centralized Game State: All game-related state is now managed within a single `GameState` interface and updated via `GameReducer`.
+- [x] Organized Files into `utils` folder: Moved `boardUtils.ts`, `tileUtils.ts`, `lineProcessor.ts`, `moveProcessor.ts`, and `moveProcessor2.ts` into a new `utils` directory for better file management and clean architecture.
+- [x] Created `constants.ts`: Extracted `TILE_COUNT_PER_ROW_OR_COLUMN` and `ANIMATION_DURATION` into a dedicated `constants.ts` file.
+- [x] Updated Import Paths: Adjusted all import paths to reflect the new file organization.
+- [x] Ensured Correct Tile Spawning: Fixed the bug where new tiles could spawn on existing tiles by ensuring `addRandomTile` always uses the latest board state.
+- [x] Corrected Game Over Condition: Updated `isGameOverAfterMove` to correctly account for a full board with no possible moves.
+- [x] Fixed Restart Game Logic: Ensured the "New Game" button correctly re-initializes the board with two new tiles without accumulating extra tiles.
+- [x] Enabled Undo Functionality: Correctly implemented `canUndo` state management to enable/disable the Undo button.
+- [x] Removed Redundant `gameLogic.ts`: Deleted the `gameLogic.ts` file as its re-exporting functionality became redundant after file reorganization.
+- [x] Cleaned Unused Imports and Variables: Removed unused `useState` and `Game2048State` imports from `use2048.ts`, and removed unused `Home` import and `goHome` function from `Game2048.tsx`.
+- [x] Resolved `class` vs `className` Warning: Replaced `class` with `className` in `src/pages/Index.tsx`.
 
 **Flappy Bird**
 

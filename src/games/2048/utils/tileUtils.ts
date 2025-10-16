@@ -1,13 +1,13 @@
-import type { Board, Tile } from './types';
+import type { Board, Tile } from '../types';
 import { getEmptyPositions } from './boardUtils';
-import { tileCountPerRowOrColumn } from './types';
+import { TILE_COUNT_PER_ROW_OR_COLUMN } from '../constants';
 
 /**
  * Adds a random tile (2 or 4) to an empty position on the board.
  * The new tile is marked as `isNew` for animation purposes.
  */
 export const addRandomTile = (currentTiles: { [id: string]: Tile }, currentByIds: string[], nextId: string): Tile | null => {
-  const board: Board = Array(tileCountPerRowOrColumn).fill(null).map(() => Array(tileCountPerRowOrColumn).fill(null));
+  const board: Board = Array(TILE_COUNT_PER_ROW_OR_COLUMN).fill(null).map(() => Array(TILE_COUNT_PER_ROW_OR_COLUMN).fill(null));
   currentByIds.forEach(id => {
     const tile = currentTiles[id];
     if (tile) {
