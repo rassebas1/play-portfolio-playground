@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import { GameHeader } from '@/components/game/GameHeader';
 import { Scoreboard } from '@/components/game/Scoreboard';
 import { GameOverModal } from '@/components/game/GameOverModal';
+import { GameControls } from '@/components/game/GameControls';
+import { Instructions } from '@/components/game/Instructions';
 import { useFlappyBird } from './hooks/useFlappyBird';
 import GameArea from './components/GameArea';
 import { cn } from '@/lib/utils';
@@ -39,25 +41,7 @@ const FlappyBird: React.FC = () => {
         <Scoreboard score={gameState.score} bestScore={gameState.bestScore} />
 
         {/* Game Controls */}
-        <div className="flex justify-center gap-2 mb-6 flex-wrap">
-          
-          
-          <Button
-            onClick={startNewGame}
-            variant="outline"
-            size="sm"
-            className="gap-2"
-          >
-            <Play className="w-4 h-4" />
-            New Game
-          </Button>
-
-          {gameState.gameStarted && (
-            <Badge variant="secondary" className="px-3 py-1">
-              Score: {gameState.score}
-            </Badge>
-          )}
-        </div>
+        <GameControls restartGame={startNewGame} score={gameState.score} />
 
         {/* Game Area */}
         <div className="flex justify-center mb-6">
@@ -69,21 +53,17 @@ const FlappyBird: React.FC = () => {
         </div>
 
         {/* Instructions */}
-        <Card className="mb-6 bg-muted/30 border-primary/10">
-          <CardContent className="pt-4">
-            <div className="text-center space-y-2">
-              <p className="text-sm text-muted-foreground">
-                <span className="font-semibold">Desktop:</span> Press SPACE or ↑ arrow key to jump
-              </p>
-              <p className="text-sm text-muted-foreground">
-                <span className="font-semibold">Mobile:</span> Tap the game area to jump
-              </p>
-              <p className="text-xs text-muted-foreground/80">
-                Navigate through the pipes without hitting them or the ground!
-              </p>
-            </div>
-          </CardContent>
-        </Card>
+        <Instructions>
+          <p className="text-sm text-muted-foreground">
+            <span className="font-semibold">Desktop:</span> Press SPACE or ↑ arrow key to jump
+          </p>
+          <p className="text-sm text-muted-foreground">
+            <span className="font-semibold">Mobile:</span> Tap the game area to jump
+          </p>
+          <p className="text-xs text-muted-foreground/80">
+            Navigate through the pipes without hitting them or the ground!
+          </p>
+        </Instructions>
 
         {/* Game Over Modal */}
         <GameOverModal
