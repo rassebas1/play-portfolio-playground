@@ -8,11 +8,11 @@ import { use2048 } from './hooks/use2048';
 import  GameBoard  from './components/GameBoard';
 import { cn } from '@/lib/utils';
 
-import { GameHeader } from './components/GameHeader';
-import { Scoreboard } from './components/Scoreboard';
-import { GameControls } from './components/GameControls';
+import { GameHeader } from '@/components/game/GameHeader';
+import { Scoreboard } from '@/components/game/Scoreboard';
+import { GameControls } from '@/components/game/GameControls';
 import { MobileControls } from './components/MobileControls';
-import { GameOverModal } from './components/GameOverModal';
+import { GameOverModal } from '@/components/game/GameOverModal';
 
 /**
  * Main 2048 Game Component
@@ -64,7 +64,12 @@ const Game2048: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 p-4">
       <div className="max-w-2xl mx-auto">
-        <GameHeader />
+        <GameHeader 
+          title="2048"
+          description={<>
+            Join the tiles, get to <span className="text-accent font-semibold">2048!</span>
+          </>}
+        />
 
         {/* Score Section */}
         <Scoreboard score={gameState.score} bestScore={gameState.bestScore} />
@@ -108,6 +113,7 @@ const Game2048: React.FC = () => {
           isWon={gameState.isWon}
           score={gameState.score}
           bestScore={gameState.bestScore}
+          canContinue={true}
           continueGame={continueGame}
           restartGame={restartGame}
         />

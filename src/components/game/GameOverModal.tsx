@@ -10,7 +10,8 @@ interface GameOverModalProps {
   isWon: boolean;
   score: number;
   bestScore: number;
-  continueGame: () => void;
+  canContinue?: boolean;
+  continueGame?: () => void;
   restartGame: () => void;
 }
 
@@ -19,6 +20,7 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
   isWon,
   score,
   bestScore,
+  canContinue = false,
   continueGame,
   restartGame,
 }) => {
@@ -56,7 +58,7 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
           </div>
 
           <div className="flex gap-2 justify-center">
-            {isWon && !isGameOver && (
+            {canContinue && isWon && !isGameOver && (
               <Button
                 onClick={continueGame}
                 className="gap-2"
