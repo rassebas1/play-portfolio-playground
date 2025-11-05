@@ -3,7 +3,8 @@ import { cn } from '@/lib/utils';
 import Bird from './Bird';
 import Pipe from './Pipe';
 import Ground from './Ground';
-import type { FlappyBirdState, GameDimensions } from '../types';
+import type { FlappyBirdState } from '../types';
+import type { GameDimensions } from '@/types/global';
 
 /**
  * Props for the GameArea component
@@ -84,7 +85,7 @@ const GameArea: React.FC<GameAreaProps> = ({
       <Ground dimensions={dimensions} />
 
       {/* Start instruction overlay */}
-      {!gameState.gameStarted && !state.isGameOver && (
+      {!gameState.gameStarted && !gameState.isGameOver && (
         <div className="absolute inset-0 bg-black/30 flex items-center justify-center z-30">
           <div className="text-center text-white">
             <div className="text-4xl mb-4 animate-bounce">🐦</div>

@@ -46,3 +46,25 @@ export interface GameStats {
   bestScore?: number;
   totalTimePlayed: number; // in milliseconds
 }
+
+/**
+ * Game physics constants
+ */
+export interface GamePhysics {
+  gravity: number;
+  jumpVelocity: number;
+  terminalVelocity: number;
+  pipeSpeed: number;
+  pipeGap: number;
+  pipeWidth: number;
+}
+
+/**
+ * Game dimensions and boundaries
+ */
+export interface GameDimensions {
+  width: number;
+  height: number;
+  groundHeight: number;
+  birdSize: number;
+}

@@ -1,5 +1,5 @@
-import type { Bird, Pipe, CollisionResult, FlappyBirdState } from './types';
-import { GAME_DIMENSIONS, PHYSICS } from './constants';
+import type { Bird, Pipe, CollisionResult } from './types';
+import { GAME_DIMENSIONS, PHYSICS } from '@/util_const';
 
 export const createInitialBird = (): Bird => ({
   x: 100,
@@ -94,34 +94,4 @@ export const generatePipesIfNeeded = (pipes: Pipe[], currentTime: number, lastPi
   }
   
   return pipes;
-};
-
-export const updateGameState = (prevState: FlappyBirdState, lastPipeTime: React.MutableRefObject<number>): FlappyBirdState => {
-  const updatedBird = updateBirdPhysics(prevState.bird);
-  const { pipes: updatedPipes, scoreIncrease } = updatePipes(prevState.pipes, prevState.bird.x);
-  
-  const currentTime = Date.now();
-  let pipesWithNew = generatePipesIfNeeded(updatedPipes, currentTime, lastPipeTime.current);
-  if (pipesWithNew.length > updatedPipes.length) {
-    lastPipeTime.current = currentTime;
-  }
-
-  const collision = checkCollision(updatedBird, pipesWithNew);
-  
-  const newScore = prevState.score + scoreIncrease;
-  const newBestScore = Math.max(prevState.bestScore, newScore);
-  
-  if (newBestScore > prevState.bestScore) {
-    localStorage.setItem('flappy-bird-best-score', newBestScore.toString());
-  }
-
-  return {
-    ...prevState,
-    bird: updatedBird,
-    pipes: pipesWithNew,
-    score: newScore,
-    bestScore: newBestScore,
-    isGameOver: collision.hasCollision,
-    isPlaying: !collision.hasCollision,
-  };
 };

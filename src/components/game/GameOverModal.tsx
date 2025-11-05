@@ -2,8 +2,9 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { RotateCcw, PlayCircle } from 'lucide-react';
+import { RotateCcw, PlayCircle, Home } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useNavigate } from 'react-router-dom';
 
 interface GameOverModalProps {
   isGameOver: boolean;
@@ -24,6 +25,12 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
   continueGame,
   restartGame,
 }) => {
+  const navigate = useNavigate();
+
+  const goHome = () => {
+    navigate('/');
+  };
+
   if (!isGameOver && !isWon) return null;
 
   return (
@@ -74,6 +81,14 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
             >
               <RotateCcw className="w-4 h-4" />
               Play Again
+            </Button>
+            <Button
+              onClick={goHome}
+              variant="outline"
+              className="gap-2"
+            >
+              <Home className="w-4 h-4" />
+              Home
             </Button>
           </div>
         </CardContent>

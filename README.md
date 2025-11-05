@@ -6,6 +6,10 @@ This is an interactive gaming portfolio showcasing a collection of classic and m
 
 This project serves as a personal portfolio to demonstrate my skills in web development, particularly in building interactive and engaging user experiences. Each game is developed as a self-contained module with its own components, hooks, and type definitions, showcasing a clean and scalable code architecture.
 
+## Development Guidelines
+
+*   **Centralized Constants:** All global constants should be defined in `src/util_const.ts` to ensure a single source of truth and improve maintainability.
+
 ## Built With
 
 * [React](https://reactjs.org/)
@@ -61,3 +65,4 @@ Contributions are what make the open source community such an amazing place to l
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
+

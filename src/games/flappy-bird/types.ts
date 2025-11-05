@@ -25,17 +25,7 @@ export interface Pipe {
   passed: boolean;
 }
 
-/**
- * Game physics constants
- */
-export interface GamePhysics {
-  gravity: number;
-  jumpVelocity: number;
-  terminalVelocity: number;
-  pipeSpeed: number;
-  pipeGap: number;
-  pipeWidth: number;
-}
+
 
 /**
  * Game state interface for Flappy Bird

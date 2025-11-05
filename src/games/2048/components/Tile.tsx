@@ -1,7 +1,7 @@
 import React from 'react';
 import type { Tile as TileType } from '../types';
 import { cn } from '@/lib/utils'; // Force re-process
-import { ANIMATION_DURATION } from '../constants';
+import { ANIMATION_DURATION } from '@/utils/2048_const';
 
 interface TileProps {
   tile: TileType;

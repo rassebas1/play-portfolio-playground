@@ -4,7 +4,7 @@ import { initializeBoard, isBoardFull } from '../utils/boardUtils';
 import { processMove } from '../utils/moveProcessor';
 import { canMove } from '../utils/moveProcessor2';
 import { addRandomTile } from '../utils/tileUtils';
-import { ANIMATION_DURATION } from '../constants';
+import { ANIMATION_DURATION } from '@/utils/2048_const';
 import { GameReducer, initialState } from '../GameReducer';
 import { useIds } from '../useIds';
 
@@ -108,6 +108,10 @@ export const use2048 = () => {
   const continueGame = useCallback(() => {
     dispatch({ type: "CONTINUE_GAME" });
   }, [dispatch]);
+
+  useEffect(() => {
+    dispatch({ type: 'END_MOVE' });
+  }, []);
 
   // Keyboard event handler
   useEffect(() => {

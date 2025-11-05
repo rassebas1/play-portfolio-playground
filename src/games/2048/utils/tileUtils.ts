@@ -1,6 +1,6 @@
 import type { Board, Tile } from '../types';
 import { getEmptyPositions } from './boardUtils';
-import { TILE_COUNT_PER_ROW_OR_COLUMN } from '../constants';
+import { TILE_COUNT_PER_ROW_OR_COLUMN } from '@/util_const';
 
 /**
  * Adds a random tile (2 or 4) to an empty position on the board.

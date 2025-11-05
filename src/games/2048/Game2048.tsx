@@ -11,7 +11,8 @@ import { cn } from '@/lib/utils';
 import { GameHeader } from '@/components/game/GameHeader';
 import { Scoreboard } from '@/components/game/Scoreboard';
 import { GameControls } from '@/components/game/GameControls';
-import { MobileControls } from './components/MobileControls';
+import { Instructions } from '@/components/game/Instructions';
+
 import { GameOverModal } from '@/components/game/GameOverModal';
 
 /**
@@ -51,8 +52,7 @@ const Game2048: React.FC = () => {
       }
     }
   };
-  console.log(gameState);
-  console.log(gameState.board);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 p-4">
       <div className="max-w-2xl mx-auto">
@@ -64,58 +64,10 @@ const Game2048: React.FC = () => {
         />
 
         {/* Score Section */}
-        <div className="grid grid-cols-2 gap-4 mb-6">
-          <Card className="text-center bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm text-muted-foreground">Score</CardTitle>
-            </CardHeader>
-            <CardContent className="pt-0">
-              <div className="text-2xl font-bold text-primary">
-                {score.toLocaleString()}
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="text-center bg-gradient-to-br from-accent/10 to-accent/5 border-accent/20">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm text-muted-foreground flex items-center justify-center gap-1">
-                <Trophy className="w-4 h-4" />
-                Best
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="pt-0">
-              <div className="text-2xl font-bold text-accent">
-                {highScore.toLocaleString()}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+        <Scoreboard score={score} bestScore={highScore} />
 
         {/* Game Controls */}
-        <div className="flex justify-center gap-2 mb-6 flex-wrap">
-          
-
-          <Button
-            onClick={restartGame}
-            variant="outline"
-            size="sm"
-            className="gap-2"
-          >
-            <RotateCcw className="w-4 h-4" />
-            New Game
-          </Button>
-          
-          <Button
-            onClick={undoMove}
-            disabled={!canUndo}
-            variant="outline"
-            size="sm"
-            className="gap-2"
-          >
-            <Undo2 className="w-4 h-4" />
-            Undo
-          </Button>
-        </div>
+        <GameControls restartGame={restartGame} undoMove={undoMove} canUndo={canUndo} />
 
         {/* Game Board */}
         <div className="flex justify-center mb-6">
@@ -128,117 +80,27 @@ const Game2048: React.FC = () => {
           </div>
         </div>
 
-        {/* Mobile Controls */}
-        <div className="block sm:hidden mb-6">
-          <div className="text-center text-sm text-muted-foreground mb-3">
-            Swipe or use buttons to move
-          </div>
-          <div className="grid grid-cols-3 gap-2 max-w-48 mx-auto">
-            <div className="col-start-2">
-              <Button
-                onClick={() => makeMove('up')}
-                variant="outline"
-                size="sm"
-                className="w-full"
-                disabled={isGameOver}
-              >
-                <ArrowUp className="w-4 h-4" />
-              </Button>
-            </div>
-            <Button
-              onClick={() => makeMove('left')}
-              variant="outline"
-              size="sm"
-              disabled={isGameOver}
-            >
-              <ArrowLeft className="w-4 h-4" />
-            </Button>
-            <Button
-              onClick={() => makeMove('down')}
-              variant="outline"
-              size="sm"
-              disabled={isGameOver}
-            >
-              <ArrowDown className="w-4 h-4" />
-            </Button>
-            <Button
-              onClick={() => makeMove('right')}
-              variant="outline"
-              size="sm"
-              disabled={isGameOver}
-            >
-              <ArrowRight className="w-4 h-4" />
-            </Button>
-          </div>
-        </div>
+
 
         {/* Instructions */}
-        <Card className="mb-6 bg-muted/30 border-primary/10">
-          <CardContent className="pt-4">
-            <p className="text-sm text-muted-foreground text-center">
-              <span className="hidden sm:inline">Use arrow keys or </span>
-              <span className="sm:hidden">Swipe or tap buttons to </span>
-              move tiles. Combine tiles with the same number to reach <span className="text-accent font-semibold">2048</span>!
-            </p>
-          </CardContent>
-        </Card>
+        <Instructions>
+          <p className="text-sm text-muted-foreground text-center">
+            <span className="hidden sm:inline">Use arrow keys or </span>
+            <span className="sm:hidden">Swipe or tap buttons to </span>
+            move tiles. Combine tiles with the same number to reach <span className="text-accent font-semibold">2048</span>!
+          </p>
+        </Instructions>
 
         {/* Game Over Modal */}
-        {(isGameOver || isWon) && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-            <Card className={cn(
-              "text-center max-w-sm w-full",
-              isWon && !isGameOver 
-                ? "bg-gradient-to-br from-accent/20 to-accent/10 border-accent/30" 
-                : "bg-gradient-to-br from-destructive/20 to-destructive/10 border-destructive/30"
-            )}>
-              <CardHeader>
-                <CardTitle className={cn(
-                  "text-2xl",
-                  isWon && !isGameOver 
-                    ? "text-accent" 
-                    : "text-destructive"
-                )}>
-                  {isWon && !isGameOver ? "🎉 You Win!" : "💔 Game Over"}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <p className="text-lg font-semibold">Final Score</p>
-                  <p className="text-3xl font-bold text-primary">
-                    {score.toLocaleString()}
-                  </p>
-                  {score === highScore && (
-                    <Badge className="mt-2 bg-accent text-accent-foreground">
-                      New Best! 🏆
-                    </Badge>
-                  )}
-                </div>
-
-                <div className="flex gap-2 justify-center">
-                  {isWon && !isGameOver && (
-                    <Button
-                      onClick={continueGame}
-                      className="gap-2"
-                    >
-                      <PlayCircle className="w-4 h-4" />
-                      Continue
-                    </Button>
-                  )}
-                  <Button
-                    onClick={restartGame}
-                    variant="outline"
-                    className="gap-2"
-                  >
-                    <RotateCcw className="w-4 h-4" />
-                    Play Again
-                  </Button>
-                  
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        )}
+        <GameOverModal 
+          isGameOver={isGameOver} 
+          isWon={isWon} 
+          score={score} 
+          bestScore={highScore} 
+          canContinue={true}
+          continueGame={continueGame}
+          restartGame={restartGame} 
+        />
       </div>
     </div>
   );

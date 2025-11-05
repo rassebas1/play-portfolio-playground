@@ -41,7 +41,7 @@ const FlappyBird: React.FC = () => {
         <Scoreboard score={gameState.score} bestScore={gameState.bestScore} />
 
         {/* Game Controls */}
-        <GameControls restartGame={startNewGame} score={gameState.score} />
+        <GameControls restartGame={startNewGame} />
 
         {/* Game Area */}
         <div className="flex justify-center mb-6">

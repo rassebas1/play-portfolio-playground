@@ -1,4 +1,4 @@
-import type { GamePhysics, GameDimensions } from './types';
+import type { GamePhysics, GameDimensions } from '@/types/global';
 
 export const GAME_DIMENSIONS: GameDimensions = {
   width: 400,

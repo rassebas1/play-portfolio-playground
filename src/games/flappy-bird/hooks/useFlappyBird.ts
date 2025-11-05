@@ -1,82 +1,95 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
-import type { FlappyBirdState } from '../types';
-import { GAME_DIMENSIONS, PHYSICS } from '../constants';
-import { createInitialBird, updateGameState } from '../gameLogic';
+import { useGame } from '@/hooks/useGame';
+import { GAME_DIMENSIONS, PHYSICS } from '@/utils/flappy_bird_const';
+import {
+  createInitialBird,
+  updateBirdPhysics,
+  updatePipes,
+  generatePipesIfNeeded,
+  checkCollision,
+} from '../gameLogic';
+import type { Bird, Pipe } from '../types';
 
-/**
- * Custom hook for Flappy Bird game logic and state management
- * Handles bird physics, pipe generation, collision detection, and game flow
- */
 export const useFlappyBird = () => {
-  // Game state
-  const [gameState, setGameState] = useState<FlappyBirdState>(() => ({
-    bird: createInitialBird(),
-    pipes: [],
-    score: 0,
-    bestScore: parseInt(localStorage.getItem('flappy-bird-best-score') || '0'),
-    isPlaying: false,
-    isGameOver: false,
-    gameStarted: false,
-  }));
+  const {
+    score,
+    setScore,
+    bestScore,
+    setBestScore,
+    isGameOver,
+    setIsGameOver,
+    isPlaying,
+    setIsPlaying,
+    gameStarted,
+    setGameStarted,
+    resetGame: resetGameBase,
+  } = useGame('flappy-bird-best-score');
+
+  const [bird, setBird] = useState<Bird>(createInitialBird());
+  const [pipes, setPipes] = useState<Pipe[]>([]);
 
   const gameLoopRef = useRef<number>();
   const lastPipeRef = useRef<number>(0);
 
-  /**
-   * Main game loop function, running on every animation frame.
-   * This function is the heart of the game, updating the state of the bird, pipes, and checking for collisions.
-   */
   const gameLoop = useCallback(() => {
-    if (!gameState.isPlaying || gameState.isGameOver) return;
+    if (!isPlaying || isGameOver) return;
 
-    setGameState(prevState => updateGameState(prevState, lastPipeRef));
+    const currentTime = Date.now();
+    const updatedBird = updateBirdPhysics(bird);
+    const { pipes: updatedPipes, scoreIncrease } = updatePipes(pipes, bird.x);
 
-    // Request the next animation frame to continue the loop.
+    const pipesWithNew = generatePipesIfNeeded(
+      updatedPipes,
+      currentTime,
+      lastPipeRef.current,
+    );
+    if (pipesWithNew.length > updatedPipes.length) {
+      lastPipeRef.current = currentTime;
+    }
+
+    const collision = checkCollision(updatedBird, pipesWithNew);
+
+    const newScore = score + scoreIncrease;
+    setScore(newScore);
+
+    if (newScore > bestScore) {
+      setBestScore(newScore);
+    }
+
+    setBird(updatedBird);
+    setPipes(pipesWithNew);
+
+    if (collision.hasCollision) {
+      setIsGameOver(true);
+      setIsPlaying(false);
+    }
+
     gameLoopRef.current = requestAnimationFrame(gameLoop);
-  }, [gameState.isPlaying, gameState.isGameOver]);
+  }, [isPlaying, isGameOver, bird, pipes, score, bestScore, setScore, setBestScore, setIsGameOver, setIsPlaying]);
 
-  /**
-   * Makes the bird jump
-   */
   const jump = useCallback(() => {
-    if (gameState.isGameOver || !gameState.isPlaying) return;
-
-    setGameState(prevState => ({
-      ...prevState,
-      bird: {
-        ...prevState.bird,
-        velocity: PHYSICS.jumpVelocity,
-      },
+    if (isGameOver || !isPlaying) return;
+    setBird(prevBird => ({
+      ...prevBird,
+      velocity: PHYSICS.jumpVelocity,
     }));
-  }, [gameState.isGameOver, gameState.isPlaying]);
+  }, [isGameOver, isPlaying]);
 
-  /**
-   * Starts a new game
-   */
   const startNewGame = useCallback(() => {
+    resetGameBase();
+    setBird(createInitialBird());
+    setPipes([]);
     lastPipeRef.current = 0;
-    
-    setGameState(prevState => ({
-      bird: createInitialBird(),
-      pipes: [],
-      score: 0,
-      bestScore: prevState.bestScore,
-      isPlaying: true,
-      isGameOver: false,
-      gameStarted: true,
-    }));
-  }, []);
+    setIsPlaying(true);
+    setGameStarted(true);
+  }, [resetGameBase, setIsPlaying, setGameStarted]);
 
-  /**
-   * Restarts the current game
-   */
   const restartGame = useCallback(() => {
     startNewGame();
   }, [startNewGame]);
 
-  // Game loop effect
   useEffect(() => {
-    if (gameState.isPlaying && !gameState.isGameOver) {
+    if (isPlaying && !isGameOver) {
       gameLoopRef.current = requestAnimationFrame(gameLoop);
     }
 
@@ -85,20 +98,33 @@ export const useFlappyBird = () => {
         cancelAnimationFrame(gameLoopRef.current);
       }
     };
-  }, [gameLoop, gameState.isPlaying, gameState.isGameOver]);
+  }, [gameLoop, isPlaying, isGameOver]);
 
-  // Keyboard controls
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
       if (e.code === 'Space' || e.key === 'ArrowUp') {
         e.preventDefault();
-        jump();
+        if (!gameStarted) {
+          startNewGame();
+        } else {
+          jump();
+        }
       }
     };
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [jump]);
+  }, [jump, gameStarted, startNewGame]);
+
+  const gameState = {
+    bird,
+    pipes,
+    score,
+    bestScore,
+    isGameOver,
+    isPlaying,
+    gameStarted,
+  };
 
   return {
     gameState,
