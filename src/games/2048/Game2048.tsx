@@ -5,8 +5,14 @@ import { Badge } from '@/components/ui/badge';
 import { Trophy, RotateCcw, Undo2, PlayCircle, ArrowUp, ArrowDown, ArrowLeft, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { use2048 } from './hooks/use2048';
-import GameBoard from './components/GameBoard';
+import  GameBoard  from './components/GameBoard';
 import { cn } from '@/lib/utils';
+
+import { GameHeader } from '@/components/game/GameHeader';
+import { Scoreboard } from '@/components/game/Scoreboard';
+import { GameControls } from '@/components/game/GameControls';
+import { MobileControls } from './components/MobileControls';
+import { GameOverModal } from '@/components/game/GameOverModal';
 
 /**
  * Main 2048 Game Component
@@ -45,19 +51,17 @@ const Game2048: React.FC = () => {
       }
     }
   };
-
+  console.log(gameState);
+  console.log(gameState.board);
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 p-4">
       <div className="max-w-2xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-5xl font-bold bg-gradient-primary bg-clip-text text-transparent mb-4">
-            2048
-          </h1>
-          <p className="text-muted-foreground text-lg">
+        <GameHeader 
+          title="2048"
+          description={<>
             Join the tiles, get to <span className="text-accent font-semibold">2048!</span>
-          </p>
-        </div>
+          </>}
+        />
 
         {/* Score Section */}
         <div className="grid grid-cols-2 gap-4 mb-6">

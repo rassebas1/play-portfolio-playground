@@ -29,11 +29,11 @@ This document tracks the features and tasks that need to be completed for the pr
 
 **Flappy Bird**
 
-- [ ] Extract the header section into a `GameHeader` component.
-- [ ] Extract the score section into a `Scoreboard` component.
-- [ ] Extract the game controls section into a `GameControls` component.
-- [ ] Extract the instructions card into an `Instructions` component.
-- [ ] Extract the game over modal into a `GameOverModal` component.
+- [x] Extract the header section into a `GameHeader` component.
+- [x] Extract the score section into a `Scoreboard` component.
+- [x] Extract the game controls section into a `GameControls` component.
+- [x] Extract the instructions card into an `Instructions` component.
+- [x] Extract the game over modal into a `GameOverModal` component.
 
 ### Hooks and Types Refactoring
 

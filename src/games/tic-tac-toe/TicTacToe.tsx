@@ -7,9 +7,11 @@ import { ArrowLeft, RotateCcw, Trophy, Users } from 'lucide-react';
 import GameBoard from './components/GameBoard';
 import { useTicTacToe } from './hooks/useTicTacToe';
 
-import { GameHeader } from './components/GameHeader';
+import { GameHeader } from '@/components/game/GameHeader';
+import { GameControls } from '@/components/game/GameControls';
 import { GameStatus } from './components/GameStatus';
 import { GameRules } from './components/GameRules';
+import { GameOverModal } from '@/components/game/GameOverModal';
 
 /**
  * Main Tic Tac Toe game component
@@ -34,11 +36,20 @@ const TicTacToe: React.FC = () => {
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
-        <GameHeader resetGame={resetGame} />
+        <GameHeader 
+          title="🎯 Tic Tac Toe"
+          description="Classic strategy game for two players"
+        />
 
         <div className="max-w-4xl mx-auto">
           <div className="grid lg:grid-cols-3 gap-8">
             
+            <GameControls
+              restartGame={resetGame}
+              canUndo={false} // Tic-tac-toe doesn't have undo
+              moveCount={gameState.moveCount}
+            />
+
             {/* Game Status Card */}
             <GameStatus
               gameResult={gameState.gameResult}
@@ -70,6 +81,15 @@ const TicTacToe: React.FC = () => {
 
           {/* Game Rules */}
           <GameRules />
+
+          {/* Game Over Modal */}
+          <GameOverModal
+            isGameOver={gameState.gameResult !== 'ongoing'}
+            isWon={gameState.gameResult === 'win'}
+            score={gameState.moveCount} // Using move count as score
+            bestScore={0} // No best score for tic-tac-toe
+            restartGame={resetGame}
+          />
         </div>
       </div>
     </div>
