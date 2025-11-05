@@ -22,7 +22,7 @@ export const experiences = [
     ],
   },
   {
-    company: 'NTT DATA, Bogotá, Colombia',
+    company: 'NTT DATA, Bogotá, Colombia, IBM training program',
     title: 'Software Engineer',
     date: 'Oct 2022 – Nov 2022',
     activities: [
@@ -30,7 +30,7 @@ export const experiences = [
     ]
   },
   {
-    company: 'NTT DATA, Bogotá, Colombia',
+    company: 'NTT DATA, Bogotá, Colombia, BBVA training program',
     title: 'Software Engineer',
     date: 'Aug. 2022 - Sept. 2022',
     activities: [

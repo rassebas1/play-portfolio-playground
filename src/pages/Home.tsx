@@ -9,7 +9,7 @@ const Home: React.FC = () => {
           Sebastián Espitia Londoño
         </h1>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-10">
-          Lead Full-Stack Engineer with a passion for building modern web applications and games.
+          Software Engineer with a passion for building modern web applications and games.
         </p>
       </div>
       <div className="max-w-3xl mx-auto">

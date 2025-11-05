@@ -1,20 +1,49 @@
-import { ThemeSwitcher } from './theme-switcher';
-import { Link } from 'react-router-dom';
+import { Navbar } from '../layout/Navbar';
+import { Footer } from '../layout/Footer';
+import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
 
-export function Layout({ children }: { children: React.ReactNode }) {
+interface LayoutProps {
+  children: React.ReactNode;
+  navigationState: "idle" | "submitting" | "loading";
+}
+
+const MIN_DISPLAY_TIME = 300; // ms
+const ANIMATION_DURATION = 0.3; // seconds
+
+export function Layout({ children, navigationState }: LayoutProps) {
+  const [showProgressBar, setShowProgressBar] = useState(false);
+  const [startTime, setStartTime] = useState(0);
+
+  useEffect(() => {
+    if (navigationState === "loading") {
+      setShowProgressBar(true);
+      setStartTime(Date.now());
+    } else if (navigationState === "idle" && showProgressBar) {
+      const elapsedTime = Date.now() - startTime;
+      if (elapsedTime < MIN_DISPLAY_TIME) {
+        const remainingTime = MIN_DISPLAY_TIME - elapsedTime;
+        const timer = setTimeout(() => {
+          setShowProgressBar(false);
+        }, remainingTime);
+        return () => clearTimeout(timer);
+      } else {
+        setShowProgressBar(false);
+      }
+    }
+  }, [navigationState, showProgressBar, startTime]);
+
   return (
-    <div className="min-h-screen">
-      <header className="p-4 flex justify-between items-center">
-        <nav>
-          <ul className="flex gap-4">
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/games">Games</Link></li>
-            <li><Link to="/experience">Experience</Link></li>
-          </ul>
-        </nav>
-        <ThemeSwitcher />
-      </header>
-      <main>{children}</main>
+    <div className="min-h-screen flex flex-col relative">
+      <motion.div
+        className="fixed top-0 left-0 h-1 bg-primary z-[9999]"
+        initial={{ width: 0 }}
+        animate={{ width: showProgressBar ? "100%" : "0%" }}
+        transition={{ duration: ANIMATION_DURATION, ease: "easeInOut" }}
+      />
+      <Navbar />
+      <main className="flex-grow">{children}</main>
+      <Footer />
     </div>
   );
 }
