@@ -44,7 +44,7 @@ const games: GameInfo[] = [
     category: 'Arcade',
     icon: '🐍',
     color: 'hsl(var(--primary))',
-    status: 'Coming Soon',
+    status: 'Ready to Play',
   },
   {
     id: 'memory',

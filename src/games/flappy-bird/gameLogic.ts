@@ -1,5 +1,5 @@
 import type { Bird, Pipe, CollisionResult } from './types';
-import { GAME_DIMENSIONS, PHYSICS } from '@/util_const';
+import { GAME_DIMENSIONS, PHYSICS } from '../../utils/flappy_bird_const';
 
 export const createInitialBird = (): Bird => ({
   x: 100,

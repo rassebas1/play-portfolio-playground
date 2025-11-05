@@ -3,6 +3,7 @@ import { useParams, useNavigate, Navigate } from 'react-router-dom';
 import TicTacToe from '@/games/tic-tac-toe/TicTacToe';
 import Game2048 from '@/games/2048/Game2048';
 import FlappyBird from '@/games/flappy-bird/FlappyBird';
+import SnakeGame from '@/games/snake/SnakeGame';
 import type { GameType } from '@/types/global';
 import useTitle from '@/hooks/use-title';
 import { Button } from '@/components/ui/button';
@@ -42,14 +43,7 @@ const GamePage: React.FC = () => {
       case 'flappy-bird':
         return <FlappyBird />;
       case 'snake':
-        return (
-          <div className="min-h-screen bg-background flex items-center justify-center">
-            <div className="text-center">
-              <h1 className="text-4xl font-bold mb-4">🐍 Snake</h1>
-              <p className="text-muted-foreground">Coming Soon!</p>
-            </div>
-          </div>
-        );
+        return <SnakeGame />;
       case 'memory':
         return (
           <div className="min-h-screen bg-background flex items-center justify-center">
