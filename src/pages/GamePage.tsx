@@ -61,7 +61,7 @@ const GamePage: React.FC = () => {
   return (
     <div className="relative min-h-screen bg-background">
       <Button
-        onClick={() => navigate('/')}
+        onClick={() => navigate('/games')}
         className="absolute top-4 left-4 bg-secondary text-secondary-foreground hover:bg-secondary/80 text-xs sm:text-base px-2 sm:px-4"
       >
         &larr; Go back

@@ -26,7 +26,6 @@ This document tracks the features and tasks that need to be completed for the pr
 ### Main Page Content
 - [x] Added "Developer Profile" section.
 - [x] Added "Skills" section.
-- [x] Added "What I'm Learning" section.
 - [x] Added "Experience" section.
 
 ### SPA Refactoring
@@ -69,9 +68,16 @@ This document tracks the features and tasks that need to be completed for the pr
 - [ ] **Flappy Bird:** Animate bird's flapping, pipes' movement, and game over.
 
 ### General UI/UX Improvements
-- [ ] Add animations to page transitions.
-- [ ] Improve the styling of the navigation bar.
-- [ ] Add a footer to the layout.
+- [x] Add animations to page transitions.
+- [x] Improve the styling of the navigation bar.
+- [x] Add a footer to the layout.
+- [x] **Loading States:** Implement subtle loading indicators (spinners, skeleton loaders) for content that takes time to load (e.g., page transitions, sequential loading for Experience page).
+- [x] **Enhanced Hover Effects:** Go beyond simple color changes for interactive elements (implemented on ExperienceCard).
+- [x] **Click/Tap Feedback:** Add visual feedback (e.g., ripple effect, slight press animation) when buttons or interactive elements are clicked/tapped, especially important for touch devices.
+- [x] **Consistent Typography System:** Define and apply a consistent typography scale and usage (implemented on ExperienceCard and Skills).
+- [x] **Categorized Skills with Staggered Animation:** Implemented categorized skills with staggered animation coming from the right.
+- [ ] **Empty States Design:** Create user-friendly designs for sections where content might be missing (e.g., "No high scores yet," "No games found").
+- [ ] **Reduced Motion Preference:** Implement support for `prefers-reduced-motion` to respect user preferences for less animation, enhancing accessibility and user comfort.
 
 ### Backend Features
 - [ ] Add a backend to store high scores and user profiles.

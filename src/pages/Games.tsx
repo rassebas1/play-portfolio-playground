@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import type { GameInfo } from '@/types/global';
 
-const games: GameInfo[] = [
+export const games: GameInfo[] = [
   {
     id: 'tic-tac-toe',
     name: 'Tic Tac Toe',
