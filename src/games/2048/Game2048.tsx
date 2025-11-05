@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Trophy, RotateCcw, Undo2, PlayCircle, ArrowUp, ArrowDown, ArrowLeft, ArrowRight, Home } from 'lucide-react';
+import { Trophy, RotateCcw, Undo2, PlayCircle, ArrowUp, ArrowDown, ArrowLeft, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { use2048 } from './hooks/use2048';
 import  GameBoard  from './components/GameBoard';
@@ -19,16 +19,8 @@ import { GameOverModal } from '@/components/game/GameOverModal';
  * Integrates the game board, controls, and state management
  */
 const Game2048: React.FC = () => {
-  const { gameState, makeMove, restartGame, undoMove, continueGame } = use2048();
+  const { isGameOver, isWon, makeMove, restartGame, undoMove, continueGame, animatedTiles, score, highScore, canUndo } = use2048();
   const navigate = useNavigate();
-
-  /**
-   * Navigates back to the main portfolio page
-   */
-  const goHome = () => {
-    navigate('/');
-  };
-
   /**
    * Handles swipe gestures for mobile play
    */
@@ -72,15 +64,58 @@ const Game2048: React.FC = () => {
         />
 
         {/* Score Section */}
-        <Scoreboard score={gameState.score} bestScore={gameState.bestScore} />
+        <div className="grid grid-cols-2 gap-4 mb-6">
+          <Card className="text-center bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm text-muted-foreground">Score</CardTitle>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <div className="text-2xl font-bold text-primary">
+                {score.toLocaleString()}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="text-center bg-gradient-to-br from-accent/10 to-accent/5 border-accent/20">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm text-muted-foreground flex items-center justify-center gap-1">
+                <Trophy className="w-4 h-4" />
+                Best
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <div className="text-2xl font-bold text-accent">
+                {highScore.toLocaleString()}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
 
         {/* Game Controls */}
-        <GameControls
-          restartGame={restartGame}
-          undoMove={undoMove}
-          canUndo={gameState.canUndo}
-          moveCount={gameState.moveCount}
-        />
+        <div className="flex justify-center gap-2 mb-6 flex-wrap">
+          
+
+          <Button
+            onClick={restartGame}
+            variant="outline"
+            size="sm"
+            className="gap-2"
+          >
+            <RotateCcw className="w-4 h-4" />
+            New Game
+          </Button>
+          
+          <Button
+            onClick={undoMove}
+            disabled={!canUndo}
+            variant="outline"
+            size="sm"
+            className="gap-2"
+          >
+            <Undo2 className="w-4 h-4" />
+            Undo
+          </Button>
+        </div>
 
         {/* Game Board */}
         <div className="flex justify-center mb-6">
@@ -89,12 +124,53 @@ const Game2048: React.FC = () => {
             onTouchEnd={handleTouchEnd}
             className="touch-none"
           >
-            <GameBoard board={gameState.board} />
+            <GameBoard animatedTiles={animatedTiles} />
           </div>
         </div>
 
         {/* Mobile Controls */}
-        <MobileControls makeMove={makeMove} isGameOver={gameState.isGameOver} />
+        <div className="block sm:hidden mb-6">
+          <div className="text-center text-sm text-muted-foreground mb-3">
+            Swipe or use buttons to move
+          </div>
+          <div className="grid grid-cols-3 gap-2 max-w-48 mx-auto">
+            <div className="col-start-2">
+              <Button
+                onClick={() => makeMove('up')}
+                variant="outline"
+                size="sm"
+                className="w-full"
+                disabled={isGameOver}
+              >
+                <ArrowUp className="w-4 h-4" />
+              </Button>
+            </div>
+            <Button
+              onClick={() => makeMove('left')}
+              variant="outline"
+              size="sm"
+              disabled={isGameOver}
+            >
+              <ArrowLeft className="w-4 h-4" />
+            </Button>
+            <Button
+              onClick={() => makeMove('down')}
+              variant="outline"
+              size="sm"
+              disabled={isGameOver}
+            >
+              <ArrowDown className="w-4 h-4" />
+            </Button>
+            <Button
+              onClick={() => makeMove('right')}
+              variant="outline"
+              size="sm"
+              disabled={isGameOver}
+            >
+              <ArrowRight className="w-4 h-4" />
+            </Button>
+          </div>
+        </div>
 
         {/* Instructions */}
         <Card className="mb-6 bg-muted/30 border-primary/10">
@@ -108,15 +184,61 @@ const Game2048: React.FC = () => {
         </Card>
 
         {/* Game Over Modal */}
-        <GameOverModal
-          isGameOver={gameState.isGameOver}
-          isWon={gameState.isWon}
-          score={gameState.score}
-          bestScore={gameState.bestScore}
-          canContinue={true}
-          continueGame={continueGame}
-          restartGame={restartGame}
-        />
+        {(isGameOver || isWon) && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+            <Card className={cn(
+              "text-center max-w-sm w-full",
+              isWon && !isGameOver 
+                ? "bg-gradient-to-br from-accent/20 to-accent/10 border-accent/30" 
+                : "bg-gradient-to-br from-destructive/20 to-destructive/10 border-destructive/30"
+            )}>
+              <CardHeader>
+                <CardTitle className={cn(
+                  "text-2xl",
+                  isWon && !isGameOver 
+                    ? "text-accent" 
+                    : "text-destructive"
+                )}>
+                  {isWon && !isGameOver ? "🎉 You Win!" : "💔 Game Over"}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <p className="text-lg font-semibold">Final Score</p>
+                  <p className="text-3xl font-bold text-primary">
+                    {score.toLocaleString()}
+                  </p>
+                  {score === highScore && (
+                    <Badge className="mt-2 bg-accent text-accent-foreground">
+                      New Best! 🏆
+                    </Badge>
+                  )}
+                </div>
+
+                <div className="flex gap-2 justify-center">
+                  {isWon && !isGameOver && (
+                    <Button
+                      onClick={continueGame}
+                      className="gap-2"
+                    >
+                      <PlayCircle className="w-4 h-4" />
+                      Continue
+                    </Button>
+                  )}
+                  <Button
+                    onClick={restartGame}
+                    variant="outline"
+                    className="gap-2"
+                  >
+                    <RotateCcw className="w-4 h-4" />
+                    Play Again
+                  </Button>
+                  
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
       </div>
     </div>
   );

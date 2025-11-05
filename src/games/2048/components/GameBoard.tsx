@@ -1,13 +1,12 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
-import type { Board } from '../types';
 import { Tile } from './Tile';
 
 /**
  * Props for the GameBoard component
  */
 interface GameBoardProps {
-  board: Board;
+  animatedTiles: Tile[];
   className?: string;
 }
 
@@ -15,7 +14,7 @@ interface GameBoardProps {
  * GameBoard component for 2048
  * Renders the 4x4 grid with tiles and handles tile styling
  */
-const GameBoard: React.FC<GameBoardProps> = ({ board }) => {
+const GameBoard: React.FC<GameBoardProps> = ({ animatedTiles }) => {
   
   return (
     <div 
@@ -42,12 +41,9 @@ const GameBoard: React.FC<GameBoardProps> = ({ board }) => {
       )}
 
       {/* Render actual tiles */}
-      {board.map((row, rowIndex) =>
-        row.map((tile, colIndex) => (
-          
-          tile ? <Tile key={tile.id} tile={tile} /> : null 
-        ))
-      )}
+      {animatedTiles.map((tile) => (
+        <Tile key={tile.id} tile={tile} />
+      ))}
     </div>
   );
 };

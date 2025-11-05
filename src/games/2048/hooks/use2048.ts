@@ -1,110 +1,113 @@
-import { useState, useCallback, useEffect } from 'react';
-import type { Board, Direction, Game2048State, MoveResult } from '../types';
-import {
-  createEmptyBoard,
-  getEmptyPositions,
-  addRandomTile,
-  initializeBoard,
-  moveAndMergeArray,
-  processMove,
-  canMove,
-} from '../gameLogic';
+import { useCallback, useEffect, useMemo, useReducer, useRef } from 'react';
+import type { Board, Direction, Tile } from '../types';
+import { initializeBoard, isBoardFull } from '../utils/boardUtils';
+import { processMove } from '../utils/moveProcessor';
+import { canMove } from '../utils/moveProcessor2';
+import { addRandomTile } from '../utils/tileUtils';
+import { ANIMATION_DURATION } from '../constants';
+import { GameReducer, initialState } from '../GameReducer';
+import { useIds } from '../useIds';
 
 /**
  * Custom hook for 2048 game logic and state management
  * Handles board state, moves, scoring, and game conditions
  */
 export const use2048 = () => {
-  // Game state
-  const [gameState, setGameState] = useState<Game2048State>(() => ({
-    board: initializeBoard(),
-    score: 0,
-    bestScore: parseInt(localStorage.getItem('2048-best-score') || '0'),
-    isGameOver: false,
-    isWon: false,
-    canUndo: false,
-    moveCount: 0,
-    animations: [],
-  }));
+  const [getNextId] = useIds();
+  const [state, dispatch] = useReducer(GameReducer, undefined, () => initializeBoard(getNextId));
+  const { tiles, byIds, hasChanged, inMotion, score, highScore, isGameOver, isWon, canUndo } = state;
 
-  const [previousState, setPreviousState] = useState<Game2048State | null>(null);
+  const animatedTiles = byIds.map(id => tiles[id]);
+
+  const animationDuration = 100; // Define animation duration
+
+  const stateRef = useRef(state);
+  useEffect(() => {
+    stateRef.current = state;
+  }, [state]);
+
+  const generateRandomTile = useCallback(() => {
+    const newTile = addRandomTile(stateRef.current.tiles, stateRef.current.byIds, getNextId());
+    if (newTile) {
+      dispatch({ type: "ADD_TILE", tile: newTile });
+    }
+  }, [getNextId, dispatch]);
 
   /**
    * Makes a move in the specified direction
    */
   const makeMove = useCallback((direction: Direction) => {
-    if (gameState.isGameOver || gameState.isWon) return;
+    if (stateRef.current.isGameOver || (stateRef.current.isWon && !stateRef.current.isGameOver) || stateRef.current.inMotion) return;
 
-    const result = processMove(gameState.board, direction);
-    
+    const currentBoard = Array(4).fill(null).map(() => Array(4).fill(null)) as Board;
+    stateRef.current.byIds.forEach(id => {
+      const tile = stateRef.current.tiles[id];
+      currentBoard[tile.row][tile.col] = tile;
+    });
+
+    const result = processMove(currentBoard, direction);
+
     if (!result.moved) return;
 
-    // Save current state for undo
-    setPreviousState({ ...gameState });
+    dispatch({ type: "START_MOVE" });
 
-    // Add random tile to the new board
-    const boardWithNewTile = addRandomTile(result.board);
-    const newScore = gameState.score + result.score;
-    const newBestScore = Math.max(gameState.bestScore, newScore);
-    
-    // Save best score to localStorage
-    localStorage.setItem('2048-best-score', newBestScore.toString());
-    
-    const isGameOver = !canMove(boardWithNewTile);
-    const hasWon = result.hasWon && !gameState.isWon;
+    // Update tiles based on processMove result
+    const newTiles = { ...stateRef.current.tiles };
+    const newByIds = [...stateRef.current.byIds];
 
-    setGameState({
-      board: boardWithNewTile,
-      score: newScore,
-      bestScore: newBestScore,
-      isGameOver,
-      isWon: hasWon || gameState.isWon,
-      canUndo: true,
-      moveCount: gameState.moveCount + 1,
-      animations: result.animations,
+    result.animatedTiles.forEach(animatedTile => {
+      if (animatedTile.isRemoved) {
+        delete newTiles[animatedTile.id];
+        const index = newByIds.indexOf(animatedTile.id);
+        if (index > -1) newByIds.splice(index, 1);
+      } else {
+        newTiles[animatedTile.id] = animatedTile;
+      }
     });
-  }, [gameState]);
+
+    dispatch({ type: "UPDATE_ALL_TILES", tiles: newTiles, byIds: newByIds, score: result.score });
+
+    // Add random tile after animation
+    setTimeout(() => {
+      generateRandomTile();
+      dispatch({ type: "END_MOVE" });
+    }, animationDuration);
+
+    // Check for game over and win conditions
+    const isGameOverAfterMove = (!canMove(result.board) || isBoardFull(currentBoard));
+    const hasWonThisMove = result.hasWon;
+
+    if (isGameOverAfterMove && !hasWonThisMove) {
+      dispatch({ type: "GAME_OVER" });
+    } else if (hasWonThisMove) {
+      dispatch({ type: "WIN_GAME" });
+    }
+
+  }, [dispatch, generateRandomTile]);
 
   /**
    * Restarts the game with a fresh state
    */
   const restartGame = useCallback(() => {
-    setGameState({
-      board: initializeBoard(),
-      score: 0,
-      bestScore: gameState.bestScore,
-      isGameOver: false,
-      isWon: false,
-      canUndo: false,
-      moveCount: 0,
-      animations: [],
-    });
-    setPreviousState(null);
-  }, [gameState.bestScore]);
+    const newInitialState = initializeBoard(getNextId);
+    dispatch({ type: "SET_INITIAL_STATE", newState: newInitialState });
+  }, [dispatch, getNextId]);
 
   /**
    * Undoes the last move
    */
   const undoMove = useCallback(() => {
-    if (previousState && gameState.canUndo) {
-      setGameState({
-        ...previousState,
-        canUndo: false,
-      });
-      setPreviousState(null);
+    if (canUndo) {
+      dispatch({ type: "UNDO_MOVE", previousState: stateRef.current.previousState });
     }
-  }, [previousState, gameState.canUndo]);
+  }, [canUndo, dispatch]);
 
   /**
    * Continues playing after winning (reaching 2048)
    */
   const continueGame = useCallback(() => {
-    setGameState(prev => ({
-      ...prev,
-      isWon: false,
-      animations: [],
-    }));
-  }, []);
+    dispatch({ type: "CONTINUE_GAME" });
+  }, [dispatch]);
 
   // Keyboard event handler
   useEffect(() => {
@@ -131,10 +134,15 @@ export const use2048 = () => {
   }, [makeMove]);
 
   return {
-    gameState,
+    isGameOver,
+    isWon,
     makeMove,
     restartGame,
     undoMove,
     continueGame,
+    animatedTiles,
+    score,
+    highScore,
+    canUndo,
   };
 };

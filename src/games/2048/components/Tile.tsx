@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Tile as TileType } from '../types';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/utils'; // Force re-process
+import { ANIMATION_DURATION } from '../constants';
 
 interface TileProps {
   tile: TileType;
@@ -10,7 +11,7 @@ interface TileProps {
 export const Tile: React.FC<TileProps > = ({ tile }) => {
   const tileClasses = cn(
     "absolute rounded-lg flex items-center justify-center text-2xl font-bold",
-    "transition-all duration-200 ease-out", // Smooth transition for movement
+    `transition-all duration-${ANIMATION_DURATION} ease-out`, // Smooth transition for movement
     {
       "bg-gray-300 text-gray-700": tile.value === 2,
       "bg-gray-400 text-gray-800": tile.value === 4,
@@ -23,8 +24,10 @@ export const Tile: React.FC<TileProps > = ({ tile }) => {
       "bg-purple-400 text-white": tile.value === 512,
       "bg-purple-500 text-white": tile.value === 1024,
       "bg-blue-500 text-white": tile.value === 2048,
-      "scale-110 animate-pop": tile.isNew, // Animation for new tiles
+      "scale-0 animate-scale-in": tile.isNew, // Animation for new tiles
+      "animate-pop": tile.isMerged, // Animation for merged tiles
       "z-10": tile.isMerged, // Ensure merged tiles are on top during animation
+      "opacity-0 scale-0": tile.isRemoved, // Animate out removed tiles
     }
   );
 
@@ -37,9 +40,9 @@ export const Tile: React.FC<TileProps > = ({ tile }) => {
   };
 
   if (tile.previousPosition) {
-    const deltaX = tile.col - tile.previousPosition.col;
-    const deltaY = tile.row - tile.previousPosition.row;
-    style.transform = `translate(calc(${deltaX} * 100%), calc(${deltaY} * 100%))`;
+    const deltaX = tile.previousPosition.col - tile.col;
+    const deltaY = tile.previousPosition.row - tile.row;
+    style.transform = `translate(calc(${deltaX} * (100% + 0.25rem)), calc(${deltaY} * (100% + 0.25rem)))`;
   }
   return (
     <div

@@ -1,0 +1,2 @@
+export const TILE_COUNT_PER_ROW_OR_COLUMN = 4;
+export const ANIMATION_DURATION = 200;
