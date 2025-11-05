@@ -6,7 +6,7 @@
 /**
  * Available games in the portfolio
  */
-export type GameType = 'tic-tac-toe' | '2048' | 'flappy-bird' | 'snake' | 'memory';
+export type GameType = 'tic-tac-toe' | '2048' | 'flappy-bird' | 'snake' | 'memory' | 'brick-breaker';
 
 /**
  * Game metadata for portfolio display
