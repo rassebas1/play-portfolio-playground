@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import Bird from './Bird';
 import Pipe from './Pipe';
@@ -20,12 +20,14 @@ interface GameAreaProps {
  * GameArea component for Flappy Bird
  * Main game viewport containing all game elements
  */
-const GameArea: React.FC<GameAreaProps> = ({ 
-  gameState, 
-  dimensions, 
-  onJump, 
-  className 
+const GameArea: React.FC<GameAreaProps> = ({
+  gameState,
+  dimensions,
+  onJump,
+  className
 }) => {
+  const gameAreaRef = useRef<HTMLDivElement>(null);
+
   const gameAreaStyle = {
     width: dimensions.width,
     height: dimensions.height,
@@ -34,10 +36,24 @@ const GameArea: React.FC<GameAreaProps> = ({
   /**
    * Handles click/touch events for jumping
    */
-  const handleInteraction = (e: React.MouseEvent | React.TouchEvent) => {
+  const handleInteraction = useCallback((e: Event) => {
     e.preventDefault();
     onJump();
-  };
+  }, [onJump]);
+
+  useEffect(() => {
+    const gameAreaElement = gameAreaRef.current;
+    if (gameAreaElement) {
+      // For touch devices, attach with passive: false to allow preventDefault
+      gameAreaElement.addEventListener('touchstart', handleInteraction, { passive: false });
+      // For mouse clicks, React's onClick handles preventDefault fine without passive issues
+      // No need to manually add click listener here if onClick is used in JSX
+
+      return () => {
+        gameAreaElement.removeEventListener('touchstart', handleInteraction);
+      };
+    }
+  }, [handleInteraction]);
 
   return (
     <div
@@ -50,8 +66,8 @@ const GameArea: React.FC<GameAreaProps> = ({
         className
       )}
       style={gameAreaStyle}
-      onClick={handleInteraction}
-      onTouchStart={handleInteraction}
+      onClick={handleInteraction as unknown as React.MouseEventHandler<HTMLDivElement>}
+      ref={gameAreaRef}
       role="button"
       tabIndex={0}
       aria-label="Game area - click or tap to make bird jump"

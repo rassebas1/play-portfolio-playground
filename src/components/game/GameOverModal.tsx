@@ -31,24 +31,24 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
     navigate('/');
   };
 
-  if (!isGameOver && !isWon) return null;
+  if (!isGameOver) return null;
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
       <Card className={cn(
         "text-center max-w-sm w-full",
-        isWon && !isGameOver 
+        isWon
           ? "bg-gradient-to-br from-accent/20 to-accent/10 border-accent/30" 
           : "bg-gradient-to-br from-destructive/20 to-destructive/10 border-destructive/30"
       )}>
         <CardHeader>
           <CardTitle className={cn(
             "text-2xl",
-            isWon && !isGameOver 
+            isWon
               ? "text-accent" 
               : "text-destructive"
           )}>
-            {isWon && !isGameOver ? "🎉 You Win!" : "💔 Game Over"}
+            {isWon ? "🎉 You Win!" : "💔 Game Over"}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -65,7 +65,7 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
           </div>
 
           <div className="flex gap-2 justify-center">
-            {canContinue && isWon && !isGameOver && (
+            {canContinue && isWon && (
               <Button
                 onClick={continueGame}
                 className="gap-2"

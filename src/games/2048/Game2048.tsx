@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { use2048 } from './hooks/use2048';
 import  GameBoard  from './components/GameBoard';
 import { cn } from '@/lib/utils';
+import { useSwipeGesture } from '@/hooks/useSwipeGesture';
 
 import { GameHeader } from '@/components/game/GameHeader';
 import { Scoreboard } from '@/components/game/Scoreboard';
@@ -22,36 +23,14 @@ import { GameOverModal } from '@/components/game/GameOverModal';
 const Game2048: React.FC = () => {
   const { isGameOver, isWon, makeMove, restartGame, undoMove, continueGame, animatedTiles, score, highScore, canUndo } = use2048();
   const navigate = useNavigate();
-  /**
-   * Handles swipe gestures for mobile play
-   */
-  const handleTouchStart = (e: React.TouchEvent) => {
-    const touch = e.touches[0];
-    e.currentTarget.setAttribute('data-start-x', touch.clientX.toString());
-    e.currentTarget.setAttribute('data-start-y', touch.clientY.toString());
-  };
 
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    const touch = e.changedTouches[0];
-    const startX = parseFloat(e.currentTarget.getAttribute('data-start-x') || '0');
-    const startY = parseFloat(e.currentTarget.getAttribute('data-start-y') || '0');
-    
-    const deltaX = touch.clientX - startX;
-    const deltaY = touch.clientY - startY;
-    const minSwipeDistance = 50;
-
-    if (Math.abs(deltaX) > Math.abs(deltaY)) {
-      // Horizontal swipe
-      if (Math.abs(deltaX) > minSwipeDistance) {
-        makeMove(deltaX > 0 ? 'right' : 'left');
+  const { onTouchStart, onTouchEnd } = useSwipeGesture({
+    onSwipe: (direction) => {
+      if (direction) {
+        makeMove(direction);
       }
-    } else {
-      // Vertical swipe
-      if (Math.abs(deltaY) > minSwipeDistance) {
-        makeMove(deltaY > 0 ? 'down' : 'up');
-      }
-    }
-  };
+    },
+  });
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 p-4">
@@ -72,8 +51,8 @@ const Game2048: React.FC = () => {
         {/* Game Board */}
         <div className="flex justify-center mb-6">
           <div
-            onTouchStart={handleTouchStart}
-            onTouchEnd={handleTouchEnd}
+            onTouchStart={onTouchStart}
+            onTouchEnd={onTouchEnd}
             className="touch-none"
           >
             <GameBoard animatedTiles={animatedTiles} />

@@ -4,6 +4,7 @@ import TicTacToe from '@/games/tic-tac-toe/TicTacToe';
 import Game2048 from '@/games/2048/Game2048';
 import FlappyBird from '@/games/flappy-bird/FlappyBird';
 import SnakeGame from '@/games/snake/SnakeGame';
+import MemoryGame from '@/games/memory-game/MemoryGame';
 import BrickBreaker from '@/games/brick-breaker/BrickBreaker';
 import type { GameType } from '@/types/global';
 import useTitle from '@/hooks/use-title';
@@ -20,7 +21,7 @@ const GamePage: React.FC = () => {
    * Validates if the provided game ID is a valid and supported game.
    */
   const isValidGameId = (id: string | undefined): id is GameType => {
-    const validGames: GameType[] = ['tic-tac-toe', '2048', 'flappy-bird', 'snake', 'memory', 'brick-breaker'];
+    const validGames: GameType[] = ['tic-tac-toe', '2048', 'flappy-bird', 'snake', 'memory-game', 'brick-breaker'];
     return id !== undefined && validGames.includes(id as GameType);
   };
 
@@ -45,15 +46,8 @@ const GamePage: React.FC = () => {
         return <FlappyBird />;
       case 'snake':
         return <SnakeGame />;
-      case 'memory':
-        return (
-          <div className="min-h-screen bg-background flex items-center justify-center">
-            <div className="text-center">
-              <h1 className="text-4xl font-bold mb-4">🧩 Memory Game</h1>
-              <p className="text-muted-foreground">Coming Soon!</p>
-            </div>
-          </div>
-        );
+      case 'memory-game':
+        return <MemoryGame />;
       case 'brick-breaker':
         return <BrickBreaker />;
       default:
