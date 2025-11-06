@@ -4,6 +4,7 @@ import TicTacToe from '@/games/tic-tac-toe/TicTacToe';
 import Game2048 from '@/games/2048/Game2048';
 import FlappyBird from '@/games/flappy-bird/FlappyBird';
 import SnakeGame from '@/games/snake/SnakeGame';
+import BrickBreaker from '@/games/brick-breaker/BrickBreaker';
 import type { GameType } from '@/types/global';
 import useTitle from '@/hooks/use-title';
 import { Button } from '@/components/ui/button';
@@ -19,7 +20,7 @@ const GamePage: React.FC = () => {
    * Validates if the provided game ID is a valid and supported game.
    */
   const isValidGameId = (id: string | undefined): id is GameType => {
-    const validGames: GameType[] = ['tic-tac-toe', '2048', 'flappy-bird', 'snake', 'memory'];
+    const validGames: GameType[] = ['tic-tac-toe', '2048', 'flappy-bird', 'snake', 'memory', 'brick-breaker'];
     return id !== undefined && validGames.includes(id as GameType);
   };
 
@@ -53,6 +54,8 @@ const GamePage: React.FC = () => {
             </div>
           </div>
         );
+      case 'brick-breaker':
+        return <BrickBreaker />;
       default:
         return <Navigate to="/" replace />;
     }

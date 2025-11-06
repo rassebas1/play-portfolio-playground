@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { ThemeSwitcher } from '@/components/ui/theme-switcher';
 import { games } from '@/pages/Games'; // Import games list
@@ -69,6 +69,7 @@ export const Navbar: React.FC = () => {
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="w-[300px] sm:w-[400px]">
+              <SheetTitle className="sr-only">Mobile Navigation</SheetTitle>
               <nav className="flex flex-col gap-4 pt-6">
                 <Link to="/" className="mb-4 flex items-center space-x-2">
                   <span className="font-bold">Portfolio</span>

@@ -56,6 +56,16 @@ export const games: GameInfo[] = [
     color: 'hsl(var(--game-danger))',
     status: 'Coming Soon',
   },
+  {
+    id: 'brick-breaker',
+    name: 'Brick Breaker',
+    description: 'Destroy bricks with a ball and paddle. Break all bricks to clear the level!',
+    difficulty: 'Medium',
+    category: 'Arcade',
+    icon: '🧱',
+    color: 'hsl(var(--game-info))',
+    status: 'Ready to Play',
+  },
 ];
 
 const Games: React.FC = () => {
