@@ -1,20 +1,45 @@
-// src/games/snake/SnakeGame.tsx
-
-import React from 'react';
 import { useSnakeGame } from './hooks/useSnakeGame';
 import GameBoard from './components/GameBoard';
 import { Button } from '@/components/ui/button';
 import { Scoreboard } from '@/components/game/Scoreboard';
 import { GameOverModal } from '@/components/game/GameOverModal';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useSwipeGesture } from '@/hooks/useSwipeGesture';
+import { Direction } from './types';
 
 /**
  * Main component for the Snake game.
  * Manages game state and renders the game board and controls.
  */
 const SnakeGame: React.FC = () => {
-  const { state, startGame, resetGame } = useSnakeGame();
+  const { state, startGame, resetGame, dispatch } = useSnakeGame();
   const { score, gameOver, gameStarted } = state;
+
+  const handleSwipe = (direction: 'up' | 'down' | 'left' | 'right' | null) => {
+    if (!gameStarted || gameOver || !direction) return;
+
+    let newDirection: Direction | undefined;
+    switch (direction) {
+      case 'up':
+        newDirection = 'UP';
+        break;
+      case 'down':
+        newDirection = 'DOWN';
+        break;
+      case 'left':
+        newDirection = 'LEFT';
+        break;
+      case 'right':
+        newDirection = 'RIGHT';
+        break;
+    }
+
+    if (newDirection) {
+      dispatch({ type: 'CHANGE_DIRECTION', payload: newDirection });
+    }
+  };
+
+  const { onTouchStart, onTouchEnd } = useSwipeGesture({ onSwipe: handleSwipe });
 
   return (
     <div className="flex flex-col items-center justify-center p-4">
@@ -25,7 +50,13 @@ const SnakeGame: React.FC = () => {
         <CardContent className="flex flex-col items-center">
           <Scoreboard score={score} bestScore={0} />
 
-          <GameBoard gameState={state} />
+          <div
+            onTouchStart={onTouchStart}
+            onTouchEnd={onTouchEnd}
+            className="touch-none"
+          >
+            <GameBoard gameState={state} />
+          </div>
 
           <div className="mt-4">
             {!gameStarted && !gameOver && (

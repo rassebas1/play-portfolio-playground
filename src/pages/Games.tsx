@@ -47,14 +47,14 @@ export const games: GameInfo[] = [
     status: 'Ready to Play',
   },
   {
-    id: 'memory',
+    id: 'memory-game',
     name: 'Memory Game',
     description: 'Test your memory by matching pairs of hidden cards.',
     difficulty: 'Easy',
     category: 'Puzzle',
     icon: '🧩',
     color: 'hsl(var(--game-danger))',
-    status: 'Coming Soon',
+    status: 'Ready to Play',
   },
   {
     id: 'brick-breaker',

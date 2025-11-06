@@ -1,0 +1,20 @@
+
+/* src/games/memory-game/components/GameBoard.css */
+
+.game-board {
+  display: grid;
+  gap: 10px;
+  justify-content: center;
+}
+
+.game-board.easy {
+  grid-template-columns: repeat(4, 100px);
+}
+
+.game-board.medium {
+  grid-template-columns: repeat(4, 100px);
+}
+
+.game-board.hard {
+  grid-template-columns: repeat(6, 100px);
+}
