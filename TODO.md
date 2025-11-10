@@ -49,11 +49,11 @@ This document tracks the features and tasks that need to be completed for the pr
 - [ ] Implement the "Tower Defense" game.
 
 ### Mobile Enhancements (Touch Controls)
-- [ ] **Snake:** Implement swipe gestures on the game board for direction control.
-- [ ] **2048:** Implement swipe gestures on the game board for tile movement.
-- [ ] **Flappy Bird:** Ensure tap input is robust and responsive for mobile devices.
+- [x] **Snake:** Implement swipe gestures on the game board for direction control.
+- [x] **2048:** Implement swipe gestures on the game board for tile movement.
+- [x] **Flappy Bird:** Ensure tap input is robust and responsive for mobile devices.
 - [ ] **Tic-Tac-Toe:** Ensure tap input is robust and responsive for mobile devices.
-- [ ] **Brick Breaker:** Implement touch controls for paddle movement (e.g., drag or tap left/right halves of the screen).
+- [x] **Brick Breaker:** Implement touch controls for paddle movement (e.g., drag or tap left/right halves of the screen).
 
 ### Internationalization (i18n)
 - [ ] Identify all user-facing text and content for translation.

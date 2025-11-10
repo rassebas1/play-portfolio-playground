@@ -10,6 +10,7 @@ import { games } from '@/pages/Games'; // Import games list
 const navItems = [
   { name: 'Home', href: '/' },
   { name: 'Experience', href: '/experience' },
+  { name: 'Education', href: '/education' },
 ];
 
 export const Navbar: React.FC = () => {
