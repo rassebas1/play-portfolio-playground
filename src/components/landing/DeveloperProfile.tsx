@@ -1,8 +1,11 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 export const DeveloperProfile: React.FC = () => {
+  const { t } = useTranslation();
+
   return (
     <Card>
       <CardHeader className="text-center">
@@ -11,11 +14,11 @@ export const DeveloperProfile: React.FC = () => {
           <AvatarFallback>SEL</AvatarFallback>
         </Avatar>
         <CardTitle className="text-2xl">Sebastián Espitia Londoño</CardTitle>
-        <p className="text-muted-foreground">Software Engineer</p>
+        <p className="text-muted-foreground">{t('developer_title')}</p>
       </CardHeader>
       <CardContent>
         <p className="text-center text-muted-foreground">
-          Software Engineer with a background in Electronics Engineering and current Big Data specialization. Expertise spans modern web architectures, secure integration platforms, and cloud-native solutions, with proven success in leading digital transformation for major financial and telecommunications clients.
+          {t('developer_description')}
         </p>
       </CardContent>
     </Card>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Skills } from '@/components/landing/Skills';
 import { ExperienceCard } from '@/components/landing/ExperienceCard';
 import { experiences } from '@/utils/experience_consts';
@@ -6,8 +7,11 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { motion } from 'framer-motion';
 
 const Experience: React.FC = () => {
+  const { t, i18n } = useTranslation();
   const [loadingSkills, setLoadingSkills] = useState(true);
   const [loadingExperiences, setLoadingExperiences] = useState(true);
+
+  const currentLanguage = i18n.language as 'en' | 'es' | 'fr';
 
   useEffect(() => {
     // Simulate loading for Skills section (faster)
@@ -30,7 +34,7 @@ const Experience: React.FC = () => {
     <div className="container mx-auto px-4 py-16">
       <div className="text-center mb-20 pt-10">
         <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
-          Experience & Skills
+          {t('experience_heading')}
         </h1>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -74,7 +78,7 @@ const Experience: React.FC = () => {
           ) : (
             experiences.map((exp, index) => (
               <div
-                key={exp.company + exp.title}
+                key={exp.company + exp.title.en}
                 className="animate-fade-in opacity-0"
                 style={{
                   animationDelay: `${index * 150}ms`,
@@ -83,9 +87,9 @@ const Experience: React.FC = () => {
               >
                 <ExperienceCard 
                   company={exp.company}
-                  title={exp.title}
+                  title={exp.title[currentLanguage]}
                   date={exp.date}
-                  activities={exp.activities}
+                  activities={exp.activities[currentLanguage]}
                 />
               </div>
             ))

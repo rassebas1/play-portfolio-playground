@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { Menu } from 'lucide-react';
+import { Menu, Languages } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { ThemeSwitcher } from '@/components/ui/theme-switcher';
 import { games } from '@/pages/Games'; // Import games list
+import { useTranslation } from 'react-i18next';
 
 const navItems = [
   { name: 'Home', href: '/' },
@@ -14,6 +15,12 @@ const navItems = [
 ];
 
 export const Navbar: React.FC = () => {
+  const { t, i18n } = useTranslation();
+
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng);
+  };
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center justify-between">
@@ -31,7 +38,7 @@ export const Navbar: React.FC = () => {
                   `text-sm font-medium transition-colors hover:text-primary ${isActive ? 'text-primary' : 'text-muted-foreground'}`
                 }
               >
-                {item.name}
+                {t(item.name)}
               </NavLink>
             ))}
 
@@ -42,7 +49,7 @@ export const Navbar: React.FC = () => {
                   variant="ghost"
                   className="text-sm font-medium transition-colors hover:text-primary data-[state=open]:text-primary"
                 >
-                  Games
+                  {t('Games')}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start" forceMount>
@@ -83,13 +90,13 @@ export const Navbar: React.FC = () => {
                       `text-lg font-medium transition-colors hover:text-primary ${isActive ? 'text-primary' : 'text-foreground'}`
                     }
                   >
-                    {item.name}
+                    {t(item.name)}
                   </NavLink>
                 ))}
 
                 {/* Games Section for Mobile */}
                 <div className="mt-4">
-                  <h4 className="mb-2 text-lg font-semibold">Games</h4>
+                  <h4 className="mb-2 text-lg font-semibold">{t('Games')}</h4>
                   <div className="flex flex-col gap-2 pl-4">
                     {games.filter(game => game.status === 'Ready to Play').map((game) => (
                       <Link
@@ -109,6 +116,24 @@ export const Navbar: React.FC = () => {
 
         <div className="flex items-center">
           <ThemeSwitcher />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <Languages className="h-6 w-6" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => changeLanguage('en')}>
+                <span className="mr-2">🇬🇧</span> English
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => changeLanguage('es')}>
+                <span className="mr-2">🇪🇸</span> Español
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => changeLanguage('fr')}>
+                <span className="mr-2">🇫🇷</span> Français
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
     </header>

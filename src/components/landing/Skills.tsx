@@ -1,10 +1,14 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { skills } from '@/utils/skills_consts';
+import { skillCategories, skills } from '@/utils/skills_consts';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 export const Skills: React.FC = () => {
+  const { t, i18n } = useTranslation();
+  const currentLanguage = i18n.language as 'en' | 'es' | 'fr';
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -36,7 +40,7 @@ export const Skills: React.FC = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Skills</CardTitle>
+        <CardTitle>{t('Skills')}</CardTitle>
       </CardHeader>
       <motion.div 
         className="space-y-4 p-6 pt-0"
@@ -44,11 +48,11 @@ export const Skills: React.FC = () => {
         initial="hidden"
         animate="visible"
       >
-        {Object.entries(skills).map(([category, items]) => (
-          <motion.div key={category} variants={categoryVariants}>
-            <h3 className="text-lg font-semibold mb-2">{category}</h3>
+        {Object.entries(skillCategories).map(([categoryKey, categoryNames]) => (
+          <motion.div key={categoryKey} variants={categoryVariants}>
+            <h3 className="text-lg font-semibold mb-2">{categoryNames[currentLanguage]}</h3>
             <motion.div className="flex flex-wrap gap-2">
-              {items.map(item => (
+              {skills[categoryKey as keyof typeof skills].map(item => (
                 <motion.div key={item} variants={itemVariants}>
                   <Badge variant="secondary">{item}</Badge>
                 </motion.div>

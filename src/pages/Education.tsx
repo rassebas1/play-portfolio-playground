@@ -1,11 +1,13 @@
 
 import React, { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Skeleton } from '@/components/ui/skeleton';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import { education } from '@/utils/education_consts';
 import { EducationCard } from '@/components/landing/EducationCard';
 
 const Education: React.FC = () => {
+  const { t, i18n } = useTranslation();
   const [loading, setLoading] = useState(true);
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -18,6 +20,7 @@ const Education: React.FC = () => {
     restDelta: 0.001
   });
 
+  const currentLanguage = i18n.language as 'en' | 'es' | 'fr';
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -31,7 +34,7 @@ const Education: React.FC = () => {
     <div className="container mx-auto px-4 py-16">
       <div className="text-center mb-20 pt-10">
         <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
-          Education & Achievements
+          {t('education_heading')}
         </h1>
       </div>
       <div ref={containerRef} className="max-w-3xl mx-auto relative">
@@ -56,15 +59,18 @@ const Education: React.FC = () => {
           <div className="space-y-12">
             {education.map((edu) => (
               <EducationCard
-                key={edu.degree}
-                degree={edu.degree}
+                key={edu.degree.en}
+                degree={edu.degree[currentLanguage]}
                 university={edu.university}
                 years={edu.years}
                 logo={edu.logo}
-                hook={edu.hook}
+                hook={edu.hook[currentLanguage]}
                 skills={edu.skills}
-                courses={edu.courses}
-                project={edu.project}
+                courses={edu.courses[currentLanguage]}
+                project={{
+                  title: edu.project.title[currentLanguage],
+                  thumbnail: edu.project.thumbnail,
+                }}
               />
             ))}
           </div>

@@ -4,6 +4,7 @@ import { motion, useInView } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useTranslation } from 'react-i18next';
 
 interface EducationCardProps {
   degree: string;
@@ -30,6 +31,7 @@ export const EducationCard: React.FC<EducationCardProps> = ({
   project,
 }) => {
   const ref = React.useRef(null);
+  const { t } = useTranslation();
   const isInView = useInView(ref, { amount: 0.5 });
 
   const itemVariants = {
@@ -85,7 +87,7 @@ export const EducationCard: React.FC<EducationCardProps> = ({
             transition={{ delay: 0.2, duration: 0.4 }}
           >
             <div>
-              <motion.h4 variants={itemVariants} className="font-semibold">Key Courses</motion.h4>
+              <motion.h4 variants={itemVariants} className="font-semibold">{t('key_courses')}</motion.h4>
               <motion.ul variants={itemVariants} className="mt-2 list-disc list-inside text-muted-foreground">
                 {courses.map((course) => (
                   <li key={course}>{course}</li>
@@ -93,14 +95,14 @@ export const EducationCard: React.FC<EducationCardProps> = ({
               </motion.ul>
             </div>
             <div>
-              <motion.h4 variants={itemVariants} className="font-semibold">Signature Project</motion.h4>
+              <motion.h4 variants={itemVariants} className="font-semibold">{t('signature_project')}</motion.h4>
               <motion.div variants={itemVariants} className="mt-2 flex items-center gap-4">
                 <img src={project.thumbnail} alt={project.title} className="h-16 w-16 rounded-md object-cover" />
                 <p className="font-medium">{project.title}</p>
               </motion.div>
             </div>
             <div>
-              <motion.h4 variants={itemVariants} className="font-semibold">Skills</motion.h4>
+              <motion.h4 variants={itemVariants} className="font-semibold">{t('Skills')}</motion.h4>
               <motion.div variants={itemVariants} className="mt-2 flex flex-wrap gap-2">
                 {skills.map((skill) => (
                   <Badge key={skill} variant="secondary">{skill}</Badge>
