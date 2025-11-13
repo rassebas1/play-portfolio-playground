@@ -1,3 +1,44 @@
+/**
+ * src/utils/education_consts.ts
+ *
+ * Defines a constant array of educational experiences.
+ * Each object in the array represents a single educational entry,
+ * including details like degree, university, years, logo, a brief hook,
+ * associated skills, key courses, a signature project, and a detailed description.
+ * Content is provided in multiple languages (English, Spanish, French) for internationalization.
+ */
+
+/**
+ * Array representing the user's educational background.
+ * Each entry is an object containing details about a specific educational period.
+ * @constant {Array<Object>} education
+ * @property {Object} degree - The degree obtained, with multilingual support.
+ * @property {string} degree.en - Degree in English.
+ * @property {string} degree.es - Degree in Spanish.
+ * @property {string} degree.fr - Degree in French.
+ * @property {string} university - The name and location of the university/institution.
+ * @property {string} years - The period of study (e.g., "2025-2026").
+ * @property {string} logo - Path to the institution's logo image.
+ * @property {Object} hook - A brief, catchy description of the focus, with multilingual support.
+ * @property {string} hook.en - Hook in English.
+ * @property {string} hook.es - Hook in Spanish.
+ * @property {string} hook.fr - Hook in French.
+ * @property {string[]} skills - An array of relevant skills acquired during this period.
+ * @property {Object} courses - Key courses taken, with multilingual support.
+ * @property {string[]} courses.en - Courses in English.
+ * @property {string[]} courses.es - Courses in Spanish.
+ * @property {string[]} courses.fr - Courses in French.
+ * @property {Object} project - Details about a signature project.
+ * @property {Object} project.title - Project title with multilingual support.
+ * @property {string} project.title.en - Project title in English.
+ * @property {string} project.title.es - Project title in Spanish.
+ * @property {string} project.title.fr - Project title in French.
+ * @property {string} project.thumbnail - Path to the project's thumbnail image.
+ * @property {Object} description - Detailed description of achievements, with multilingual support.
+ * @property {string[]} description.en - Description points in English.
+ * @property {string[]} description.es - Description points in Spanish.
+ * @property {string[]} description.fr - Description points in French.
+ */
 export const education = [
   {
     degree: {

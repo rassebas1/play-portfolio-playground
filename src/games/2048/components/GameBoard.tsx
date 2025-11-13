@@ -1,18 +1,26 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 import { Tile } from './Tile';
+import { Tile as TileType } from '../types'; // Import TileType for clarity
 
 /**
- * Props for the GameBoard component
+ * Props for the GameBoard component.
+ * @interface GameBoardProps
+ * @property {TileType[]} animatedTiles - An array of Tile objects, including animation-related data.
+ * @property {string} [className] - Optional additional CSS classes to apply to the game board container.
  */
 interface GameBoardProps {
-  animatedTiles: Tile[];
+  animatedTiles: TileType[]; // Use TileType for clarity
   className?: string;
 }
 
 /**
- * GameBoard component for 2048
- * Renders the 4x4 grid with tiles and handles tile styling
+ * GameBoard component for 2048.
+ * Renders the 4x4 grid, including both empty background cells and the dynamic, animated tiles.
+ * It uses CSS Grid for layout and `cn` utility for conditional class merging.
+ *
+ * @param {GameBoardProps} { animatedTiles, className } - Props passed to the component.
+ * @returns {JSX.Element} The rendered 2048 game board.
  */
 const GameBoard: React.FC<GameBoardProps> = ({ animatedTiles }) => {
   
@@ -24,25 +32,27 @@ const GameBoard: React.FC<GameBoardProps> = ({ animatedTiles }) => {
         'aspect-square max-w-xs mx-auto'
         
       )}
-      role="grid"
-      style={{ minWidth: 320, minHeight: 320 }}
-      aria-label="2048 game board"
+      role="grid" // ARIA role for accessibility
+      style={{ minWidth: 320, minHeight: 320 }} // Ensure a minimum size for the board
+      aria-label="2048 game board" // ARIA label for accessibility
     >
-      {/* Render empty cells as background */}
+      {/* Render empty cells as background placeholders.
+          These provide the visual grid structure even when no tiles are present. */}
       {Array.from({ length: 4 }, (_, rowIndex) =>
         Array.from({ length: 4 }, (_, colIndex) => (
           <div
-            key={`${rowIndex}-${colIndex}`}
+            key={`${rowIndex}-${colIndex}`} // Unique key for each cell
             className="relative bg-muted/20 rounded-lg"
-            role="gridcell"
-            aria-label={'Empty cell'}
+            role="gridcell" // ARIA role for accessibility
+            aria-label={'Empty cell'} // ARIA label for accessibility
           />
         ))
       )}
 
-      {/* Render actual tiles */}
+      {/* Render actual tiles on top of the empty cells.
+          These tiles are animated and represent the game's dynamic elements. */}
       {animatedTiles.map((tile) => (
-        <Tile key={tile.id} tile={tile} />
+        <Tile key={tile.id} tile={tile} /> // Render each animated tile
       ))}
     </div>
   );
