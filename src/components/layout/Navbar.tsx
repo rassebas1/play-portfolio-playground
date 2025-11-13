@@ -26,7 +26,7 @@ export const Navbar: React.FC = () => {
       <div className="container flex h-14 items-center justify-between">
         <div className="flex items-center">
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-4 lg:space-x-6">
+          <nav aria-label="Desktop navigation" className="hidden md:flex items-center space-x-4 lg:space-x-6">
             <Link to="/" className="mr-6 flex items-center space-x-2">
               <span className="font-bold inline-block">Portfolio</span>
             </Link>
@@ -118,7 +118,7 @@ export const Navbar: React.FC = () => {
           <ThemeSwitcher />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon">
+              <Button variant="ghost" size="icon" aria-label="Change language">
                 <Languages className="h-6 w-6" />
               </Button>
             </DropdownMenuTrigger>
