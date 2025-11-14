@@ -7,10 +7,6 @@
 
 import React, { useRef, useEffect } from "react";
 import { GameState, GameStatus } from "../types";
-import {
-  CANVAS_HEIGHT,
-  CANVAS_WIDTH,
-} from "../../../utils/brick_breaker_const";
 
 /**
  * Props for the GameBoard component.
@@ -42,7 +38,7 @@ const GameBoard: React.FC<GameBoardProps> = ({ state }) => {
     if (!ctx) return; // Ensure 2D rendering context is available
 
     // Clear the entire canvas before drawing new frame
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, state.canvas.width, state.canvas.height);
 
     // Draw Paddle
     ctx.fillStyle = "blue"; // Set paddle color
@@ -71,13 +67,13 @@ const GameBoard: React.FC<GameBoardProps> = ({ state }) => {
     ctx.textAlign = "center"; // Center align text
 
     if (state.gameStatus === GameStatus.IDLE) {
-      ctx.fillText("Press SPACE to Start", canvas.width / 2, canvas.height / 2);
+      ctx.fillText("Press SPACE to Start", state.canvas.width / 2, state.canvas.height / 2);
     } else if (state.gameStatus === GameStatus.PAUSED) {
-      ctx.fillText("PAUSED - Press SPACE to Resume", canvas.width / 2, canvas.height / 2);
+      ctx.fillText("PAUSED - Press SPACE to Resume", state.canvas.width / 2, state.canvas.height / 2);
     } else if (state.gameStatus === GameStatus.GAME_OVER) {
-      ctx.fillText("GAME OVER - Press R to Restart", canvas.width / 2, canvas.height / 2);
+      ctx.fillText("GAME OVER - Press R to Restart", state.canvas.width / 2, state.canvas.height / 2);
     } else if (state.gameStatus === GameStatus.LEVEL_CLEARED) {
-      ctx.fillText("LEVEL CLEARED! - Press R for Next Level", canvas.width / 2, canvas.height / 2);
+      ctx.fillText("LEVEL CLEARED! - Press R for Next Level", state.canvas.width / 2, state.canvas.height / 2);
     }
 
   }, [state]); // Re-run effect whenever the game state changes
@@ -85,8 +81,8 @@ const GameBoard: React.FC<GameBoardProps> = ({ state }) => {
   return (
     <canvas
       ref={canvasRef} // Attach ref to the canvas element
-      width={CANVAS_WIDTH} // Set canvas width
-      height={CANVAS_HEIGHT} // Set canvas height
+      width={state.canvas.width} // Set canvas width dynamically
+      height={state.canvas.height} // Set canvas height dynamically
       style={{ border: "1px solid black", background: "#f0f0f0" }} // Basic styling for the canvas
     />
   );

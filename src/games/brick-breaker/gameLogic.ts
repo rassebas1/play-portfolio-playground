@@ -8,8 +8,6 @@
 
 import { GameState, Ball, Paddle, Brick, GameStatus } from "./types";
 import {
-  CANVAS_WIDTH,
-  CANVAS_HEIGHT,
   BALL_RADIUS,
   BALL_DX,
   BALL_DY,
@@ -57,7 +55,7 @@ export const updateBallPosition = (ball: Ball, canvasWidth: number, canvasHeight
  * @returns {Ball} The updated ball state after potential collision with the paddle.
  */
 export const handlePaddleCollision = (ball: Ball, paddle: Paddle): Ball => {
-  let { dx, dy } = ball;
+  let { x, y, dx, dy } = ball;
 
   // Check for collision with paddle's top surface
   if (
@@ -68,13 +66,15 @@ export const handlePaddleCollision = (ball: Ball, paddle: Paddle): Ball => {
   ) {
     // Reverse vertical direction
     dy = -dy;
+    // Set ball's y position to be exactly at the top of the paddle to prevent visual overlap
+    y = paddle.y - ball.radius;
 
     // Adjust ball's x direction based on where it hit the paddle
     // Hitting the center results in dx ~ 0, hitting edges results in larger dx
     const hitPoint = ball.x - (paddle.x + paddle.width / 2);
     dx = hitPoint * 0.1; // Multiplier controls bounce angle sensitivity
   }
-  return { ...ball, dx, dy };
+  return { ...ball, x, y, dx, dy };
 };
 
 /**
@@ -146,9 +146,10 @@ export const areAllBricksBroken = (bricks: Brick[]): boolean => {
  * Resets the ball to its initial position, centered on the paddle.
  *
  * @param {Paddle} paddle - The current paddle state.
+ * @param {number} canvasHeight - The height of the game canvas.
  * @returns {Ball} The reset ball state.
  */
-export const resetBall = (paddle: Paddle): Ball => ({
+export const resetBall = (paddle: Paddle, canvasHeight: number): Ball => ({
   x: paddle.x + paddle.width / 2, // Center ball horizontally on paddle
   y: paddle.y - BALL_RADIUS, // Position ball just above the paddle
   radius: BALL_RADIUS,

@@ -8,6 +8,7 @@ import { GameOverModal } from '@/components/game/GameOverModal';
 import { Instructions } from '@/components/game/Instructions';
 import { GameStatus } from './types';
 import { Button } from '@/components/ui/button';
+import { useIsMobile } from '@/hooks/use-mobile'; // Import useIsMobile
 
 /**
  * Main Brick Breaker Game Component.
@@ -20,6 +21,7 @@ const BrickBreaker: React.FC = () => {
   // dispatch: reducer's dispatch function for sending actions
   // highScore: the highest score recorded for this game
   const { state, dispatch, highScore } = useBrickBreaker();
+  const isMobile = useIsMobile(); // Determine if the device is mobile
 
   /**
    * Resets the game to its initial state.
@@ -122,15 +124,17 @@ const BrickBreaker: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center p-4">
+    <div className="flex flex-col items-center p-4 min-h-screen">
       {/* Game Header: Displays the game title and a brief description */}
       <GameHeader
         title="Brick Breaker"
         description="Break all the bricks to advance to the next level!"
+        lives={state.lives}
+        level={state.level}
       />
       {/* Scoreboard: Displays current score and the highest score */}
       {/* score: current game score */}
-      {/* bestScore: highest score recorded for the game (defaults to 0 if null) */}
+      {/* bestScore: highest score recorded for this game (defaults to 0 if null) */}
       <Scoreboard score={state.score} bestScore={highScore ?? 0} />
       {/* Game Controls: Buttons for restarting, etc. */}
       {/* restartGame: function to restart the game */}
@@ -146,7 +150,7 @@ const BrickBreaker: React.FC = () => {
       {/* Game Board: The main canvas where the game is played, integrates touch input */}
       <div
         ref={gameBoardRef} // Attach ref to the game board element
-        className="touch-none relative" // Prevents default browser touch behaviors
+        className="touch-none relative my-4" // Prevents default browser touch behaviors, add vertical margin
         style={{ width: state.canvas.width, height: state.canvas.height }}
       >
         <GameBoard state={state} />

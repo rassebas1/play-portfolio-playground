@@ -9,6 +9,8 @@ import React from 'react';
 interface GameHeaderProps {
   title: string;
   description: React.ReactNode;
+  lives?: number; // Optional prop for displaying current lives
+  level?: number; // Optional prop for displaying current level
 }
 
 /**
@@ -16,10 +18,10 @@ interface GameHeaderProps {
  * Displays the title and a brief description for a game.
  * It uses gradient text for the title and muted foreground for the description.
  *
- * @param {GameHeaderProps} { title, description } - Props passed to the component.
+ * @param {GameHeaderProps} { title, description, lives, level } - Props passed to the component.
  * @returns {JSX.Element} The rendered game header.
  */
-export const GameHeader: React.FC<GameHeaderProps> = ({ title, description }) => {
+export const GameHeader: React.FC<GameHeaderProps> = ({ title, description, lives, level }) => {
   return (
     <div className="text-center mb-8">
       {/* Game Title: Large, bold, with a gradient text effect */}
@@ -30,6 +32,14 @@ export const GameHeader: React.FC<GameHeaderProps> = ({ title, description }) =>
       <p className="text-muted-foreground text-lg">
         {description}
       </p>
+      {/* Display Lives and Level if provided */}
+      {(lives !== undefined || level !== undefined) && (
+        <div className="text-muted-foreground text-md mt-2">
+          {lives !== undefined && <span>Lives: {lives}</span>}
+          {lives !== undefined && level !== undefined && <span className="mx-2">|</span>}
+          {level !== undefined && <span>Level: {level}</span>}
+        </div>
+      )}
     </div>
   );
 };

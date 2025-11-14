@@ -18,6 +18,8 @@ import {
   resetBall,
 } from "../gameLogic";
 import { useHighScores } from '@/hooks/useHighScores';
+import { useWindowSize } from '@/hooks/useWindowSize';
+import { useIsMobile } from '@/hooks/use-mobile'; // Import useIsMobile
 
 /**
  * Custom hook for managing the Brick Breaker game logic and state.
@@ -28,8 +30,23 @@ import { useHighScores } from '@/hooks/useHighScores';
  *   - {number | null} highScore - The highest score recorded for the Brick Breaker game, or null if none exists.
  */
 export const useBrickBreaker = () => {
+  const { width: windowWidth } = useWindowSize(); // Get current window width
+  const isMobile = useIsMobile(); // Determine if the device is mobile
+
+  // Define max canvas width and aspect ratios
+  const MAX_CANVAS_WIDTH = 800;
+  const DESKTOP_CANVAS_ASPECT_RATIO = 600 / 800; // Original height / original width
+  const MOBILE_CANVAS_ASPECT_RATIO = 1.0; // Taller aspect ratio for mobile (e.g., 1:1 square)
+
+  // Conditionally set CANVAS_ASPECT_RATIO based on device type
+  const CANVAS_ASPECT_RATIO = isMobile ? MOBILE_CANVAS_ASPECT_RATIO : DESKTOP_CANVAS_ASPECT_RATIO;
+
+  // Calculate responsive canvas dimensions
+  const responsiveCanvasWidth = Math.max(320, Math.min(windowWidth * 0.9, MAX_CANVAS_WIDTH)); // 90% of window width, max 800, min 320
+  const responsiveCanvasHeight = responsiveCanvasWidth * CANVAS_ASPECT_RATIO;
+
   // useReducer manages the complex state transitions of the game
-  const [state, dispatch] = useReducer(gameReducer, getInitialState());
+  const [state, dispatch] = useReducer(gameReducer, getInitialState(responsiveCanvasWidth, responsiveCanvasHeight));
   // Ref to store the requestAnimationFrame ID for the game loop, allowing it to be cancelled
   const animationFrameId = useRef<number | null>(null);
   // Ref to hold the current state, allowing callbacks to access the latest state without re-creating
@@ -41,6 +58,11 @@ export const useBrickBreaker = () => {
   useEffect(() => {
     stateRef.current = state;
   }, [state]);
+
+  // Effect to update canvas size in state when responsive dimensions change
+  useEffect(() => {
+    dispatch({ type: "SET_CANVAS_SIZE", payload: { width: responsiveCanvasWidth, height: responsiveCanvasHeight } });
+  }, [responsiveCanvasWidth, responsiveCanvasHeight, dispatch]);
 
   /**
    * The main game loop function. Updates game state, checks for collisions, and manages score.
@@ -90,7 +112,7 @@ export const useBrickBreaker = () => {
       if (stateRef.current.lives - 1 <= 0) {
         dispatch({ type: "GAME_OVER" });
       } else {
-        newBall = resetBall(stateRef.current.paddle); // Reset ball to paddle for next life
+        newBall = resetBall(stateRef.current.paddle, stateRef.current.canvas.height); // Reset ball to paddle for next life
       }
     }
 
@@ -98,7 +120,7 @@ export const useBrickBreaker = () => {
     if (areAllBricksBroken(newBricks.filter(brick => !brick.isBroken))) {
       dispatch({ type: "LEVEL_UP" }); // Dispatch action to level up
       // After level up, bricks are recreated, so reset ball and paddle for next level
-      newBall = resetBall(stateRef.current.paddle);
+      newBall = resetBall(stateRef.current.paddle, stateRef.current.canvas.height);
     }
 
     // Dispatch ball update (only if game is still playing and ball wasn't reset by LOSE_LIFE or LEVEL_UP)

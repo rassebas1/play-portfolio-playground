@@ -7,16 +7,7 @@
  */
 
 // --- Canvas Dimensions ---
-/**
- * The width of the game canvas in pixels.
- * @constant {number}
- */
-export const CANVAS_WIDTH = 800;
-/**
- * The height of the game canvas in pixels.
- * @constant {number}
- */
-export const CANVAS_HEIGHT = 600;
+// CANVAS_WIDTH and CANVAS_HEIGHT are now dynamically calculated based on viewport size.
 
 // --- Paddle Properties ---
 /**
@@ -34,16 +25,7 @@ export const PADDLE_HEIGHT = 20;
  * @constant {number}
  */
 export const PADDLE_SPEED = 7;
-/**
- * The initial X-coordinate of the paddle's top-left corner, centered horizontally.
- * @constant {number}
- */
-export const PADDLE_START_X = (CANVAS_WIDTH - PADDLE_WIDTH) / 2;
-/**
- * The initial Y-coordinate of the paddle's top-left corner, positioned near the bottom.
- * @constant {number}
- */
-export const PADDLE_START_Y = CANVAS_HEIGHT - PADDLE_HEIGHT - 10;
+// PADDLE_START_X and PADDLE_START_Y are now dynamically calculated in GameReducer.ts
 
 // --- Ball Properties ---
 /**
@@ -66,16 +48,7 @@ export const BALL_DX = BALL_SPEED;
  * @constant {number}
  */
 export const BALL_DY = -BALL_SPEED;
-/**
- * The initial X-coordinate of the ball's center, centered horizontally.
- * @constant {number}
- */
-export const BALL_START_X = CANVAS_WIDTH / 2;
-/**
- * The initial Y-coordinate of the ball's center, positioned just above the paddle.
- * @constant {number}
- */
-export const BALL_START_Y = PADDLE_START_Y - BALL_RADIUS;
+// BALL_START_X and BALL_START_Y are now dynamically calculated in GameReducer.ts
 
 // --- Brick Properties ---
 /**
@@ -103,16 +76,12 @@ export const BRICK_OFFSET_TOP = 30;
  * @constant {number}
  */
 export const BRICK_OFFSET_LEFT = 30;
+// BRICK_COLUMNS is now dynamically calculated in GameReducer.ts
 /**
  * The number of rows of bricks.
  * @constant {number}
  */
 export const BRICK_ROWS = 5;
-/**
- * The number of columns of bricks, calculated to fit within the canvas width.
- * @constant {number}
- */
-export const BRICK_COLUMNS = Math.floor((CANVAS_WIDTH - 2 * BRICK_OFFSET_LEFT) / (BRICK_WIDTH + BRICK_PADDING));
 
 // --- Game Properties ---
 /**
