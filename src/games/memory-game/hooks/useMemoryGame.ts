@@ -1,40 +1,27 @@
 
 // src/games/memory-game/hooks/useMemoryGame.ts
 
-import { useReducer, useEffect, useCallback } from 'react';
+import { useReducer, useEffect } from 'react';
 import { gameReducer, initialState } from '../GameReducer';
 import { Difficulty } from '../types';
+import { useMemoryGameLogic } from './useMemoryGameLogic'; // Import the new logic hook
+import { useHighScores } from '@/hooks/useHighScores'; // Import useHighScores
 
 export const useMemoryGame = () => {
   const [state, dispatch] = useReducer(gameReducer, initialState);
 
-  useEffect(() => {
-    if (state.gameStatus === 'playing') {
-      const timer = setInterval(() => {
-        dispatch({ type: 'TICK' });
-      }, 1000);
-      return () => clearInterval(timer);
-    }
-  }, [state.gameStatus]);
+  // Integrate the new game logic hook
+  useMemoryGameLogic({ state, dispatch });
 
-  useEffect(() => {
-    if (state.flippedCards.length === 2) {
-      const [firstIndex, secondIndex] = state.flippedCards;
-      if (state.cards[firstIndex].value === state.cards[secondIndex].value) {
-        dispatch({ type: 'CHECK_MATCH' });
-      } else {
-        setTimeout(() => {
-          dispatch({ type: 'RESET_FLIPPED' });
-        }, 1000);
-      }
-    }
-  }, [state.flippedCards, state.cards]);
+  // Integrate high score tracking
+  const { highScore, updateHighScore } = useHighScores('memory-game');
 
+  // Effect to update high score when game is won
   useEffect(() => {
-    if (state.gameStatus === 'playing' && state.cards.length > 0 && state.matchedPairs === state.cards.length / 2) {
-      dispatch({ type: 'GAME_WON' });
+    if (state.gameStatus === 'won') {
+      updateHighScore(state.timer, 'lowest'); // Score is time, so lower is better
     }
-  }, [state.matchedPairs, state.cards.length, state.gameStatus]);
+  }, [state.gameStatus, state.time, updateHighScore]);
 
   const startGame = (difficulty: Difficulty) => {
     dispatch({ type: 'START_GAME', payload: { difficulty } });
@@ -50,5 +37,5 @@ export const useMemoryGame = () => {
     dispatch({ type: 'RESET_GAME' });
   };
 
-  return { state, startGame, flipCard, resetGame };
+  return { state, startGame, flipCard, resetGame, highScore };
 };

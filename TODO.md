@@ -42,7 +42,7 @@ This document tracks the features and tasks that need to be completed for the pr
 ## 🚀 Future Features & Enhancements
 
 ### New Games
-- [ ] Implement the "Memory" game.
+- [x] Implement the "Memory" game.
 - [ ] Implement the "Tetris" game.
 - [ ] Implement the "Minesweeper" game.
 - [x] Implement the "Brick Breaker" game.
@@ -63,6 +63,17 @@ This document tracks the features and tasks that need to be completed for the pr
 - [ ] Ensure proper formatting for dates, times, numbers, and currencies across different locales.
 
 ### Game-specific Improvements
+
+#### Snake
+
+- [x] Implement difficulty selection (1-9).
+- [x] Adjust points per eaten food based on difficulty.
+- [x] Adjust snake speed based on difficulty.
+
+#### Memory Game
+
+- [x] Create best time/moves tracking
+- [x] Store best scores per difficulty in localStorage
 
 #### Tetris
 
@@ -102,7 +113,7 @@ This document tracks the features and tasks that need to be completed for the pr
     - [ ] Add visual feedback for line clears
     - [ ] Create sound effects (optional)
     - [ ] Add color schemes for different tetrominoes
-    - [ ] Implement local high score storage 
+    - [ ] Implement local high score storage
 
 
 #### Minesweeper

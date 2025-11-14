@@ -1,9 +1,9 @@
 import { useEffect, useCallback, RefObject } from "react";
-import { GameStatus } from "../types";
+import { GameStatus, Action } from "../types";
 import { PADDLE_SPEED } from "../../../utils/brick_breaker_const";
 
 interface UseGameInputProps {
-  dispatch: React.Dispatch<any>; // Replace 'any' with your actual Action type
+  dispatch: React.Dispatch<Action>;
   stateRef: RefObject<{
     gameStatus: GameStatus;
     paddle: { width: number; x: number };
@@ -65,7 +65,7 @@ export const useGameInput = ({ dispatch, stateRef, isMobile, gameBoardRef }: Use
     const touchX = e.touches[0].clientX;
     const gameBoardRect = gameBoardRef.current.getBoundingClientRect();
 
-    let newPaddleX = touchX - gameBoardRect.left - (stateRef.current.paddle.width / 2);
+    let newPaddleX = touchX - gameBoardRect.left;
 
     newPaddleX = Math.max(
       0,

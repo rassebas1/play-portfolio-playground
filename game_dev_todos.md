@@ -1,4 +1,3 @@
-
 # Game Development Todo Lists
 
 ## 2048
@@ -113,10 +112,10 @@
 
 ### Game Mechanics
 - [ ] Create game loop with setInterval or requestAnimationFrame
-- [ ] Increase snake speed as it grows (optional)
-- [ ] Add score tracking (points per food eaten)
+- [x] Increase snake speed as it grows (optional)
+- [x] Add score tracking (points per food eaten)
 - [ ] Implement high score system
-- [ ] Create different game speeds/difficulty levels
+- [x] Create different game speeds/difficulty levels
 - [ ] Add walls or wrap-around mode toggle
 
 ### UI & Controls
@@ -217,7 +216,7 @@
 - [ ] Implement move counter (increment per pair attempt)
 - [ ] Add game timer (starts on first flip)
 - [ ] Calculate star rating based on moves (optional)
-- [ ] Create best time/moves tracking
+- [x] Create best time/moves tracking
 
 ### UI & Controls
 - [ ] Handle card click to flip
@@ -239,7 +238,7 @@
 - [ ] Add success sound for matches
 - [ ] Create flip sound effect
 - [ ] Implement victory fanfare
-- [ ] Store best scores per difficulty in localStorage
+- [x] Store best scores per difficulty in localStorage
 - [ ] Add theme options (animals, emojis, colors, etc.)
 - [ ] Create combo/streak system for consecutive matches
 

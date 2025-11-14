@@ -51,7 +51,7 @@ const GamePage: React.FC = () => {
       case 'brick-breaker':
         return <BrickBreaker />;
       default:
-        return <Navigate to="/" replace />;
+        return <Navigate to="/games" replace />;
     }
   };
 

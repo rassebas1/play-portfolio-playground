@@ -2,10 +2,6 @@
 
 import React, { useRef, useEffect } from "react";
 import { GameState, GameStatus } from "../types";
-import {
-  CANVAS_HEIGHT,
-  CANVAS_WIDTH,
-} from "../../../utils/brick_breaker_const";
 
 interface GameBoardProps {
   state: GameState;
@@ -17,6 +13,10 @@ const GameBoard: React.FC<GameBoardProps> = ({ state }) => {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+
+    // Set canvas dimensions for drawing
+    canvas.width = state.canvas.width;
+    canvas.height = state.canvas.height;
 
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
@@ -65,8 +65,8 @@ const GameBoard: React.FC<GameBoardProps> = ({ state }) => {
   return (
     <canvas
       ref={canvasRef}
-      width={CANVAS_WIDTH}
-      height={CANVAS_HEIGHT}
+      width={state.canvas.width}
+      height={state.canvas.height}
       style={{ border: "1px solid black", background: "#f0f0f0" }}
     />
   );

@@ -7,7 +7,7 @@ interface UseSwipeGestureProps {
   minSwipeDistance?: number;
 }
 
-export const useSwipeGesture = ({ onSwipe, minSwipeDistance = 50 }: UseSwipeGestureProps) => {
+export const useSwipeGesture = ({ onSwipe, minSwipeDistance = 25 }: UseSwipeGestureProps) => {
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
   const [touchStartY, setTouchStartY] = useState<number | null>(null);
 

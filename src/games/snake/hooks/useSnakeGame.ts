@@ -2,7 +2,9 @@
 
 import { useEffect, useReducer, useCallback } from 'react';
 import { snakeGameReducer, initialSnakeGameState } from '../GameReducer';
-import { Direction, GameAction } from '../types';
+import { Direction, GameAction, Difficulty } from '../types';
+import { useSnakeInput } from './useSnakeInput';
+import { useHighScores } from '@/hooks/useHighScores'; // Import useHighScores
 
 /**
  * Custom hook for managing the Snake game logic and state.
@@ -10,6 +12,10 @@ import { Direction, GameAction } from '../types';
  */
 export const useSnakeGame = () => {
   const [state, dispatch] = useReducer(snakeGameReducer, initialSnakeGameState);
+  const { highScore, updateHighScore } = useHighScores('snake-game'); // Initialize useHighScores
+
+  // Integrate the new input hook
+  useSnakeInput({ dispatch, gameStarted: state.gameStarted, gameOver: state.gameOver });
 
   // Game loop effect
   useEffect(() => {
@@ -20,55 +26,34 @@ export const useSnakeGame = () => {
     }, state.speed);
 
     return () => clearInterval(gameInterval);
-  }, [state.gameStarted, state.gameOver, state.speed]);
+  }, [state.gameStarted, state.gameOver, state.speed, dispatch]);
 
-  // Keyboard input handler for changing direction
-  const handleKeyDown = useCallback((event: KeyboardEvent) => {
-    if (!state.gameStarted || state.gameOver) return;
-
-    let newDirection: Direction | undefined;
-    switch (event.key) {
-      case 'ArrowUp':
-        newDirection = 'UP';
-        break;
-      case 'ArrowDown':
-        newDirection = 'DOWN';
-        break;
-      case 'ArrowLeft':
-        newDirection = 'LEFT';
-        break;
-      case 'ArrowRight':
-        newDirection = 'RIGHT';
-        break;
-    }
-
-    if (newDirection) {
-      event.preventDefault(); // Prevent default scroll behavior
-      dispatch({ type: 'CHANGE_DIRECTION', payload: newDirection });
-    }
-  }, [state.gameStarted, state.gameOver]);
-
-  // Add and remove keyboard event listener
+  // Effect to update high score when game is over
   useEffect(() => {
-    document.addEventListener('keydown', handleKeyDown);
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [handleKeyDown]);
+    if (state.gameOver && state.score > 0) { // Only update if game is over and score is positive
+      updateHighScore(state.score, 'highest');
+    }
+  }, [state.gameOver, state.score, updateHighScore]);
 
   // Actions to expose
-  const startGame = useCallback(() => {
-    dispatch({ type: 'START_GAME' });
+  const startGame = useCallback((difficulty?: Difficulty) => {
+    dispatch({ type: 'START_GAME', payload: { difficulty } });
   }, []);
 
   const resetGame = useCallback(() => {
     dispatch({ type: 'RESET_GAME' });
   }, []);
 
+  const setDifficulty = useCallback((difficulty: Difficulty) => {
+    dispatch({ type: 'SET_DIFFICULTY', payload: difficulty });
+  }, []);
+
   return {
     state,
     startGame,
     resetGame,
-    dispatch, // Expose dispatch for other actions if needed (e.g., from UI buttons)
+    setDifficulty,
+    highScore, // Expose highScore
+    dispatch,
   };
 };

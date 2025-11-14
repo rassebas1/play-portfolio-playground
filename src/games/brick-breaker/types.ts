@@ -61,4 +61,6 @@ export type Action =
   | { type: "LOSE_LIFE" }
   | { type: "LEVEL_UP" }
   | { type: "GAME_OVER" }
-  | { type: "SET_CANVAS_SIZE"; payload: { width: number; height: number } };
+  | { type: "SET_CANVAS_SIZE"; payload: { width: number; height: number } }
+  | { type: "SET_PADDLE_Y"; payload: { y: number } }
+  | { type: "SET_BALL_Y"; payload: { y: number } };

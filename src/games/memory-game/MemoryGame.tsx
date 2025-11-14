@@ -11,17 +11,17 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Button } from '@/components/ui/button';
 
 const MemoryGame: React.FC = () => {
-  const { state, startGame, flipCard, resetGame } = useMemoryGame();
+  const { state, startGame, flipCard, resetGame, highScore } = useMemoryGame();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 p-4">
       <div className="max-w-4xl mx-auto">
-        <GameHeader 
+        <GameHeader
           title="Memory Game"
           description="Test your memory by matching pairs of hidden cards."
         />
 
-        <Scoreboard score={state.moves} bestScore={0} />
+        <Scoreboard score={state.timer} bestScore={highScore ?? 0} />
 
         <div className="flex justify-center items-center my-4 space-x-4">
           <Select onValueChange={(value) => startGame(value as Difficulty)} defaultValue={state.difficulty}>
@@ -43,16 +43,15 @@ const MemoryGame: React.FC = () => {
 
         {state.gameStatus === 'playing' && <GameBoard state={state} onCardClick={flipCard} />}
 
-        <GameOverModal 
+        <GameOverModal
           isGameOver={state.gameStatus === 'won'}
           isWon={true}
-          score={state.moves}
-          bestScore={0}
+          score={state.timer}
+          bestScore={highScore ?? 0}
           restartGame={resetGame}
         />
       </div>
     </div>
   );
 };
-
 export default MemoryGame;

@@ -8,6 +8,7 @@ import { GameOverModal } from '@/components/game/GameOverModal';
 import { Instructions } from '@/components/game/Instructions';
 import { GameStatus } from './types';
 import { Button } from '@/components/ui/button';
+import { useIsMobile } from '@/hooks/use-mobile'; // Import useIsMobile
 
 const BrickBreaker: React.FC = () => {
   // Ref to the game board DOM element, used for calculating touch positions
