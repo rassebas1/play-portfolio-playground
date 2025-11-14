@@ -20,6 +20,7 @@ import {
 import { useHighScores } from '@/hooks/useHighScores';
 import { useWindowSize } from '@/hooks/useWindowSize';
 import { useIsMobile } from '@/hooks/use-mobile'; // Import useIsMobile
+import { useSwipeGesture } from '@/hooks/useSwipeGesture'; // Import useSwipeGesture
 
 /**
  * Custom hook for managing the Brick Breaker game logic and state.
@@ -28,6 +29,8 @@ import { useIsMobile } from '@/hooks/use-mobile'; // Import useIsMobile
  *   - {GameState} state - The current state of the Brick Breaker game (paddle, ball, bricks, score, lives, etc.).
  *   - {function(action: Action): void} dispatch - The dispatch function from the reducer, allowing external components to send actions.
  *   - {number | null} highScore - The highest score recorded for the Brick Breaker game, or null if none exists.
+ *   - {function} onTouchStart - Event handler for touch start events, used for swipe gestures.
+ *   - {function} onTouchEnd - Event handler for touch end events, used for swipe gestures.
  */
 export const useBrickBreaker = () => {
   const { width: windowWidth } = useWindowSize(); // Get current window width
@@ -53,6 +56,23 @@ export const useBrickBreaker = () => {
   const stateRef = useRef(state);
   // useHighScores hook integrates persistent high score tracking for the 'brick-breaker' game
   const { highScore, updateHighScore } = useHighScores('brick-breaker');
+
+  // Callback for handling swipe gestures
+  const handleSwipe = useCallback((direction: 'left' | 'right' | null) => {
+    if (stateRef.current.gameStatus === GameStatus.PLAYING) {
+      if (direction === 'left') {
+        dispatch({ type: "SET_PADDLE_VELOCITY", payload: { dx: -PADDLE_SPEED } });
+      } else if (direction === 'right') {
+        dispatch({ type: "SET_PADDLE_VELOCITY", payload: { dx: PADDLE_SPEED } });
+      } else {
+        // Stop paddle movement when swipe ends or no significant swipe
+        dispatch({ type: "SET_PADDLE_VELOCITY", payload: { dx: 0 } });
+      }
+    }
+  }, [dispatch]);
+
+  // Use the useSwipeGesture hook
+  const { onTouchStart, onTouchEnd } = useSwipeGesture({ onSwipe: handleSwipe });
 
   // Effect to keep stateRef always updated with the latest state
   useEffect(() => {
@@ -199,6 +219,6 @@ export const useBrickBreaker = () => {
     };
   }, [dispatch]); // Dependency on dispatch for callback stability
 
-  // Return the current game state, dispatch function, and high score
-  return { state, dispatch, highScore };
+  // Return the current game state, dispatch function, high score, and touch event handlers
+  return { state, dispatch, highScore, onTouchStart, onTouchEnd };
 };
