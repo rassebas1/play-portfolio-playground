@@ -42,9 +42,9 @@ This document tracks the features and tasks that need to be completed for the pr
 ## 🚀 Future Features & Enhancements
 
 ### New Games
-- [ ] Implement the "Memory" game.
-- [ ] Implement the "Tetris" game.
-- [ ] Implement the "Minesweeper" game.
+- [x] Implement the "Memory" game.
+- [x] Implement the "Tetris" game.
+- [x] Implement the "Minesweeper" game.
 - [x] Implement the "Brick Breaker" game.
 - [ ] Implement the "Tower Defense" game.
 
@@ -52,7 +52,7 @@ This document tracks the features and tasks that need to be completed for the pr
 - [x] **Snake:** Implement swipe gestures on the game board for direction control.
 - [x] **2048:** Implement swipe gestures on the game board for tile movement.
 - [x] **Flappy Bird:** Ensure tap input is robust and responsive for mobile devices.
-- [ ] **Tic-Tac-Toe:** Ensure tap input is robust and responsive for mobile devices.
+- [x] **Tic-Tac-Toe:** Ensure tap input is robust and responsive for mobile devices.
 - [x] **Brick Breaker:** Implement touch controls for paddle movement (e.g., drag or tap left/right halves of the screen).
 
 ### Internationalization (i18n)
