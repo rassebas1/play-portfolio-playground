@@ -1,6 +1,12 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
+/**
+ * GameRules component for Tic Tac Toe.
+ * Displays the rules and strategy tips for playing the game.
+ *
+ * @returns {JSX.Element} The rendered game rules card.
+ */
 export const GameRules: React.FC = () => {
   return (
     <Card className="mt-8">

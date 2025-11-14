@@ -4,35 +4,35 @@
 ## 2048
 
 ### Setup & State Management
-- [ ] Create initial game state structure (4x4 grid, score, best score, game status)
-- [ ] Set up useReducer with actions: START_GAME, MOVE_UP, MOVE_DOWN, MOVE_LEFT, MOVE_RIGHT, ADD_TILE, GAME_OVER, GAME_WON, RESET_GAME
-- [ ] Initialize empty 4x4 board grid
-- [ ] Create tile data structure (value, position, id for animations)
+- [x] Create initial game state structure (4x4 grid, score, best score, game status)
+- [x] Set up useReducer with actions: START_GAME, MOVE_UP, MOVE_DOWN, MOVE_LEFT, MOVE_RIGHT, ADD_TILE, GAME_OVER, GAME_WON, RESET_GAME
+- [x] Initialize empty 4x4 board grid
+- [x] Create tile data structure (value, position, id for animations)
 
 ### Core Game Logic
-- [ ] Implement tile sliding logic in all four directions
-- [ ] Create tile merging algorithm (combine same values)
-- [ ] Add new tile generation (2 or 4 in random empty cell)
-- [ ] Implement move validation (check if move is possible)
-- [ ] Create win condition checker (tile reaches 2048)
-- [ ] Add game over detection (no valid moves remaining)
-- [ ] Calculate score updates (add merged tile values)
+- [x] Implement tile sliding logic in all four directions
+- [x] Create tile merging algorithm (combine same values)
+- [x] Add new tile generation (2 or 4 in random empty cell)
+- [x] Implement move validation (check if move is possible)
+- [x] Create win condition checker (tile reaches 2048)
+- [x] Add game over detection (no valid moves remaining)
+- [x] Calculate score updates (add merged tile values)
 
 ### Game Mechanics
-- [ ] Start game with two random tiles
-- [ ] Add tile after each valid move
-- [ ] Implement score tracking and best score
-- [ ] Allow continue playing after reaching 2048
-- [ ] Prevent invalid moves (no changes to board)
+- [x] Start game with two random tiles
+- [x] Add tile after each valid move
+- [x] Implement score tracking and best score
+- [x] Allow continue playing after reaching 2048
+- [x] Prevent invalid moves (no changes to board)
 
 ### UI & Controls
-- [ ] Handle keyboard arrow keys for movement
-- [ ] Add touch swipe support for mobile
-- [ ] Build grid rendering component
-- [ ] Create tile component with different colors per value
-- [ ] Display current score and best score
-- [ ] Add new game button
-- [ ] Create win and game over overlays
+- [x] Handle keyboard arrow keys for movement
+- [x] Add touch swipe support for mobile
+- [x] Build grid rendering component
+- [x] Create tile component with different colors per value
+- [x] Display current score and best score
+- [x] Add new game button
+- [x] Create win and game over overlays
 - [ ] Show undo button (optional)
 
 ### Polish
@@ -48,37 +48,37 @@
 ## Flappy Bird
 
 ### Setup & State Management
-- [ ] Create initial game state (bird position/velocity, pipes, score, game status)
-- [ ] Set up useReducer with actions: START_GAME, FLAP, UPDATE_GAME, ADD_PIPE, REMOVE_PIPE, COLLISION, SCORE_POINT, RESET_GAME
-- [ ] Define game constants (gravity, jump strength, pipe gap, pipe speed)
-- [ ] Initialize bird starting position
+- [x] Create initial game state (bird position/velocity, pipes, score, game status)
+- [x] Set up useReducer with actions: START_GAME, FLAP, UPDATE_GAME, ADD_PIPE, REMOVE_PIPE, COLLISION, SCORE_POINT, RESET_GAME
+- [x] Define game constants (gravity, jump strength, pipe gap, pipe speed)
+- [x] Initialize bird starting position
 
 ### Core Game Logic
-- [ ] Implement gravity physics (bird falls with acceleration)
-- [ ] Create flap/jump mechanic (upward velocity on click/tap)
-- [ ] Add pipe generation system (random heights, consistent gap)
-- [ ] Implement pipe movement (scroll from right to left)
-- [ ] Create collision detection (bird hits pipe or ground/ceiling)
-- [ ] Add score increment (pass through pipe gap)
-- [ ] Implement game boundaries (top and bottom)
+- [x] Implement gravity physics (bird falls with acceleration)
+- [x] Create flap/jump mechanic (upward velocity on click/tap)
+- [x] Add pipe generation system (random heights, consistent gap)
+- [x] Implement pipe movement (scroll from right to left)
+- [x] Create collision detection (bird hits pipe or ground/ceiling)
+- [x] Add score increment (pass through pipe gap)
+- [x] Implement game boundaries (top and bottom)
 
 ### Game Mechanics
-- [ ] Create game loop with requestAnimationFrame
-- [ ] Add pipe spawning at intervals
-- [ ] Remove off-screen pipes for performance
+- [x] Create game loop with requestAnimationFrame
+- [x] Add pipe spawning at intervals
+- [x] Remove off-screen pipes for performance
 - [ ] Implement difficulty increase (faster pipes over time) - optional
-- [ ] Add bird rotation based on velocity (tilt up/down)
+- [x] Add bird rotation based on velocity (tilt up/down)
 
 ### UI & Controls
-- [ ] Handle click/tap to flap
-- [ ] Handle spacebar to flap
-- [ ] Render bird sprite with rotation
-- [ ] Draw pipes (top and bottom)
-- [ ] Display current score
-- [ ] Show high score
-- [ ] Create start screen (tap to begin)
-- [ ] Create game over screen with restart button
-- [ ] Add background scrolling effect
+- [x] Handle click/tap to flap
+- [x] Handle spacebar to flap
+- [x] Render bird sprite with rotation
+- [x] Draw pipes (top and bottom)
+- [x] Display current score
+- [x] Show high score
+- [x] Create start screen (tap to begin)
+- [x] Create game over screen with restart button
+- [x] Add background scrolling effect
 
 ### Polish
 - [ ] Implement smooth bird wing flapping animation
@@ -96,40 +96,40 @@
 ## Snake
 
 ### Setup & State Management
-- [ ] Create initial game state (snake body, direction, food position, score, game status)
-- [ ] Set up useReducer with actions: START_GAME, CHANGE_DIRECTION, MOVE_SNAKE, EAT_FOOD, GROW_SNAKE, GAME_OVER, RESET_GAME
-- [ ] Define grid size (e.g., 20x20 cells)
-- [ ] Initialize snake with starting length (3-4 segments)
-- [ ] Create direction system (up, down, left, right)
+- [x] Create initial game state (snake body, direction, food position, score, game status)
+- [x] Set up useReducer with actions: START_GAME, CHANGE_DIRECTION, MOVE_SNAKE, EAT_FOOD, GROW_SNAKE, GAME_OVER, RESET_GAME
+- [x] Define grid size (e.g., 20x20 cells)
+- [x] Initialize snake with starting length (3-4 segments)
+- [x] Create direction system (up, down, left, right)
 
 ### Core Game Logic
-- [ ] Implement snake movement (head moves, body follows)
-- [ ] Create direction change validation (can't reverse directly)
-- [ ] Add food placement (random empty cell)
-- [ ] Implement collision detection with walls
-- [ ] Add self-collision detection (snake hits own body)
-- [ ] Create food eating logic (head position matches food)
-- [ ] Implement snake growth after eating
+- [x] Implement snake movement (head moves, body follows)
+- [x] Create direction change validation (can't reverse directly)
+- [x] Add food placement (random empty cell)
+- [x] Implement collision detection with walls
+- [x] Add self-collision detection (snake hits own body)
+- [x] Create food eating logic (head position matches food)
+- [x] Implement snake growth after eating
 
 ### Game Mechanics
-- [ ] Create game loop with setInterval or requestAnimationFrame
+- [x] Create game loop with setInterval or requestAnimationFrame
 - [ ] Increase snake speed as it grows (optional)
-- [ ] Add score tracking (points per food eaten)
-- [ ] Implement high score system
+- [x] Add score tracking (points per food eaten)
+- [x] Implement high score system
 - [ ] Create different game speeds/difficulty levels
 - [ ] Add walls or wrap-around mode toggle
 
 ### UI & Controls
-- [ ] Handle arrow keys for direction change
+- [x] Handle arrow keys for direction change
 - [ ] Alternative WASD keys for direction
-- [ ] Prevent multiple direction changes per frame
-- [ ] Render grid-based game board
-- [ ] Draw snake segments with distinct head
-- [ ] Display food item
-- [ ] Show current score and high score
-- [ ] Add pause functionality
-- [ ] Create start screen
-- [ ] Create game over screen with restart
+- [x] Prevent multiple direction changes per frame
+- [x] Render grid-based game board
+- [x] Draw snake segments with distinct head
+- [x] Display food item
+- [x] Show current score and high score
+- [x] Add pause functionality
+- [x] Create start screen
+- [x] Create game over screen with restart
 
 ### Polish
 - [ ] Design distinct colors for snake head, body, and food
@@ -147,36 +147,36 @@
 ## Tic-Tac-Toe
 
 ### Setup & State Management
-- [ ] Create initial game state (3x3 board, current player, winner, game status)
-- [ ] Set up useReducer with actions: MAKE_MOVE, SWITCH_PLAYER, SET_WINNER, RESET_GAME, SET_GAME_MODE
-- [ ] Initialize empty 3x3 grid
-- [ ] Define player symbols (X and O)
-- [ ] Create game mode options (PvP, vs AI)
+- [x] Create initial game state (3x3 board, current player, winner, game status)
+- [x] Set up useReducer with actions: MAKE_MOVE, SWITCH_PLAYER, SET_WINNER, RESET_GAME, SET_GAME_MODE
+- [x] Initialize empty 3x3 grid
+- [x] Define player symbols (X and O)
+- [x] Create game mode options (PvP, vs AI)
 
 ### Core Game Logic
-- [ ] Implement move validation (cell is empty and game not over)
-- [ ] Create win condition checker (rows, columns, diagonals)
-- [ ] Add draw/tie detection (board full, no winner)
-- [ ] Implement player switching after valid move
+- [x] Implement move validation (cell is empty and game not over)
+- [x] Create win condition checker (rows, columns, diagonals)
+- [x] Add draw/tie detection (board full, no winner)
+- [x] Implement player switching after valid move
 - [ ] Create AI opponent logic (random, minimax algorithm)
-- [ ] Add first player selection
+- [x] Add first player selection
 
 ### Game Mechanics
-- [ ] Allow players to place X or O in empty cells
-- [ ] Prevent moves after game ends
+- [x] Allow players to place X or O in empty cells
+- [x] Prevent moves after game ends
 - [ ] Track move history for undo (optional)
 - [ ] Implement score tracking across multiple games
 - [ ] Add difficulty levels for AI (easy, medium, hard)
 
 ### UI & Controls
-- [ ] Handle cell clicks to make moves
-- [ ] Render 3x3 game board
-- [ ] Display X and O symbols clearly
-- [ ] Show current player's turn
-- [ ] Highlight winning combination
-- [ ] Display winner or draw message
-- [ ] Add reset/new game button
-- [ ] Create game mode selector (PvP vs AI)
+- [x] Handle cell clicks to make moves
+- [x] Render 3x3 game board
+- [x] Display X and O symbols clearly
+- [x] Show current player's turn
+- [x] Highlight winning combination
+- [x] Display winner or draw message
+- [x] Add reset/new game button
+- [x] Create game mode selector (PvP vs AI)
 - [ ] Show game statistics (wins, losses, draws)
 
 ### Polish
@@ -196,40 +196,40 @@
 ## Memory Game
 
 ### Setup & State Management
-- [ ] Create initial game state (cards, flipped cards, matched pairs, moves, game status, timer)
-- [ ] Set up useReducer with actions: START_GAME, FLIP_CARD, CHECK_MATCH, RESET_FLIPPED, GAME_WON, RESET_GAME, SET_DIFFICULTY
-- [ ] Define difficulty levels (Easy: 4x3, Medium: 4x4, Hard: 6x4)
-- [ ] Create card data structure (id, value/image, isFlipped, isMatched)
-- [ ] Initialize card pairs and shuffle algorithm
+- [x] Create initial game state (cards, flipped cards, matched pairs, moves, game status, timer)
+- [x] Set up useReducer with actions: START_GAME, FLIP_CARD, CHECK_MATCH, RESET_FLIPPED, GAME_WON, RESET_GAME, SET_DIFFICULTY
+- [x] Define difficulty levels (Easy: 4x3, Medium: 4x4, Hard: 6x4)
+- [x] Create card data structure (id, value/image, isFlipped, isMatched)
+- [x] Initialize card pairs and shuffle algorithm
 
 ### Core Game Logic
-- [ ] Implement card shuffling (Fisher-Yates algorithm)
-- [ ] Create card flip logic (max 2 cards flipped at once)
-- [ ] Add match checking (compare two flipped cards)
-- [ ] Implement matched cards lock (stay flipped)
-- [ ] Add non-match logic (flip back after delay)
-- [ ] Create win condition (all pairs matched)
-- [ ] Track number of moves/attempts
+- [x] Implement card shuffling (Fisher-Yates algorithm)
+- [x] Create card flip logic (max 2 cards flipped at once)
+- [x] Add match checking (compare two flipped cards)
+- [x] Implement matched cards lock (stay flipped)
+- [x] Add non-match logic (flip back after delay)
+- [x] Create win condition (all pairs matched)
+- [x] Track number of moves/attempts
 
 ### Game Mechanics
-- [ ] Allow flipping only unmatched, non-flipped cards
-- [ ] Prevent flipping during match checking delay
-- [ ] Implement move counter (increment per pair attempt)
-- [ ] Add game timer (starts on first flip)
+- [x] Allow flipping only unmatched, non-flipped cards
+- [x] Prevent flipping during match checking delay
+- [x] Implement move counter (increment per pair attempt)
+- [x] Add game timer (starts on first flip)
 - [ ] Calculate star rating based on moves (optional)
 - [ ] Create best time/moves tracking
 
 ### UI & Controls
-- [ ] Handle card click to flip
-- [ ] Render grid of cards based on difficulty
-- [ ] Create card component with front and back
-- [ ] Implement card flip animation
-- [ ] Display moves counter and timer
-- [ ] Show matched pairs counter
-- [ ] Add difficulty selector
-- [ ] Create start screen
-- [ ] Create victory screen with stats
-- [ ] Add restart button
+- [x] Handle card click to flip
+- [x] Render grid of cards based on difficulty
+- [x] Create card component with front and back
+- [x] Implement card flip animation
+- [x] Display moves counter and timer
+- [x] Show matched pairs counter
+- [x] Add difficulty selector
+- [x] Create start screen
+- [x] Create victory screen with stats
+- [x] Add restart button
 
 ### Polish
 - [ ] Design card back and front images/patterns
@@ -332,36 +332,36 @@
 ## Brick Breaker
 
 ### Setup & State Management
-- [ ] Create initial game state (paddle, ball, bricks, score, lives, level, game status)
-- [ ] Set up useReducer with actions: START_GAME, UPDATE_PADDLE, UPDATE_BALL, BREAK_BRICK, LOSE_LIFE, LEVEL_UP, GAME_OVER, PAUSE_GAME
-- [ ] Define game constants (canvas size, paddle size, ball size, brick dimensions)
-- [ ] Initialize brick layout patterns for different levels
+- [x] Create initial game state (paddle, ball, bricks, score, lives, level, game status)
+- [x] Set up useReducer with actions: START_GAME, UPDATE_PADDLE, UPDATE_BALL, BREAK_BRICK, LOSE_LIFE, LEVEL_UP, GAME_OVER, PAUSE_GAME
+- [x] Define game constants (canvas size, paddle size, ball size, brick dimensions)
+- [x] Initialize brick layout patterns for different levels
 
 ### Core Game Logic
-- [ ] Implement paddle movement (follows mouse or keyboard)
-- [ ] Create ball physics (position, velocity, direction)
-- [ ] Implement ball-paddle collision detection and angle calculation
-- [ ] Add ball-brick collision detection (top, bottom, sides)
-- [ ] Create ball-wall collision (left, right, top)
-- [ ] Implement brick breaking and removal
-- [ ] Add ball-out-of-bounds detection (lose life)
+- [x] Implement paddle movement (follows mouse or keyboard)
+- [x] Create ball physics (position, velocity, direction)
+- [x] Implement ball-paddle collision detection and angle calculation
+- [x] Add ball-brick collision detection (top, bottom, sides)
+- [x] Create ball-wall collision (left, right, top)
+- [x] Implement brick breaking and removal
+- [x] Add ball-out-of-bounds detection (lose life)
 
 ### Game Mechanics
-- [ ] Create game loop with requestAnimationFrame
-- [ ] Implement scoring system (different brick types = different points)
-- [ ] Add lives system (start with 3 lives)
-- [ ] Create level progression (clear all bricks = next level)
+- [x] Create game loop with requestAnimationFrame
+- [x] Implement scoring system (different brick types = different points)
+- [x] Add lives system (start with 3 lives)
+- [x] Create level progression (clear all bricks = next level)
 - [ ] Implement multiple brick types (normal, strong [2 hits], unbreakable)
 - [ ] Add power-ups (multi-ball, wider paddle, laser, etc.) - optional
 - [ ] Increase ball speed gradually
 
 ### UI & Controls
 - [ ] Handle mouse movement for paddle control
-- [ ] Add keyboard controls (arrow keys or A/D)
-- [ ] Render paddle, ball, and bricks on canvas
-- [ ] Display score, lives, and level
-- [ ] Create start ball on paddle state (click/space to launch)
-- [ ] Add pause functionality
+- [x] Add keyboard controls (arrow keys or A/D)
+- [x] Render paddle, ball, and bricks on canvas
+- [x] Display score, lives, and level
+- [x] Create start ball on paddle state (click/space to launch)
+- [x] Add pause functionality
 - [ ] Create game over and level complete screens
 
 ### Polish

@@ -14,15 +14,24 @@ import GameArea from './components/GameArea';
 import { cn } from '@/lib/utils';
 
 /**
- * Main Flappy Bird Game Component
- * Integrates the game area, controls, and state management
+ * Main Flappy Bird Game Component.
+ * This component orchestrates the Flappy Bird game by integrating the `useFlappyBird` hook for game logic,
+ * rendering the game area, controls, and displaying game status and scores.
  */
 const FlappyBird: React.FC = () => {
+  // Destructure game state and control functions from the custom useFlappyBird hook
+  // gameState: object containing bird, pipes, score, high score, and game status
+  // gameDimensions: constants for game area size
+  // jump: function to make the bird jump
+  // startNewGame: function to initiate a new game
+  // restartGame: function to restart the current game
   const { gameState, gameDimensions, jump, startNewGame, restartGame } = useFlappyBird();
+  // useNavigate hook from react-router-dom for navigation
   const navigate = useNavigate();
 
   /**
-   * Navigates back to the main portfolio page
+   * Navigates the user back to the main portfolio page.
+   * @returns {void}
    */
   const goHome = () => {
     navigate('/');
@@ -31,19 +40,25 @@ const FlappyBird: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-sky-100 via-sky-200 to-blue-300 dark:from-slate-900 dark:via-slate-800 dark:to-slate-700 p-4">
       <div className="max-w-2xl mx-auto">
-        {/* Header */}
+        {/* Game Header: Displays the game title and a brief description */}
         <GameHeader 
           title="🐦 Flappy Bird"
           description="Navigate through the pipes and set a high score!"
         />
 
-        {/* Score Section */}
-        <Scoreboard score={gameState.score} bestScore={gameState.bestScore} />
+        {/* Score Section: Displays current score and the highest score */}
+        {/* score: current game score */}
+        {/* bestScore: highest score recorded for the game (defaults to 0 if null) */}
+        <Scoreboard score={gameState.score} bestScore={gameState.highScore ?? 0} />
 
-        {/* Game Controls */}
+        {/* Game Controls: Buttons for restarting, etc. */}
+        {/* restartGame: function to restart the game */}
         <GameControls restartGame={startNewGame} />
 
-        {/* Game Area */}
+        {/* Game Area: The main canvas where the game is played */}
+        {/* gameState: current state of the game (bird, pipes, etc.) */}
+        {/* dimensions: game area dimensions */}
+        {/* onJump: function to handle bird jumps (e.g., on tap/click) */}
         <div className="flex justify-center mb-6">
           <GameArea
             gameState={gameState}
@@ -52,7 +67,7 @@ const FlappyBird: React.FC = () => {
           />
         </div>
 
-        {/* Instructions */}
+        {/* Instructions: Provides guidance on how to play the game */}
         <Instructions>
           <p className="text-sm text-muted-foreground">
             <span className="font-semibold">Desktop:</span> Press SPACE or ↑ arrow key to jump
@@ -65,13 +80,13 @@ const FlappyBird: React.FC = () => {
           </p>
         </Instructions>
 
-        {/* Game Over Modal */}
+        {/* Game Over Modal: Displays when the game is over */}
         <GameOverModal
-          isGameOver={gameState.isGameOver}
+          isGameOver={gameState.isGameOver} // True if game is over
           isWon={false} // Flappy Bird doesn't have a "win" state
-          score={gameState.score}
-          bestScore={gameState.bestScore}
-          restartGame={restartGame}
+          score={gameState.score} // Final score of the game
+          bestScore={gameState.highScore ?? 0} // Highest score recorded
+          restartGame={restartGame} // Function to restart the game
         />
       </div>
     </div>

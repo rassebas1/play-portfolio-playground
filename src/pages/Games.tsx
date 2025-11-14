@@ -5,6 +5,12 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import type { GameInfo } from '@/types/global';
 
+/**
+ * Array of game information objects.
+ * Each object describes a game available in the portfolio, including its ID, name,
+ * description, difficulty, category, icon, color theme, and current status.
+ * @type {GameInfo[]}
+ */
 export const games: GameInfo[] = [
   {
     id: 'tic-tac-toe',
@@ -68,9 +74,17 @@ export const games: GameInfo[] = [
   },
 ];
 
+/**
+ * Games component.
+ * Displays a list of available games in a grid format. Each game is presented
+ * as a card with its details, and a button to play or a "Coming Soon" message.
+ *
+ * @returns {JSX.Element} The rendered games listing page.
+ */
 const Games: React.FC = () => {
   return (
     <div className="container mx-auto px-4 py-16">
+      {/* Page Header */}
       <div className="text-center mb-20 pt-10">
         <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
           Game Zone
@@ -79,22 +93,27 @@ const Games: React.FC = () => {
           Explore a collection of classic and modern games.
         </p>
       </div>
+      {/* Games Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Map through the `games` array to render each game card */}
         {games.map((game) => (
           <Card
-            key={game.id}
+            key={game.id} // Unique key for list rendering
             className="group relative overflow-hidden rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
           >
             <CardHeader className="text-center p-6">
+              {/* Game Icon with hover animation */}
               <div className="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">
                 {game.icon}
               </div>
+              {/* Game Name */}
               <CardTitle className="text-2xl mb-2">{game.name}</CardTitle>
+              {/* Game Difficulty and Category Badges */}
               <div className="flex justify-center gap-2 mb-4">
                 <Badge
                   variant="outline"
                   className="text-xs font-semibold"
-                  style={{ borderColor: game.color, color: game.color }}
+                  style={{ borderColor: game.color, color: game.color }} // Dynamic color based on game theme
                 >
                   {game.difficulty}
                 </Badge>
@@ -104,18 +123,21 @@ const Games: React.FC = () => {
               </div>
             </CardHeader>
             <CardContent className="p-6">
+              {/* Game Description */}
               <CardDescription className="text-center mb-6">
                 {game.description}
               </CardDescription>
+              {/* Conditional rendering for "Coming Soon" or "Play Game" button */}
               {game.status === 'Coming Soon' ? (
                 <Button
                   className="w-full"
                   size="lg"
-                  disabled
+                  disabled // Disable button for coming soon games
                 >
                   Coming Soon
                 </Button>
               ) : (
+                // Link to the game page if it's ready to play
                 <Link to={`/game/${game.id}`} className="block">
                   <Button
                     className="w-full bg-primary hover:bg-primary-glow transition-colors"

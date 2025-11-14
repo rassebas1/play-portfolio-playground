@@ -1,29 +1,90 @@
-
+/**
+ * src/games/memory-game/MemoryGame.tsx
+ *
+ * Main component for the Memory Game.
+ * This component orchestrates the game by integrating the `useMemoryGame` hook for game logic,
+ * rendering the game board, controls, and displaying game status and scores.
+ */
 import React from 'react';
 import { useMemoryGame } from './hooks/useMemoryGame';
 import GameBoard from './components/GameBoard';
 import { Difficulty } from './types';
 import { GameHeader } from '@/components/game/GameHeader';
-import { Scoreboard } from '@/components/game/Scoreboard';
-import { GameControls } from '@/components/game/GameControls';
 import { GameOverModal } from '@/components/game/GameOverModal';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Trophy } from 'lucide-react';
 
+/**
+ * React functional component for the Memory Game.
+ *
+ * @returns {JSX.Element} The rendered Memory Game component.
+ */
 const MemoryGame: React.FC = () => {
-  const { state, startGame, flipCard, resetGame } = useMemoryGame();
+  // Destructure state and functions from the custom useMemoryGame hook
+  // state: current game state (cards, moves, timer, status, etc.)
+  // highScore: the best time recorded for this game
+  // startGame: function to initiate a new game
+  // flipCard: function to handle card clicks
+  // resetGame: function to reset the game
+  const { state, highScore, startGame, flipCard, resetGame } = useMemoryGame();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 p-4">
       <div className="max-w-4xl mx-auto">
+        {/* Game Header: Displays the game title and a brief description */}
         <GameHeader 
           title="Memory Game"
           description="Test your memory by matching pairs of hidden cards."
         />
 
-        <Scoreboard score={state.moves} bestScore={0} />
+        {/* Custom Score Display: Shows current moves, current time, and best time */}
+        <div className="grid grid-cols-3 gap-4 mb-6">
+          {/* Card for displaying current moves */}
+          <Card className="text-center bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm text-muted-foreground">Moves</CardTitle>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <div className="text-2xl font-bold text-primary">
+                {state.moves.toLocaleString()}
+              </div>
+            </CardContent>
+          </Card>
 
+          {/* Card for displaying current game time */}
+          <Card className="text-center bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm text-muted-foreground">Time</CardTitle>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <div className="text-2xl font-bold text-primary">
+                {state.timer.toLocaleString()}s
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Card for displaying the best recorded time (high score) */}
+          <Card className="text-center bg-gradient-to-br from-accent/10 to-accent/5 border-accent/20">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm text-muted-foreground flex items-center justify-center gap-1">
+                <Trophy className="w-4 h-4" />
+                Best Time
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <div className="text-2xl font-bold text-accent">
+                {/* Displays best time or '--' if no high score is set */}
+                {highScore !== null ? `${highScore.toLocaleString()}s` : '--'}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Game Controls: Difficulty selection and Start/Reset buttons */}
         <div className="flex justify-center items-center my-4 space-x-4">
+          {/* Difficulty Selector */}
           <Select onValueChange={(value) => startGame(value as Difficulty)} defaultValue={state.difficulty}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Difficulty" />
@@ -34,6 +95,7 @@ const MemoryGame: React.FC = () => {
               <SelectItem value={Difficulty.Hard}>Hard</SelectItem>
             </SelectContent>
           </Select>
+          {/* Start Game or Reset Game Button based on game status */}
           {state.gameStatus === 'idle' || state.gameStatus === 'won' ? (
             <Button onClick={() => startGame(state.difficulty)}>Start Game</Button>
           ) : (
@@ -41,14 +103,16 @@ const MemoryGame: React.FC = () => {
           )}
         </div>
 
+        {/* Game Board: Renders the cards if the game is playing */}
         {state.gameStatus === 'playing' && <GameBoard state={state} onCardClick={flipCard} />}
 
+        {/* Game Over Modal: Displays when the game is won */}
         <GameOverModal 
-          isGameOver={state.gameStatus === 'won'}
-          isWon={true}
-          score={state.moves}
-          bestScore={0}
-          restartGame={resetGame}
+          isGameOver={state.gameStatus === 'won'} // Modal shows if game status is 'won'
+          isWon={true} // Always true for Memory Game's win condition
+          score={state.timer} // Final time is the score
+          bestScore={highScore ?? 0} // Best recorded time
+          restartGame={resetGame} // Function to restart the game
         />
       </div>
     </div>
