@@ -139,7 +139,7 @@ describe('GameOverModal', () => {
       </MemoryRouter>
     );
     fireEvent.click(screen.getByText('Home'));
-    expect(mockNavigate).toHaveBeenCalledWith('/');
+    expect(mockNavigate).toHaveBeenCalledWith('/games');
   });
 
   it('renders "Continue" button when canContinue and isWon are true', () => {
