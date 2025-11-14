@@ -10,61 +10,28 @@ import { GameStatus } from './types';
 import { Button } from '@/components/ui/button';
 
 const BrickBreaker: React.FC = () => {
-  const { state, dispatch } = useBrickBreaker();
+  // Ref to the game board DOM element, used for calculating touch positions
+  const gameBoardRef = useRef<HTMLDivElement>(null);
 
+  // Destructure state, dispatch function, and high score from the custom useBrickBreaker hook
+  // state: current game state (paddle, ball, bricks, score, lives, etc.)
+  // dispatch: reducer's dispatch function for sending actions
+  // highScore: the highest score recorded for this game
+  const { state, dispatch, highScore } = useBrickBreaker(gameBoardRef);
+  const isMobile = useIsMobile(); // Determine if the device is mobile
+
+  /**
+   * Resets the game to its initial state.
+   * @returns {void}
+   */
   const restartGame = () => {
     dispatch({ type: "RESET_GAME" });
   };
 
+  // Determine if the game is over
   const isGameOver = state.gameStatus === GameStatus.GAME_OVER;
-  const isWon = state.gameStatus === GameStatus.LEVEL_CLEARED; // Assuming LEVEL_CLEARED means won for the current level
-
-  const paddleTouchOffset = useRef<number | null>(null);
-  const gameBoardRef = useRef<HTMLDivElement>(null);
-
-  const handleTouchStart = useCallback((e: TouchEvent) => {
-    if (state.gameStatus !== GameStatus.PLAYING || !gameBoardRef.current) return;
-    const touchX = e.touches[0].clientX;
-    const gameBoardRect = gameBoardRef.current.getBoundingClientRect();
-    paddleTouchOffset.current = touchX - (gameBoardRect.left + state.paddle.x);
-    e.preventDefault(); // Prevent scrolling
-  }, [state.gameStatus, state.paddle.x]);
-
-  const handleTouchMove = useCallback((e: TouchEvent) => {
-    if (state.gameStatus !== GameStatus.PLAYING || paddleTouchOffset.current === null || !gameBoardRef.current) return;
-    const touchX = e.touches[0].clientX;
-    const gameBoardRect = gameBoardRef.current.getBoundingClientRect();
-
-    let newPaddleX = touchX - gameBoardRect.left - paddleTouchOffset.current;
-
-    // Clamp paddle position within canvas boundaries
-    newPaddleX = Math.max(
-      0,
-      Math.min(newPaddleX, state.canvas.width - state.paddle.width)
-    );
-
-    dispatch({ type: "UPDATE_PADDLE_POSITION", payload: { x: newPaddleX } });
-    e.preventDefault(); // Prevent scrolling
-  }, [state.gameStatus, state.canvas.width, state.paddle.width, dispatch]);
-
-  const handleTouchEnd = useCallback(() => {
-    paddleTouchOffset.current = null;
-  }, []);
-
-  useEffect(() => {
-    const gameBoardElement = gameBoardRef.current;
-    if (gameBoardElement) {
-      gameBoardElement.addEventListener('touchstart', handleTouchStart, { passive: false });
-      gameBoardElement.addEventListener('touchmove', handleTouchMove, { passive: false });
-      gameBoardElement.addEventListener('touchend', handleTouchEnd, { passive: true }); // touchend can be passive
-
-      return () => {
-        gameBoardElement.removeEventListener('touchstart', handleTouchStart);
-        gameBoardElement.removeEventListener('touchmove', handleTouchMove);
-        gameBoardElement.removeEventListener('touchend', handleTouchEnd);
-      };
-    }
-  }, [handleTouchStart, handleTouchMove, handleTouchEnd]);
+  // Determine if the current level is cleared (assuming this is a "win" for the level)
+  const isWon = state.gameStatus === GameStatus.LEVEL_CLEARED; 
 
   const handleGameControl = () => {
     if (state.gameStatus === GameStatus.IDLE) {
