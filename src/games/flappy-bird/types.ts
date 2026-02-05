@@ -11,6 +11,7 @@ export interface Bird {
   y: number;
   velocity: number;
   rotation: number;
+  isFlapping: boolean; // Added isFlapping property
 }
 
 /**

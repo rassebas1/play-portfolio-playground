@@ -1,6 +1,7 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 import type { Bird as BirdType, GameDimensions } from '../types';
+import BirdSVG from '@/components/game/BirdSVG'; // Import BirdSVG
 
 /**
  * Props for the Bird component
@@ -8,6 +9,8 @@ import type { Bird as BirdType, GameDimensions } from '../types';
 interface BirdProps {
   bird: BirdType;
   dimensions: GameDimensions;
+  isFlapping: boolean;
+  isGameOver: boolean; // Added isGameOver prop
   className?: string;
 }
 
@@ -15,7 +18,7 @@ interface BirdProps {
  * Bird component for Flappy Bird
  * Renders the bird with physics-based positioning and rotation
  */
-const Bird: React.FC<BirdProps> = ({ bird, dimensions, className }) => {
+const Bird: React.FC<BirdProps> = ({ bird, dimensions, isFlapping, isGameOver, className }) => {
   const birdStyle = {
     left: bird.x - dimensions.birdSize / 2,
     top: bird.y - dimensions.birdSize / 2,
@@ -28,9 +31,6 @@ const Bird: React.FC<BirdProps> = ({ bird, dimensions, className }) => {
     <div
       className={cn(
         'absolute transition-transform duration-75 ease-linear',
-        'bg-gradient-to-br from-accent to-accent-glow',
-        'rounded-full border-2 border-accent/40',
-        'shadow-glow',
         'flex items-center justify-center',
         'z-20',
         className
@@ -39,8 +39,7 @@ const Bird: React.FC<BirdProps> = ({ bird, dimensions, className }) => {
       role="img"
       aria-label="Flappy bird"
     >
-      {/* Bird emoji/icon */}
-      <span className="text-lg select-none">🐦</span>
+      <BirdSVG isFlapping={isFlapping} isGameOver={isGameOver} size={dimensions.birdSize} /> {/* Pass isGameOver prop */}
     </div>
   );
 };

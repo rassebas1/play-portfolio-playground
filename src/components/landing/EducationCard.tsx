@@ -26,8 +26,8 @@ export const EducationCard: React.FC<EducationCardProps> = ({
   years,
   logo,
   hook,
-  skills,
-  courses,
+  skills = [],
+  courses = [],
   project,
 }) => {
   const ref = React.useRef(null);

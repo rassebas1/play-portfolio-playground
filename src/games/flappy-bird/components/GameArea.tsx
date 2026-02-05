@@ -59,8 +59,6 @@ const GameArea: React.FC<GameAreaProps> = ({
     <div
       className={cn(
         'relative overflow-hidden border-4 border-primary/30 rounded-lg',
-        'bg-gradient-to-b from-sky-200 via-sky-300 to-sky-400',
-        'dark:from-sky-800 dark:via-sky-900 dark:to-slate-900',
         'cursor-pointer select-none',
         'shadow-elegant',
         className
@@ -72,6 +70,15 @@ const GameArea: React.FC<GameAreaProps> = ({
       tabIndex={0}
       aria-label="Game area - click or tap to make bird jump"
     >
+      {/* Scrolling Background */}
+      <div
+        className="absolute inset-0 bg-repeat-x animate-scroll-bg"
+        style={{
+          backgroundImage: `url('/public/flappy_bird_bg.png')`, // Placeholder image, replace with actual asset
+          backgroundSize: 'auto 100%', // Adjust as needed
+        }}
+      ></div>
+
       {/* Background clouds */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-10 left-10 text-white/30 text-2xl animate-pulse">☁️</div>
@@ -95,6 +102,8 @@ const GameArea: React.FC<GameAreaProps> = ({
       <Bird
         bird={gameState.bird}
         dimensions={dimensions}
+        isFlapping={gameState.bird.isFlapping}
+        isGameOver={gameState.isGameOver} // Pass isGameOver prop
       />
 
       {/* Ground */}

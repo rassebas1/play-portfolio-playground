@@ -9,7 +9,8 @@ interface ExperienceCardProps {
   activities: string[];
 }
 
-export const ExperienceCard: React.FC<ExperienceCardProps> = ({ company, title, date, activities }) => {
+export const ExperienceCard: React.FC<ExperienceCardProps> = ({ company, title, date, activities = [] }) => {
+  console.log(activities)
   return (
     <Card className="hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
       <CardHeader className="pb-2">

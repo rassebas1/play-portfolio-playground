@@ -6,6 +6,7 @@ export const createInitialBird = (): Bird => ({
   y: GAME_DIMENSIONS.height / 2,
   velocity: 0,
   rotation: 0,
+  isFlapping: false, // Added isFlapping property
 });
 
 export const createPipe = (x: number): Pipe => {
@@ -66,6 +67,12 @@ export const updateBirdPhysics = (bird: Bird): Bird => {
     rotation,
   };
 };
+
+export const birdJump = (bird: Bird): Bird => ({
+  ...bird,
+  velocity: PHYSICS.jumpVelocity,
+  isFlapping: true, // Set isFlapping to true on jump
+});
 
 export const updatePipes = (pipes: Pipe[], birdX: number): { pipes: Pipe[]; scoreIncrease: number } => {
   let scoreIncrease = 0;

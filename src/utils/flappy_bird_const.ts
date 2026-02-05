@@ -4,7 +4,7 @@ export const GAME_DIMENSIONS: GameDimensions = {
   width: 400,
   height: 600,
   groundHeight: 80,
-  birdSize: 30,
+  birdSize: 40, // Increased birdSize
 };
 
 export const PHYSICS: GamePhysics = {

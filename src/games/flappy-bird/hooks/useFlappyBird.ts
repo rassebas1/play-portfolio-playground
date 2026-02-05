@@ -7,6 +7,7 @@ import {
   updatePipes,
   generatePipesIfNeeded,
   checkCollision,
+  birdJump, // Import birdJump
 } from '../gameLogic';
 import type { Bird, Pipe } from '../types';
 
@@ -69,10 +70,11 @@ export const useFlappyBird = () => {
 
   const jump = useCallback(() => {
     if (isGameOver || !isPlaying) return;
-    setBird(prevBird => ({
-      ...prevBird,
-      velocity: PHYSICS.jumpVelocity,
-    }));
+    setBird(prevBird => birdJump(prevBird)); // Use birdJump function
+    // Reset isFlapping after a short delay
+    setTimeout(() => {
+      setBird(prevBird => ({ ...prevBird, isFlapping: false }));
+    }, 100); // Match this duration with the CSS animation duration
   }, [isGameOver, isPlaying]);
 
   const startNewGame = useCallback(() => {

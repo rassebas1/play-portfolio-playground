@@ -21,7 +21,7 @@ export const useMemoryGame = () => {
     if (state.gameStatus === 'won') {
       updateHighScore(state.timer, 'lowest'); // Score is time, so lower is better
     }
-  }, [state.gameStatus, state.time, updateHighScore]);
+  }, [state.gameStatus, state.timer, updateHighScore]);
 
   const startGame = (difficulty: Difficulty) => {
     dispatch({ type: 'START_GAME', payload: { difficulty } });

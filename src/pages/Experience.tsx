@@ -11,8 +11,8 @@ const Experience: React.FC = () => {
   const [loadingSkills, setLoadingSkills] = useState(true);
   const [loadingExperiences, setLoadingExperiences] = useState(true);
 
-  const currentLanguage = i18n.language as 'en' | 'es' | 'fr';
-
+  const currentLanguage = i18n.language.split('-')[0] as 'en' | 'es' | 'fr';
+console.log("exp", experiences)
   useEffect(() => {
     // Simulate loading for Skills section (faster)
     const skillsTimer = setTimeout(() => {

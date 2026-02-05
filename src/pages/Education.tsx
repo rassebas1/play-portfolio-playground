@@ -20,7 +20,7 @@ const Education: React.FC = () => {
     restDelta: 0.001
   });
 
-  const currentLanguage = i18n.language as 'en' | 'es' | 'fr';
+  const currentLanguage = i18n.language.split('-')[0] as 'en' | 'es' | 'fr';
 
   useEffect(() => {
     const timer = setTimeout(() => {

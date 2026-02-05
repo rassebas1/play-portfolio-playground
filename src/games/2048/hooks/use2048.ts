@@ -7,6 +7,7 @@ import { addRandomTile } from '../utils/tileUtils';
 import { ANIMATION_DURATION } from '@/utils/2048_const';
 import { GameReducer, initialState } from '../GameReducer';
 import { useIds } from '../useIds';
+import { useHighScores } from '@/hooks/useHighScores'; // Import useHighScores
 
 /**
  * Custom hook for 2048 game logic and state management
@@ -14,7 +15,8 @@ import { useIds } from '../useIds';
  */
 export const use2048 = () => {
   const [getNextId] = useIds();
-  const [state, dispatch] = useReducer(GameReducer, undefined, () => initializeBoard(getNextId));
+  const { highScore: storedHighScore, updateHighScore } = useHighScores('2048'); // Initialize useHighScores
+  const [state, dispatch] = useReducer(GameReducer, undefined, () => initializeBoard(getNextId, storedHighScore));
   const { tiles, byIds, hasChanged, inMotion, score, highScore, isGameOver, isWon, canUndo } = state;
 
   const animatedTiles = byIds.map(id => tiles[id]);
@@ -25,6 +27,13 @@ export const use2048 = () => {
   useEffect(() => {
     stateRef.current = state;
   }, [state]);
+
+  // Effect to update high score when game is over or won
+  useEffect(() => {
+    if (state.isGameOver || state.isWon) {
+      updateHighScore(state.score, 'highest');
+    }
+  }, [state.isGameOver, state.isWon, state.score, updateHighScore]);
 
   const generateRandomTile = useCallback(() => {
     const newTile = addRandomTile(stateRef.current.tiles, stateRef.current.byIds, getNextId());
