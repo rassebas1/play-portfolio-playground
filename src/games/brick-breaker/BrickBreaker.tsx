@@ -16,12 +16,8 @@ import { useIsMobile } from '@/hooks/use-mobile'; // Import useIsMobile
  * rendering the game board, controls, and displaying game status and scores.
  */
 const BrickBreaker: React.FC = () => {
-  // Destructure state, dispatch function, and high score from the custom useBrickBreaker hook
-  // state: current game state (paddle, ball, bricks, score, lives, etc.)
-  // dispatch: reducer's dispatch function for sending actions
-  // highScore: the highest score recorded for this game
-  const { state, dispatch, highScore } = useBrickBreaker();
-  const isMobile = useIsMobile(); // Determine if the device is mobile
+  const gameBoardRef = useRef<HTMLDivElement>(null);
+  const { state, dispatch, highScore } = useBrickBreaker(gameBoardRef);
 
   /**
    * Resets the game to its initial state.
@@ -31,78 +27,8 @@ const BrickBreaker: React.FC = () => {
     dispatch({ type: "RESET_GAME" });
   };
 
-  // Determine if the game is over
-  // Determine if the game is over
   const isGameOver = state.gameStatus === GameStatus.GAME_OVER;
-  // Determine if the current level is cleared (assuming this is a "win" for the level)
-  const isWon = state.gameStatus === GameStatus.LEVEL_CLEARED; 
-
-  // Ref to the game board DOM element, used for calculating touch positions
-  const gameBoardRef = useRef<HTMLDivElement>(null);
-
-  /**
-   * Handles the touch start event for paddle control.
-   * @param {TouchEvent} e - The touch event object.
-   * @returns {void}
-   */
-  const handleTouchStart = useCallback((e: TouchEvent) => {
-    // Only process touch if game is playing
-    if (state.gameStatus !== GameStatus.PLAYING) return;
-    e.preventDefault(); // Prevent default browser scrolling behavior
-  }, [state.gameStatus]); // Dependencies for callback stability
-
-  /**
-   * Handles the touch move event for paddle control.
-   * Updates paddle position based on touch movement, centering the paddle under the touch.
-   * @param {TouchEvent} e - The touch event object.
-   * @returns {void}
-   */
-  const handleTouchMove = useCallback((e: TouchEvent) => {
-    // Only process touch if game is playing and game board ref is available
-    if (state.gameStatus !== GameStatus.PLAYING || !gameBoardRef.current) return;
-    const touchX = e.touches[0].clientX;
-    const gameBoardRect = gameBoardRef.current.getBoundingClientRect();
-
-    // Calculate new paddle X position by centering the paddle under the touch point
-    let newPaddleX = touchX - gameBoardRect.left - (state.paddle.width / 2);
-
-    // Clamp paddle position within canvas boundaries
-    newPaddleX = Math.max(
-      0,
-      Math.min(newPaddleX, state.canvas.width - state.paddle.width)
-    );
-
-    // Dispatch action to update paddle position
-    dispatch({ type: "UPDATE_PADDLE_POSITION", payload: { x: newPaddleX } });
-    e.preventDefault(); // Prevent default browser scrolling behavior
-  }, [state.gameStatus, state.canvas.width, state.paddle.width, dispatch]); // Dependencies for callback stability
-
-  /**
-   * Handles the touch end event, stopping paddle movement.
-   * @returns {void}
-   */
-  const handleTouchEnd = useCallback(() => {
-    // Optionally, you might want to stop paddle movement here if it was set to a velocity
-    // For direct control, no specific action is needed on touch end other than releasing the touch.
-  }, []); // No dependencies, stable callback
-
-  // Effect to add and remove touch event listeners to the game board.
-  useEffect(() => {
-    const gameBoardElement = gameBoardRef.current;
-    if (gameBoardElement) {
-      // Add touch event listeners
-      gameBoardElement.addEventListener('touchstart', handleTouchStart, { passive: false });
-      gameBoardElement.addEventListener('touchmove', handleTouchMove, { passive: false });
-      gameBoardElement.addEventListener('touchend', handleTouchEnd, { passive: true }); // touchend can be passive
-
-      // Cleanup function: remove event listeners on unmount
-      return () => {
-        gameBoardElement.removeEventListener('touchstart', handleTouchStart);
-        gameBoardElement.removeEventListener('touchmove', handleTouchMove);
-        gameBoardElement.removeEventListener('touchend', handleTouchEnd);
-      };
-    }
-  }, [handleTouchStart, handleTouchMove, handleTouchEnd]); // Dependencies for effect re-run
+  const isWon = state.gameStatus === GameStatus.LEVEL_CLEARED; // Dependencies for effect re-run
 
   /**
    * Handles game control actions (start, pause, resume) based on current game status.

@@ -58,23 +58,37 @@ export const useGameInput = ({ dispatch, stateRef, isMobile, gameBoardRef }: Use
   const handleTouchStart = useCallback((e: TouchEvent) => {
     if (stateRef.current?.gameStatus !== GameStatus.PLAYING || !gameBoardRef.current) return;
     e.preventDefault();
-  }, [stateRef, gameBoardRef]);
+  }, [stateRef.current, gameBoardRef.current]);
 
   const handleTouchMove = useCallback((e: TouchEvent) => {
-    if (stateRef.current?.gameStatus !== GameStatus.PLAYING || !gameBoardRef.current) return;
+    if (stateRef.current?.gameStatus !== GameStatus.PLAYING) return; // Only check gameStatus here
+
+    // Explicitly check gameBoardRef.current here
+    const currentGameBoard = gameBoardRef.current;
+    if (!currentGameBoard) {
+        console.error("gameBoardRef.current is null/undefined during handleTouchMove");
+        return;
+    }
+
     const touchX = e.touches[0].clientX;
-    const gameBoardRect = gameBoardRef.current.getBoundingClientRect();
+    const gameBoardRect = currentGameBoard.getBoundingClientRect();
 
     let newPaddleX = touchX - gameBoardRect.left;
 
+    const currentState = stateRef.current;
+    if (!currentState) {
+        console.error("stateRef.current is null/undefined during handleTouchMove");
+        return;
+    }
+
     newPaddleX = Math.max(
       0,
-      Math.min(newPaddleX, stateRef.current.canvas.width - stateRef.current.paddle.width)
+      Math.min(newPaddleX, currentState.canvas.width - currentState.paddle.width)
     );
 
     dispatch({ type: "UPDATE_PADDLE_POSITION", payload: { x: newPaddleX } });
     e.preventDefault();
-  }, [dispatch, stateRef, gameBoardRef]);
+  }, [dispatch, stateRef.current, gameBoardRef.current]);
 
   const handleTouchEnd = useCallback(() => {
     // For direct control, no specific action is needed on touch end other than releasing the touch.
@@ -93,5 +107,5 @@ export const useGameInput = ({ dispatch, stateRef, isMobile, gameBoardRef }: Use
         gameBoardElement.removeEventListener('touchend', handleTouchEnd);
       };
     }
-  }, [isMobile, gameBoardRef, handleTouchStart, handleTouchMove, handleTouchEnd]);
+  }, [isMobile, gameBoardRef.current, handleTouchStart, handleTouchMove, handleTouchEnd]);
 };

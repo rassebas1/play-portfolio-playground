@@ -56,11 +56,33 @@ This document tracks the features and tasks that need to be completed for the pr
 - [x] **Brick Breaker:** Implement touch controls for paddle movement (e.g., drag or tap left/right halves of the screen).
 
 ### Internationalization (i18n)
-- [ ] Identify all user-facing text and content for translation.
-- [ ] Choose and integrate an i18n library (e.g., `react-i18next`, `formatjs`).
-- [ ] Implement text extraction and translation workflows.
-- [ ] Add language switching functionality (UI and logic).
-- [ ] Ensure proper formatting for dates, times, numbers, and currencies across different locales.
+
+- [ ] **Refactor Translation Setup:**
+  - [ ] **Move to External Files:** Migrate all translation resources from `src/i18n.ts` into `public/locales/[lang]/[namespace].json` files (e.g., `public/locales/en/common.json`, `public/locales/es/common.json`, `public/locales/en/games.json`).
+  - [ ] **Implement `i18next-http-backend`:** Configure `i18next` to use `i18next-http-backend` for asynchronous loading of translation files, improving performance and scalability.
+  - [ ] **Define Namespaces:** Explicitly define namespaces in `src/i18n.ts` and update `useTranslation` calls to specify the correct namespace where needed.
+
+- [ ] **Identify and Translate Hardcoded Strings (Initial Pass - Requires further detailed audit):**
+  - **Game-related Strings:**
+    - `TicTacToe.tsx`: "Game Board"
+    - `GameRules.tsx`: "How to Play", "Rules:", "• Players take turns placing X or O", "• First player to get 3 in a row wins", "• Rows, columns, or diagonals count", "• If all cells are filled, it&apos;s a draw", "Strategy Tips:", "• Control the center when possible", "• Block opponent&apos;s winning moves", "• Create multiple winning opportunities", "• Think ahead and plan your moves"
+    - `GameStatus.tsx`: "Game Status"
+    - `SnakeGame.tsx`: "Snake Game", "Difficulty:", "Use Arrow Keys to Move"
+    - `MemoryGame.tsx`: "Time", "Easy", "Medium", "Hard", "Start Game", "Reset Game", "?"
+    - `FlappyBird.tsx`: "Desktop:", "Press SPACE or ↑ arrow key to jump", "Mobile:", "Tap the game area to jump"
+    - `GameArea.tsx`: "Flappy Bird", "Click or tap to start!", "Keep clicking to stay airborne"
+    - `BrickBreaker.tsx`: "Use **Arrow Left** and **Arrow Right** to move the paddle.", "Press **SPACEBAR** to start, pause, or resume the game.", "Press **R** to reset the game."
+    - `Game2048.tsx`: "Join the tiles, get to ", "2048!", "Use arrow keys or ", "Swipe or tap buttons to ", "move tiles. Combine tiles with the same number to reach ", "2048"
+    - `GameOverModal.tsx`: "Final Score"
+    - `Scoreboard.tsx`: "Score"
+
+  - **UI/Navigation Strings:**
+    - `NotFound.tsx`: "404", "Oops! Page not found"
+    - `Navbar.tsx`: "Portfolio", "English", "Español", "Français"
+
+  - **Landing Page/Developer Profile Strings:**
+    - `WhatImLearning.tsx`: "Cloud Architecture (AWS, Azure)", "Data Pipelines (Spark, Kafka)", "Machine Learning (Pytorch, TensorFlow, Keras)"
+    - `DeveloperProfile.tsx`: "SEL" (fallback text)
 
 ### Game-specific Improvements
 

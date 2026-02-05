@@ -19,6 +19,7 @@ import {
 import { useWindowSize } from '@/hooks/useWindowSize';
 import { useIsMobile } from '@/hooks/use-mobile'; // Import useIsMobile
 import { useGameInput } from './useGameInput'; // Import the new input hook
+import { useHighScores } from '@/hooks/useHighScores'; // Import the high score hook
 
 /**
  * Custom hook for managing the Brick Breaker game logic and state.
@@ -64,17 +65,6 @@ export const useBrickBreaker = (gameBoardRef: RefObject<HTMLDivElement>) => {
   // Effect to update canvas size in state when responsive dimensions change
   useEffect(() => {
     dispatch({ type: "SET_CANVAS_SIZE", payload: { width: responsiveCanvasWidth, height: responsiveCanvasHeight } });
-
-    // Calculate and set paddle Y position after canvas size is updated
-    const PADDLE_HEIGHT = stateRef.current.paddle.height; // Get current paddle height
-    const newPaddleY = responsiveCanvasHeight - PADDLE_HEIGHT - 20; // 20 pixels from the bottom
-    dispatch({ type: "SET_PADDLE_Y", payload: { y: newPaddleY } });
-
-    // Calculate and set ball Y position after paddle Y is updated
-    const BALL_RADIUS = stateRef.current.ball.radius; // Get current ball radius
-    const newBallY = newPaddleY - BALL_RADIUS; // Ball starts just above the paddle
-    dispatch({ type: "SET_BALL_Y", payload: { y: newBallY } });
-
   }, [responsiveCanvasWidth, responsiveCanvasHeight, dispatch]);
 
   /**
@@ -125,15 +115,15 @@ export const useBrickBreaker = (gameBoardRef: RefObject<HTMLDivElement>) => {
       if (stateRef.current.lives - 1 <= 0) {
         dispatch({ type: "GAME_OVER" });
       } else {
-        newBall = resetBall(stateRef.current.paddle); // Reset ball to paddle for next life
+        newBall = resetBall(stateRef.current.paddle, stateRef.current.canvas.height); // Reset ball to paddle for next life
       }
     }
 
-    // 5. Check for Level Cleared: if all active bricks are broken
-    if (areAllBricksBroken(newBricks.filter(brick => !brick.isBroken))) {
+    // 5. Check for Level Cleared: if all bricks are broken
+    if (areAllBricksBroken(newBricks)) {
       dispatch({ type: "LEVEL_UP" }); // Dispatch action to level up
       // After level up, bricks are recreated, so reset ball and paddle for next level
-      newBall = resetBall(stateRef.current.paddle);
+      newBall = resetBall(stateRef.current.paddle, stateRef.current.canvas.height);
     }
 
     // Dispatch ball update (only if game is still playing and ball wasn't reset by LOSE_LIFE or LEVEL_UP)

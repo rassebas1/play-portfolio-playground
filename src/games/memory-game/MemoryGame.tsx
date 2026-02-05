@@ -15,6 +15,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Trophy } from 'lucide-react';
+import { Scoreboard } from '@/components/game/Scoreboard';
 
 /**
  * React functional component for the Memory Game.
@@ -31,8 +32,8 @@ const MemoryGame: React.FC = () => {
           title="Memory Game"
           description="Test your memory by matching pairs of hidden cards."
         />
-
-        <Scoreboard score={state.timer} bestScore={highScore ?? 0} />
+        <div>
+          <Scoreboard score={state.timer} bestScore={highScore ?? 0} />
 
           {/* Card for displaying current game time */}
           <Card className="text-center bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20">

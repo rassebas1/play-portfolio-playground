@@ -16,8 +16,6 @@ export const useMemoryGame = () => {
   // Integrate the new game logic hook
   useMemoryGameLogic({ state, dispatch });
 
-  // Integrate high score tracking
-  const { highScore, updateHighScore } = useHighScores('memory-game');
 
   // Effect to update high score when game is won
   useEffect(() => {

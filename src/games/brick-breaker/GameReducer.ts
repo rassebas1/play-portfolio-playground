@@ -18,27 +18,18 @@ import * as Constants from "../../utils/brick_breaker_const";
  */
 const createBricks = (level: number, canvasWidth: number): Brick[] => {
   const bricks: Brick[] = [];
+  // Use the level parameter to vary the number of rows, for example
+  const brickRows = Constants.BRICK_ROWS + (level - 1); // Increase rows with levels
   // Calculate BRICK_COLUMNS dynamically based on canvasWidth
   const BRICK_COLUMNS = Math.floor((canvasWidth - 2 * Constants.BRICK_OFFSET_LEFT) / (Constants.BRICK_WIDTH + Constants.BRICK_PADDING));
   // Calculate BRICK_OFFSET_LEFT dynamically to center the bricks
   const BRICK_OFFSET_LEFT = (canvasWidth - (BRICK_COLUMNS * (Constants.BRICK_WIDTH + Constants.BRICK_PADDING) - Constants.BRICK_PADDING)) / 2;
 
-  if (BRICK_COLUMNS <= 0 || Constants.BRICK_ROWS <= 0) {
+  if (BRICK_COLUMNS <= 0 || brickRows <= 0) {
     return bricks;
   }
 
-  // Calculate BRICK_COLUMNS dynamically based on canvasWidth
-  const BRICK_COLUMNS = Math.floor((canvasWidth - 2 * Constants.BRICK_OFFSET_LEFT) / (Constants.BRICK_WIDTH + Constants.BRICK_PADDING));
-  // Calculate BRICK_OFFSET_LEFT dynamically to center the bricks
-  const BRICK_OFFSET_LEFT = (canvasWidth - (BRICK_COLUMNS * (Constants.BRICK_WIDTH + Constants.BRICK_PADDING) - Constants.BRICK_PADDING)) / 2;
-
-  if (BRICK_COLUMNS <= 0 || Constants.BRICK_ROWS <= 0) {
-    return bricks;
-  }
-
-  for (let r = 0; r < Constants.BRICK_ROWS; r++) {
-    for (let c = 0; c < BRICK_COLUMNS; c++) {
-      const x = c * (Constants.BRICK_WIDTH + Constants.BRICK_PADDING) + BRICK_OFFSET_LEFT;
+  for (let r = 0; r < brickRows; r++) {
     for (let c = 0; c < BRICK_COLUMNS; c++) {
       const x = c * (Constants.BRICK_WIDTH + Constants.BRICK_PADDING) + BRICK_OFFSET_LEFT;
       const y = r * (Constants.BRICK_HEIGHT + Constants.BRICK_PADDING) + Constants.BRICK_OFFSET_TOP;
@@ -69,7 +60,7 @@ export const getInitialState = (canvasWidth: number, canvasHeight: number): Game
   const PADDLE_WIDTH = Constants.PADDLE_WIDTH;
   const PADDLE_HEIGHT = Constants.PADDLE_HEIGHT;
   const PADDLE_START_X = (canvasWidth - PADDLE_WIDTH) / 2;
-  const PADDLE_START_Y = canvasHeight - PADDLE_HEIGHT + 5; // Move paddle 5 pixels below the canvas bottom edge
+  const PADDLE_START_Y = canvasHeight - PADDLE_HEIGHT - 20; // 20px from bottom
 
   const BALL_RADIUS = Constants.BALL_RADIUS;
   const BALL_START_X = canvasWidth / 2;
@@ -119,28 +110,28 @@ export const gameReducer = (state: GameState, action: Action): GameState => {
      */
     case "START_GAME":
       return { ...state, gameStatus: GameStatus.PLAYING };
-    
+
     /**
      * Action: PAUSE_GAME
      * Sets the game status to 'paused'.
      */
     case "PAUSE_GAME":
       return { ...state, gameStatus: GameStatus.PAUSED };
-    
+
     /**
      * Action: RESUME_GAME
      * Sets the game status back to 'playing' from 'paused'.
      */
     case "RESUME_GAME":
       return { ...state, gameStatus: GameStatus.PLAYING };
-    
+
     /**
      * Action: RESET_GAME
      * Resets the game to its initial state, including new bricks for the starting level.
      */
     case "RESET_GAME":
       return { ...getInitialState(state.canvas.width, state.canvas.height), bricks: createBricks(state.level, state.canvas.width) };
-    
+
     /**
      * Action: SET_PADDLE_VELOCITY
      * Updates the horizontal velocity (dx) of the paddle.
@@ -154,7 +145,7 @@ export const gameReducer = (state: GameState, action: Action): GameState => {
           dx: action.payload.dx,
         },
       };
-    
+
     /**
      * Action: UPDATE_PADDLE_POSITION
      * Updates the horizontal position (x) of the paddle.
@@ -168,7 +159,7 @@ export const gameReducer = (state: GameState, action: Action): GameState => {
           x: action.payload.x,
         },
       };
-    
+
     /**
      * Action: UPDATE_BALL
      * Updates the ball's position and velocity.
@@ -185,7 +176,7 @@ export const gameReducer = (state: GameState, action: Action): GameState => {
           dy: action.payload.dy,
         },
       };
-    
+
     /**
      * Action: BREAK_BRICK
      * Marks a brick as broken and updates the score.
@@ -201,7 +192,7 @@ export const gameReducer = (state: GameState, action: Action): GameState => {
         bricks: newBricks,
         score: state.score + 10, // Example score for breaking a brick
       };
-    
+
     /**
      * Action: LOSE_LIFE
      * Decrements a life. If lives reach zero, the game status is set to 'GAME_OVER'.
@@ -223,19 +214,20 @@ export const gameReducer = (state: GameState, action: Action): GameState => {
         },
         gameStatus: GameStatus.IDLE, // Ball waits on paddle after losing a life
       };
-    
+
     /**
      * Action: LEVEL_UP
      * Increments the level, generates new bricks, and resets ball/paddle for the next level.
      */
     case "LEVEL_UP":
       const nextLevel = state.level + 1;
+      const speedMultiplier = 1 + (nextLevel - 1) * 0.1; // Increase speed by 10% each level
 
       // Recalculate dependent constants based on dynamic canvas size
       const PADDLE_WIDTH_LVL_UP = Constants.PADDLE_WIDTH;
       const PADDLE_HEIGHT_LVL_UP = Constants.PADDLE_HEIGHT;
       const PADDLE_START_X_LVL_UP = (state.canvas.width - PADDLE_WIDTH_LVL_UP) / 2;
-      const PADDLE_START_Y_LVL_UP = state.canvas.height - PADDLE_HEIGHT_LVL_UP - 10;
+      const PADDLE_START_Y_LVL_UP = state.canvas.height - PADDLE_HEIGHT_LVL_UP - 20; // Consistent positioning
 
       const BALL_RADIUS_LVL_UP = Constants.BALL_RADIUS;
       const BALL_START_X_LVL_UP = state.canvas.width / 2;
@@ -244,13 +236,13 @@ export const gameReducer = (state: GameState, action: Action): GameState => {
       return {
         ...state,
         level: nextLevel,
-        bricks: createBricks(nextLevel, state.canvas.width), // Generate new bricks for next level with dynamic width
-        ball: { // Reset ball for new level
+        bricks: createBricks(nextLevel, state.canvas.width), // Generate new bricks for next level
+        ball: { // Reset ball for new level with increased speed
           ...state.ball,
           x: BALL_START_X_LVL_UP,
           y: BALL_START_Y_LVL_UP,
-          dx: Constants.BALL_DX,
-          dy: Constants.BALL_DY,
+          dx: Constants.BALL_DX * speedMultiplier,
+          dy: Constants.BALL_DY * speedMultiplier,
         },
         paddle: { // Reset paddle for new level
           ...state.paddle,
@@ -259,14 +251,14 @@ export const gameReducer = (state: GameState, action: Action): GameState => {
         },
         gameStatus: GameStatus.IDLE, // Ball waits on paddle for new level
       };
-    
+
     /**
      * Action: GAME_OVER
      * Explicitly sets the game status to 'GAME_OVER'.
      */
     case "GAME_OVER":
       return { ...state, gameStatus: GameStatus.GAME_OVER };
-    
+
     /**
      * Action: SET_CANVAS_SIZE
      * Updates the canvas dimensions in the state.
@@ -278,7 +270,7 @@ export const gameReducer = (state: GameState, action: Action): GameState => {
 
       // Recalculate paddle's Y position based on new canvas height
       const PADDLE_HEIGHT_NEW = Constants.PADDLE_HEIGHT;
-      const newPaddleY = newCanvasHeight - PADDLE_HEIGHT_NEW; // Paddle's top edge at canvasHeight - PADDLE_HEIGHT
+      const newPaddleY = newCanvasHeight - PADDLE_HEIGHT_NEW - 20; // 20px from bottom
 
       const BALL_RADIUS_NEW = Constants.BALL_RADIUS;
       const newBallY = newPaddleY - BALL_RADIUS_NEW; // Ball's center just above paddle's top
@@ -298,7 +290,7 @@ export const gameReducer = (state: GameState, action: Action): GameState => {
           y: newBallY,
         },
       };
-    
+
     /**
      * Action: SET_PADDLE_Y
      * Updates the vertical position (y) of the paddle.
@@ -312,11 +304,12 @@ export const gameReducer = (state: GameState, action: Action): GameState => {
           y: action.payload.y,
         },
       };
-    
+
     /**
      * Default case: Returns the current state if the action type is not recognized.
      */
     default:
       return state;
   }
+
 };
