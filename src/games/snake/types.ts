@@ -20,6 +20,10 @@ export type Direction = 'UP' | 'DOWN' | 'LEFT' | 'RIGHT';
  */
 export type Coordinate = { x: number; y: number };
 
+export type Difficulty = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+
+export type Difficulty = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+
 /**
  * Represents the entire state of the Snake game at any given moment.
  * @interface SnakeGameState
@@ -42,7 +46,8 @@ export type SnakeGameState = {
   score: number;
   gameOver: boolean;
   gameStarted: boolean;
-  speed: number;
+  speed: number; // Milliseconds per game tick
+  difficulty: Difficulty; // Add difficulty level
 };
 
 /**
@@ -61,10 +66,11 @@ export type SnakeGameState = {
  *
  * @property {'GAME_OVER'} type - Action to set the game status to 'gameOver'.
  */
-export type GameAction = 
-  | { type: 'START_GAME' }
+export type GameAction =
+  | { type: 'START_GAME'; payload?: { difficulty: Difficulty } }
   | { type: 'RESET_GAME' }
   | { type: 'CHANGE_DIRECTION'; payload: Direction }
   | { type: 'MOVE_SNAKE' }
   | { type: 'EAT_FOOD' }
-  | { type: 'GAME_OVER' };
+  | { type: 'GAME_OVER' }
+  | { type: 'SET_DIFFICULTY'; payload: Difficulty };

@@ -27,7 +27,18 @@ const createBricks = (level: number, canvasWidth: number): Brick[] => {
     return bricks;
   }
 
+  // Calculate BRICK_COLUMNS dynamically based on canvasWidth
+  const BRICK_COLUMNS = Math.floor((canvasWidth - 2 * Constants.BRICK_OFFSET_LEFT) / (Constants.BRICK_WIDTH + Constants.BRICK_PADDING));
+  // Calculate BRICK_OFFSET_LEFT dynamically to center the bricks
+  const BRICK_OFFSET_LEFT = (canvasWidth - (BRICK_COLUMNS * (Constants.BRICK_WIDTH + Constants.BRICK_PADDING) - Constants.BRICK_PADDING)) / 2;
+
+  if (BRICK_COLUMNS <= 0 || Constants.BRICK_ROWS <= 0) {
+    return bricks;
+  }
+
   for (let r = 0; r < Constants.BRICK_ROWS; r++) {
+    for (let c = 0; c < BRICK_COLUMNS; c++) {
+      const x = c * (Constants.BRICK_WIDTH + Constants.BRICK_PADDING) + BRICK_OFFSET_LEFT;
     for (let c = 0; c < BRICK_COLUMNS; c++) {
       const x = c * (Constants.BRICK_WIDTH + Constants.BRICK_PADDING) + BRICK_OFFSET_LEFT;
       const y = r * (Constants.BRICK_HEIGHT + Constants.BRICK_PADDING) + Constants.BRICK_OFFSET_TOP;

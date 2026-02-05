@@ -14,10 +14,11 @@ import { GAME_DIMENSIONS, PHYSICS } from '../../utils/flappy_bird_const';
  * @returns {Bird} The initial bird object.
  */
 export const createInitialBird = (): Bird => ({
-  x: 100, // Initial X position of the bird
-  y: GAME_DIMENSIONS.height / 2, // Initial Y position (middle of the screen)
-  velocity: 0, // Initial vertical velocity
-  rotation: 0, // Initial rotation angle
+  x: 100,
+  y: GAME_DIMENSIONS.height / 2,
+  velocity: 0,
+  rotation: 0,
+  isFlapping: false, // Added isFlapping property
 });
 
 /**
@@ -112,15 +113,12 @@ export const updateBirdPhysics = (bird: Bird): Bird => {
   };
 };
 
-/**
- * Updates the horizontal position of pipes and calculates score increases.
- *
- * @param {Pipe[]} pipes - An array of current pipe objects.
- * @param {number} birdX - The bird's current X position, used for scoring.
- * @returns {object} An object containing:
- *   - {Pipe[]} pipes - The updated array of pipe objects (moved and filtered).
- *   - {number} scoreIncrease - The amount by which the score should increase.
- */
+export const birdJump = (bird: Bird): Bird => ({
+  ...bird,
+  velocity: PHYSICS.jumpVelocity,
+  isFlapping: true, // Set isFlapping to true on jump
+});
+
 export const updatePipes = (pipes: Pipe[], birdX: number): { pipes: Pipe[]; scoreIncrease: number } => {
   let scoreIncrease = 0;
   
@@ -158,5 +156,5 @@ export const generatePipesIfNeeded = (pipes: Pipe[], currentTime: number, lastPi
     return [...pipes, createPipe(GAME_DIMENSIONS.width)];
   }
   
-  return pipes; // No new pipe generated
+  return pipes;
 };

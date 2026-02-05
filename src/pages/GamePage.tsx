@@ -63,8 +63,7 @@ const GamePage: React.FC = () => {
       case 'brick-breaker':
         return <BrickBreaker />;
       default:
-        // This case should ideally not be reached due to isValidGameId check.
-        return <Navigate to="/" replace />;
+        return <Navigate to="/games" replace />;
     }
   };
 

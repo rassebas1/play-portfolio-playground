@@ -1,4 +1,3 @@
-
 # Game Development Todo Lists
 
 ## 2048
@@ -33,14 +32,18 @@
 - [x] Display current score and best score
 - [x] Add new game button
 - [x] Create win and game over overlays
+<<<<<<< HEAD
 - [ ] Show undo button (optional)
+=======
+- [x] Show undo button (optional)
+>>>>>>> 21bcb3044ab040547728328613e05bf319a52133
 
 ### Polish
-- [ ] Implement smooth tile sliding animations
-- [ ] Add tile merge animations (pop effect)
-- [ ] Create new tile spawn animation
-- [ ] Design color scheme for different tile values
-- [ ] Store best score in localStorage
+- [x] Implement smooth tile sliding animations
+- [x] Add tile merge animations (pop effect)
+- [x] Create new tile spawn animation
+- [x] Design color scheme for different tile values
+- [x] Store best score in localStorage
 - [ ] Add slide sound effects (optional)
 
 ---
@@ -72,6 +75,7 @@
 ### UI & Controls
 - [x] Handle click/tap to flap
 - [x] Handle spacebar to flap
+- [x] Handle arrow keys for movement
 - [x] Render bird sprite with rotation
 - [x] Draw pipes (top and bottom)
 - [x] Display current score
@@ -88,7 +92,7 @@
 - [ ] Implement flap sound effect
 - [ ] Add score ding sound
 - [ ] Create collision sound
-- [ ] Store high score in localStorage
+- [x] Store high score in localStorage
 - [ ] Add visual feedback for flap action
 
 ---
@@ -113,21 +117,37 @@
 
 ### Game Mechanics
 - [x] Create game loop with setInterval or requestAnimationFrame
+<<<<<<< HEAD
 - [ ] Increase snake speed as it grows (optional)
 - [x] Add score tracking (points per food eaten)
 - [x] Implement high score system
 - [ ] Create different game speeds/difficulty levels
+=======
+- [x] Increase snake speed as it grows (optional)
+- [x] Add score tracking (points per food eaten)
+- [x] Implement high score system
+- [x] Create different game speeds/difficulty levels
+>>>>>>> 21bcb3044ab040547728328613e05bf319a52133
 - [ ] Add walls or wrap-around mode toggle
 
 ### UI & Controls
 - [x] Handle arrow keys for direction change
 - [ ] Alternative WASD keys for direction
+<<<<<<< HEAD
 - [x] Prevent multiple direction changes per frame
 - [x] Render grid-based game board
 - [x] Draw snake segments with distinct head
 - [x] Display food item
 - [x] Show current score and high score
 - [x] Add pause functionality
+=======
+- [ ] Prevent multiple direction changes per frame
+- [x] Render grid-based game board
+- [ ] Draw snake segments with distinct head
+- [x] Display food item
+- [x] Show current score and high score
+- [ ] Add pause functionality
+>>>>>>> 21bcb3044ab040547728328613e05bf319a52133
 - [x] Create start screen
 - [x] Create game over screen with restart
 
@@ -137,7 +157,7 @@
 - [ ] Create food spawn animation
 - [ ] Implement visual feedback when eating food
 - [ ] Add grid lines for clarity
-- [ ] Store high score in localStorage
+- [x] Store high score in localStorage
 - [ ] Add eating sound effect
 - [ ] Create game over sound
 - [ ] Show snake length in UI
@@ -151,7 +171,11 @@
 - [x] Set up useReducer with actions: MAKE_MOVE, SWITCH_PLAYER, SET_WINNER, RESET_GAME, SET_GAME_MODE
 - [x] Initialize empty 3x3 grid
 - [x] Define player symbols (X and O)
+<<<<<<< HEAD
 - [x] Create game mode options (PvP, vs AI)
+=======
+- [ ] Create game mode options (PvP, vs AI)
+>>>>>>> 21bcb3044ab040547728328613e05bf319a52133
 
 ### Core Game Logic
 - [x] Implement move validation (cell is empty and game not over)
@@ -176,11 +200,15 @@
 - [x] Highlight winning combination
 - [x] Display winner or draw message
 - [x] Add reset/new game button
+<<<<<<< HEAD
 - [x] Create game mode selector (PvP vs AI)
+=======
+- [ ] Create game mode selector (PvP vs AI)
+>>>>>>> 21bcb3044ab040547728328613e05bf319a52133
 - [ ] Show game statistics (wins, losses, draws)
 
 ### Polish
-- [ ] Add hover effect on empty cells
+- [x] Add hover effect on empty cells
 - [ ] Implement symbol placement animation
 - [ ] Create winning line animation
 - [ ] Add smooth transitions between states
@@ -213,11 +241,15 @@
 
 ### Game Mechanics
 - [x] Allow flipping only unmatched, non-flipped cards
+<<<<<<< HEAD
 - [x] Prevent flipping during match checking delay
+=======
+- [ ] Prevent flipping during match checking delay
+>>>>>>> 21bcb3044ab040547728328613e05bf319a52133
 - [x] Implement move counter (increment per pair attempt)
 - [x] Add game timer (starts on first flip)
 - [ ] Calculate star rating based on moves (optional)
-- [ ] Create best time/moves tracking
+- [x] Create best time/moves tracking
 
 ### UI & Controls
 - [x] Handle card click to flip
@@ -225,21 +257,25 @@
 - [x] Create card component with front and back
 - [x] Implement card flip animation
 - [x] Display moves counter and timer
+<<<<<<< HEAD
 - [x] Show matched pairs counter
+=======
+- [ ] Show matched pairs counter
+>>>>>>> 21bcb3044ab040547728328613e05bf319a52133
 - [x] Add difficulty selector
 - [x] Create start screen
 - [x] Create victory screen with stats
 - [x] Add restart button
 
 ### Polish
-- [ ] Design card back and front images/patterns
-- [ ] Implement smooth 3D flip animation
+- [x] Design card back and front images/patterns
+- [x] Implement smooth 3D flip animation
 - [ ] Add matched cards celebration effect
 - [ ] Create card shake animation for non-match
 - [ ] Add success sound for matches
 - [ ] Create flip sound effect
 - [ ] Implement victory fanfare
-- [ ] Store best scores per difficulty in localStorage
+- [x] Store best scores per difficulty in localStorage
 - [ ] Add theme options (animals, emojis, colors, etc.)
 - [ ] Create combo/streak system for consecutive matches
 

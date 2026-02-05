@@ -34,6 +34,10 @@ const GameBoard: React.FC<GameBoardProps> = ({ state }) => {
     const canvas = canvasRef.current;
     if (!canvas) return; // Ensure canvas element is available
 
+    // Set canvas dimensions for drawing
+    canvas.width = state.canvas.width;
+    canvas.height = state.canvas.height;
+
     const ctx = canvas.getContext("2d");
     if (!ctx) return; // Ensure 2D rendering context is available
 
@@ -80,10 +84,10 @@ const GameBoard: React.FC<GameBoardProps> = ({ state }) => {
 
   return (
     <canvas
-      ref={canvasRef} // Attach ref to the canvas element
-      width={state.canvas.width} // Set canvas width dynamically
-      height={state.canvas.height} // Set canvas height dynamically
-      style={{ border: "1px solid black", background: "#f0f0f0" }} // Basic styling for the canvas
+      ref={canvasRef}
+      width={state.canvas.width}
+      height={state.canvas.height}
+      style={{ border: "1px solid black", background: "#f0f0f0" }}
     />
   );
 };

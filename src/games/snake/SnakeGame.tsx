@@ -5,7 +5,8 @@ import { Scoreboard } from '@/components/game/Scoreboard';
 import { GameOverModal } from '@/components/game/GameOverModal';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useSwipeGesture } from '@/hooks/useSwipeGesture';
-import { Direction } from './types';
+import { Direction, Difficulty } from './types'; // Import Difficulty
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'; // Import Select components
 
 /**
  * Main component for the Snake game.
@@ -13,15 +14,8 @@ import { Direction } from './types';
  * rendering the game board, controls, and displaying game status and scores.
  */
 const SnakeGame: React.FC = () => {
-  // Destructure state and functions from the custom useSnakeGame hook
-  // state: current game state (snake position, food, score, game over status, etc.)
-  // startGame: function to initiate the game
-  // resetGame: function to reset the game
-  // dispatch: reducer's dispatch function for sending actions
-  // highScore: the highest score recorded for this game
-  const { state, startGame, resetGame, dispatch, highScore } = useSnakeGame();
-  // Destructure specific state variables for easier access
-  const { score, gameOver, gameStarted } = state;
+  const { state, startGame, resetGame, dispatch, setDifficulty, highScore } = useSnakeGame(); // Destructure highScore
+  const { score, gameOver, gameStarted, difficulty } = state;
 
   /**
    * Handles swipe gestures on the game board to change the snake's direction.
@@ -66,10 +60,21 @@ const SnakeGame: React.FC = () => {
           <CardTitle className="text-4xl font-bold mb-2">Snake Game</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col items-center">
-          {/* Scoreboard: Displays current score and the highest score */}
-          {/* score: current game score */}
-          {/* bestScore: highest score recorded for the game (defaults to 0 if null) */}
-          <Scoreboard score={score} bestScore={highScore ?? 0} />
+          <Scoreboard score={score} bestScore={highScore || 0} /> {/* Pass highScore to Scoreboard */}
+
+          <div className="flex items-center space-x-2 mb-4">
+            <label htmlFor="difficulty-select" className="text-lg">Difficulty:</label>
+            <Select onValueChange={(value) => setDifficulty(Number(value) as Difficulty)} value={String(difficulty)}>
+              <SelectTrigger className="w-[100px]">
+                <SelectValue placeholder="Select Difficulty" />
+              </SelectTrigger>
+              <SelectContent>
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((level) => (
+                  <SelectItem key={level} value={String(level)}>{level}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
 
           {/* Game Board: Renders the snake and food, integrates swipe gestures */}
           <div
@@ -82,31 +87,24 @@ const SnakeGame: React.FC = () => {
 
           {/* Game Controls and Status Messages */}
           <div className="mt-4">
-            {/* Start Game Button: Shown when the game has not started and is not over */}
-            {!gameStarted && !gameOver && (
-              <Button
-                onClick={startGame}
-                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-              >
-                Start Game
-              </Button>
-            )}
+            <>
+              {!gameStarted && !gameOver && (
+                <Button
+                  onClick={() => startGame(difficulty)}
+                  className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                >
+                  Start Game
+                </Button>
+              )}
 
-            {/* Game Over Modal: Displays when the game is over */}
-            {gameOver && (
-              <GameOverModal 
-                isGameOver={gameOver} // True if game is over
-                isWon={false}        // Snake game doesn't have a "win" state
-                score={score}        // Final score of the game
-                bestScore={highScore ?? 0} // Highest score recorded
-                restartGame={resetGame} // Function to restart the game
-              />
-            )}
+              {gameOver && (
+                <GameOverModal isGameOver={gameOver} isWon={false} score={score} bestScore={highScore || 0} restartGame={resetGame} />
+              )}
 
-            {/* Instructions for movement: Shown when game is started but not over */}
-            {gameStarted && !gameOver && (
-              <p className="text-gray-400">Use Arrow Keys to Move</p>
-            )}
+              {gameStarted && !gameOver && (
+                <p className="text-gray-400">Use Arrow Keys to Move</p>
+              )}
+            </>
           </div>
         </CardContent>
       </Card>

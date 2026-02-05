@@ -8,7 +8,6 @@
 import { useReducer, useEffect, useRef, useCallback } from "react";
 import { gameReducer, getInitialState } from "../GameReducer";
 import { GameStatus } from "../types";
-import { PADDLE_SPEED } from "../../../utils/brick_breaker_const";
 import {
   updateBallPosition,
   handlePaddleCollision,
@@ -17,9 +16,9 @@ import {
   areAllBricksBroken,
   resetBall,
 } from "../gameLogic";
-import { useHighScores } from '@/hooks/useHighScores';
 import { useWindowSize } from '@/hooks/useWindowSize';
 import { useIsMobile } from '@/hooks/use-mobile'; // Import useIsMobile
+import { useGameInput } from './useGameInput'; // Import the new input hook
 
 /**
  * Custom hook for managing the Brick Breaker game logic and state.
@@ -29,7 +28,7 @@ import { useIsMobile } from '@/hooks/use-mobile'; // Import useIsMobile
  *   - {function(action: Action): void} dispatch - The dispatch function from the reducer, allowing external components to send actions.
  *   - {number | null} highScore - The highest score recorded for this game, or null if none exists.
  */
-export const useBrickBreaker = () => {
+export const useBrickBreaker = (gameBoardRef: RefObject<HTMLDivElement>) => {
   const { width: windowWidth } = useWindowSize(); // Get current window width
   const isMobile = useIsMobile(); // Determine if the device is mobile
 
@@ -54,6 +53,9 @@ export const useBrickBreaker = () => {
   // useHighScores hook integrates persistent high score tracking for the 'brick-breaker' game
   const { highScore, updateHighScore } = useHighScores('brick-breaker');
 
+  // Integrate the new input hook
+  useGameInput({ dispatch, stateRef, isMobile, gameBoardRef });
+
   // Effect to keep stateRef always updated with the latest state
   useEffect(() => {
     stateRef.current = state;
@@ -62,6 +64,17 @@ export const useBrickBreaker = () => {
   // Effect to update canvas size in state when responsive dimensions change
   useEffect(() => {
     dispatch({ type: "SET_CANVAS_SIZE", payload: { width: responsiveCanvasWidth, height: responsiveCanvasHeight } });
+
+    // Calculate and set paddle Y position after canvas size is updated
+    const PADDLE_HEIGHT = stateRef.current.paddle.height; // Get current paddle height
+    const newPaddleY = responsiveCanvasHeight - PADDLE_HEIGHT - 20; // 20 pixels from the bottom
+    dispatch({ type: "SET_PADDLE_Y", payload: { y: newPaddleY } });
+
+    // Calculate and set ball Y position after paddle Y is updated
+    const BALL_RADIUS = stateRef.current.ball.radius; // Get current ball radius
+    const newBallY = newPaddleY - BALL_RADIUS; // Ball starts just above the paddle
+    dispatch({ type: "SET_BALL_Y", payload: { y: newBallY } });
+
   }, [responsiveCanvasWidth, responsiveCanvasHeight, dispatch]);
 
   /**
@@ -112,7 +125,7 @@ export const useBrickBreaker = () => {
       if (stateRef.current.lives - 1 <= 0) {
         dispatch({ type: "GAME_OVER" });
       } else {
-        newBall = resetBall(stateRef.current.paddle, stateRef.current.canvas.height); // Reset ball to paddle for next life
+        newBall = resetBall(stateRef.current.paddle); // Reset ball to paddle for next life
       }
     }
 
@@ -120,7 +133,7 @@ export const useBrickBreaker = () => {
     if (areAllBricksBroken(newBricks.filter(brick => !brick.isBroken))) {
       dispatch({ type: "LEVEL_UP" }); // Dispatch action to level up
       // After level up, bricks are recreated, so reset ball and paddle for next level
-      newBall = resetBall(stateRef.current.paddle, stateRef.current.canvas.height);
+      newBall = resetBall(stateRef.current.paddle);
     }
 
     // Dispatch ball update (only if game is still playing and ball wasn't reset by LOSE_LIFE or LEVEL_UP)
@@ -157,47 +170,6 @@ export const useBrickBreaker = () => {
       updateHighScore(state.score, 'highest');
     }
   }, [state.gameStatus, state.score, updateHighScore]); // Dependencies for game over, current score, and high score update function
-
-  // Effect to handle keyboard input for paddle movement and game control.
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (stateRef.current.gameStatus === GameStatus.PLAYING) {
-        if (e.key === "ArrowLeft") {
-          dispatch({ type: "SET_PADDLE_VELOCITY", payload: { dx: -PADDLE_SPEED } });
-        } else if (e.key === "ArrowRight") {
-          dispatch({ type: "SET_PADDLE_VELOCITY", payload: { dx: PADDLE_SPEED } });
-        }
-      }
-      if (e.key === " ") { // Spacebar to start/pause/resume
-        e.preventDefault(); // Prevent default scroll behavior
-        if (stateRef.current.gameStatus === GameStatus.IDLE) {
-          dispatch({ type: "START_GAME" });
-        } else if (stateRef.current.gameStatus === GameStatus.PLAYING) {
-          dispatch({ type: "PAUSE_GAME" });
-        } else if (stateRef.current.gameStatus === GameStatus.PAUSED) {
-          dispatch({ type: "RESUME_GAME" });
-        }
-      }
-      if (e.key === "r" || e.key === "R") { // 'R' to reset
-        dispatch({ type: "RESET_GAME" });
-      }
-    };
-
-    const handleKeyUp = (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
-        // Stop paddle movement when arrow keys are released
-        dispatch({ type: "SET_PADDLE_VELOCITY", payload: { dx: 0 } });
-      }
-    };
-
-    // Add and remove keyboard event listeners
-    window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("keyup", handleKeyUp);
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("keyup", handleKeyUp);
-    };
-  }, [dispatch]); // Dependency on dispatch for callback stability
 
   // Return the current game state, dispatch function, and high score
   return { state, dispatch, highScore };

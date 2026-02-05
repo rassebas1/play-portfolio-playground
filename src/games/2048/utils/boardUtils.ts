@@ -36,11 +36,12 @@ export const isBoardFull = (board: Board): boolean => {
 /**
  * Initializes the game board with two random tiles.
  */
-export const initializeBoard = (getNextId: () => string): GameState => {
+export const initializeBoard = (getNextId: () => string, initialHighScore: number = 0): GameState => {
   let state: GameState = {
     ...initialState,
     tiles: { ...initialState.tiles },
     byIds: [...initialState.byIds],
+    highScore: initialHighScore, // Set the initial high score
   };
 
   const tile1 = addRandomTile(state.tiles, state.byIds, getNextId());

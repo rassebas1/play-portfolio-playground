@@ -22,36 +22,17 @@ import { Trophy } from 'lucide-react';
  * @returns {JSX.Element} The rendered Memory Game component.
  */
 const MemoryGame: React.FC = () => {
-  // Destructure state and functions from the custom useMemoryGame hook
-  // state: current game state (cards, moves, timer, status, etc.)
-  // highScore: the best time recorded for this game
-  // startGame: function to initiate a new game
-  // flipCard: function to handle card clicks
-  // resetGame: function to reset the game
-  const { state, highScore, startGame, flipCard, resetGame } = useMemoryGame();
+  const { state, startGame, flipCard, resetGame, highScore } = useMemoryGame();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 p-4">
       <div className="max-w-4xl mx-auto">
-        {/* Game Header: Displays the game title and a brief description */}
-        <GameHeader 
+        <GameHeader
           title="Memory Game"
           description="Test your memory by matching pairs of hidden cards."
         />
 
-        {/* Custom Score Display: Shows current moves, current time, and best time */}
-        <div className="grid grid-cols-3 gap-4 mb-6">
-          {/* Card for displaying current moves */}
-          <Card className="text-center bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm text-muted-foreground">Moves</CardTitle>
-            </CardHeader>
-            <CardContent className="pt-0">
-              <div className="text-2xl font-bold text-primary">
-                {state.moves.toLocaleString()}
-              </div>
-            </CardContent>
-          </Card>
+        <Scoreboard score={state.timer} bestScore={highScore ?? 0} />
 
           {/* Card for displaying current game time */}
           <Card className="text-center bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20">
@@ -106,17 +87,15 @@ const MemoryGame: React.FC = () => {
         {/* Game Board: Renders the cards if the game is playing */}
         {state.gameStatus === 'playing' && <GameBoard state={state} onCardClick={flipCard} />}
 
-        {/* Game Over Modal: Displays when the game is won */}
-        <GameOverModal 
-          isGameOver={state.gameStatus === 'won'} // Modal shows if game status is 'won'
-          isWon={true} // Always true for Memory Game's win condition
-          score={state.timer} // Final time is the score
-          bestScore={highScore ?? 0} // Best recorded time
-          restartGame={resetGame} // Function to restart the game
+        <GameOverModal
+          isGameOver={state.gameStatus === 'won'}
+          isWon={true}
+          score={state.timer}
+          bestScore={highScore ?? 0}
+          restartGame={resetGame}
         />
       </div>
     </div>
   );
 };
-
 export default MemoryGame;

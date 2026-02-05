@@ -32,6 +32,7 @@ const BrickBreaker: React.FC = () => {
   };
 
   // Determine if the game is over
+  // Determine if the game is over
   const isGameOver = state.gameStatus === GameStatus.GAME_OVER;
   // Determine if the current level is cleared (assuming this is a "win" for the level)
   const isWon = state.gameStatus === GameStatus.LEVEL_CLEARED; 

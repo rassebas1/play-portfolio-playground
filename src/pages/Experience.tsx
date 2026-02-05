@@ -22,10 +22,8 @@ const Experience: React.FC = () => {
   // State to manage loading status for the Experience section.
   const [loadingExperiences, setLoadingExperiences] = useState(true);
 
-  // Get the current language from i18n instance for dynamic content selection.
-  const currentLanguage = i18n.language as 'en' | 'es' | 'fr';
-
-  // Effect to simulate loading delays for different sections.
+  const currentLanguage = i18n.language.split('-')[0] as 'en' | 'es' | 'fr';
+console.log("exp", experiences)
   useEffect(() => {
     // Simulate loading for Skills section (faster load).
     const skillsTimer = setTimeout(() => {

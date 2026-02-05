@@ -7,8 +7,9 @@
  */
 import { useEffect, useReducer, useCallback } from 'react';
 import { snakeGameReducer, initialSnakeGameState } from '../GameReducer';
-import { Direction, GameAction } from '../types';
-import { useHighScores } from '@/hooks/useHighScores';
+import { Direction, GameAction, Difficulty } from '../types';
+import { useSnakeInput } from './useSnakeInput';
+import { useHighScores } from '@/hooks/useHighScores'; // Import useHighScores
 
 /**
  * Custom hook for managing the Snake game logic and state.
@@ -23,8 +24,10 @@ import { useHighScores } from '@/hooks/useHighScores';
 export const useSnakeGame = () => {
   // useReducer manages the complex state transitions of the game
   const [state, dispatch] = useReducer(snakeGameReducer, initialSnakeGameState);
-  // useHighScores hook integrates persistent high score tracking for the 'snake' game
-  const { highScore, updateHighScore } = useHighScores('snake');
+  const { highScore, updateHighScore } = useHighScores('snake-game'); // Initialize useHighScores
+
+  // Integrate the new input hook
+  useSnakeInput({ dispatch, gameStarted: state.gameStarted, gameOver: state.gameOver });
 
   // Effect for the main game loop: moves the snake at a set interval when the game is playing.
   useEffect(() => {
@@ -41,71 +44,31 @@ export const useSnakeGame = () => {
 
     // Cleanup function: clears the interval when the component unmounts or dependencies change
     return () => clearInterval(gameInterval);
-  }, [state.gameStarted, state.gameOver, state.speed]); // Dependencies ensure effect re-runs when these states change
+  }, [state.gameStarted, state.gameOver, state.speed, dispatch]);
 
-  // Effect to update the high score when the game ends.
+  // Effect to update high score when game is over
   useEffect(() => {
-    if (state.gameOver) {
-      // If the game is over, update the high score using the 'highest' strategy
+    if (state.gameOver && state.score > 0) { // Only update if game is over and score is positive
       updateHighScore(state.score, 'highest');
     }
-  }, [state.gameOver, state.score, updateHighScore]); // Dependencies for game over, current score, and high score update function
+  }, [state.gameOver, state.score, updateHighScore]);
 
-  /**
-   * Memoized callback for handling keyboard input to change the snake's direction.
-   * Prevents direction changes if the game is not started or is over.
-   *
-   * @param {KeyboardEvent} event - The keyboard event object.
-   * @returns {void}
-   */
-  const handleKeyDown = useCallback((event: KeyboardEvent) => {
-    if (!state.gameStarted || state.gameOver) return; // Ignore input if game is not active
-
-    let newDirection: Direction | undefined;
-    switch (event.key) {
-      case 'ArrowUp':
-        newDirection = 'UP';
-        break;
-      case 'ArrowDown':
-        newDirection = 'DOWN';
-        break;
-      case 'ArrowLeft':
-        newDirection = 'LEFT';
-        break;
-      case 'ArrowRight':
-        newDirection = 'RIGHT';
-        break;
-    }
-
-    if (newDirection) {
-      event.preventDefault(); // Prevent default browser scroll behavior for arrow keys
-      dispatch({ type: 'CHANGE_DIRECTION', payload: newDirection }); // Dispatch action to change direction
-    }
-  }, [state.gameStarted, state.gameOver]); // Dependencies for callback stability
-
-  // Effect to add and remove the keyboard event listener.
-  useEffect(() => {
-    document.addEventListener('keydown', handleKeyDown); // Add listener on mount
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown); // Remove listener on unmount
-    };
-  }, [handleKeyDown]); // Dependency on handleKeyDown ensures listener is updated if callback changes
-
-  /**
-   * Memoized callback to start the game.
-   * @returns {void}
-   */
-  const startGame = useCallback(() => {
-    dispatch({ type: 'START_GAME' }); // Dispatch START_GAME action
-  }, []); // No dependencies, stable callback
+  // Actions to expose
+  const startGame = useCallback((difficulty?: Difficulty) => {
+    dispatch({ type: 'START_GAME', payload: { difficulty } });
+  }, []);
 
   /**
    * Memoized callback to reset the game.
    * @returns {void}
    */
   const resetGame = useCallback(() => {
-    dispatch({ type: 'RESET_GAME' }); // Dispatch RESET_GAME action
-  }, []); // No dependencies, stable callback
+    dispatch({ type: 'RESET_GAME' });
+  }, []);
+
+  const setDifficulty = useCallback((difficulty: Difficulty) => {
+    dispatch({ type: 'SET_DIFFICULTY', payload: difficulty });
+  }, []);
 
   // Return the current game state, high score, and action functions
   return {
@@ -113,6 +76,8 @@ export const useSnakeGame = () => {
     highScore,
     startGame,
     resetGame,
-    dispatch, // Expose dispatch for other actions if needed (e.g., from UI buttons)
+    setDifficulty,
+    highScore, // Expose highScore
+    dispatch,
   };
 };

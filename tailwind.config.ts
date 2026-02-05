@@ -91,11 +91,31 @@ export default {
 					to: {
 						height: '0'
 					}
-				}
+				},
+				'scroll-bg': {
+					from: { 'background-position': '0% 0%' },
+					to: { 'background-position': '-200% 0%' }
+				},
+				'bounce': {
+					'0%, 100%': { 'margin-top': '20px' },
+					'50%': { 'margin-top': '0' },
+				},
+				'rotate': {
+					'0%, 100%': { transform: 'rotate(0deg)' },
+					'50%': { transform: 'rotate(45deg)' },
+				},
+				'flap': { // New keyframe for a single flap
+					'0%': { transform: 'rotate(0deg)' },
+					'50%': { transform: 'rotate(45deg)' },
+					'100%': { transform: 'rotate(0deg)' },
+				},
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'scroll-bg': 'scroll-bg 60s linear infinite', // Adjust duration as needed
+				'bounce': 'bounce 1s infinite',
+				'flap': 'flap 0.1s ease-in-out forwards', // Play once, then stay at 100%
 			},
 			transitionProperty: {
 				'transform': 'transform'

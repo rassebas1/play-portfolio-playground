@@ -12,10 +12,10 @@ import type { GamePhysics, GameDimensions } from '@/types/global';
  * @constant {GameDimensions}
  */
 export const GAME_DIMENSIONS: GameDimensions = {
-  width: 400,        // The total width of the game canvas/area in pixels.
-  height: 600,       // The total height of the game canvas/area in pixels.
-  groundHeight: 80,  // The height of the ground element at the bottom of the screen.
-  birdSize: 30,      // The size (width and height) of the bird entity in pixels.
+  width: 400,
+  height: 600,
+  groundHeight: 80,
+  birdSize: 40, // Increased birdSize
 };
 
 /**

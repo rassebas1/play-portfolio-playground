@@ -89,6 +89,7 @@ export const initialSnakeGameState: SnakeGameState = {
   gameOver: false,
   gameStarted: false,
   speed: INITIAL_GAME_SPEED,
+  difficulty: 1, // Default difficulty
 };
 
 /**
@@ -106,15 +107,19 @@ export const snakeGameReducer = (state: SnakeGameState, action: GameAction): Sna
      * Sets the game to started, not over, and resets the score.
      */
     case 'START_GAME':
-      return { ...state, gameStarted: true, gameOver: false, score: 0 };
+      const selectedDifficulty = action.payload?.difficulty || state.difficulty;
+      const newSpeed = INITIAL_GAME_SPEED - (selectedDifficulty - 1) * 20; // Adjust speed based on difficulty
+      return {
+        ...state,
+        gameStarted: true,
+        gameOver: false,
+        score: 0,
+        difficulty: selectedDifficulty,
+        speed: Math.max(50, newSpeed), // Ensure speed doesn't go too low
+      };
 
-    /**
-     * Action: RESET_GAME
-     * Resets the game to its initial state, including generating new food.
-     */
     case 'RESET_GAME':
-      // Generate new food based on the initial snake position
-      return { ...initialSnakeGameState, food: generateRandomFood(initialSnakeGameState.snake) };
+      return { ...initialSnakeGameState, food: generateRandomFood(initialSnakeGameState.snake), difficulty: state.difficulty, speed: state.speed };
 
     /**
      * Action: CHANGE_DIRECTION
@@ -156,8 +161,8 @@ export const snakeGameReducer = (state: SnakeGameState, action: GameAction): Sna
 
       // Check if snake eats food
       if (nextHead.x === state.food.x && nextHead.y === state.food.y) {
-        newFood = generateRandomFood(newSnake); // Generate new food
-        newScore += FOOD_SCORE_INCREMENT; // Increase score
+        newFood = generateRandomFood(newSnake);
+        newScore += state.difficulty; // Score based on difficulty
       } else {
         newSnake.pop(); // Remove tail if no food eaten (snake moves without growing)
       }
@@ -171,9 +176,16 @@ export const snakeGameReducer = (state: SnakeGameState, action: GameAction): Sna
     case 'GAME_OVER':
       return { ...state, gameOver: true, gameStarted: false };
 
-    /**
-     * Default case: Returns the current state if the action type is not recognized.
-     */
+    case 'SET_DIFFICULTY':
+      const newDifficulty = action.payload;
+      const updatedSpeed = INITIAL_GAME_SPEED - (newDifficulty - 1) * 20;
+      return {
+        ...initialSnakeGameState, // Reset to initial state
+        food: generateRandomFood(initialSnakeGameState.snake),
+        difficulty: newDifficulty,
+        speed: Math.max(50, updatedSpeed),
+      };
+
     default:
       return state;
   }

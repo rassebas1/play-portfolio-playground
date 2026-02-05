@@ -32,8 +32,7 @@ const Education: React.FC = () => {
     restDelta: 0.001
   });
 
-  // Get the current language from i18n instance for dynamic content selection.
-  const currentLanguage = i18n.language as 'en' | 'es' | 'fr';
+  const currentLanguage = i18n.language.split('-')[0] as 'en' | 'es' | 'fr';
 
   // Effect to simulate a loading delay and then set loading to false.
   useEffect(() => {

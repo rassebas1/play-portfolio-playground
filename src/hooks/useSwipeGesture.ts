@@ -19,16 +19,7 @@ interface UseSwipeGestureProps {
   minSwipeDistance?: number;
 }
 
-/**
- * Custom React hook for detecting swipe gestures on touch-enabled elements.
- * It provides `onTouchStart` and `onTouchEnd` event handlers that can be
- * attached to a DOM element to enable swipe detection.
- *
- * @param {UseSwipeGestureProps} { onSwipe, minSwipeDistance = 50 } - Props for the hook.
- * @returns {object} An object containing `onTouchStart` and `onTouchEnd` event handlers.
- */
-export const useSwipeGesture = ({ onSwipe, minSwipeDistance = 50 }: UseSwipeGestureProps) => {
-  // State to store the starting X coordinate of a touch event.
+export const useSwipeGesture = ({ onSwipe, minSwipeDistance = 25 }: UseSwipeGestureProps) => {
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
   // State to store the starting Y coordinate of a touch event.
   const [touchStartY, setTouchStartY] = useState<number | null>(null);

@@ -48,8 +48,8 @@ export const EducationCard: React.FC<EducationCardProps> = ({
   years,
   logo,
   hook,
-  skills,
-  courses,
+  skills = [],
+  courses = [],
   project,
 }) => {
   // Ref to attach to the main div for `useInView` to track visibility.
