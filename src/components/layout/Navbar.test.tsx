@@ -1,14 +1,30 @@
 import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Navbar } from './Navbar';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { BrowserRouter, MemoryRouter } from 'react-router-dom';
 
 const mockChangeLanguage = vi.fn();
 // Mock react-i18next
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key) => key, // Return the key as translation
+    t: (key) => {
+      const translations: Record<string, string> = {
+        'Home': 'Home',
+        'Experience': 'Experience',
+        'Education': 'Education',
+        'Games': 'Games',
+        'portfolio': 'Portfolio',
+        'change_language_aria_label': 'Change language',
+        'toggle_menu_aria_label': 'Toggle Menu',
+        'mobile_navigation_aria_label': 'Mobile Navigation',
+        'language.english': 'English',
+        'language.spanish': 'Español',
+        'language.french': 'Français',
+        'language.italian': 'Italiano',
+      };
+      return translations[key] || key;
+    },
     i18n: {
       changeLanguage: mockChangeLanguage,
       language: 'en',
