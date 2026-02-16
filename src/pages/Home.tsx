@@ -12,7 +12,7 @@ import { DeveloperProfile } from '@/components/landing/DeveloperProfile';
  */
 const Home: React.FC = () => {
   // `useTranslation` hook provides access to the translation function `t`.
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
 
   return (
     <div className="container mx-auto px-4 py-16">

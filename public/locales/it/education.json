@@ -1,0 +1,57 @@
+{
+  "education_heading": "Istruzione e Realizzazioni",
+  "master": {
+    "degree": "Laurea Magistrale in Big Data",
+    "hook": "Specializzato in Architetture Cloud, Ingegneria dei Dati e Machine Learning",
+    "courses": {
+      "0": "Machine Learning",
+      "1": "Tecnologie Data Center",
+      "2": "Analisi dei Dati",
+      "3": "Tecniche di Archiviazione e Elaborazione"
+    },
+    "project": {
+      "title": "Machine Learning Leggero per il Riconoscimento del Pesce Giallo"
+    },
+    "description": {
+      "0": "Tesi: 'Machine Learning Leggero per il Riconoscimento del Pesce Giallo'.",
+      "1": "Laurea con Lode."
+    }
+  },
+  "engineer": {
+    "degree": "Laurea in Ingegneria Elettronica",
+    "hook": "Specializzato in sistemi embedded ed elaborazione dei segnali digitali",
+    "courses": {
+      "0": "Elaborazione Digitale delle Immagini",
+      "1": "Progettazione di Sistemi Embedded",
+      "2": "Sistemi di Controllo",
+      "3": "Bio-Nano-Tecnologia"
+    },
+    "project": {
+      "title": "Acquisizione ed Elaborazione del Segnale ECG"
+    },
+    "description": {
+      "0": "Progetti di Elaborazione delle Immagini: Creato un algoritmo per la rilevazione del cancro mammario usando MATLAB. Creato un algoritmo per il tracciamento di oggetti in tempo reale usando OpenCV e MATLAB.",
+      "1": "Progetti di Sistemi Embedded: Sviluppato un orologio a elica usando il microcontrollore ATMEGA16. Progettato un robot che segue linee e ha partecipato con un 4° posto alla competizione internazionale RuniBot usando STM32. Progettato un prototipo per l'acquisizione e l'elaborazione del segnale ECG usando microcontrollore PSoC con visualizzazione su dispositivi Android e archiviazione dati usando Firebase."
+    }
+  },
+  "bachelor": {
+    "degree": "Laurea Triennale",
+    "hook": "Programma trilingue con enfasi sulle scienze",
+    "courses": {
+      "0": "Matematica Avanzata",
+      "1": "Fisica",
+      "2": "Chimica",
+      "3": "Biologia"
+    },
+    "project": {
+      "title": "Coltura di Batteri Bioluminescenti"
+    },
+    "description": {
+      "0": "Programma trilingue: Spagnolo (Nativo), Francese (Baccalaureat), Inglese.",
+      "1": "Diploma di scuola superiore con specializzazione in Matematica, Fisica e Chimica.",
+      "2": "Progetto di Fine Anno: Investigazione e coltura di Batteri Bioluminescenti.",
+      "3": "Membro del club di specializzazione in Matematica.",
+      "4": "Membro della squadra di calcio."
+    }
+  }
+}

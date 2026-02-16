@@ -26,11 +26,11 @@ export interface GameInfo {
   id: GameType;
   name: string;
   description: string;
-  difficulty: 'Easy' | 'Medium' | 'Hard';
-  category: 'Strategy' | 'Arcade' | 'Puzzle';
+  difficulty: string;
+  category: string;
   icon: string;
   color: string;
-  status: 'Ready to Play' | 'Coming Soon';
+  status: string;
 }
 
 /**

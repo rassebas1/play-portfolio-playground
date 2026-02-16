@@ -1,0 +1,27 @@
+{
+  "game_zone_heading": "Game Zone",
+  "ticTacToe": {
+    "name": "Tic Tac Toe",
+    "description": "Classic strategy game for two players. First to get three in a row wins!"
+  },
+  "game2048": {
+    "name": "2048",
+    "description": "Slide numbered tiles to combine them and reach the 2048 tile."
+  },
+  "flappyBird": {
+    "name": "Flappy Bird",
+    "description": "Navigate through pipes by tapping to keep the bird flying."
+  },
+  "snake": {
+    "name": "Snake",
+    "description": "Control a growing snake to eat food while avoiding walls and yourself."
+  },
+  "memoryGame": {
+    "name": "Memory Game",
+    "description": "Test your memory by matching pairs of hidden cards."
+  },
+  "brickBreaker": {
+    "name": "Brick Breaker",
+    "description": "Destroy bricks with a ball and paddle. Break all bricks to clear the level!"
+  }
+}

@@ -14,6 +14,10 @@
     "noEmit": true,
     "jsx": "react-jsx",
 
+    /* JSON Import Support */
+    "resolveJsonModule": true,
+    "allowArbitraryExtensions": true,
+
     /* Linting */
     "strict": false,
     "noUnusedLocals": false,

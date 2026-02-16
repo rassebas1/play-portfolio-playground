@@ -1,0 +1,56 @@
+{
+  "master": {
+    "degree": "TRANSLATION_NEEDED",
+    "hook": "TRANSLATION_NEEDED",
+    "courses": {
+      "0": "TRANSLATION_NEEDED",
+      "1": "TRANSLATION_NEEDED",
+      "2": "TRANSLATION_NEEDED",
+      "3": "TRANSLATION_NEEDED"
+    },
+    "project": {
+      "title": "TRANSLATION_NEEDED"
+    },
+    "description": {
+      "0": "TRANSLATION_NEEDED",
+      "1": "TRANSLATION_NEEDED"
+    }
+  },
+  "engineer": {
+    "degree": "TRANSLATION_NEEDED",
+    "hook": "TRANSLATION_NEEDED",
+    "courses": {
+      "0": "TRANSLATION_NEEDED",
+      "1": "TRANSLATION_NEEDED",
+      "2": "TRANSLATION_NEEDED",
+      "3": "TRANSLATION_NEEDED"
+    },
+    "project": {
+      "title": "TRANSLATION_NEEDED"
+    },
+    "description": {
+      "0": "TRANSLATION_NEEDED",
+      "1": "TRANSLATION_NEEDED"
+    }
+  },
+  "bachelor": {
+    "degree": "TRANSLATION_NEEDED",
+    "hook": "TRANSLATION_NEEDED",
+    "courses": {
+      "0": "TRANSLATION_NEEDED",
+      "1": "TRANSLATION_NEEDED",
+      "2": "TRANSLATION_NEEDED",
+      "3": "TRANSLATION_NEEDED"
+    },
+    "project": {
+      "title": "TRANSLATION_NEEDED"
+    },
+    "description": {
+      "0": "TRANSLATION_NEEDED",
+      "1": "TRANSLATION_NEEDED",
+      "2": "TRANSLATION_NEEDED",
+      "3": "TRANSLATION_NEEDED",
+      "4": "TRANSLATION_NEEDED"
+    }
+  }
+}

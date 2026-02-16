@@ -1,0 +1,58 @@
+{
+  "category": {
+    "languages": "Langues",
+    "frontend": "Frontend",
+    "backend_apis": "Backend et API",
+    "cloud_devops": "Cloud et DevOps",
+    "tools_platforms": "Outils et Plateformes",
+    "methodologies": "Méthodologies"
+  },
+  "language": {
+    "typescript": "TypeScript",
+    "javascript": "JavaScript",
+    "python": "Python",
+    "java": "Java",
+    "sql": "SQL",
+    "html_css": "HTML/CSS",
+    "c_cpp": "C/C++"
+  },
+  "frontend": {
+    "react": "React",
+    "vue": "Vue",
+    "angular": "Angular",
+    "lit_elements": "Lit-Elements",
+    "web_components": "Web Components",
+    "jsx": "JSX"
+  },
+  "backend_apis": {
+    "nodejs": "Node.js",
+    "rest": "REST",
+    "soap": "SOAP",
+    "protobuf": "Protobuf",
+    "wsdl": "WSDL",
+    "swagger_openapi_yaml": "Swagger/OpenAPI (YAML)"
+  },
+  "cloud_devops": {
+    "azure": "Azure (AKS, CI/CD)",
+    "aws": "AWS",
+    "kubernetes": "Kubernetes",
+    "docker": "Docker",
+    "git": "Git",
+    "svn": "SVN"
+  },
+  "tools_platforms": {
+    "ibm_datapower": "IBM DataPower/Integration Toolkit",
+    "weblogic": "WebLogic",
+    "jmeter": "JMeter",
+    "vite": "Vite",
+    "webpack": "Webpack",
+    "rollup": "Rollup",
+    "figma": "Figma"
+  },
+  "methodologies": {
+    "agile_scrum": "Agile/Scrum",
+    "ci_cd": "CI/CD",
+    "micro_frontends": "Micro-Frontends",
+    "system_architecture": "Architecture de système"
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "education_heading": "Education & Achievements",
+  "master": {
+    "degree": "Master of Science in Big Data",
+    "hook": "Specialized in Cloud Architectures, Data Engineering, and Machine Learning",
+    "courses": {
+      "0": "Machine Learning",
+      "1": "Datacenter technologies",
+      "2": "Data analytics",
+      "3": "Storage and processing techniques"
+    },
+    "project": {
+      "title": "Lightweight Machine Learning for Yellowhammer Recognition"
+    },
+    "description": {
+      "0": "Thesis: 'Lightweight Machine Learning for Yellowhammer Recognition'.",
+      "1": "Graduated with Honors."
+    }
+  },
+  "engineer": {
+    "degree": "Electronics Engineer Graduate",
+    "hook": "Focused on embedded systems and digital signal processing",
+    "courses": {
+      "0": "Digital Image Processing",
+      "1": "Embedded Systems Design",
+      "2": "Control Systems",
+      "3": "Bio-Nano-Technology"
+    },
+    "project": {
+      "title": "ECG Signal Acquisition and Processing"
+    },
+    "description": {
+      "0": "Digital Image Processing Projects: Created an algorithm for mamal cancer detection using MATLAB. Created an algorithm for real-time object tracking using OpenCV and MATLAB.",
+      "1": "Embedded Systems Projects: Developed a propeller clock using ATMEGA16 microcontroller. Designed a line-following robot and participated with a 4th position result at RuniBot international Competition using STM32. Designed a prototype for ECG signal acquisition and processing using PSoC microcontroller with visualization on Android Devices and data storage using Firebase."
+    }
+  },
+  "bachelor": {
+    "degree": "Bachelor of Science",
+    "hook": "Trilingual program with emphasis on sciences",
+    "courses": {
+      "0": "Advanced Mathematics",
+      "1": "Physics",
+      "2": "Chemistry",
+      "3": "Biology"
+    },
+    "project": {
+      "title": "Bioluminescent Bacteria Culture"
+    },
+    "description": {
+      "0": "Trilingual program: Spanish (Native), French (Baccalaureat), English.",
+      "1": "High shool diploma with emphasis on Mathematics, Physics, and Chemistry.",
+      "2": "Final Year Project: Investigation and culture of Bioluminiscent Bacteria.",
+      "3": "Member of Mathematics specialization club.",
+      "4": "Member of the Football team."
+    }
+  }
+}

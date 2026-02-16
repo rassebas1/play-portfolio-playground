@@ -2,9 +2,59 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Skills } from '@/components/landing/Skills';
 import { ExperienceCard } from '@/components/landing/ExperienceCard';
-import { experiences } from '@/utils/experience_consts';
 import { Skeleton } from '@/components/ui/skeleton';
 import { motion } from 'framer-motion';
+
+const experienceData = [
+  {
+    company: 'Telefónica – NTT DATA',
+    title: 'nttDataTelefonica.title',
+    date: 'Oct. 2024 – Feb. 2025',
+    activities: [
+      'nttDataTelefonica.activities.0',
+      'nttDataTelefonica.activities.1',
+      'nttDataTelefonica.activities.2',
+    ]
+  },
+  {
+    company: 'Banco Popular – NTT DATA',
+    title: 'nttDataBancoPopular.title',
+    date: 'Jan. 2023 – Sept. 2024',
+    activities: [
+      'nttDataBancoPopular.activities.0',
+      'nttDataBancoPopular.activities.1',
+      'nttDataBancoPopular.activities.2',
+      'nttDataBancoPopular.activities.3',
+      'nttDataBancoPopular.activities.4',
+    ]
+  },
+  {
+    company: 'NTT DATA, Bogotá, Colombia, IBM training program',
+    title: 'nttDataIbm.title',
+    date: 'Oct 2022 – Nov 2022',
+    activities: [
+      'nttDataIbm.activities.0'
+    ]
+  },
+  {
+    company: 'NTT DATA, Bogotá, Colombia, BBVA training program',
+    title: 'nttDataBbva.title',
+    date: 'Aug. 2022 - Sept. 2022',
+    activities: [
+      'nttDataBbva.activities.0'
+    ]
+  },
+  {
+    company: '4CODERS, Bogotá, Colombia',
+    title: '4coders.title',
+    date: 'Set. 2021- Mar. 2022',
+    activities: [
+      '4coders.activities.0',
+      '4coders.activities.1',
+      '4coders.activities.2'
+    ]
+  }
+];
 
 /**
  * Experience component.
@@ -15,15 +65,12 @@ import { motion } from 'framer-motion';
  * @returns {JSX.Element} The rendered experience page.
  */
 const Experience: React.FC = () => {
-  // Hook for internationalization, providing translation function `t` and i18n instance.
-  const { t, i18n } = useTranslation();
-  // State to manage loading status for the Skills section.
+  const { t } = useTranslation(['experience', 'common']);
   const [loadingSkills, setLoadingSkills] = useState(true);
   // State to manage loading status for the Experience section.
   const [loadingExperiences, setLoadingExperiences] = useState(true);
-
-  const currentLanguage = i18n.language.split('-')[0] as 'en' | 'es' | 'fr';
-console.log("exp", experiences)
+  console.log('Experience component rendered. Loading states - Skills:', loadingSkills, 'Experiences:', loadingExperiences);
+  console.log('Experience data:', experienceData);
   useEffect(() => {
     // Simulate loading for Skills section (faster load).
     const skillsTimer = setTimeout(() => {
@@ -97,9 +144,9 @@ console.log("exp", experiences)
             ))
           ) : (
             // Map through experience data and render an ExperienceCard for each entry
-            experiences.map((exp, index) => (
+            experienceData.map((exp, index) => (
               <div
-                key={exp.company + exp.title.en} // Unique key for list rendering
+                key={exp.company + exp.title} // Unique key for list rendering
                 className="animate-fade-in opacity-0" // Apply fade-in animation
                 style={{
                   animationDelay: `${index * 150}ms`, // Stagger animation for each card
@@ -108,9 +155,9 @@ console.log("exp", experiences)
               >
                 <ExperienceCard 
                   company={exp.company}
-                  title={exp.title[currentLanguage]} // Translated job title
+                  title={t(exp.title)} // Translated job title
                   date={exp.date}
-                  activities={exp.activities[currentLanguage]} // Translated activities
+                  activities={exp.activities.map(activity => t(activity))} // Translated activities
                 />
               </div>
             ))

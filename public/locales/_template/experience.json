@@ -1,0 +1,40 @@
+{
+  "nttDataTelefonica": {
+    "title": "TRANSLATION_NEEDED",
+    "activities": {
+      "0": "TRANSLATION_NEEDED",
+      "1": "TRANSLATION_NEEDED",
+      "2": "TRANSLATION_NEEDED"
+    }
+  },
+  "nttDataBancoPopular": {
+    "title": "TRANSLATION_NEEDED",
+    "activities": {
+      "0": "TRANSLATION_NEEDED",
+      "1": "TRANSLATION_NEEDED",
+      "2": "TRANSLATION_NEEDED",
+      "3": "TRANSLATION_NEEDED",
+      "4": "TRANSLATION_NEEDED"
+    }
+  },
+  "nttDataIbm": {
+    "title": "TRANSLATION_NEEDED",
+    "activities": {
+      "0": "TRANSLATION_NEEDED"
+    }
+  },
+  "nttDataBbva": {
+    "title": "TRANSLATION_NEEDED",
+    "activities": {
+      "0": "TRANSLATION_NEEDED"
+    }
+  },
+  "4coders": {
+    "title": "TRANSLATION_NEEDED",
+    "activities": {
+      "0": "TRANSLATION_NEEDED",
+      "1": "TRANSLATION_NEEDED",
+      "2": "TRANSLATION_NEEDED"
+    }
+  }
+}

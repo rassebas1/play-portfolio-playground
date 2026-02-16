@@ -1,0 +1,53 @@
+{
+  "Home": "Inicio",
+  "Experience": "Experiencia",
+  "Education": "Educación",
+  "Games": "Juegos",
+  "main_heading": "Sebastián Espitia Londoño",
+  "intro_paragraph": "Ingeniero de Software con pasión por construir aplicaciones web y juegos modernos.",
+  "experience_heading": "Experiencia y Habilidades",
+  "education_heading": "Educación y Logros",
+  "Skills": "Habilidades",
+  "developer_title": "Ingeniero de Software",
+  "developer_description": "Ingeniero de Software con experiencia en Ingeniería Electrónica y especialización actual en Big Data. Experiencia en arquitecturas web modernas, plataformas de integración seguras y soluciones nativas de la nube, con éxito comprobado en liderar la transformación digital para importantes clientes financieros y de telecomunicaciones.",
+  "key_courses": "Cursos Clave",
+  "signature_project": "Proyecto Destacado",
+  "portfolio": "Portafolio",
+  "language": {
+    "english": "Inglés",
+    "spanish": "Español",
+    "french": "Francés",
+    "italian": "Italiano"
+  },
+  "change_language_aria_label": "Cambiar idioma",
+  "toggle_menu_aria_label": "Abrir menú",
+  "mobile_navigation_aria_label": "Navegación móvil",
+  "game_zone_heading": "Zona de Juegos",
+  "game_zone_intro": "Explora una colección de juegos clásicos y modernos.",
+  "difficulty": {
+    "easy": "Fácil",
+    "medium": "Medio",
+    "hard": "Difícil"
+  },
+  "category": {
+    "strategy": "Estrategia",
+    "puzzle": "Rompecabezas",
+    "arcade": "Arcade"
+  },
+  "status": {
+    "ready_to_play": "Listo para Jugar",
+    "coming_soon": "Próximamente"
+  },
+  "button": {
+    "play_game": "Jugar"
+  },
+  "footer": {
+    "copyright": "Todos los derechos reservados.",
+    "github_aria_label": "Perfil de GitHub",
+    "linkedin_aria_label": "Perfil de LinkedIn"
+  },
+  "not_found": {
+    "message": "¡Oops! Página no encontrada",
+    "return_home": "Volver al inicio"
+  }
+}

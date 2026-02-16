@@ -13,7 +13,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
  */
 export const DeveloperProfile: React.FC = () => {
   // `useTranslation` hook provides access to the translation function `t`.
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
 
   return (
     <Card>

@@ -1,0 +1,58 @@
+{
+  "category": {
+    "languages": "TRANSLATION_NEEDED",
+    "frontend": "TRANSLATION_NEEDED",
+    "backend_apis": "TRANSLATION_NEEDED",
+    "cloud_devops": "TRANSLATION_NEEDED",
+    "tools_platforms": "TRANSLATION_NEEDED",
+    "methodologies": "TRANSLATION_NEEDED"
+  },
+  "language": {
+    "typescript": "TRANSLATION_NEEDED",
+    "javascript": "TRANSLATION_NEEDED",
+    "python": "TRANSLATION_NEEDED",
+    "java": "TRANSLATION_NEEDED",
+    "sql": "TRANSLATION_NEEDED",
+    "html_css": "TRANSLATION_NEEDED",
+    "c_cpp": "TRANSLATION_NEEDED"
+  },
+  "frontend": {
+    "react": "TRANSLATION_NEEDED",
+    "vue": "TRANSLATION_NEEDED",
+    "angular": "TRANSLATION_NEEDED",
+    "lit_elements": "TRANSLATION_NEEDED",
+    "web_components": "TRANSLATION_NEEDED",
+    "jsx": "TRANSLATION_NEEDED"
+  },
+  "backend_apis": {
+    "nodejs": "TRANSLATION_NEEDED",
+    "rest": "TRANSLATION_NEEDED",
+    "soap": "TRANSLATION_NEEDED",
+    "protobuf": "TRANSLATION_NEEDED",
+    "wsdl": "TRANSLATION_NEEDED",
+    "swagger_openapi_yaml": "TRANSLATION_NEEDED"
+  },
+  "cloud_devops": {
+    "azure": "TRANSLATION_NEEDED",
+    "aws": "TRANSLATION_NEEDED",
+    "kubernetes": "TRANSLATION_NEEDED",
+    "docker": "TRANSLATION_NEEDED",
+    "git": "TRANSLATION_NEEDED",
+    "svn": "TRANSLATION_NEEDED"
+  },
+  "tools_platforms": {
+    "ibm_datapower": "TRANSLATION_NEEDED",
+    "weblogic": "TRANSLATION_NEEDED",
+    "jmeter": "TRANSLATION_NEEDED",
+    "vite": "TRANSLATION_NEEDED",
+    "webpack": "TRANSLATION_NEEDED",
+    "rollup": "TRANSLATION_NEEDED",
+    "figma": "TRANSLATION_NEEDED"
+  },
+  "methodologies": {
+    "agile_scrum": "TRANSLATION_NEEDED",
+    "ci_cd": "TRANSLATION_NEEDED",
+    "micro_frontends": "TRANSLATION_NEEDED",
+    "system_architecture": "TRANSLATION_NEEDED"
+  }
+}

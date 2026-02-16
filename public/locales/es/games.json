@@ -1,0 +1,27 @@
+{
+  "game_zone_heading": "Zona de Juegos",
+  "ticTacToe": {
+    "name": "Tres en Raya",
+    "description": "Clásico juego de estrategia para dos jugadores. ¡El primero en conseguir tres en raya gana!"
+  },
+  "game2048": {
+    "name": "2048",
+    "description": "Desliza las fichas numeradas para combinarlas y alcanzar la ficha 2048."
+  },
+  "flappyBird": {
+    "name": "Flappy Bird",
+    "description": "Navega entre tuberías tocando para mantener el pájaro volando."
+  },
+  "snake": {
+    "name": "Serpiente",
+    "description": "Controla una serpiente creciente para comer mientras evitas las paredes y a ti mismo."
+  },
+  "memoryGame": {
+    "name": "Juego de Memoria",
+    "description": "Pon a prueba tu memoria emparejando pares de cartas ocultas."
+  },
+  "brickBreaker": {
+    "name": "Rompe Ladrillos",
+    "description": "¡Destruye ladrillos con una pelota y una paleta. Rompe todos los ladrillos para pasar de nivel!"
+  }
+}

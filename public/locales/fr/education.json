@@ -1,0 +1,57 @@
+{
+  "education_heading": "Éducation et Réalisations",
+  "master": {
+    "degree": "Master of Science en Big Data",
+    "hook": "Spécialisé dans les architectures cloud, l'ingénierie des données et l'apprentissage automatique",
+    "courses": {
+      "0": "Apprentissage automatique",
+      "1": "Technologies de centre de données",
+      "2": "Analyse de données",
+      "3": "Techniques de stockage et de traitement"
+    },
+    "project": {
+      "title": "Apprentissage automatique léger pour la reconnaissance du bruant jaune"
+    },
+    "description": {
+      "0": "Thèse: 'Apprentissage automatique léger pour la reconnaissance du bruant jaune'.",
+      "1": "Diplômé avec mention."
+    }
+  },
+  "engineer": {
+    "degree": "Ingénieur en électronique diplômé",
+    "hook": "Axé sur les systèmes embarqués et le traitement numérique du signal",
+    "courses": {
+      "0": "Traitement d'images numériques",
+      "1": "Conception de systèmes embarqués",
+      "2": "Systèmes de contrôle",
+      "3": "Bio-Nano-Technologie"
+    },
+    "project": {
+      "title": "Acquisition et traitement du signal ECG"
+    },
+    "description": {
+      "0": "Projets de traitement d'images numériques : Création d'un algorithme de détection du cancer du sein à l'aide de MATLAB. Création d'un algorithme de suivi d'objets en temps réel à l'aide d'OpenCV et de MATLAB.",
+      "1": "Projets de systèmes embarqués : Développement d'une horloge à hélice à l'aide du microcontrôleur ATMEGA16. Conception d'un robot suiveur de ligne et participation avec un résultat de 4e position au concours international RuniBot à l'aide de STM32. Conception d'un prototype pour l'acquisition et le traitement du signal ECG à l'aide du microcontrôleur PSoC avec visualisation sur les appareils Android et stockage de données à l'aide de Firebase."
+    }
+  },
+  "bachelor": {
+    "degree": "Baccalauréat scientifique",
+    "hook": "Programme trilingue avec un accent sur les sciences",
+    "courses": {
+      "0": "Mathématiques avancées",
+      "1": "Physique",
+      "2": "Chimie",
+      "3": "Biologie"
+    },
+    "project": {
+      "title": "Culture de bactéries bioluminescentes"
+    },
+    "description": {
+      "0": "Programme trilingue : espagnol (natif), français (baccalauréat), anglais.",
+      "1": "Diplôme d'études secondaires avec une spécialisation en mathématiques, physique et chimie.",
+      "2": "Projet de fin d'études : Enquête et culture de bactéries bioluminescentes.",
+      "3": "Membre du club de spécialisation en mathématiques.",
+      "4": "Membre de l'équipe de football."
+    }
+  }
+}

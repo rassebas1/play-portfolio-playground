@@ -1,9 +1,68 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { skillCategories, skills } from '@/utils/skills_consts';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+
+const skillCategoriesData = {
+  Languages: 'category.languages',
+  Frontend: 'category.frontend',
+  'Backend & APIs': 'category.backend_apis',
+  'Cloud & DevOps': 'category.cloud_devops',
+  'Tools & Platforms': 'category.tools_platforms',
+  Methodologies: 'category.methodologies',
+};
+
+const skillsData = {
+  Languages: [
+    'language.typescript',
+    'language.javascript',
+    'language.python',
+    'language.java',
+    'language.sql',
+    'language.html_css',
+    'language.c_cpp',
+  ],
+  Frontend: [
+    'frontend.react',
+    'frontend.vue',
+    'frontend.angular',
+    'frontend.lit_elements',
+    'frontend.web_components',
+    'frontend.jsx',
+  ],
+  'Backend & APIs': [
+    'backend_apis.nodejs',
+    'backend_apis.rest',
+    'backend_apis.soap',
+    'backend_apis.protobuf',
+    'backend_apis.wsdl',
+    'backend_apis.swagger_openapi_yaml',
+  ],
+  'Cloud & DevOps': [
+    'cloud_devops.azure',
+    'cloud_devops.aws',
+    'cloud_devops.kubernetes',
+    'cloud_devops.docker',
+    'cloud_devops.git',
+    'cloud_devops.svn',
+  ],
+  'Tools & Platforms': [
+    'tools_platforms.ibm_datapower',
+    'tools_platforms.weblogic',
+    'tools_platforms.jmeter',
+    'tools_platforms.vite',
+    'tools_platforms.webpack',
+    'tools_platforms.rollup',
+    'tools_platforms.figma',
+  ],
+  Methodologies: [
+    'methodologies.agile_scrum',
+    'methodologies.ci_cd',
+    'methodologies.micro_frontends',
+    'methodologies.system_architecture',
+  ],
+};
 
 /**
  * Skills component.
@@ -15,9 +74,9 @@ import { useTranslation } from 'react-i18next';
  */
 export const Skills: React.FC = () => {
   // `useTranslation` hook for internationalized category titles.
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation(['skills', 'common']);
   // Get the current language from i18n instance for dynamic content selection.
-  const currentLanguage = i18n.language as 'en' | 'es' | 'fr';
+
 
   // Framer Motion variants for the main container.
   const containerVariants = {
@@ -62,17 +121,17 @@ export const Skills: React.FC = () => {
         initial="hidden" // Start from the 'hidden' state.
         animate="visible" // Animate to the 'visible' state.
       >
-        {/* Iterate through skill categories defined in `skillCategories` */}
-        {Object.entries(skillCategories).map(([categoryKey, categoryNames]) => (
+        {/* Iterate through skill categories defined in `skillCategoriesData` */}
+        {Object.entries(skillCategoriesData).map(([categoryKey, categoryNameKey]) => (
           <motion.div key={categoryKey} variants={categoryVariants}>
             {/* Category Title (translated) */}
-            <h3 className="text-lg font-semibold mb-2">{categoryNames[currentLanguage]}</h3>
+            <h3 className="text-lg font-semibold mb-2">{t(categoryNameKey)}</h3>
             {/* Container for skill badges within the category */}
             <motion.div className="flex flex-wrap gap-2">
               {/* Iterate through skills for the current category */}
-              {skills[categoryKey as keyof typeof skills].map(item => (
-                <motion.div key={item} variants={itemVariants}>
-                  <Badge variant="secondary">{item}</Badge> {/* Render each skill as a badge */}
+              {skillsData[categoryKey as keyof typeof skillsData].map(skillKey => (
+                <motion.div key={skillKey} variants={itemVariants}>
+                  <Badge variant="secondary">{t(skillKey)}</Badge> {/* Render each skill as a badge */}
                 </motion.div>
               ))}
             </motion.div>
