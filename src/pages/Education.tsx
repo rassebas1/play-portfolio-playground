@@ -15,7 +15,7 @@ import { EducationCard } from '@/components/landing/EducationCard';
  */
 const Education: React.FC = () => {
   // Hook for internationalization, providing translation function `t` and i18n instance.
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation('education');
   // State to manage loading status, showing skeletons while true.
   const [loading, setLoading] = useState(true);
   // Ref to the container element for scroll tracking.
@@ -32,7 +32,7 @@ const Education: React.FC = () => {
     restDelta: 0.001
   });
 
-  const currentLanguage = i18n.language.split('-')[0] as 'en' | 'es' | 'fr';
+
 
   // Effect to simulate a loading delay and then set loading to false.
   useEffect(() => {
@@ -78,16 +78,16 @@ const Education: React.FC = () => {
             {/* Map through education data and render an EducationCard for each entry */}
             {education.map((edu) => (
               <EducationCard
-                key={edu.degree.en} // Unique key for list rendering
-                degree={edu.degree[currentLanguage]} // Translated degree
+                key={edu.degree} // Unique key for list rendering
+                degree={t(edu.degree)} // Translated degree
                 university={edu.university}
                 years={edu.years}
                 logo={edu.logo}
-                hook={edu.hook[currentLanguage]} // Translated hook/description
+                hook={t(edu.hook)} // Translated hook/description
                 skills={edu.skills}
-                courses={edu.courses[currentLanguage]} // Translated courses
+                courses={edu.courses.map(course => t(course))} // Translated courses
                 project={{
-                  title: edu.project.title[currentLanguage], // Translated project title
+                  title: t(edu.project.title), // Translated project title
                   thumbnail: edu.project.thumbnail,
                 }}
               />

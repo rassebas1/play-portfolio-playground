@@ -49,7 +49,7 @@ export const Navbar: React.FC = () => {
           <nav aria-label="Desktop navigation" className="hidden md:flex items-center space-x-4 lg:space-x-6">
             {/* Portfolio Logo/Brand Link */}
             <Link to="/" className="mr-6 flex items-center space-x-2">
-              <span className="font-bold inline-block">Portfolio</span>
+              <span className="font-bold inline-block">{t('portfolio')}</span>
             </Link>
             {/* Main Navigation Links */}
             {navItems.map((item) => (
@@ -96,15 +96,15 @@ export const Navbar: React.FC = () => {
                 className="md:hidden" // Only visible on mobile
               >
                 <Menu className="h-6 w-6" /> {/* Hamburger menu icon */}
-                <span className="sr-only">Toggle Menu</span> {/* Screen reader text */}
+                <span className="sr-only">{t('toggle_menu_aria_label')}</span> {/* Hamburger menu icon */} {/* Screen reader text */}
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="w-[300px] sm:w-[400px]">
-              <SheetTitle className="sr-only">Mobile Navigation</SheetTitle>
+              <SheetTitle className="sr-only">{t('mobile_navigation_aria_label')}</SheetTitle>
               <nav className="flex flex-col gap-4 pt-6">
                 {/* Portfolio Logo/Brand Link for Mobile */}
                 <Link to="/" className="mb-4 flex items-center space-x-2">
-                  <span className="font-bold">Portfolio</span>
+                  <span className="font-bold">{t('portfolio')}</span>
                 </Link>
                 {/* Main Navigation Links for Mobile */}
                 {navItems.map((item) => (
@@ -146,20 +146,20 @@ export const Navbar: React.FC = () => {
           {/* Language Selection Dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" aria-label="Change language">
+              <Button variant="ghost" size="icon" aria-label={t('change_language_aria_label')}>
                 <Languages className="h-6 w-6" /> {/* Language icon */}
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               {/* Language Options */}
               <DropdownMenuItem onClick={() => changeLanguage('en')}>
-                <span className="mr-2">🇬🇧</span> English
+                <span className="mr-2">🇬🇧</span> {t('language.english')}
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => changeLanguage('es')}>
-                <span className="mr-2">🇪🇸</span> Español
+                <span className="mr-2">🇪🇸</span> {t('language.spanish')}
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => changeLanguage('fr')}>
-                <span className="mr-2">🇫🇷</span> Français
+                <span className="mr-2">🇫🇷</span> {t('language.french')}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

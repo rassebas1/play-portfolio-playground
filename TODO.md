@@ -61,6 +61,9 @@ This document tracks the features and tasks that need to be completed for the pr
   - [ ] **Move to External Files:** Migrate all translation resources from `src/i18n.ts` into `public/locales/[lang]/[namespace].json` files (e.g., `public/locales/en/common.json`, `public/locales/es/common.json`, `public/locales/en/games.json`).
   - [ ] **Implement `i18next-http-backend`:** Configure `i18next` to use `i18next-http-backend` for asynchronous loading of translation files, improving performance and scalability.
   - [ ] **Define Namespaces:** Explicitly define namespaces in `src/i18n.ts` and update `useTranslation` calls to specify the correct namespace where needed.
+  - [ ] **Manual Refactoring Required:** `src/utils/education_consts.ts` needs to be manually refactored to use translation keys instead of multilingual objects. The page `Education.tsx` has been updated to use the new key-based structure, which will cause a temporary break until this manual refactoring is complete.
+  - [ ] **Manual Refactoring Required:** `src/utils/experience_consts.ts` needs to be manually refactored to use translation keys instead of multilingual objects. The page `Experience.tsx` has been updated to use the new key-based structure, which will cause a temporary break until this manual refactoring is complete.
+  - [ ] **Manual Refactoring Required:** `src/utils/skills_consts.ts` needs to be manually refactored to use translation keys instead of multilingual objects. The page `Skills.tsx` has been updated to use the new key-based structure, which will cause a temporary break until this manual refactoring is complete.
 
 - [ ] **Identify and Translate Hardcoded Strings (Initial Pass - Requires further detailed audit):**
   - **Game-related Strings:**

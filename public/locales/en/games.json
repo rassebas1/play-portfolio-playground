@@ -1,0 +1,14 @@
+{
+  "tic_tac_toe.name": "Tic Tac Toe",
+  "tic_tac_toe.description": "Classic strategy game for two players. First to get three in a row wins!",
+  "game_2048.name": "2048",
+  "game_2048.description": "Slide numbered tiles to combine them and reach the 2048 tile.",
+  "flappy_bird.name": "Flappy Bird",
+  "flappy_bird.description": "Navigate through pipes by tapping to keep the bird flying.",
+  "snake.name": "Snake",
+  "snake.description": "Control a growing snake to eat food while avoiding walls and yourself.",
+  "memory_game.name": "Memory Game",
+  "memory_game.description": "Test your memory by matching pairs of hidden cards.",
+  "brick_breaker.name": "Brick Breaker",
+  "brick_breaker.description": "Destroy bricks with a ball and paddle. Break all bricks to clear the level!"
+}

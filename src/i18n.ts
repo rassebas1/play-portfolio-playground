@@ -9,12 +9,15 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
+import Backend from 'i18next-http-backend'; // Import the backend
 
 // Initialize i18next with various plugins and configuration options.
 i18n
   // Use the LanguageDetector plugin to automatically detect the user's language
   // from the browser, localStorage, or URL.
   .use(LanguageDetector)
+  // Use the Backend plugin to load translations from the server.
+  .use(Backend)
   // Use the initReactI18next plugin to integrate i18next with React components,
   // providing the `useTranslation` hook and `withTranslation` HOC.
   .use(initReactI18next)
@@ -22,6 +25,10 @@ i18n
   .init({
     debug: true, // Enable debug mode to see console logs from i18next (useful during development).
     fallbackLng: 'en', // If a translation is not found for the detected language, fall back to English.
+    // Configure the backend to load translation files from /public/locales
+    backend: {
+      loadPath: '/locales/{{lng}}/{{ns}}.json',
+    },
     interpolation: {
       escapeValue: false, // React already escapes values to prevent XSS, so no need for i18next to do it.
     },

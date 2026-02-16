@@ -16,13 +16,13 @@ import { motion } from 'framer-motion';
  */
 const Experience: React.FC = () => {
   // Hook for internationalization, providing translation function `t` and i18n instance.
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation('experience');
   // State to manage loading status for the Skills section.
   const [loadingSkills, setLoadingSkills] = useState(true);
   // State to manage loading status for the Experience section.
   const [loadingExperiences, setLoadingExperiences] = useState(true);
 
-  const currentLanguage = i18n.language.split('-')[0] as 'en' | 'es' | 'fr';
+
 console.log("exp", experiences)
   useEffect(() => {
     // Simulate loading for Skills section (faster load).
@@ -99,7 +99,7 @@ console.log("exp", experiences)
             // Map through experience data and render an ExperienceCard for each entry
             experiences.map((exp, index) => (
               <div
-                key={exp.company + exp.title.en} // Unique key for list rendering
+                key={exp.company + exp.title} // Unique key for list rendering
                 className="animate-fade-in opacity-0" // Apply fade-in animation
                 style={{
                   animationDelay: `${index * 150}ms`, // Stagger animation for each card
@@ -108,9 +108,9 @@ console.log("exp", experiences)
               >
                 <ExperienceCard 
                   company={exp.company}
-                  title={exp.title[currentLanguage]} // Translated job title
+                  title={t(exp.title)} // Translated job title
                   date={exp.date}
-                  activities={exp.activities[currentLanguage]} // Translated activities
+                  activities={exp.activities.map(activity => t(activity))} // Translated activities
                 />
               </div>
             ))

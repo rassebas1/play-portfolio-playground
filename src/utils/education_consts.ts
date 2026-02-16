@@ -41,104 +41,42 @@
  */
 export const education = [
   {
-    degree: {
-      en: "Master of Science in Big Data",
-      es: "Máster en Big Data",
-      fr: "Master of Science en Big Data"
-    },
+    degree: "education.master.degree",
     university: "Ramon Llull - La Salle University, Barcelona, Spain",
     years: "2025-2026",
     logo: "/LS_logo.jpg",
-    hook: {
-      en: "Specialized in Cloud Architectures, Data Engineering, and Machine Learning",
-      es: "Especializado en Arquitecturas en la Nube, Ingeniería de Datos y Machine Learning",
-      fr: "Spécialisé dans les architectures cloud, l'ingénierie des données et l'apprentissage automatique"
-    },
+    hook: "education.master.hook",
     skills: ["Python", "Spark", "Hadoop", "Azure", "AWS", "GCP"],
-    courses: {
-      en: [
-        "Machine Learning",
-        "Datacenter technologies",
-        "Data analytics",
-        "Storage and processing techniques",
-      ],
-      es: [
-        "Machine Learning",
-        "Tecnologías de Datacenter",
-        "Análisis de datos",
-        "Técnicas de almacenamiento y procesamiento",
-      ],
-      fr: [
-        "Apprentissage automatique",
-        "Technologies de centre de données",
-        "Analyse de données",
-        "Techniques de stockage et de traitement",
-      ]
-    },
+    courses: [
+        "education.master.courses.0",
+        "education.master.courses.1",
+        "education.master.courses.2",
+        "education.master.courses.3"
+    ],
     project: {
-      title: {
-        en: "Lightweight Machine Learning for Yellowhammer Recognition",
-        es: "Machine Learning Ligero para el Reconocimiento del Escribano Cerillo",
-        fr: "Apprentissage automatique léger pour la reconnaissance du bruant jaune"
-      },
+      title: "education.master.project.title",
       thumbnail: "/biodcase_logo.png",
     },
-    description: {
-      en: [
-        "Thesis: 'Lightweight Machine Learning for Yellowhammer Recognition'.",
-        "Graduated with Honors.",
-      ],
-      es: [
-        "Tesis: 'Machine Learning Ligero para el Reconocimiento del Escribano Cerillo'.",
-        "Graduado con Honores.",
-      ],
-      fr: [
-        "Thèse: 'Apprentissage automatique léger pour la reconnaissance du bruant jaune'.",
-        "Diplômé avec mention.",
-      ]
-    }
+    description: [
+        "education.master.description.0",
+        "education.master.description.1"
+    ]
   },
   {
-    degree: {
-      en: "Electronics Engineer Graduate",
-      es: "Ingeniero Electrónico",
-      fr: "Ingénieur en électronique diplômé"
-    },
+    degree: "education.engineer.degree",
     university: "Central University, Bogotá, Colombia",
     years: "2017-2022",
     logo: "/Logo_Ucentral.jpg",
-    hook: {
-      en: "Focused on embedded systems and digital signal processing",
-      es: "Enfocado en sistemas embebidos y procesamiento de señales digitales",
-      fr: "Axé sur les systèmes embarqués et le traitement numérique du signal"
-    },
+    hook: "education.engineer.hook",
     skills: ["C/C++", "MATLAB", "VHDL", "STM32", "PSoC"],
-    courses: {
-      en: [
-        "Digital Image Processing",
-        "Embedded Systems Design",
-        "Control Systems",
-        "Bio-Nano-Technology",
-      ],
-      es: [
-        "Procesamiento Digital de Imágenes",
-        "Diseño de Sistemas Embebidos",
-        "Sistemas de Control",
-        "Bio-Nano-Tecnología",
-      ],
-      fr: [
-        "Traitement d'images numériques",
-        "Conception de systèmes embarqués",
-        "Systèmes de contrôle",
-        "Bio-Nano-Technologie",
-      ]
-    },
+    courses: [
+        "education.engineer.courses.0",
+        "education.engineer.courses.1",
+        "education.engineer.courses.2",
+        "education.engineer.courses.3"
+    ],
     project: {
-      title: {
-        en: "ECG Signal Acquisition and Processing",
-        es: "Adquisición y Procesamiento de Señales ECG",
-        fr: "Acquisition et traitement du signal ECG"
-      },
+      title: "education.engineer.project.title",
       thumbnail: "public/RateHeart.png",
     },
     description: {

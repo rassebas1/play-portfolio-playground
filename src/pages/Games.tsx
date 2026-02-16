@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import type { GameInfo } from '@/types/global';
+import { useTranslation } from 'react-i18next';
 
 /**
  * Array of game information objects.
@@ -14,63 +15,63 @@ import type { GameInfo } from '@/types/global';
 export const games: GameInfo[] = [
   {
     id: 'tic-tac-toe',
-    name: 'Tic Tac Toe',
-    description: 'Classic strategy game for two players. First to get three in a row wins!',
-    difficulty: 'Easy',
-    category: 'Strategy',
+    name: 'tic_tac_toe.name',
+    description: 'tic_tac_toe.description',
+    difficulty: 'common.difficulty.easy',
+    category: 'common.category.strategy',
     icon: '🎯',
     color: 'hsl(var(--game-info))',
-    status: 'Ready to Play',
+    status: 'common.status.ready_to_play',
   },
   {
     id: '2048',
-    name: '2048',
-    description: 'Slide numbered tiles to combine them and reach the 2048 tile.',
-    difficulty: 'Medium',
-    category: 'Puzzle',
+    name: 'game_2048.name',
+    description: 'game_2048.description',
+    difficulty: 'common.difficulty.medium',
+    category: 'common.category.puzzle',
     icon: '🔢',
     color: 'hsl(var(--game-warning))',
-    status: 'Ready to Play',
+    status: 'common.status.ready_to_play',
   },
   {
     id: 'flappy-bird',
-    name: 'Flappy Bird',
-    description: 'Navigate through pipes by tapping to keep the bird flying.',
-    difficulty: 'Hard',
-    category: 'Arcade',
+    name: 'flappy_bird.name',
+    description: 'flappy_bird.description',
+    difficulty: 'common.difficulty.hard',
+    category: 'common.category.arcade',
     icon: '🐦',
     color: 'hsl(var(--game-winner))',
-    status: 'Ready to Play',
+    status: 'common.status.ready_to_play',
   },
   {
     id: 'snake',
-    name: 'Snake',
-    description: 'Control a growing snake to eat food while avoiding walls and yourself.',
-    difficulty: 'Medium',
-    category: 'Arcade',
+    name: 'snake.name',
+    description: 'snake.description',
+    difficulty: 'common.difficulty.medium',
+    category: 'common.category.arcade',
     icon: '🐍',
     color: 'hsl(var(--primary))',
-    status: 'Ready to Play',
+    status: 'common.status.ready_to_play',
   },
   {
     id: 'memory-game',
-    name: 'Memory Game',
-    description: 'Test your memory by matching pairs of hidden cards.',
-    difficulty: 'Easy',
-    category: 'Puzzle',
+    name: 'memory_game.name',
+    description: 'memory_game.description',
+    difficulty: 'common.difficulty.easy',
+    category: 'common.category.puzzle',
     icon: '🧩',
     color: 'hsl(var(--game-danger))',
-    status: 'Ready to Play',
+    status: 'common.status.ready_to_play',
   },
   {
     id: 'brick-breaker',
-    name: 'Brick Breaker',
-    description: 'Destroy bricks with a ball and paddle. Break all bricks to clear the level!',
-    difficulty: 'Medium',
-    category: 'Arcade',
+    name: 'brick_breaker.name',
+    description: 'brick_breaker.description',
+    difficulty: 'common.difficulty.medium',
+    category: 'common.category.arcade',
     icon: '🧱',
     color: 'hsl(var(--game-info))',
-    status: 'Ready to Play',
+    status: 'common.status.ready_to_play',
   },
 ];
 
@@ -82,15 +83,16 @@ export const games: GameInfo[] = [
  * @returns {JSX.Element} The rendered games listing page.
  */
 const Games: React.FC = () => {
+  const { t } = useTranslation();
   return (
     <div className="container mx-auto px-4 py-16">
       {/* Page Header */}
       <div className="text-center mb-20 pt-10">
         <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
-          Game Zone
+          {t('game_zone_heading')}
         </h1>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-10">
-          Explore a collection of classic and modern games.
+          {t('game_zone_intro')}
         </p>
       </div>
       {/* Games Grid */}
@@ -107,7 +109,7 @@ const Games: React.FC = () => {
                 {game.icon}
               </div>
               {/* Game Name */}
-              <CardTitle className="text-2xl mb-2">{game.name}</CardTitle>
+              <CardTitle className="text-2xl mb-2">{t(game.name, { ns: 'games' })}</CardTitle>
               {/* Game Difficulty and Category Badges */}
               <div className="flex justify-center gap-2 mb-4">
                 <Badge
@@ -115,17 +117,17 @@ const Games: React.FC = () => {
                   className="text-xs font-semibold"
                   style={{ borderColor: game.color, color: game.color }} // Dynamic color based on game theme
                 >
-                  {game.difficulty}
+                  {t(game.difficulty, { ns: 'common' })}
                 </Badge>
                 <Badge variant="secondary" className="text-xs font-semibold">
-                  {game.category}
+                  {t(game.category, { ns: 'common' })}
                 </Badge>
               </div>
             </CardHeader>
             <CardContent className="p-6">
               {/* Game Description */}
               <CardDescription className="text-center mb-6">
-                {game.description}
+                {t(game.description, { ns: 'games' })}
               </CardDescription>
               {/* Conditional rendering for "Coming Soon" or "Play Game" button */}
               {game.status === 'Coming Soon' ? (
@@ -134,7 +136,7 @@ const Games: React.FC = () => {
                   size="lg"
                   disabled // Disable button for coming soon games
                 >
-                  Coming Soon
+                  {t('common.status.coming_soon')}
                 </Button>
               ) : (
                 // Link to the game page if it's ready to play
@@ -143,7 +145,7 @@ const Games: React.FC = () => {
                     className="w-full bg-primary hover:bg-primary-glow transition-colors"
                     size="lg"
                   >
-                    Play Game
+                    {t('common.button.play_game')}
                   </Button>
                 </Link>
               )}

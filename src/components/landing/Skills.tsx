@@ -15,9 +15,9 @@ import { useTranslation } from 'react-i18next';
  */
 export const Skills: React.FC = () => {
   // `useTranslation` hook for internationalized category titles.
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation(['common', 'skills']);
   // Get the current language from i18n instance for dynamic content selection.
-  const currentLanguage = i18n.language as 'en' | 'es' | 'fr';
+
 
   // Framer Motion variants for the main container.
   const containerVariants = {
@@ -63,16 +63,16 @@ export const Skills: React.FC = () => {
         animate="visible" // Animate to the 'visible' state.
       >
         {/* Iterate through skill categories defined in `skillCategories` */}
-        {Object.entries(skillCategories).map(([categoryKey, categoryNames]) => (
+        {Object.entries(skillCategories).map(([categoryKey, categoryNameKey]) => (
           <motion.div key={categoryKey} variants={categoryVariants}>
             {/* Category Title (translated) */}
-            <h3 className="text-lg font-semibold mb-2">{categoryNames[currentLanguage]}</h3>
+            <h3 className="text-lg font-semibold mb-2">{t(categoryNameKey)}</h3>
             {/* Container for skill badges within the category */}
             <motion.div className="flex flex-wrap gap-2">
               {/* Iterate through skills for the current category */}
-              {skills[categoryKey as keyof typeof skills].map(item => (
-                <motion.div key={item} variants={itemVariants}>
-                  <Badge variant="secondary">{item}</Badge> {/* Render each skill as a badge */}
+              {skills[categoryKey as keyof typeof skills].map(skillKey => (
+                <motion.div key={skillKey} variants={itemVariants}>
+                  <Badge variant="secondary">{t(skillKey)}</Badge> {/* Render each skill as a badge */}
                 </motion.div>
               ))}
             </motion.div>
