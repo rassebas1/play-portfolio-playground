@@ -16,7 +16,8 @@
   "language": {
     "english": "English",
     "spanish": "Spanish",
-    "french": "French"
+    "french": "French",
+    "italian": "Italian"
   },
   "change_language_aria_label": "Change language",
   "toggle_menu_aria_label": "Toggle Menu",

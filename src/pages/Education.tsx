@@ -2,8 +2,79 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Skeleton } from '@/components/ui/skeleton';
 import { motion, useScroll, useSpring } from 'framer-motion';
-import { education } from '@/utils/education_consts';
 import { EducationCard } from '@/components/landing/EducationCard';
+
+const educationData = [
+  {
+    degree: 'master.degree',
+    university: 'Ramon Llull - La Salle University, Barcelona, Spain',
+    years: '2025-2026',
+    logo: '/LS_logo.jpg',
+    hook: 'master.hook',
+    skills: ['Python', 'Spark', 'Hadoop', 'Azure', 'AWS', 'GCP'],
+    courses: [
+        'master.courses.0',
+        'master.courses.1',
+        'master.courses.2',
+        'master.courses.3'
+    ],
+    project: {
+      title: 'master.project.title',
+      thumbnail: '/biodcase_logo.png',
+    },
+    description: [
+        'master.description.0',
+        'master.description.1'
+    ]
+  },
+  {
+    degree: 'engineer.degree',
+    university: 'Central University, Bogotá, Colombia',
+    years: '2017-2022',
+    logo: '/Logo_Ucentral.jpg',
+    hook: 'engineer.hook',
+    skills: ['C/C++', 'MATLAB', 'VHDL', 'STM32', 'PSoC'],
+    courses: [
+        'engineer.courses.0',
+        'engineer.courses.1',
+        'engineer.courses.2',
+        'engineer.courses.3'
+    ],
+    project: {
+      title: 'engineer.project.title',
+      thumbnail: 'public/RateHeart.png',
+    },
+    description: [
+        'engineer.description.0',
+        'engineer.description.1'
+    ]
+  },
+  {
+    degree: 'bachelor.degree',
+    university: "Lycée Français Louis Pasteur, Bogotá, Colombia",
+    years: '1996-2012',
+    logo: '/LF_logo.jpg',
+    hook: 'bachelor.hook',
+    skills: ['French', 'Physics', 'Chemistry', 'Mathematics'],
+    courses: [
+        'bachelor.courses.0',
+        'bachelor.courses.1',
+        'bachelor.courses.2',
+        'bachelor.courses.3'
+    ],
+    project: {
+      title: 'bachelor.project.title',
+      thumbnail: '/placeholder.svg',
+    },
+    description: [
+        'bachelor.description.0',
+        'bachelor.description.1',
+        'bachelor.description.2',
+        'bachelor.description.3',
+        'bachelor.description.4'
+    ]
+  },
+];
 
 /**
  * Education component.
@@ -14,8 +85,7 @@ import { EducationCard } from '@/components/landing/EducationCard';
  * @returns {JSX.Element} The rendered education page.
  */
 const Education: React.FC = () => {
-  // Hook for internationalization, providing translation function `t` and i18n instance.
-  const { t } = useTranslation('education');
+  const { t } = useTranslation(['education', 'common']);
   // State to manage loading status, showing skeletons while true.
   const [loading, setLoading] = useState(true);
   // Ref to the container element for scroll tracking.
@@ -62,7 +132,7 @@ const Education: React.FC = () => {
         {loading ? (
           <div className="space-y-12">
             {/* Render skeleton placeholders for each education entry */}
-            {Array.from({ length: education.length }).map((_, index) => (
+            {Array.from({ length: educationData.length }).map((_, index) => (
               <div key={index} className="flex items-start gap-4">
                 <Skeleton className="h-12 w-12 rounded-full" /> {/* Placeholder for logo */}
                 <div className="space-y-2 flex-grow">
@@ -76,7 +146,7 @@ const Education: React.FC = () => {
         ) : (
           <div className="space-y-12">
             {/* Map through education data and render an EducationCard for each entry */}
-            {education.map((edu) => (
+            {educationData.map((edu) => (
               <EducationCard
                 key={edu.degree} // Unique key for list rendering
                 degree={t(edu.degree)} // Translated degree

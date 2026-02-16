@@ -161,6 +161,9 @@ export const Navbar: React.FC = () => {
               <DropdownMenuItem onClick={() => changeLanguage('fr')}>
                 <span className="mr-2">🇫🇷</span> {t('language.french')}
               </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => changeLanguage('it')}>
+                <span className="mr-2">🇮🇹</span> {t('language.italian')}
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

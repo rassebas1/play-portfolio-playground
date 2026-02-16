@@ -15,63 +15,63 @@ import { useTranslation } from 'react-i18next';
 export const games: GameInfo[] = [
   {
     id: 'tic-tac-toe',
-    name: 'tic_tac_toe.name',
-    description: 'tic_tac_toe.description',
-    difficulty: 'common.difficulty.easy',
-    category: 'common.category.strategy',
+    name: 'ticTacToe.name',
+    description: 'ticTacToe.description',
+    difficulty: 'difficulty.easy',
+    category: 'category.strategy',
     icon: '🎯',
     color: 'hsl(var(--game-info))',
-    status: 'common.status.ready_to_play',
+    status: 'status.ready_to_play',
   },
   {
     id: '2048',
-    name: 'game_2048.name',
-    description: 'game_2048.description',
-    difficulty: 'common.difficulty.medium',
-    category: 'common.category.puzzle',
+    name: 'game2048.name',
+    description: 'game2048.description',
+    difficulty: 'difficulty.medium',
+    category: 'category.puzzle',
     icon: '🔢',
     color: 'hsl(var(--game-warning))',
-    status: 'common.status.ready_to_play',
+    status: 'status.ready_to_play',
   },
   {
     id: 'flappy-bird',
-    name: 'flappy_bird.name',
-    description: 'flappy_bird.description',
-    difficulty: 'common.difficulty.hard',
-    category: 'common.category.arcade',
+    name: 'flappyBird.name',
+    description: 'flappyBird.description',
+    difficulty: 'difficulty.hard',
+    category: 'category.arcade',
     icon: '🐦',
     color: 'hsl(var(--game-winner))',
-    status: 'common.status.ready_to_play',
+    status: 'status.ready_to_play',
   },
   {
     id: 'snake',
     name: 'snake.name',
     description: 'snake.description',
-    difficulty: 'common.difficulty.medium',
-    category: 'common.category.arcade',
+    difficulty: 'difficulty.medium',
+    category: 'category.arcade',
     icon: '🐍',
     color: 'hsl(var(--primary))',
-    status: 'common.status.ready_to_play',
+    status: 'status.ready_to_play',
   },
   {
     id: 'memory-game',
-    name: 'memory_game.name',
-    description: 'memory_game.description',
-    difficulty: 'common.difficulty.easy',
-    category: 'common.category.puzzle',
+    name: 'memoryGame.name',
+    description: 'memoryGame.description',
+    difficulty: 'difficulty.easy',
+    category: 'category.puzzle',
     icon: '🧩',
     color: 'hsl(var(--game-danger))',
-    status: 'common.status.ready_to_play',
+    status: 'status.ready_to_play',
   },
   {
     id: 'brick-breaker',
-    name: 'brick_breaker.name',
-    description: 'brick_breaker.description',
-    difficulty: 'common.difficulty.medium',
-    category: 'common.category.arcade',
+    name: 'brickBreaker.name',
+    description: 'brickBreaker.description',
+    difficulty: 'difficulty.medium',
+    category: 'category.arcade',
     icon: '🧱',
     color: 'hsl(var(--game-info))',
-    status: 'common.status.ready_to_play',
+    status: 'status.ready_to_play',
   },
 ];
 
@@ -83,7 +83,7 @@ export const games: GameInfo[] = [
  * @returns {JSX.Element} The rendered games listing page.
  */
 const Games: React.FC = () => {
-  const { t } = useTranslation(['common', 'games']);
+  const { t } = useTranslation(['games', 'common']);
   return (
     <div className="container mx-auto px-4 py-16">
       {/* Page Header */}
@@ -136,7 +136,7 @@ const Games: React.FC = () => {
                   size="lg"
                   disabled // Disable button for coming soon games
                 >
-                  {t('common.status.coming_soon')}
+                  {t('status.coming_soon', { ns: 'common' })}
                 </Button>
               ) : (
                 // Link to the game page if it's ready to play

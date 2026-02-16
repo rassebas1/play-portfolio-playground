@@ -1,40 +1,41 @@
 {
+  "experience_heading": "Esperienza e Competenze",
   "nttDataTelefonica": {
-    "title": "Questa sarà una traduzione italiana",
+    "title": "Ingegnere del Software",
     "activities": {
-      "0": "Questa sarà una traduzione italiana",
-      "1": "Questa sarà una traduzione italiana",
-      "2": "Questa sarà una traduzione italiana"
+      "0": "Ho servito come ingegnere front-end principale, fungendo da ponte tra i team aziendali e tecnici traducendo i requisiti del cliente in specifiche tecniche attuabili, mentre guidavo la pianificazione degli sprint, la valutazione dei rischi, la stima degli sforzi e l'implementazione delle funzionalità.",
+      "1": "Ho architettato e eseguito la modernizzazione dell'applicazione di vendita legacy usando Angular, riducendo il tempo del ciclo di sviluppo e migliorando la velocità del team attraverso una progettazione strategica basata sui componenti.",
+      "2": "Ho distribuito l'infrastruttura cloud Azure incorporando il controllo versione, pipeline CI/CD automatizzate e orchestrazione Kubernetes (AKS) per ottimizzare la distribuzione di applicazioni containerizzate, migliorando la frequenza di distribuzione da settimanale a giornaliera."
     }
   },
   "nttDataBancoPopular": {
-    "title": "Questa sarà una traduzione italiana",
+    "title": "Ingegnere del Software",
     "activities": {
-      "0": "Questa sarà una traduzione italiana",
-      "1": "Questa sarà una traduzione italiana",
-      "2": "Questa sarà una traduzione italiana",
-      "3": "Questa sarà una traduzione italiana",
-      "4": "Questa sarà una traduzione italiana"
+      "0": "Ho diretto la pianificazione strategica e la mitigazione dei rischi su più trimestri, tutelando le tempistiche dei progetti e rafforzando la fiducia degli stakeholder affrontando proattivamente i rischi operativi.",
+      "1": "Ho architettato e guidato una soluzione di integrazione cloud ibrida per automatizzare i processi dei clienti, orchestrando servizi on-premises con AWS. Ho applicato una sicurezza robusta tramite DataPower Gateway usando certificati di autenticazione firmati e mutui.",
+      "2": "Ho redatto contratti di servizio completi (WSDL, YAML e SWAGGER) per snellire la collaborazione tra team, garantendo un'integrazione del sistema senza soluzione di continuità e ottenendo l'approvazione del Comitato di Architettura.",
+      "3": "Ho gestito l'intero ciclo di vita dello sviluppo del servizio: ho progettato l'architettura del sistema, gestito le distribuzioni su WebLogic e validato le prestazioni attraverso test rigorosi (unità, carico, stress usando JMeter), con documentazione dettagliata dei processi di progettazione e distribuzione.",
+      "4": "Ho mantenuto e supportato microservizi legacy e pipeline ETL in ambienti di produzione, risolvendo problemi critici modernizzando progressivamente i protocolli di autenticazione e sicurezza usando Java 8."
     }
   },
   "nttDataIbm": {
-    "title": "Questa sarà una traduzione italiana",
+    "title": "Ingenere del Software",
     "activities": {
-      "0": "Questa sarà una traduzione italiana"
+      "0": "Ho sfruttato le tecnologie di integrazione aziendale ricevendo formazione in IBM Toolkit e MuleSoft, e implementando soluzioni API Gateway con sviluppo completo di contratti di servizio in formato WSDL, YAML e SWAGGER."
     }
   },
   "nttDataBbva": {
-    "title": "Questa sarà una traduzione italiana",
+    "title": "Ingegnere del Software",
     "activities": {
-      "0": "Questa sarà una traduzione italiana"
+      "0": "Ho ampliato le competenze di sviluppo front-end attraverso una formazione completa nelle tecnologie moderne dei componenti web, inclusi Web Components, Styled Components e Lit Element, con una solida base nelle tecnologie web fondamentali HTML e CSS."
     }
   },
   "4coders": {
-    "title": "Questa sarà una traduzione italiana",
+    "title": "Ingegnere del Software Junior",
     "activities": {
-      "0": "Questa sarà una traduzione italiana",
-      "1": "Questa sarà una traduzione italiana",
-      "2": "Questa sarà una traduzione italiana"
+      "0": "Ho sviluppato componenti front-end riutilizzabili e modulari usando React e VueJS con TypeScript, implementando componenti basati su librerie npm personalizzate collaborando strettamente con i team di design UX/UI per tradurre template Figma in architetture Micro-Frontend funzionali.",
+      "1": "Ho sviluppato interfacce utente internazionalizzate (i18n) e accessibili (a11y), garantendo un'esperienza utente senza soluzione di continuità in più lingue, regioni e dispositivi.",
+      "2": "Praticante back-end usando NodeJS per microservizi e risposte REST con query SQL."
     }
   }
 }

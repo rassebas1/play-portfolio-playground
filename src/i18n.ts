@@ -20,11 +20,13 @@ i18n
   .init({
     debug: false,
     fallbackLng: 'en',
+    keySeparator: '.',
+    nsSeparator: ':',
     interpolation: {
       escapeValue: false,
     },
     backend: {
-      loadPath: '/locales/{{lng}}/{{ns}}.json',
+      loadPath: '/play-portfolio-playground/locales/{{lng}}/{{ns}}.json',
     },
   });
 

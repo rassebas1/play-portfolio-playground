@@ -1,26 +1,27 @@
 {
+  "game_zone_heading": "Zona Giochi",
   "ticTacToe": {
-    "name": "Questa sarà una traduzione italiana",
-    "description": "Questa sarà una traduzione italiana"
+    "name": "Tic Tac Toe",
+    "description": "Gioco di strategia classico per due giocatori. Chi fa tre in fila vince!"
   },
   "game2048": {
     "name": "2048",
-    "description": "Questa sarà una traduzione italiana"
+    "description": "Fai scorrere le tessere numerate per combinarle e raggiungere la tessera 2048."
   },
   "flappyBird": {
-    "name": "Questa sarà una traduzione italiana",
-    "description": "Questa sarà una traduzione italiana"
+    "name": "Flappy Bird",
+    "description": "Naviga attraverso i tubi toccando per tenere l'uccello in volo."
   },
   "snake": {
-    "name": "Questa sarà una traduzione italiana",
-    "description": "Questa sarà una traduzione italiana"
+    "name": "Serpente",
+    "description": "Controlla un serpente che cresce per mangiare il cibo mentre eviti i muri e te stesso."
   },
   "memoryGame": {
-    "name": "Questa sarà una traduzione italiana",
-    "description": "Questa sarà una traduzione italiana"
+    "name": "Gioco di Memoria",
+    "description": "Metti alla prova la tua memoria abbinando coppie di carte nascoste."
   },
   "brickBreaker": {
-    "name": "Questa sarà una traduzione italiana",
-    "description": "Questa sarà una traduzione italiana"
+    "name": "Distruggi Mattoni",
+    "description": "Distruggi i mattoni con una palla e una racchetta. Distruggi tutti i mattoni per completare il livello!"
   }
 }

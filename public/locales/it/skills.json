@@ -1,11 +1,11 @@
 {
   "category": {
-    "languages": "Questa sarà una traduzione italiana",
-    "frontend": "Questa sarà una traduzione italiana",
-    "backend_apis": "Questa sarà una traduzione italiana",
-    "cloud_devops": "Questa sarà una traduzione italiana",
-    "tools_platforms": "Questa sarà una traduzione italiana",
-    "methodologies": "Questa sarà una traduzione italiana"
+    "languages": "Linguaggi",
+    "frontend": "Frontend",
+    "backend_apis": "Backend & API",
+    "cloud_devops": "Cloud & DevOps",
+    "tools_platforms": "Strumenti & Piattaforme",
+    "methodologies": "Metodologie"
   },
   "language": {
     "typescript": "TypeScript",
@@ -53,6 +53,6 @@
     "agile_scrum": "Agile/Scrum",
     "ci_cd": "CI/CD",
     "micro_frontends": "Micro-Frontends",
-    "system_architecture": "Questa sarà una traduzione italiana"
+    "system_architecture": "Architettura di Sistema"
   }
 }
