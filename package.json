@@ -10,7 +10,9 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "validate:i18n": "tsx scripts/validate-i18n.ts",
+    "prebuild": "npm run validate:i18n"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
@@ -88,6 +90,7 @@
     "lovable-tagger": "^1.1.7",
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.11",
+    "tsx": "^4.21.0",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.0.1",
     "vite": "^7.2.2",

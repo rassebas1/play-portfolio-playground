@@ -1,0 +1,26 @@
+{
+  "ticTacToe": {
+    "name": "Questa sarà una traduzione italiana",
+    "description": "Questa sarà una traduzione italiana"
+  },
+  "game2048": {
+    "name": "2048",
+    "description": "Questa sarà una traduzione italiana"
+  },
+  "flappyBird": {
+    "name": "Questa sarà una traduzione italiana",
+    "description": "Questa sarà una traduzione italiana"
+  },
+  "snake": {
+    "name": "Questa sarà una traduzione italiana",
+    "description": "Questa sarà una traduzione italiana"
+  },
+  "memoryGame": {
+    "name": "Questa sarà una traduzione italiana",
+    "description": "Questa sarà una traduzione italiana"
+  },
+  "brickBreaker": {
+    "name": "Questa sarà una traduzione italiana",
+    "description": "Questa sarà una traduzione italiana"
+  }
+}

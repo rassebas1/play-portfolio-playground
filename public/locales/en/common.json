@@ -13,26 +13,40 @@
   "key_courses": "Key Courses",
   "signature_project": "Signature Project",
   "portfolio": "Portfolio",
-  "language.english": "English",
-  "language.spanish": "Spanish",
-  "language.french": "French",
+  "language": {
+    "english": "English",
+    "spanish": "Spanish",
+    "french": "French"
+  },
   "change_language_aria_label": "Change language",
   "toggle_menu_aria_label": "Toggle Menu",
   "mobile_navigation_aria_label": "Mobile Navigation",
   "game_zone_heading": "Game Zone",
   "game_zone_intro": "Explore a collection of classic and modern games.",
-  "common.difficulty.easy": "Easy",
-  "common.difficulty.medium": "Medium",
-  "common.difficulty.hard": "Hard",
-  "common.category.strategy": "Strategy",
-  "common.category.puzzle": "Puzzle",
-  "common.category.arcade": "Arcade",
-  "common.status.ready_to_play": "Ready to Play",
-  "common.status.coming_soon": "Coming Soon",
-  "common.button.play_game": "Play Game",
-  "footer.copyright": "All rights reserved.",
-  "footer.github_aria_label": "GitHub profile",
-  "footer.linkedin_aria_label": "LinkedIn profile",
-  "not_found.message": "Oops! Page not found",
-  "not_found.return_home": "Return to Home"
+  "difficulty": {
+    "easy": "Easy",
+    "medium": "Medium",
+    "hard": "Hard"
+  },
+  "category": {
+    "strategy": "Strategy",
+    "puzzle": "Puzzle",
+    "arcade": "Arcade"
+  },
+  "status": {
+    "ready_to_play": "Ready to Play",
+    "coming_soon": "Coming Soon"
+  },
+  "button": {
+    "play_game": "Play Game"
+  },
+  "footer": {
+    "copyright": "All rights reserved.",
+    "github_aria_label": "GitHub profile",
+    "linkedin_aria_label": "LinkedIn profile"
+  },
+  "not_found": {
+    "message": "Oops! Page not found",
+    "return_home": "Return to Home"
+  }
 }

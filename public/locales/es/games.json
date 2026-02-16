@@ -1,14 +1,26 @@
 {
-  "tic_tac_toe.name": "Tres en Raya",
-  "tic_tac_toe.description": "Clásico juego de estrategia para dos jugadores. ¡El primero en conseguir tres en raya gana!",
-  "game_2048.name": "2048",
-  "game_2048.description": "Desliza las fichas numeradas para combinarlas y alcanzar la ficha 2048.",
-  "flappy_bird.name": "Flappy Bird",
-  "flappy_bird.description": "Navega entre tuberías tocando para mantener el pájaro volando.",
-  "snake.name": "Serpiente",
-  "snake.description": "Controla una serpiente creciente para comer mientras evitas las paredes y a ti mismo.",
-  "memory_game.name": "Juego de Memoria",
-  "memory_game.description": "Pon a prueba tu memoria emparejando pares de cartas ocultas.",
-  "brick_breaker.name": "Rompe Ladrillos",
-  "brick_breaker.description": "¡Destruye ladrillos con una pelota y una paleta. Rompe todos los ladrillos para pasar de nivel!"
+  "ticTacToe": {
+    "name": "Tres en Raya",
+    "description": "Clásico juego de estrategia para dos jugadores. ¡El primero en conseguir tres en raya gana!"
+  },
+  "game2048": {
+    "name": "2048",
+    "description": "Desliza las fichas numeradas para combinarlas y alcanzar la ficha 2048."
+  },
+  "flappyBird": {
+    "name": "Flappy Bird",
+    "description": "Navega entre tuberías tocando para mantener el pájaro volando."
+  },
+  "snake": {
+    "name": "Serpiente",
+    "description": "Controla una serpiente creciente para comer mientras evitas las paredes y a ti mismo."
+  },
+  "memoryGame": {
+    "name": "Juego de Memoria",
+    "description": "Pon a prueba tu memoria emparejando pares de cartas ocultas."
+  },
+  "brickBreaker": {
+    "name": "Rompe Ladrillos",
+    "description": "¡Destruye ladrillos con una pelota y una paleta. Rompe todos los ladrillos para pasar de nivel!"
+  }
 }

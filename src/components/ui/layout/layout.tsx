@@ -1,5 +1,5 @@
-import { Navbar } from '../layout/Navbar';
-import { Footer } from '../layout/Footer';
+import { Navbar } from '@/components/layout/Navbar';
+import { Footer } from '@/components/layout/Footer';
 import { motion } from 'framer-motion';
 import React, { useState, useEffect } from 'react';
 

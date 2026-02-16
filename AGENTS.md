@@ -43,6 +43,7 @@ npm run lint         # Run ESLint on all files
 
 ### File Organization
 - Components go in `src/components/` (UI components in `src/components/ui/`)
+- UI components are organized into subfolders: `forms/`, `feedback/`, `layout/`, `display/`, `navigation/`, `overlay/`, `interactive/`, `other/`
 - Pages go in `src/pages/`
 - Custom hooks in `src/hooks/`
 - Utilities in `src/lib/` and `src/utils/`
@@ -54,6 +55,7 @@ npm run lint         # Run ESLint on all files
 - Order imports: external libs → internal components/hooks → utilities → types
 - Use named imports: `import { Button } from "@/components/ui/button"`
 - Avoid default exports where possible
+- **DO NOT create `index.ts` files that re-export everything from a folder** - this causes import resolution issues and conflicts. Import components directly with full paths.
 
 ### Naming Conventions
 - **Components**: PascalCase (e.g., `Button.tsx`, `GameHeader.tsx`)
@@ -126,6 +128,134 @@ Component.displayName = "Component"
 - Use Radix UI primitives which are accessible by default
 - Include proper ARIA attributes when building custom components
 - Ensure keyboard navigation works for all interactive elements
+
+## Code Generation Principles (from Gemini.md)
+
+Follow these principles when generating code:
+
+### S.O.L.I.D. Principles
+- **Single Responsibility Principle**: Each component, function, and module should have one clear purpose
+- Apply other S.O.L.I.D. principles as appropriate for React/TypeScript
+
+### Clarity and Readability
+- Write self-documenting code with clear variable and function names
+- Keep code concise without sacrificing clarity
+- Follow consistent formatting (indentation, spacing, line breaks)
+
+### Correctness and Functionality
+- Ensure generated code correctly implements requirements
+- Handle edge cases and invalid inputs appropriately
+- Avoid syntax errors, logical bugs, and common pitfalls
+
+### Maintainability and Extensibility
+- Generate code in small, focused units (functions, components, modules)
+- Minimize dependencies between different parts
+- Design code to be easily extensible
+- Avoid magic numbers/strings - use named constants or config
+
+### Performance and Efficiency
+- Be mindful of computational resources (CPU, memory)
+- Prefer efficient algorithms and data structures where performance matters
+
+### Security
+- Avoid common vulnerabilities (injection, XSS, insecure deserialization)
+- Validate and sanitize all external inputs
+
+### Testability
+- Generate code with clear inputs and outputs for easy unit testing
+- Design components to allow easy mocking during testing
+
+### Documentation
+- Add comments sparingly, focusing on *why* complex logic exists, not *what*
+- Add JSDoc for public interfaces (exported functions, component props)
+
+## Internationalization (i18n)
+
+This project uses i18next with external JSON files for translations.
+
+### Translation File Structure
+
+```
+public/locales/
+├── en/
+│   ├── common.json      # Navigation, footer, common UI strings
+│   ├── experience.json  # Job titles, activities
+│   ├── education.json  # Degrees, courses, descriptions
+│   ├── skills.json    # Skill categories, skills
+│   └── games.json     # Game names, descriptions
+├── es/ (Spanish - complete)
+├── fr/ (French - complete)
+└── it/ (Italian - placeholder)
+```
+
+### Translation Key Format
+
+Keys follow the pattern: `namespace.key.subkey`
+
+Examples:
+- `common.Home` → "Home"
+- `experience.nttDataTelefonica.title` → "Software Engineer"
+- `education.master.degree` → "Master of Science in Big Data"
+- `skills.category.languages` → "Languages"
+
+### Using Translations in Code
+
+**1. In consts files** (e.g., `src/utils/experience_consts.ts`):
+```typescript
+// Use the full key path (namespace.key.subkey)
+export const experiences = [
+  {
+    title: 'experience.nttDataTelefonica.title',
+    activities: [
+      'experience.nttDataTelefonica.activities.0',
+      'experience.nttDataTelefonica.activities.1',
+    ]
+  }
+];
+```
+
+**2. In components**:
+```typescript
+import { useTranslation } from 'react-i18next';
+
+const MyComponent = () => {
+  const { t } = useTranslation('experience'); // Use namespace
+  return <h1>{t('nttDataTelefonica.title')}</h1>;
+};
+```
+
+### Adding New Translations
+
+**Adding new content:**
+1. Add translation to `public/locales/en/[namespace].json`
+2. Add translation to other language files (es, fr, it)
+3. Reference in consts file using key format: `namespace.key`
+
+**Adding a new language:**
+1. Create `public/locales/[lang]/` folder
+2. Copy JSON files from `public/locales/en/`
+3. Translate all values (keep keys unchanged)
+4. Add `[lang]` to `LANGUAGES` array in `scripts/validate-i18n.ts`
+5. Run `npm run validate:i18n` to verify
+
+### Validation
+
+Translation validation runs automatically:
+- **prebuild hook**: `npm run build` automatically runs validation
+- **CI**: GitHub Actions validates on every push
+
+The validation script (`scripts/validate-i18n.ts`) checks:
+- All keys in English exist in all other languages
+- All language files are present
+
+To run validation manually:
+```bash
+npm run validate:i18n
+```
+
+### Deprecated
+
+The previous bundled translation approach (`src/i18n/translations.ts`) is deprecated. All translations are now managed via external JSON files.
 
 ## Key Dependencies
 

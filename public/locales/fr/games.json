@@ -1,14 +1,26 @@
 {
-  "tic_tac_toe.name": "Tic Tac Toe",
-  "tic_tac_toe.description": "Jeu de stratégie classique pour deux joueurs. Le premier à aligner trois symboles gagne !",
-  "game_2048.name": "2048",
-  "game_2048.description": "Faites glisser les tuiles numérotées pour les combiner et atteindre la tuile 2048.",
-  "flappy_bird.name": "Flappy Bird",
-  "flappy_bird.description": "Naviguez entre les tuyaux en tapant pour maintenir l'oiseau en vol.",
-  "snake.name": "Serpent",
-  "snake.description": "Contrôlez un serpent qui grandit en mangeant de la nourriture tout en évitant les murs et lui-même.",
-  "memory_game.name": "Jeu de Mémoire",
-  "memory_game.description": "Testez votre mémoire en associant des paires de cartes cachées.",
-  "brick_breaker.name": "Casse-briques",
-  "brick_breaker.description": "Détruisez les briques avec une balle et une raquette. Cassez toutes les briques pour passer le niveau !"
+  "ticTacToe": {
+    "name": "Tic Tac Toe",
+    "description": "Jeu de stratégie classique pour deux joueurs. Le premier à aligner trois symboles gagne !"
+  },
+  "game2048": {
+    "name": "2048",
+    "description": "Faites glisser les tuiles numérotées pour les combiner et atteindre la tuile 2048."
+  },
+  "flappyBird": {
+    "name": "Flappy Bird",
+    "description": "Naviguez entre les tuyaux en tapant pour maintenir l'oiseau en vol."
+  },
+  "snake": {
+    "name": "Serpent",
+    "description": "Contrôlez un serpent qui grandit en mangeant de la nourriture tout en évitant les murs et lui-même."
+  },
+  "memoryGame": {
+    "name": "Jeu de Mémoire",
+    "description": "Testez votre mémoire en associant des paires de cartes cachées."
+  },
+  "brickBreaker": {
+    "name": "Casse-briques",
+    "description": "Détruisez les briques avec une balle et une raquette. Cassez toutes les briques pour passer le niveau !"
+  }
 }

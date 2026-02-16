@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
  * @returns {JSX.Element} The rendered 404 Not Found page.
  */
 const NotFound = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
   // `useLocation` hook from React Router DOM to get the current URL location.
   const location = useLocation();
 

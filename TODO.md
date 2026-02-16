@@ -6,6 +6,8 @@ This document tracks the features and tasks that need to be completed for the pr
 
 ### New Games
 - [x] **Snake Game:** Fully implemented with core logic, state management (reducer), and integrated into the application.
+- [x] **Memory Game:** Fully implemented with difficulty levels and best score tracking.
+- [x] **Brick Breaker:** Fully implemented with paddle, ball physics, brick destruction, and level progression.
 
 ### Refactoring & Component Extraction
 - [x] **Tic Tac Toe:** Extracted `GameHeader`, `GameStatus`, and `GameRules` components.
@@ -33,20 +35,25 @@ This document tracks the features and tasks that need to be completed for the pr
 - [x] Created separate pages for Home, Games, and Experience.
 - [x] Added a navigation bar.
 
+### Internationalization (i18n)
+- [x] Implemented i18n with JSON locale files in `public/locales/[lang]/`
+- [x] Configured `i18next-http-backend` for async loading
+- [x] Set up namespaces (common, skills, experience, education, games)
+- [x] Migrated skills, experience, and education constants to use translation keys
+
 ### Documentation
 - [x] Updated `README.md` with comprehensive details.
 - [x] Added inline comments to clarify complex logic.
+- [x] Created AGENTS.md for agentic coding guidelines.
 
 ---
 
 ## 🚀 Future Features & Enhancements
 
 ### New Games
-- [x] Implement the "Memory" game.
-- [x] Implement the "Tetris" game.
-- [x] Implement the "Minesweeper" game.
-- [x] Implement the "Brick Breaker" game.
-- [ ] Implement the "Tower Defense" game.
+- [ ] Implement the **Tetris** game
+- [ ] Implement the **Minesweeper** game
+- [ ] Implement the **Tower Defense** game
 
 ### Mobile Enhancements (Touch Controls)
 - [x] **Snake:** Implement swipe gestures on the game board for direction control.
@@ -55,172 +62,39 @@ This document tracks the features and tasks that need to be completed for the pr
 - [x] **Tic-Tac-Toe:** Ensure tap input is robust and responsive for mobile devices.
 - [x] **Brick Breaker:** Implement touch controls for paddle movement (e.g., drag or tap left/right halves of the screen).
 
-### Internationalization (i18n)
-
-- [ ] **Refactor Translation Setup:**
-  - [ ] **Move to External Files:** Migrate all translation resources from `src/i18n.ts` into `public/locales/[lang]/[namespace].json` files (e.g., `public/locales/en/common.json`, `public/locales/es/common.json`, `public/locales/en/games.json`).
-  - [ ] **Implement `i18next-http-backend`:** Configure `i18next` to use `i18next-http-backend` for asynchronous loading of translation files, improving performance and scalability.
-  - [ ] **Define Namespaces:** Explicitly define namespaces in `src/i18n.ts` and update `useTranslation` calls to specify the correct namespace where needed.
-  - [ ] **Manual Refactoring Required:** `src/utils/education_consts.ts` needs to be manually refactored to use translation keys instead of multilingual objects. The page `Education.tsx` has been updated to use the new key-based structure, which will cause a temporary break until this manual refactoring is complete.
-  - [ ] **Manual Refactoring Required:** `src/utils/experience_consts.ts` needs to be manually refactored to use translation keys instead of multilingual objects. The page `Experience.tsx` has been updated to use the new key-based structure, which will cause a temporary break until this manual refactoring is complete.
-  - [ ] **Manual Refactoring Required:** `src/utils/skills_consts.ts` needs to be manually refactored to use translation keys instead of multilingual objects. The page `Skills.tsx` has been updated to use the new key-based structure, which will cause a temporary break until this manual refactoring is complete.
-
-- [ ] **Identify and Translate Hardcoded Strings (Initial Pass - Requires further detailed audit):**
-  - **Game-related Strings:**
-    - `TicTacToe.tsx`: "Game Board"
-    - `GameRules.tsx`: "How to Play", "Rules:", "• Players take turns placing X or O", "• First player to get 3 in a row wins", "• Rows, columns, or diagonals count", "• If all cells are filled, it&apos;s a draw", "Strategy Tips:", "• Control the center when possible", "• Block opponent&apos;s winning moves", "• Create multiple winning opportunities", "• Think ahead and plan your moves"
-    - `GameStatus.tsx`: "Game Status"
-    - `SnakeGame.tsx`: "Snake Game", "Difficulty:", "Use Arrow Keys to Move"
-    - `MemoryGame.tsx`: "Time", "Easy", "Medium", "Hard", "Start Game", "Reset Game", "?"
-    - `FlappyBird.tsx`: "Desktop:", "Press SPACE or ↑ arrow key to jump", "Mobile:", "Tap the game area to jump"
-    - `GameArea.tsx`: "Flappy Bird", "Click or tap to start!", "Keep clicking to stay airborne"
-    - `BrickBreaker.tsx`: "Use **Arrow Left** and **Arrow Right** to move the paddle.", "Press **SPACEBAR** to start, pause, or resume the game.", "Press **R** to reset the game."
-    - `Game2048.tsx`: "Join the tiles, get to ", "2048!", "Use arrow keys or ", "Swipe or tap buttons to ", "move tiles. Combine tiles with the same number to reach ", "2048"
-    - `GameOverModal.tsx`: "Final Score"
-    - `Scoreboard.tsx`: "Score"
-
-  - **UI/Navigation Strings:**
-    - `NotFound.tsx`: "404", "Oops! Page not found"
-    - `Navbar.tsx`: "Portfolio", "English", "Español", "Français"
-
-  - **Landing Page/Developer Profile Strings:**
-    - `WhatImLearning.tsx`: "Cloud Architecture (AWS, Azure)", "Data Pipelines (Spark, Kafka)", "Machine Learning (Pytorch, TensorFlow, Keras)"
-    - `DeveloperProfile.tsx`: "SEL" (fallback text)
-
 ### Game-specific Improvements
 
 #### Snake
-
 - [x] Implement difficulty selection (1-9).
 - [x] Adjust points per eaten food based on difficulty.
 - [x] Adjust snake speed based on difficulty.
 
 #### Memory Game
-
 - [x] Create best time/moves tracking
 - [x] Store best scores per difficulty in localStorage
 
 #### Tetris
-
-##### Setup & State Management
-    - [ ] Create initial game state structure (board grid, current piece, next piece, score, level, game status)
-    - [ ] Set up useReducer with actions: START_GAME, MOVE_PIECE, ROTATE_PIECE, DROP_PIECE, CLEAR_LINES, GAME_OVER, PAUSE_GAME
-    - [ ] Define tetromino shapes (I, O, T, S, Z, J, L pieces) with rotation states
-    - [ ] Initialize 10x20 game board grid
-
- ##### Core Game Logic
-    - [ ] Implement piece spawning logic (random piece generation)
-    - [ ] Create collision detection system (walls, floor, other pieces)
-    - [ ] Implement horizontal movement (left/right) with collision checks
-    - [ ] Implement rotation logic with wall kicks
-    - [ ] Add soft drop (faster fall) and hard drop (instant drop) mechanics
-    - [ ] Implement line clearing detection and scoring
-    - [ ] Create gravity system (automatic piece falling based on level)
-
-##### Game Mechanics
-    - [ ] Add scoring system (points for lines cleared, bonus for combos)
-    - [ ] Implement level progression (speed increases)
-    - [ ] Create "ghost piece" preview (shows where piece will land)
-    - [ ] Add next piece preview display
-    - [ ] Implement hold piece functionality (optional)
-    - [ ] Add game over detection (piece can't spawn)
-
-##### UI & Controls
-    - [ ] Create keyboard controls (arrow keys, space, P for pause)
-    - [ ] Build game board rendering component
-    - [ ] Design score, level, and next piece display
-    - [ ] Add pause/resume functionality
-    - [ ] Create start screen and game over screen
-    - [ ] Add restart button
-
-##### Polish
-    - [ ] Implement smooth animations for piece movement
-    - [ ] Add visual feedback for line clears
-    - [ ] Create sound effects (optional)
-    - [ ] Add color schemes for different tetrominoes
-    - [ ] Implement local high score storage
-
+- [ ] Implement the Tetris game following the project structure conventions
 
 #### Minesweeper
-
-##### Setup & State Management
-- [ ] Create initial game state (board, revealed cells, flagged cells, mine positions, game status, timer)
-- [ ] Set up useReducer with actions: START_GAME, REVEAL_CELL, FLAG_CELL, GAME_WIN, GAME_LOSE, RESET_GAME
-- [ ] Define difficulty levels (Beginner: 9x9/10 mines, Intermediate: 16x16/40 mines, Expert: 16x30/99 mines)
-- [ ] Create cell data structure (isMine, isRevealed, isFlagged, adjacentMines)
-
-##### Core Game Logic
-- [ ] Implement mine placement algorithm (random, avoid first click)
-- [ ] Create adjacent mines calculation for all cells
-- [ ] Implement flood fill algorithm for revealing empty cells
-- [ ] Add flag/unflag cell functionality
-- [ ] Create win condition checker (all non-mine cells revealed)
-- [ ] Implement lose condition (mine revealed)
-
-##### Game Mechanics
-- [ ] Add first-click safety (ensure first click is always safe)
-- [ ] Implement chord/double-click reveal (reveal adjacent cells if flags match number)
-- [ ] Create mine counter (total mines - flags placed)
-- [ ] Add game timer (starts on first click)
-- [ ] Prevent actions after game over
-
-##### UI & Controls
-- [ ] Handle left-click to reveal cells
-- [ ] Handle right-click to flag cells
-- [ ] Build board grid rendering component
-- [ ] Create cell component with different states (hidden, revealed, flagged, mine, number)
-- [ ] Design mine counter and timer display
-- [ ] Add difficulty selector
-- [ ] Create face button (reset game, shows emoji based on game state)
-
-##### Polish
-- [ ] Add number colors (1-8 different colors)
-- [ ] Implement mine reveal animation on game over
-- [ ] Add flag and mine icons/emojis
-- [ ] Create victory and defeat screens
-- [ ] Add local best time storage per difficulty
-- [ ] Implement question mark flag option (optional)
+- [ ] Implement the Minesweeper game following the project structure conventions
 
 #### Brick Breaker
 
-##### Setup & State Management
-- [x] Create initial game state (paddle, ball, bricks, score, lives, level, game status)
-- [x] Set up useReducer with actions: START_GAME, UPDATE_PADDLE, UPDATE_BALL, BREAK_BRICK, LOSE_LIFE, LEVEL_UP, GAME_OVER, PAUSE_GAME
-- [x] Define game constants (canvas size, paddle size, ball size, brick dimensions)
-- [x] Initialize brick layout patterns for different levels
-
-##### Core Game Logic
-- [x] Implement paddle movement (follows mouse or keyboard)
-- [x] Create ball physics (position, velocity, direction)
-- [x] Implement ball-paddle collision detection and angle calculation
-- [x] Add ball-brick collision detection (top, bottom, sides)
-- [x] Create ball-wall collision (left, right, top)
-- [x] Implement brick breaking and removal
-- [x] Add ball-out-of-bounds detection (lose life)
-
 ##### Game Mechanics
-- [x] Create game loop with requestAnimationFrame
-- [x] Implement scoring system (different brick types = different points)
-- [x] Add lives system (start with 3 lives)
-- [x] Create level progression (clear all bricks = next level)
 - [ ] Implement multiple brick types:
-    - [ ] Normal bricks (1 hit)
-    - [ ] Strong bricks (2 hits)
-    - [ ] Unbreakable bricks
+  - [ ] Normal bricks (1 hit)
+  - [ ] Strong bricks (2 hits)
+  - [ ] Unbreakable bricks
 - [ ] Add power-ups:
-    - [ ] Multi-ball
-    - [ ] Wider paddle
-    - [ ] Laser
-    - [ ] Slow ball
+  - [ ] Multi-ball
+  - [ ] Wider paddle
+  - [ ] Laser
+  - [ ] Slow ball
 - [ ] Increase ball speed gradually
 
 ##### UI & Controls
 - [ ] Handle mouse movement for paddle control
-- [x] Add keyboard controls (arrow keys or A/D)
-- [x] Render paddle, ball, and bricks on canvas
-- [x] Display score, lives, and level
-- [x] Create start ball on paddle state (click/space to launch)
-- [x] Add pause functionality
 - [ ] Create game over screen
 - [ ] Create level complete screen
 
@@ -233,8 +107,8 @@ This document tracks the features and tasks that need to be completed for the pr
 - [ ] Add visual feedback for paddle hits (e.g., paddle flashes, ball changes color/speed temporarily)
 - [ ] Create multiple level layouts with increasing difficulty
 
-
 #### Tower Defense
+- [ ] Implement the Tower Defense game (see project structure for guidance)
 
 ##### Setup & State Management
 - [ ] Create initial game state (towers, enemies, path, gold, lives, wave, game status)
@@ -291,9 +165,14 @@ This document tracks the features and tasks that need to be completed for the pr
 - [ ] Implement sound effects and background music
 - [ ] Save/load game progress (optional)
 
-- [ ] **2048:** Add a "You Win!" message that is more subtle and allows the user to continue playing without a modal.
-- [ ] **Flappy Bird:** Add a "Ready, Set, Go!" countdown before the game starts.
-- [ ] **Tic-Tac-Toe:** Add an AI opponent.
+#### 2048
+- [ ] Add a "You Win!" message that is more subtle and allows the user to continue playing without a modal.
+
+#### Flappy Bird
+- [ ] Add a "Ready, Set, Go!" countdown before the game starts.
+
+#### Tic-Tac-Toe
+- [ ] Add an AI opponent.
 
 ### Animations
 - [ ] **Tic Tac Toe:** Animate 'X'/'O' appearance, winning line, and reset button.
@@ -313,10 +192,6 @@ This document tracks the features and tasks that need to be completed for the pr
 - [ ] **Empty States Design:** Create user-friendly designs for sections where content might be missing (e.g., "No high scores yet," "No games found").
 - [ ] **Reduced Motion Preference:** Implement support for `prefers-reduced-motion` to respect user preferences for less animation, enhancing accessibility and user comfort.
 
-### Backend Features
-- [ ] Add a backend to store high scores and user profiles.
-- [ ] Implement user authentication.
-
 ### Code Quality and Maintenance
 - [ ] Write unit tests for game logic.
 - [ ] Develop integration tests for UI components.
@@ -324,16 +199,10 @@ This document tracks the features and tasks that need to be completed for the pr
 
 ---
 
-## 💡 Frontend Development TODOs (Senior Dev + UX/UI Expert Collaboration)
-
-### UX/UI & Design System
-- [ ] Conduct a comprehensive UX/UI audit.
-- [ ] Collaborate with UX/UI designer for user research, personas, and user journeys.
-- [ ] Establish and integrate a robust design system (e.g., Storybook, Figma tokens).
-- [ ] Implement subtle animations and micro-interactions based on UX/UI specifications.
+## 💡 Accessibility & Performance
 
 ### Performance & Accessibility (a11y)
-- [x] Perform an accessibility review (WCAG 2.1 AA) and implement necessary changes to ensure the application is usable by individuals with disabilities. *(Marked as [x] as a general goal, but specific tasks are added below)*
+- [x] Perform an accessibility review (WCAG 2.1 AA) as a general goal
 - [ ] Implement ARIA attributes for custom components and dynamic content.
 - [ ] Ensure comprehensive keyboard navigation and focus management for all interactive elements.
 - [ ] Verify sufficient color contrast ratios for all text and UI elements.
@@ -343,9 +212,6 @@ This document tracks the features and tasks that need to be completed for the pr
 
 ### Responsiveness & Compatibility
 - [ ] Ensure full cross-browser compatibility.
-
-### Testing & Iteration
-- [ ] Set up and conduct A/B tests for new features or design changes.
 
 ### Code Quality & Architecture
 - [ ] Review and potentially refactor the application's state management strategy.

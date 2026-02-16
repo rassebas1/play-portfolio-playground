@@ -1,0 +1,56 @@
+{
+  "master": {
+    "degree": "Questa sarà una traduzione italiana",
+    "hook": "Questa sarà una traduzione italiana",
+    "courses": {
+      "0": "Questa sarà una traduzione italiana",
+      "1": "Questa sarà una traduzione italiana",
+      "2": "Questa sarà una traduzione italiana",
+      "3": "Questa sarà una traduzione italiana"
+    },
+    "project": {
+      "title": "Questa sarà una traduzione italiana"
+    },
+    "description": {
+      "0": "Questa sarà una traduzione italiana",
+      "1": "Questa sarà una traduzione italiana"
+    }
+  },
+  "engineer": {
+    "degree": "Questa sarà una traduzione italiana",
+    "hook": "Questa sarà una traduzione italiana",
+    "courses": {
+      "0": "Questa sarà una traduzione italiana",
+      "1": "Questa sarà una traduzione italiana",
+      "2": "Questa sarà una traduzione italiana",
+      "3": "Questa sarà una traduzione italiana"
+    },
+    "project": {
+      "title": "Questa sarà una traduzione italiana"
+    },
+    "description": {
+      "0": "Questa sarà una traduzione italiana",
+      "1": "Questa sarà una traduzione italiana"
+    }
+  },
+  "bachelor": {
+    "degree": "Questa sarà una traduzione italiana",
+    "hook": "Questa sarà una traduzione italiana",
+    "courses": {
+      "0": "Questa sarà una traduzione italiana",
+      "1": "Questa sarà una traduzione italiana",
+      "2": "Questa sarà una traduzione italiana",
+      "3": "Questa sarà una traduzione italiana"
+    },
+    "project": {
+      "title": "Questa sarà una traduzione italiana"
+    },
+    "description": {
+      "0": "Questa sarà una traduzione italiana",
+      "1": "Questa sarà una traduzione italiana",
+      "2": "Questa sarà una traduzione italiana",
+      "3": "Questa sarà una traduzione italiana",
+      "4": "Questa sarà una traduzione italiana"
+    }
+  }
+}

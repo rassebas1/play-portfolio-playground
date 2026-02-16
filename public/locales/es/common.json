@@ -13,26 +13,40 @@
   "key_courses": "Cursos Clave",
   "signature_project": "Proyecto Destacado",
   "portfolio": "Portafolio",
-  "language.english": "Inglés",
-  "language.spanish": "Español",
-  "language.french": "Francés",
+  "language": {
+    "english": "Inglés",
+    "spanish": "Español",
+    "french": "Francés"
+  },
   "change_language_aria_label": "Cambiar idioma",
   "toggle_menu_aria_label": "Abrir menú",
   "mobile_navigation_aria_label": "Navegación móvil",
   "game_zone_heading": "Zona de Juegos",
   "game_zone_intro": "Explora una colección de juegos clásicos y modernos.",
-  "common.difficulty.easy": "Fácil",
-  "common.difficulty.medium": "Medio",
-  "common.difficulty.hard": "Difícil",
-  "common.category.strategy": "Estrategia",
-  "common.category.puzzle": "Rompecabezas",
-  "common.category.arcade": "Arcade",
-  "common.status.ready_to_play": "Listo para Jugar",
-  "common.status.coming_soon": "Próximamente",
-  "common.button.play_game": "Jugar",
-  "footer.copyright": "Todos los derechos reservados.",
-  "footer.github_aria_label": "Perfil de GitHub",
-  "footer.linkedin_aria_label": "Perfil de LinkedIn",
-  "not_found.message": "¡Oops! Página no encontrada",
-  "not_found.return_home": "Volver al inicio"
+  "difficulty": {
+    "easy": "Fácil",
+    "medium": "Medio",
+    "hard": "Difícil"
+  },
+  "category": {
+    "strategy": "Estrategia",
+    "puzzle": "Rompecabezas",
+    "arcade": "Arcade"
+  },
+  "status": {
+    "ready_to_play": "Listo para Jugar",
+    "coming_soon": "Próximamente"
+  },
+  "button": {
+    "play_game": "Jugar"
+  },
+  "footer": {
+    "copyright": "Todos los derechos reservados.",
+    "github_aria_label": "Perfil de GitHub",
+    "linkedin_aria_label": "Perfil de LinkedIn"
+  },
+  "not_found": {
+    "message": "¡Oops! Página no encontrada",
+    "return_home": "Volver al inicio"
+  }
 }

@@ -83,7 +83,7 @@ export const games: GameInfo[] = [
  * @returns {JSX.Element} The rendered games listing page.
  */
 const Games: React.FC = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['common', 'games']);
   return (
     <div className="container mx-auto px-4 py-16">
       {/* Page Header */}

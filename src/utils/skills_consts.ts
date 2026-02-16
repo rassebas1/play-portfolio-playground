@@ -1,15 +1,12 @@
 /**
  * src/utils/skills_consts.ts
- *
+ * 
  * Defines constants for skill categories and a list of skills.
- * `skillCategories` provides multilingual names for different skill groups,
- * while `skills` lists specific technologies and methodologies under these categories.
+ * 
+ * NOTE: Translation keys must match the format in public/locales/[lang]/skills.json
+ * Example: "skills.category.languages" (namespace.key.subkey)
  */
 
-/**
- * Defines the categories for skills, with multilingual support for display names.
- * @constant {object} skillCategories
- */
 export const skillCategories = {
   Languages: 'skills.category.languages',
   Frontend: 'skills.category.frontend',
@@ -19,10 +16,6 @@ export const skillCategories = {
   Methodologies: 'skills.category.methodologies',
 };
 
-/**
- * Defines a mapping of skill categories to arrays of specific skills/technologies.
- * @constant {object} skills
- */
 export const skills = {
   Languages: [
     'skills.language.typescript',

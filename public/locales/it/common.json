@@ -1,0 +1,52 @@
+{
+  "Home": "Questa sarà una traduzione italiana",
+  "Experience": "Questa sarà una traduzione italiana",
+  "Education": "Questa sarà una traduzione italiana",
+  "Games": "Questa sarà una traduzione italiana",
+  "main_heading": "Questa sarà una traduzione italiana",
+  "intro_paragraph": "Questa sarà una traduzione italiana",
+  "experience_heading": "Questa sarà una traduzione italiana",
+  "education_heading": "Questa sarà una traduzione italiana",
+  "Skills": "Questa sarà una traduzione italiana",
+  "developer_title": "Questa sarà una traduzione italiana",
+  "developer_description": "Questa sarà una traduzione italiana",
+  "key_courses": "Questa sarà una traduzione italiana",
+  "signature_project": "Questa sarà una traduzione italiana",
+  "portfolio": "Questa sarà una traduzione italiana",
+  "language": {
+    "english": "Questa sarà una traduzione italiana",
+    "spanish": "Questa sarà una traduzione italiana",
+    "french": "Questa sarà una traduzione italiana"
+  },
+  "change_language_aria_label": "Questa sarà una traduzione italiana",
+  "toggle_menu_aria_label": "Questa sarà una traduzione italiana",
+  "mobile_navigation_aria_label": "Questa sarà una traduzione italiana",
+  "game_zone_heading": "Questa sarà una traduzione italiana",
+  "game_zone_intro": "Questa sarà una traduzione italiana",
+  "difficulty": {
+    "easy": "Questa sarà una traduzione italiana",
+    "medium": "Questa sarà una traduzione italiana",
+    "hard": "Questa sarà una traduzione italiana"
+  },
+  "category": {
+    "strategy": "Questa sarà una traduzione italiana",
+    "puzzle": "Questa sarà una traduzione italiana",
+    "arcade": "Questa sarà una traduzione italiana"
+  },
+  "status": {
+    "ready_to_play": "Questa sarà una traduzione italiana",
+    "coming_soon": "Questa sarà una traduzione italiana"
+  },
+  "button": {
+    "play_game": "Questa sarà una traduzione italiana"
+  },
+  "footer": {
+    "copyright": "Questa sarà una traduzione italiana",
+    "github_aria_label": "Questa sarà una traduzione italiana",
+    "linkedin_aria_label": "Questa sarà una traduzione italiana"
+  },
+  "not_found": {
+    "message": "Questa sarà una traduzione italiana",
+    "return_home": "Questa sarà una traduzione italiana"
+  }
+}

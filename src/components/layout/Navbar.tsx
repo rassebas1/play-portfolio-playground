@@ -30,7 +30,7 @@ const navItems = [
  */
 export const Navbar: React.FC = () => {
   // `useTranslation` hook for internationalization, providing translation function `t` and i18n instance.
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation('common');
 
   /**
    * Changes the application's language using i18next.

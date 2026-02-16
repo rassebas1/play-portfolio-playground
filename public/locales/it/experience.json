@@ -1,0 +1,40 @@
+{
+  "nttDataTelefonica": {
+    "title": "Questa sarà una traduzione italiana",
+    "activities": {
+      "0": "Questa sarà una traduzione italiana",
+      "1": "Questa sarà una traduzione italiana",
+      "2": "Questa sarà una traduzione italiana"
+    }
+  },
+  "nttDataBancoPopular": {
+    "title": "Questa sarà una traduzione italiana",
+    "activities": {
+      "0": "Questa sarà una traduzione italiana",
+      "1": "Questa sarà una traduzione italiana",
+      "2": "Questa sarà una traduzione italiana",
+      "3": "Questa sarà una traduzione italiana",
+      "4": "Questa sarà una traduzione italiana"
+    }
+  },
+  "nttDataIbm": {
+    "title": "Questa sarà una traduzione italiana",
+    "activities": {
+      "0": "Questa sarà una traduzione italiana"
+    }
+  },
+  "nttDataBbva": {
+    "title": "Questa sarà una traduzione italiana",
+    "activities": {
+      "0": "Questa sarà una traduzione italiana"
+    }
+  },
+  "4coders": {
+    "title": "Questa sarà una traduzione italiana",
+    "activities": {
+      "0": "Questa sarà una traduzione italiana",
+      "1": "Questa sarà una traduzione italiana",
+      "2": "Questa sarà una traduzione italiana"
+    }
+  }
+}

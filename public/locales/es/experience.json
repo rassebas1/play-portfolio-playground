@@ -1,24 +1,40 @@
 {
-  "ntt_data_telefonica.title": "Ingeniero de Software",
-  "ntt_data_telefonica.activities.0": "Se desempeñó como ingeniero front-end líder, uniendo a los equipos comerciales y técnicos al traducir los requisitos del cliente en especificaciones técnicas procesables, al tiempo que impulsaba la planificación de sprints, la evaluación de riesgos, la estimación de esfuerzos y la implementación de características.",
-  "ntt_data_telefonica.activities.1": "Diseñó y ejecutó la modernización de la aplicación de ventas heredada utilizando Angular, reduciendo el tiempo del ciclo de desarrollo y mejorando la velocidad del equipo a través del diseño estratégico basado en componentes.",
-  "ntt_data_telefonica.activities.2": "Desplegó la infraestructura en la nube de Azure incorporando control de versiones, canalizaciones de CI/CD automatizadas y orquestación de Kubernetes (AKS) para optimizar la entrega de aplicaciones en contenedores, mejorando la frecuencia de implementación de semanal a diaria.",
-
-  "ntt_data_banco_popular.title": "Ingeniero de Software",
-  "ntt_data_banco_popular.activities.0": "Dirigió la planificación estratégica y la mitigación de riesgos a lo largo de varios trimestres, salvaguardando los cronogramas de los proyectos y reforzando la confianza de las partes interesadas al abordar de manera proactiva los riesgos operativos.",
-  "ntt_data_banco_popular.activities.1": "Diseñó y dirigió una solución de integración de nube híbrida para automatizar los procesos de los clientes, orquestando los servicios locales con AWS. Se aplicó una seguridad sólida a través de DataPower Gateway utilizando certificados de autenticación mutua y firmados.",
-  "ntt_data_banco_popular.activities.2": "Redactó contratos de servicio integrales (WSDL, YAML y SWAGGER) para agilizar la colaboración entre equipos, garantizando una integración perfecta del sistema y obteniendo la aprobación del Comité de Arquitectura.",
-  "ntt_data_banco_popular.activities.3": "Se adueñó del ciclo de vida completo del desarrollo de servicios: diseñó la arquitectura del sistema, gestionó las implementaciones en WebLogic y validó el rendimiento mediante pruebas rigurosas (unitarias, de carga y de estrés con JMeter), con documentación detallada de los procesos de diseño e implementación.",
-  "ntt_data_banco_popular.activities.4": "Mantuvo y soportó microservicios heredados y canalizaciones de ETL en entornos de producción, resolviendo problemas críticos mientras modernizaba progresivamente los protocolos de autenticación y seguridad utilizando Java 8.",
-
-  "ntt_data_ibm.title": "Ingeniero de Software",
-  "ntt_data_ibm.activities.0": "Aprovechó las tecnologías de integración empresarial al recibir capacitación en IBM Toolkit y MuleSoft, e implementó soluciones de API Gateway con un desarrollo integral de contratos de servicio en formatos WSDL, YAML y SWAGGER.",
-
-  "ntt_data_bbva.title": "Ingeniero de Software",
-  "ntt_data_bbva.activities.0": "Amplió las habilidades de desarrollo front-end a través de una capacitación integral en tecnologías modernas de componentes web, incluidos Web Components, Styled Components y Lit Element, con una base sólida en las tecnologías web centrales HTML y CSS.",
-
-  "4coders.title": "Ingeniero de Software Junior",
-  "4coders.activities.0": "Desarrolló componentes front-end modulares y reutilizables utilizando React y VueJS con TypeScript, implementando componentes personalizados basados en bibliotecas de npm mientras colaboraba estrechamente con los equipos de diseño de UX/UI para traducir las plantillas de Figma en arquitecturas de micro-frontend funcionales.",
-  "4coders.activities.1": "Desarrolló interfaces de usuario internacionalizadas (i18n) y accesibles (a11y), garantizando una experiencia de usuario perfecta en varios idiomas, regiones y dispositivos.",
-  "4coders.activities.2": "Practicante de back-end que utiliza NodeJS para microservicios y respuestas REST con consultas SQL."
+  "nttDataTelefonica": {
+    "title": "Ingeniero de Software",
+    "activities": {
+      "0": "Se desempeñó como ingeniero front-end líder, uniendo a los equipos comerciales y técnicos al traducir los requisitos del cliente en especificaciones técnicas procesables, al tiempo que impulsaba la planificación de sprints, la evaluación de riesgos, la estimación de esfuerzos y la implementación de características.",
+      "1": "Diseñó y ejecutó la modernización de la aplicación de ventas heredada utilizando Angular, reduciendo el tiempo del ciclo de desarrollo y mejorando la velocidad del equipo a través del diseño estratégico basado en componentes.",
+      "2": "Desplegó la infraestructura en la nube de Azure incorporando control de versiones, canalizaciones de CI/CD automatizadas y orquestación de Kubernetes (AKS) para optimizar la entrega de aplicaciones en contenedores, mejorando la frecuencia de implementación de semanal a diaria."
+    }
+  },
+  "nttDataBancoPopular": {
+    "title": "Ingeniero de Software",
+    "activities": {
+      "0": "Dirigió la planificación estratégica y la mitigación de riesgos a lo largo de varios trimestres, salvaguardando los cronogramas de los proyectos y reforzando la confianza de las partes interesadas al abordar de manera proactiva los riesgos operativos.",
+      "1": "Diseñó y dirigió una solución de integración de nube híbrida para automatizar los procesos de los clientes, orquestando los servicios locales con AWS. Se aplicó una seguridad sólida a través de DataPower Gateway utilizando certificados de autenticación mutua y firmados.",
+      "2": "Redactó contratos de servicio integrales (WSDL, YAML y SWAGGER) para agilizar la colaboración entre equipos, garantizando una integración perfecta del sistema y obteniendo la aprobación del Comité de Arquitectura.",
+      "3": "Se adueñó del ciclo de vida completo del desarrollo de servicios: diseñó la arquitectura del sistema, gestionó las implementaciones en WebLogic y validó el rendimiento mediante pruebas rigurosas (unitarias, de carga y de estrés con JMeter), con documentación detallada de los procesos de diseño e implementación.",
+      "4": "Mantuvo y soportó microservicios heredados y canalizaciones de ETL en entornos de producción, resolviendo problemas críticos mientras modernizaba progresivamente los protocolos de autenticación y seguridad utilizando Java 8."
+    }
+  },
+  "nttDataIbm": {
+    "title": "Ingeniero de Software",
+    "activities": {
+      "0": "Aprovechó las tecnologías de integración empresarial al recibir capacitación en IBM Toolkit y MuleSoft, e implementó soluciones de API Gateway con un desarrollo integral de contratos de servicio en formatos WSDL, YAML y SWAGGER."
+    }
+  },
+  "nttDataBbva": {
+    "title": "Ingeniero de Software",
+    "activities": {
+      "0": "Amplió las habilidades de desarrollo front-end a través de una capacitación integral en tecnologías modernas de componentes web, incluidos Web Components, Styled Components y Lit Element, con una base sólida en las tecnologías web centrales HTML y CSS."
+    }
+  },
+  "4coders": {
+    "title": "Ingeniero de Software Junior",
+    "activities": {
+      "0": "Desarrolló componentes front-end modulares y reutilizables utilizando React y VueJS con TypeScript, implementando componentes personalizados basados en bibliotecas de npm mientras colaboraba estrechamente con los equipos de diseño de UX/UI para traducir las plantillas de Figma en arquitecturas de micro-frontend funcionales.",
+      "1": "Desarrolló interfaces de usuario internacionalizadas (i18n) y accesibles (a11y), garantizando una experiencia de usuario perfecta en varios idiomas, regiones y dispositivos.",
+      "2": "Practicante de back-end que utiliza NodeJS para microservicios y respuestas REST con consultas SQL."
+    }
+  }
 }

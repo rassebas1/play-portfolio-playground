@@ -1,0 +1,52 @@
+{
+  "Home": "TRANSLATION_NEEDED",
+  "Experience": "TRANSLATION_NEEDED",
+  "Education": "TRANSLATION_NEEDED",
+  "Games": "TRANSLATION_NEEDED",
+  "main_heading": "TRANSLATION_NEEDED",
+  "intro_paragraph": "TRANSLATION_NEEDED",
+  "experience_heading": "TRANSLATION_NEEDED",
+  "education_heading": "TRANSLATION_NEEDED",
+  "Skills": "TRANSLATION_NEEDED",
+  "developer_title": "TRANSLATION_NEEDED",
+  "developer_description": "TRANSLATION_NEEDED",
+  "key_courses": "TRANSLATION_NEEDED",
+  "signature_project": "TRANSLATION_NEEDED",
+  "portfolio": "TRANSLATION_NEEDED",
+  "language": {
+    "english": "TRANSLATION_NEEDED",
+    "spanish": "TRANSLATION_NEEDED",
+    "french": "TRANSLATION_NEEDED"
+  },
+  "change_language_aria_label": "TRANSLATION_NEEDED",
+  "toggle_menu_aria_label": "TRANSLATION_NEEDED",
+  "mobile_navigation_aria_label": "TRANSLATION_NEEDED",
+  "game_zone_heading": "TRANSLATION_NEEDED",
+  "game_zone_intro": "TRANSLATION_NEEDED",
+  "difficulty": {
+    "easy": "TRANSLATION_NEEDED",
+    "medium": "TRANSLATION_NEEDED",
+    "hard": "TRANSLATION_NEEDED"
+  },
+  "category": {
+    "strategy": "TRANSLATION_NEEDED",
+    "puzzle": "TRANSLATION_NEEDED",
+    "arcade": "TRANSLATION_NEEDED"
+  },
+  "status": {
+    "ready_to_play": "TRANSLATION_NEEDED",
+    "coming_soon": "TRANSLATION_NEEDED"
+  },
+  "button": {
+    "play_game": "TRANSLATION_NEEDED"
+  },
+  "footer": {
+    "copyright": "TRANSLATION_NEEDED",
+    "github_aria_label": "TRANSLATION_NEEDED",
+    "linkedin_aria_label": "TRANSLATION_NEEDED"
+  },
+  "not_found": {
+    "message": "TRANSLATION_NEEDED",
+    "return_home": "TRANSLATION_NEEDED"
+  }
+}

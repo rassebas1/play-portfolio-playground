@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
  * @returns {JSX.Element} The rendered footer.
  */
 export const Footer: React.FC = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
   return (
     <footer className="border-t bg-background/95 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-background/60 mt-auto py-6 w-full">
       <div className="container flex flex-col md:flex-row items-center justify-between gap-4 px-4 md:px-6">

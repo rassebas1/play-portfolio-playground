@@ -55,7 +55,7 @@ export const EducationCard: React.FC<EducationCardProps> = ({
   // Ref to attach to the main div for `useInView` to track visibility.
   const ref = React.useRef(null);
   // `useTranslation` hook for internationalized labels.
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
   // `useInView` hook from Framer Motion to detect when the component is in the viewport.
   const isInView = useInView(ref, { amount: 0.5 }); // Trigger when 50% of the component is visible.
 

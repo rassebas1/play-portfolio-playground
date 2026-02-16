@@ -2,10 +2,10 @@
   "Home": "Accueil",
   "Experience": "Expérience",
   "Education": "Éducation",
-  "Games": "Juegos",
+  "Games": "Jeux",
   "main_heading": "Sebastián Espitia Londoño",
   "intro_paragraph": "Ingénieur logiciel passionné par la création d'applications web et de jeux modernes.",
-  "experience_heading": "Experiencia y Compétences",
+  "experience_heading": "Expérience et Compétences",
   "education_heading": "Éducation et Réalisations",
   "Skills": "Compétences",
   "developer_title": "Ingénieur Logiciel",
@@ -13,26 +13,40 @@
   "key_courses": "Cours Clés",
   "signature_project": "Projet Phare",
   "portfolio": "Portfolio",
-  "language.english": "Anglais",
-  "language.spanish": "Espagnol",
-  "language.french": "Français",
+  "language": {
+    "english": "Anglais",
+    "spanish": "Espagnol",
+    "french": "Français"
+  },
   "change_language_aria_label": "Changer de langue",
   "toggle_menu_aria_label": "Ouvrir le menu",
   "mobile_navigation_aria_label": "Navigation mobile",
   "game_zone_heading": "Zone de jeux",
   "game_zone_intro": "Explorez une collection de jeux classiques et modernes.",
-  "common.difficulty.easy": "Facile",
-  "common.difficulty.medium": "Moyen",
-  "common.difficulty.hard": "Difficile",
-  "common.category.strategy": "Stratégie",
-  "common.category.puzzle": "Casse-tête",
-  "common.category.arcade": "Arcade",
-  "common.status.ready_to_play": "Prêt à jouer",
-  "common.status.coming_soon": "Bientôt disponible",
-  "common.button.play_game": "Jouer",
-  "footer.copyright": "Tous droits réservés.",
-  "footer.github_aria_label": "Profil GitHub",
-  "footer.linkedin_aria_label": "Profil LinkedIn",
-  "not_found.message": "Oups! Page non trouvée",
-  "not_found.return_home": "Retour à l'accueil"
+  "difficulty": {
+    "easy": "Facile",
+    "medium": "Moyen",
+    "hard": "Difficile"
+  },
+  "category": {
+    "strategy": "Stratégie",
+    "puzzle": "Casse-tête",
+    "arcade": "Arcade"
+  },
+  "status": {
+    "ready_to_play": "Prêt à jouer",
+    "coming_soon": "Bientôt disponible"
+  },
+  "button": {
+    "play_game": "Jouer"
+  },
+  "footer": {
+    "copyright": "Tous droits réservés.",
+    "github_aria_label": "Profil GitHub",
+    "linkedin_aria_label": "Profil LinkedIn"
+  },
+  "not_found": {
+    "message": "Oups! Page non trouvée",
+    "return_home": "Retour à l'accueil"
+  }
 }

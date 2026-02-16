@@ -1,34 +1,56 @@
 {
-  "master.degree": "Máster en Big Data",
-  "master.hook": "Especializado en Arquitecturas en la Nube, Ingeniería de Datos y Machine Learning",
-  "master.courses.0": "Machine Learning",
-  "master.courses.1": "Tecnologías de Datacenter",
-  "master.courses.2": "Análisis de datos",
-  "master.courses.3": "Técnicas de almacenamiento y procesamiento",
-  "master.project.title": "Machine Learning Ligero para el Reconocimiento del Escribano Cerillo",
-  "master.description.0": "Tesis: 'Machine Learning Ligero para el Reconocimiento del Escribano Cerillo'.",
-  "master.description.1": "Graduado con Honores.",
-
-  "engineer.degree": "Ingeniero Electrónico",
-  "engineer.hook": "Enfocado en sistemas embebidos y procesamiento de señales digitales",
-  "engineer.courses.0": "Procesamiento Digital de Imágenes",
-  "engineer.courses.1": "Diseño de Sistemas Embebidos",
-  "engineer.courses.2": "Sistemas de Control",
-  "engineer.courses.3": "Bio-Nano-Tecnología",
-  "engineer.project.title": "Adquisición y Procesamiento de Señales ECG",
-  "engineer.description.0": "Proyectos de Procesamiento Digital de Imágenes: Creación de un algoritmo para la detección de cáncer de mama usando MATLAB. Creación de un algoritmo para el seguimiento de objetos en tiempo real usando OpenCV y MATLAB.",
-  "engineer.description.1": "Proyectos de Sistemas Embebidos: Desarrollo de un reloj de hélice usando el microcontrolador ATMEGA16. Diseño de un robot seguidor de línea y participación con un 4º puesto en la Competición internacional RuniBot usando STM32. Diseño de un prototipo para la adquisición y procesamiento de señales ECG usando el microcontrolador PSoC con visualización en Dispositivos Android y almacenamiento de datos usando Firebase.",
-
-  "bachelor.degree": "Bachillerato Científico",
-  "bachelor.hook": "Programa trilingüe con énfasis en ciencias",
-  "bachelor.courses.0": "Matemáticas Avanzadas",
-  "bachelor.courses.1": "Física",
-  "bachelor.courses.2": "Química",
-  "bachelor.courses.3": "Biología",
-  "bachelor.project.title": "Cultivo de Bacterias Bioluminiscentes",
-  "bachelor.description.0": "Programa trilingüe: Español (Nativo), Francés (Baccalaureat), Inglés.",
-  "bachelor.description.1": "Diploma de bachillerato con énfasis en Matemáticas, Física y Química.",
-  "bachelor.description.2": "Proyecto de Fin de Año: Investigación y cultivo de Bacterias Bioluminiscentes.",
-  "bachelor.description.3": "Miembro del club de especialización en Matemáticas.",
-  "bachelor.description.4": "Miembro del equipo de Fútbol."
+  "master": {
+    "degree": "Máster en Big Data",
+    "hook": "Especializado en Arquitecturas en la Nube, Ingeniería de Datos y Machine Learning",
+    "courses": {
+      "0": "Machine Learning",
+      "1": "Tecnologías de Datacenter",
+      "2": "Análisis de datos",
+      "3": "Técnicas de almacenamiento y procesamiento"
+    },
+    "project": {
+      "title": "Machine Learning Ligero para el Reconocimiento del Escribano Cerillo"
+    },
+    "description": {
+      "0": "Tesis: 'Machine Learning Ligero para el Reconocimiento del Escribano Cerillo'.",
+      "1": "Graduado con Honores."
+    }
+  },
+  "engineer": {
+    "degree": "Ingeniero Electrónico",
+    "hook": "Enfocado en sistemas embebidos y procesamiento de señales digitales",
+    "courses": {
+      "0": "Procesamiento Digital de Imágenes",
+      "1": "Diseño de Sistemas Embebidos",
+      "2": "Sistemas de Control",
+      "3": "Bio-Nano-Tecnología"
+    },
+    "project": {
+      "title": "Adquisición y Procesamiento de Señales ECG"
+    },
+    "description": {
+      "0": "Proyectos de Procesamiento Digital de Imágenes: Creación de un algoritmo para la detección de cáncer de mama usando MATLAB. Creación de un algoritmo para el seguimiento de objetos en tiempo real usando OpenCV y MATLAB.",
+      "1": "Proyectos de Sistemas Embebidos: Desarrollo de un reloj de hélice usando el microcontrolador ATMEGA16. Diseño de un robot seguidor de línea y participación con un 4º puesto en la Competición internacional RuniBot usando STM32. Diseño de un prototipo para la adquisición y procesamiento de señales ECG usando el microcontrolador PSoC con visualización en Dispositivos Android y almacenamiento de datos usando Firebase."
+    }
+  },
+  "bachelor": {
+    "degree": "Bachillerato Científico",
+    "hook": "Programa trilingüe con énfasis en ciencias",
+    "courses": {
+      "0": "Matemáticas Avanzadas",
+      "1": "Física",
+      "2": "Química",
+      "3": "Biología"
+    },
+    "project": {
+      "title": "Cultivo de Bacterias Bioluminiscentes"
+    },
+    "description": {
+      "0": "Programa trilingüe: Español (Nativo), Francés (Baccalaureat), Inglés.",
+      "1": "Diploma de bachillerato con énfasis en Matemáticas, Física y Química.",
+      "2": "Proyecto de Fin de Año: Investigación y cultivo de Bacterias Bioluminiscentes.",
+      "3": "Miembro del club de especialización en Matemáticas.",
+      "4": "Miembro del equipo de Fútbol."
+    }
+  }
 }
