@@ -49,5 +49,26 @@
   "not_found": {
     "message": "Ops! Pagina non trovata",
     "return_home": "Torna alla Home"
+  },
+  "how_to_play": "Come Giocare",
+  "game_board": "Tavola di Gioco",
+  "keyboard_instructions": "Usa le frecce per navigare, Invio o Spazio per selezionare",
+  "fewest_moves": "Meno Mosse per Vincere",
+  "move_count": "{{count}} mossa",
+  "move_count_other": "{{count}} mosse",
+  "new_game": "Nuova Partita",
+  "undo": "Annulla",
+  "moves": "Mosse: {{count}}",
+  "score": "Punteggio: {{count}}",
+  "lives": "Vite: {{count}}",
+  "level": "Livello: {{count}}",
+  "game_over": {
+    "win_title": "Hai Vinto!",
+    "lose_title": "Fine Partita",
+    "final_score": "Punteggio Finale",
+    "new_best": "Nuovo Record!",
+    "continue": "Continua",
+    "play_again": "Gioca Ancora",
+    "home": "Home"
   }
 }

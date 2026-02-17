@@ -49,5 +49,26 @@
   "not_found": {
     "message": "Oups! Page non trouvée",
     "return_home": "Retour à l'accueil"
+  },
+  "how_to_play": "Comment Jouer",
+  "game_board": "Plateau de Jeu",
+  "keyboard_instructions": "Utilisez les flèches pour naviguer, Entrée ou Espace pour sélectionner",
+  "fewest_moves": "Moins de Coups pour Gagner",
+  "move_count": "{{count}} coup",
+  "move_count_other": "{{count}} coups",
+  "new_game": "Nouvelle Partie",
+  "undo": "Annuler",
+  "moves": "Coups: {{count}}",
+  "score": "Score: {{count}}",
+  "lives": "Vies: {{count}}",
+  "level": "Niveau: {{count}}",
+  "game_over": {
+    "win_title": "Vous Avez Gagné!",
+    "lose_title": "Fin de Partie",
+    "final_score": "Score Final",
+    "new_best": "Nouveau Record!",
+    "continue": "Continuer",
+    "play_again": "Rejouer",
+    "home": "Accueil"
   }
 }

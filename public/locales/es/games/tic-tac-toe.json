@@ -1,0 +1,37 @@
+{
+  "title": "Tres en Raya",
+  "description": "Juego clásico de estrategia para dos jugadores. ¡El primero en conseguir tres en línea gana!",
+  "short_description": "Juego clásico de estrategia",
+  "rules": {
+    "title": "Reglas",
+    "items": [
+      "Los jugadores se turnan para colocar X o O",
+      "El primer jugador en conseguir 3 en línea gana",
+      "Cuentan filas, columnas o diagonales",
+      "Si todas las celdas están llenas, es un empate"
+    ]
+  },
+  "strategy": {
+    "title": "Consejos de Estrategia",
+    "items": [
+      "Controla el centro cuando sea posible",
+      "Bloquea los movimientos ganadores del oponente",
+      "Crea múltiples oportunidades de victoria",
+      "Piensa con anticipación y planifica tus movimientos"
+    ]
+  },
+  "status": {
+    "win": "¡{{player}} gana!",
+    "draw": "¡Es un empate!",
+    "start": "¡Haz clic en cualquier celda para comenzar!",
+    "turn": "Jugador actual: {{player}}"
+  },
+  "celebration": {
+    "winner_title": "{{player}}",
+    "winner_subtitle": "¡Gana!"
+  },
+  "cells": {
+    "aria_label_empty": "Fila {{row}}, Columna {{col}}, vacía",
+    "aria_label_filled": "Fila {{row}}, Columna {{col}}, {{player}}"
+  }
+}

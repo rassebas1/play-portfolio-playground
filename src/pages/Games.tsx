@@ -92,7 +92,7 @@ const Games: React.FC = () => {
           {t('game_zone_heading')}
         </h1>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-10">
-          {t('game_zone_intro')}
+          {t('game_zone_intro', { ns: 'common' })}
         </p>
       </div>
       {/* Games Grid */}
@@ -130,7 +130,7 @@ const Games: React.FC = () => {
                 {t(game.description, { ns: 'games' })}
               </CardDescription>
               {/* Conditional rendering for "Coming Soon" or "Play Game" button */}
-              {game.status === 'Coming Soon' ? (
+              {game.status === 'status.coming_soon' ? (
                 <Button
                   className="w-full"
                   size="lg"
@@ -145,7 +145,7 @@ const Games: React.FC = () => {
                     className="w-full bg-primary hover:bg-primary-glow transition-colors"
                     size="lg"
                   >
-                    {t('common.button.play_game')}
+                    {t('button.play_game', { ns: 'common' })}
                   </Button>
                 </Link>
               )}

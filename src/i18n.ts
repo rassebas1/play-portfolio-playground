@@ -26,8 +26,18 @@ i18n
       escapeValue: false,
     },
     backend: {
-      loadPath: '/play-portfolio-playground/locales/{{lng}}/{{ns}}.json',
+      // Support nested namespaces like "games/common" by replacing / with the path separator
+      loadPath: (lngs: string[], namespace: string | string[]) => {
+        // Handle case where namespace might be an array - use first element
+        const ns = Array.isArray(namespace) ? namespace[0] : namespace;
+        // Handle nested namespaces like "games/common" or "games/tic-tac-toe"
+        const nsPath = ns.replace(':', '/');
+        return `/play-portfolio-playground/locales/{{lng}}/${nsPath}.json`;
+      },
     },
+    // Default namespaces to load
+    ns: ['common', 'games'],
+    defaultNS: 'common',
   });
 
 export default i18n;

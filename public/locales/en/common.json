@@ -49,5 +49,26 @@
   "not_found": {
     "message": "Oops! Page not found",
     "return_home": "Return to Home"
+  },
+  "how_to_play": "How to Play",
+  "game_board": "Game Board",
+  "keyboard_instructions": "Use arrow keys to navigate, Enter or Space to select",
+  "fewest_moves": "Fewest Moves to Win",
+  "move_count": "{{count}} move",
+  "move_count_other": "{{count}} moves",
+  "new_game": "New Game",
+  "undo": "Undo",
+  "moves": "Moves: {{count}}",
+  "score": "Score: {{count}}",
+  "lives": "Lives: {{count}}",
+  "level": "Level: {{count}}",
+  "game_over": {
+    "win_title": "You Win!",
+    "lose_title": "Game Over",
+    "final_score": "Final Score",
+    "new_best": "New Best!",
+    "continue": "Continue",
+    "play_again": "Play Again",
+    "home": "Home"
   }
 }

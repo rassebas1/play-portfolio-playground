@@ -49,5 +49,26 @@
   "not_found": {
     "message": "¡Oops! Página no encontrada",
     "return_home": "Volver al inicio"
+  },
+  "how_to_play": "Cómo Jugar",
+  "game_board": "Tablero de Juego",
+  "keyboard_instructions": "Usa las flechas para navegar, Enter o Espacio para seleccionar",
+  "fewest_moves": "Menos Movimientos para Ganar",
+  "move_count": "{{count}} movimiento",
+  "move_count_other": "{{count}} movimientos",
+  "new_game": "Nueva Partida",
+  "undo": "Deshacer",
+  "moves": "Movimientos: {{count}}",
+  "score": "Puntuación: {{count}}",
+  "lives": "Vidas: {{count}}",
+  "level": "Nivel: {{count}}",
+  "game_over": {
+    "win_title": "¡Ganaste!",
+    "lose_title": "Fin del Juego",
+    "final_score": "Puntuación Final",
+    "new_best": "¡Nuevo Récord!",
+    "continue": "Continuar",
+    "play_again": "Jugar de Nuevo",
+    "home": "Inicio"
   }
 }

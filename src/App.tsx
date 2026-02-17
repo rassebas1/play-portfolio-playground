@@ -1,3 +1,4 @@
+import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -7,12 +8,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ThemeProvider } from "next-themes";
 import { Layout } from "@/components/ui/layout";
 
-import Home from "./pages/Home";
-import Games from "./pages/Games";
-import Experience from "./pages/Experience";
-import Education from "./pages/Education";
-import GamePage from "./pages/GamePage";
-import NotFound from "./pages/NotFound";
+// Lazy load all page components for better performance
+const Home = React.lazy(() => import("./pages/Home"));
+const Games = React.lazy(() => import("./pages/Games"));
+const Experience = React.lazy(() => import("./pages/Experience"));
+const Education = React.lazy(() => import("./pages/Education"));
+const GamePage = React.lazy(() => import("./pages/GamePage"));
+const NotFound = React.lazy(() => import("./pages/NotFound"));
 
 /**
  * Initializes a new QueryClient instance for React Query.
@@ -68,7 +70,7 @@ const router = createBrowserRouter([
       { path: "*", element: <motion.div key="not-found" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }}><NotFound /></motion.div> },
     ],
   },
-],{basename: "/play-portfolio-playground"}); // Base URL for deployment in a sub-directory.
+],{basename: "/play-portfolio-playground/"}); // Base URL for deployment in a sub-directory.
 
 /**
  * The main application component.

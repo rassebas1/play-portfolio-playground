@@ -1,0 +1,54 @@
+{
+  "game_board": "Plateau de Jeu",
+  "how_to_play": "Comment Jouer",
+  "rules": "Règles",
+  "strategy_tips": "Conseils de Stratégie",
+  "game_status": "État du Jeu",
+  "move_count": "Coup {{count}}",
+  "move_count_plural": "Coups {{count}}",
+  "player_wins": "{{player}} Gagne !",
+  "its_a_draw": "Match Nul !",
+  "current_player": "Joueur Actuel : {{player}}",
+  "next_player": "Prochain Joueur : {{player}}",
+  "click_to_start": "Cliquez sur n'importe quelle cellule pour commencer !",
+  "keyboard_instructions": "Utilisez les flèches pour naviguer, Entrée ou Espace pour placer",
+  "restart_game": "Redémarrer le Jeu",
+  "play_again": "Rejouer",
+  "fewest_moves": "Moins de Coups",
+  "high_score": "Meilleur Score",
+  "score": "Score : {{count}}",
+  "level": "Niveau {{count}}",
+  "lives": "Vies : {{count}}",
+  "game_over": "Partie Terminée",
+  "you_win": "Vous Gagnez !",
+  "you_lose": "Vous Perdez !",
+  "pause": "Pause",
+  "resume": "Reprendre",
+  "quit": "Quitter",
+  "back_to_games": "Retour aux Jeux",
+  "difficulty": {
+    "easy": "Facile",
+    "medium": "Moyen",
+    "hard": "Difficile"
+  },
+  "status": {
+    "win": "Gagnant !",
+    "draw": "Match Nul",
+    "ongoing": "Partie en Cours",
+    "paused": "En Pause",
+    "game_over": "Partie Terminée"
+  },
+  "player": {
+    "x": "Joueur X",
+    "o": "Joueur O",
+    "one": "Joueur 1",
+    "two": "Joueur 2",
+    "computer": "Ordinateur",
+    "you": "Vous"
+  },
+  "celebration": {
+    "winner_text": "{{player}} Gagne !",
+    "winner_subtitle": "Félicitations !",
+    "play_again_prompt": "Rejouer ?"
+  }
+}

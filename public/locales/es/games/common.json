@@ -1,0 +1,54 @@
+{
+  "game_board": "Tablero de Juego",
+  "how_to_play": "Cómo Jugar",
+  "rules": "Reglas",
+  "strategy_tips": "Consejos de Estrategia",
+  "game_status": "Estado del Juego",
+  "move_count": "Movimiento {{count}}",
+  "move_count_plural": "Movimientos {{count}}",
+  "player_wins": "¡{{player}} Gana!",
+  "its_a_draw": "¡Es un Empate!",
+  "current_player": "Jugador Actual: {{player}}",
+  "next_player": "Siguiente Jugador: {{player}}",
+  "click_to_start": "¡Haz clic en cualquier celda para comenzar!",
+  "keyboard_instructions": "Usa las flechas para navegar, Enter o Espacio para colocar",
+  "restart_game": "Reiniciar Juego",
+  "play_again": "Jugar de Nuevo",
+  "fewest_moves": "Menos Movimientos",
+  "high_score": "Puntuación Máxima",
+  "score": "Puntuación: {{count}}",
+  "level": "Nivel {{count}}",
+  "lives": "Vidas: {{count}}",
+  "game_over": "Juego Terminado",
+  "you_win": "¡Ganaste!",
+  "you_lose": "¡Perdiste!",
+  "pause": "Pausa",
+  "resume": "Continuar",
+  "quit": "Salir",
+  "back_to_games": "Volver a Juegos",
+  "difficulty": {
+    "easy": "Fácil",
+    "medium": "Medio",
+    "hard": "Difícil"
+  },
+  "status": {
+    "win": "¡Ganador!",
+    "draw": "Empate",
+    "ongoing": "Juego en Progreso",
+    "paused": "Pausado",
+    "game_over": "Juego Terminado"
+  },
+  "player": {
+    "x": "Jugador X",
+    "o": "Jugador O",
+    "one": "Jugador 1",
+    "two": "Jugador 2",
+    "computer": "Computadora",
+    "you": "Tú"
+  },
+  "celebration": {
+    "winner_text": "¡{{player}} Gana!",
+    "winner_subtitle": "¡Felicitaciones!",
+    "play_again_prompt": "¿Jugar de nuevo?"
+  }
+}

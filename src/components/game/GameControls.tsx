@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { RotateCcw, Undo2 } from 'lucide-react';
@@ -31,48 +32,46 @@ interface GameControlsProps {
 export const GameControls: React.FC<GameControlsProps> = ({
   restartGame,
   undoMove,
-  canUndo = false, // Default to false if not provided
+  canUndo = false,
   moveCount,
   score,
 }) => {
+  const { t } = useTranslation('common');
+
   return (
     <div className="flex justify-center gap-2 mb-6 flex-wrap">
-      {/* New Game Button */}
       <Button
-        onClick={restartGame} // Attach restart game handler
+        onClick={restartGame}
         variant="outline"
         size="sm"
         className="gap-2"
       >
-        <RotateCcw className="w-4 h-4" /> {/* Icon for new game */}
-        New Game
+        <RotateCcw className="w-4 h-4" />
+        {t('new_game')}
       </Button>
       
-      {/* Undo Button: Conditionally rendered if undoMove function is provided */}
       {undoMove && (
         <Button
-          onClick={undoMove} // Attach undo move handler
-          disabled={!canUndo} // Disable if undo is not possible
+          onClick={undoMove}
+          disabled={!canUndo}
           variant="outline"
           size="sm"
           className="gap-2"
         >
-          <Undo2 className="w-4 h-4" /> {/* Icon for undo */}
-          Undo
+          <Undo2 className="w-4 h-4" />
+          {t('undo')}
         </Button>
       )}
 
-      {/* Move Count Badge: Conditionally rendered if moveCount is provided */}
       {moveCount !== undefined && (
         <Badge variant="secondary" className="px-3 py-1">
-          Moves: {moveCount}
+          {t('moves', { count: moveCount })}
         </Badge>
       )}
 
-      {/* Score Badge: Conditionally rendered if score is provided */}
       {score !== undefined && (
         <Badge variant="secondary" className="px-3 py-1">
-          Score: {score}
+          {t('score', { count: score })}
         </Badge>
       )}
     </div>

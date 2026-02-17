@@ -1,9 +1,7 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
+import React, { useRef, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, RotateCcw, Trophy, Users } from 'lucide-react';
+import { Trophy } from 'lucide-react';
 import GameBoard from './components/GameBoard';
 import { useTicTacToe } from './hooks/useTicTacToe';
 
@@ -12,6 +10,7 @@ import { GameControls } from '@/components/game/GameControls';
 import { GameStatus } from './components/GameStatus';
 import { GameRules } from './components/GameRules';
 import { GameOverModal } from '@/components/game/GameOverModal';
+import { WinCelebrationOverlay } from '@/components/game/WinCelebrationOverlay';
 
 /**
  * Main Tic Tac Toe game component.
@@ -19,17 +18,13 @@ import { GameOverModal } from '@/components/game/GameOverModal';
  * rendering the game board, controls, and displaying game status, rules, and high scores.
  */
 const TicTacToe: React.FC = () => {
+  // Initialize translation hook for tic-tac-toe game
+  const { t } = useTranslation('games/tic-tac-toe');
+  const { t: tCommon } = useTranslation('common');
+  
   // Destructure game state and control functions from the custom useTicTacToe hook
-  // gameState: object containing board, current player, game result, etc.
-  // gameStatusMessage: human-readable message about current game status
-  // makeMove: function to handle a player's move
-  // resetGame: function to reset the game
-  // isCellInWinningLine: utility to check if a cell is part of the winning line
-  // getCellValue: utility to get the value of a cell
-  // highScore: the fewest moves to win recorded for this game
   const {
     gameState,
-    gameStatusMessage,
     makeMove,
     resetGame,
     isCellInWinningLine,
@@ -42,23 +37,72 @@ const TicTacToe: React.FC = () => {
    * @returns {boolean} True if the game is ongoing, false otherwise.
    */
   const isGameActive = gameState.gameResult === 'ongoing';
+  
+  // Ref for screen reader announcer
+  const announcerRef = useRef<HTMLDivElement>(null);
+
+  // State for win celebration overlay
+  const [showCelebration, setShowCelebration] = useState(false);
+
+  // Ref to track previous game result for transition detection
+  const prevGameResultRef = useRef(gameState.gameResult);
+
+  // Announce game state changes to screen readers
+  useEffect(() => {
+    if (announcerRef.current) {
+      // Game status is now announced by the GameStatus component itself
+      announcerRef.current.textContent = '';
+    }
+  }, [gameState.gameResult, gameState.currentPlayer]);
+
+  // Trigger celebration only when transitioning from ongoing to win
+  useEffect(() => {
+    const prevResult = prevGameResultRef.current;
+    const currentResult = gameState.gameResult;
+
+    // Only trigger when game transitions from ongoing to win
+    if (prevResult === 'ongoing' && currentResult === 'win') {
+      setShowCelebration(true);
+    }
+
+    prevGameResultRef.current = currentResult;
+  }, [gameState.gameResult]);
+
+  // Handler when celebration completes
+  const handleCelebrationComplete = () => {
+    setShowCelebration(false);
+  };
 
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
         {/* Game Header: Displays the game title and a brief description */}
         <GameHeader 
-          title="🎯 Tic Tac Toe"
-          description="Classic strategy game for two players"
+          title={`🎯 ${t('title')}`}
+          description={t('description')}
+        />
+
+        {/* Screen reader announcer - visually hidden */}
+        <div
+          ref={announcerRef}
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+          className="sr-only"
         />
 
         <div className="max-w-4xl mx-auto">
+          {/* Floating Game Status - Now above the board */}
+          <GameStatus
+            gameResult={gameState.gameResult}
+            winner={gameState.winner}
+            moveCount={gameState.moveCount}
+            gameStarted={gameState.gameStarted}
+            currentPlayer={gameState.currentPlayer}
+          />
+
           <div className="grid lg:grid-cols-3 gap-8">
-            
             {/* Game Controls: Buttons for restarting the game */}
-            {/* restartGame: function to reset the game */}
-            {/* canUndo: Tic-tac-toe typically doesn't have an undo feature */}
-            {/* moveCount: current number of moves made */}
             <GameControls
               restartGame={resetGame}
               canUndo={false}
@@ -70,62 +114,63 @@ const TicTacToe: React.FC = () => {
               <CardHeader className="pb-2">
                 <CardTitle className="text-sm text-muted-foreground flex items-center justify-center gap-1">
                   <Trophy className="w-4 h-4" />
-                  Fewest Moves
+                  {tCommon('fewest_moves')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="pt-0">
                 <div className="text-2xl font-bold text-accent">
-                  {/* Displays the fewest moves to win, or '--' if no high score is set */}
                   {highScore !== null ? highScore.toLocaleString() : '--'}
                 </div>
               </CardContent>
             </Card>
 
-            {/* Game Status Card: Displays current player, game result, and status message */}
-            {/* gameResult: current result of the game ('ongoing', 'win', 'draw') */}
-            {/* winner: the winning player ('X' or 'O') if gameResult is 'win' */}
-            {/* gameStatusMessage: human-readable status message */}
-            {/* moveCount: current number of moves */}
-            {/* gameStarted: boolean indicating if the game has started */}
-            {/* currentPlayer: the player whose turn it is */}
-            <GameStatus
-              gameResult={gameState.gameResult}
-              winner={gameState.winner}
-              gameStatusMessage={gameStatusMessage}
-              moveCount={gameState.moveCount}
-              gameStarted={gameState.gameStarted}
-              currentPlayer={gameState.currentPlayer}
-            />
-
-            {/* Game Board: The interactive 3x3 grid for playing Tic Tac Toe */}
-            <Card className="lg:col-span-2">
-              <CardHeader className="text-center">
-                <CardTitle className="text-lg">Game Board</CardTitle>
-                <CardDescription>
-                  Click any empty cell to make your move
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <GameBoard
-                  onCellClick={makeMove} // Callback for when a cell is clicked
-                  getCellValue={getCellValue} // Function to get a cell's value
-                  isCellInWinningLine={isCellInWinningLine} // Function to check if a cell is part of the winning line
-                  isGameActive={isGameActive} // Boolean to enable/disable cell clicks
-                />
-              </CardContent>
-            </Card>
+            {/* Empty placeholder to maintain grid layout */}
+            <div className="hidden lg:block" />
           </div>
 
-          {/* Game Rules: Component displaying the rules of Tic Tac Toe */}
-          <GameRules />
+          {/* Game Board - Full width, centered */}
+          <Card className="mt-8 max-w-2xl mx-auto">
+            <CardHeader className="text-center pb-2">
+              <CardTitle className="text-lg">{tCommon('game_board')}</CardTitle>
+              <CardDescription>
+                {tCommon('keyboard_instructions')}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="pb-6">
+              <GameBoard
+                onCellClick={makeMove}
+                getCellValue={getCellValue}
+                isCellInWinningLine={isCellInWinningLine}
+                isGameActive={isGameActive}
+                currentPlayer={gameState.currentPlayer}
+                winningLine={gameState.winningLine}
+              />
+            </CardContent>
+          </Card>
 
-          {/* Game Over Modal: Displays when the game concludes (win or draw) */}
+          {/* Game Rules */}
+          <div className="mt-8">
+            <GameRules />
+          </div>
+
+          {/* Win Celebration Overlay - Shows when game is won, blocks page */}
+          <WinCelebrationOverlay
+            isVisible={showCelebration}
+            winner={gameState.winner || 'X'}
+            duration={3000}
+            winnerTitleKey="celebration.winner_title"
+            winnerSubtitleKey="celebration.winner_subtitle"
+            translationNamespace="games/tic-tac-toe"
+            onComplete={handleCelebrationComplete}
+          />
+
+          {/* Game Over Modal - Only shows after celebration ends or on draw */}
           <GameOverModal
-            isGameOver={gameState.gameResult !== 'ongoing'} // Modal shows if game is not ongoing
-            isWon={gameState.gameResult === 'win'} // True if the game was won
-            score={gameState.moveCount} // The final move count is considered the score
-            bestScore={highScore ?? 0} // The fewest moves to win (high score)
-            restartGame={resetGame} // Function to restart the game
+            isGameOver={gameState.gameResult !== 'ongoing' && !showCelebration}
+            isWon={gameState.gameResult === 'win'}
+            score={gameState.moveCount}
+            bestScore={highScore ?? 0}
+            restartGame={resetGame}
           />
         </div>
       </div>

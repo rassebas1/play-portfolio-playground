@@ -30,7 +30,7 @@ const navItems = [
  */
 export const Navbar: React.FC = () => {
   // `useTranslation` hook for internationalization, providing translation function `t` and i18n instance.
-  const { t, i18n } = useTranslation('common');
+  const { t, i18n } = useTranslation(['games','common']);
 
   /**
    * Changes the application's language using i18next.
@@ -49,7 +49,7 @@ export const Navbar: React.FC = () => {
           <nav aria-label="Desktop navigation" className="hidden md:flex items-center space-x-4 lg:space-x-6">
             {/* Portfolio Logo/Brand Link */}
             <Link to="/" className="mr-6 flex items-center space-x-2">
-              <span className="font-bold inline-block">{t('portfolio')}</span>
+              <span className="font-bold inline-block">{t('portfolio', { ns: 'common' })}</span>
             </Link>
             {/* Main Navigation Links */}
             {navItems.map((item) => (
@@ -64,27 +64,32 @@ export const Navbar: React.FC = () => {
               </NavLink>
             ))}
 
-            {/* Games Dropdown for Desktop */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
+            {/* Games Dropdown for Desktop - Hover to show dropdown, Click to go to /games */}
+            <div className="relative group">
+              <Link to="/games">
                 <Button
                   variant="ghost"
                   className="text-sm font-medium transition-colors hover:text-primary data-[state=open]:text-primary"
                 >
                   {t('Games')} {/* Translated "Games" label */}
                 </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" forceMount>
-                {/* Filter and map through games that are "Ready to Play" */}
-                {games.filter(game => game.status === 'Ready to Play').map((game) => (
-                  <DropdownMenuItem key={game.id} asChild>
-                    <Link to={`/game/${game.id}`}>
-                      {game.icon} {game.name} {/* Game icon and name */}
+              </Link>
+              {/* Dropdown menu shown on hover */}
+              <div className="absolute left-0 top-full z-50 min-w-[200px] overflow-hidden rounded-md border bg-popover text-popover-foreground shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                <div className="p-1">
+                  {/* Filter and map through games that are "Ready to Play" */}
+                  {games.filter(game => game.status === 'status.ready_to_play').map((game) => (
+                    <Link
+                      key={game.id}
+                      to={`/game/${game.id}`}
+                      className="relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground"
+                    >
+                      {game.icon} {t(game.name, { ns: 'games' })} {/* Game icon and translated name */}
                     </Link>
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
+                  ))}
+                </div>
+              </div>
+            </div>
           </nav>
 
           {/* Mobile Navigation (Sheet/Sidebar) */}
@@ -104,7 +109,7 @@ export const Navbar: React.FC = () => {
               <nav className="flex flex-col gap-4 pt-6">
                 {/* Portfolio Logo/Brand Link for Mobile */}
                 <Link to="/" className="mb-4 flex items-center space-x-2">
-                  <span className="font-bold">{t('portfolio')}</span>
+                  <span className="font-bold">{t('portfolio', { ns: 'common' })}</span>
                 </Link>
                 {/* Main Navigation Links for Mobile */}
                 {navItems.map((item) => (
@@ -124,13 +129,13 @@ export const Navbar: React.FC = () => {
                   <h4 className="mb-2 text-lg font-semibold">{t('Games')}</h4> {/* Translated "Games" label */}
                   <div className="flex flex-col gap-2 pl-4">
                     {/* Filter and map through games that are "Ready to Play" */}
-                    {games.filter(game => game.status === 'Ready to Play').map((game) => (
+                    {games.filter(game => game.status === 'status.ready_to_play').map((game) => (
                       <Link
                         key={game.id}
                         to={`/game/${game.id}`}
                         className="text-base text-muted-foreground hover:text-primary"
                       >
-                        {game.icon} {game.name} {/* Game icon and name */}
+                        {game.icon} {t(game.name, { ns: 'games' })} {/* Game icon and translated name */}
                       </Link>
                     ))}
                   </div>
@@ -153,16 +158,16 @@ export const Navbar: React.FC = () => {
             <DropdownMenuContent align="end">
               {/* Language Options */}
               <DropdownMenuItem onClick={() => changeLanguage('en')}>
-                <span className="mr-2">🇬🇧</span> {t('language.english')}
+                <span className="mr-2">🇬🇧</span> {t('language.english', { ns: 'common' })}
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => changeLanguage('es')}>
-                <span className="mr-2">🇪🇸</span> {t('language.spanish')}
+                <span className="mr-2">🇪🇸</span> {t('language.spanish', { ns: 'common' })}
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => changeLanguage('fr')}>
-                <span className="mr-2">🇫🇷</span> {t('language.french')}
+                <span className="mr-2">🇫🇷</span> {t('language.french', { ns: 'common' })}
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => changeLanguage('it')}>
-                <span className="mr-2">🇮🇹</span> {t('language.italian')}
+                <span className="mr-2">🇮🇹</span> {t('language.italian', { ns: 'common' })}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
