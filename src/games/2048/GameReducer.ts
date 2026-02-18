@@ -21,6 +21,7 @@ export interface GameState {
     isWon: boolean;                // True if the player has reached the 2048 tile
     canUndo: boolean;              // True if the last move can be undone
     previousState: GameState | null; // Stores the state before the last move for undo functionality
+    highestTile: number;           // Highest tile value achieved in current game
 }
 
 /**
@@ -37,6 +38,7 @@ export const initialState: GameState = {
     isWon: false,
     canUndo: false,
     previousState: null,
+    highestTile: 0,
 };
 
 /**
@@ -191,13 +193,20 @@ export const GameReducer = (state: GameState, action: Action): GameState => {
          * Updates the entire set of tiles and the current score after a move has been processed.
          * Payload: { tiles: { [id: string]: Tile }; byIds: string[]; score: number }
          */
-        case "UPDATE_ALL_TILES":
+        case "UPDATE_ALL_TILES": {
+            // Calculate the highest tile value from current tiles
+            const currentHighest = Object.values(action.tiles).reduce(
+                (max, tile) => (tile && !tile.isRemoved ? Math.max(max, tile.value) : max),
+                state.highestTile
+            );
             return {
                 ...state,
                 tiles: action.tiles,
                 byIds: action.byIds,
                 score: state.score + action.score, // Add score from the move result
+                highestTile: Math.max(state.highestTile, currentHighest),
             };
+        }
         
         /**
          * Action: UNDO_MOVE
