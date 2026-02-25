@@ -16,21 +16,23 @@ import { GameReducer, initialState } from '../GameReducer';
 import { useIds } from '../useIds';
 import { useHighScores } from '@/hooks/useHighScores';
 
-/**
- * Custom hook for 2048 game logic and state management.
- *
- * @returns {object} An object containing:
- *   - {boolean} isGameOver - True if the game is currently in a game over state.
- *   - {boolean} isWon - True if the player has reached the 2048 tile.
- *   - {function(direction: Direction): void} makeMove - Function to perform a tile move in a given direction.
- *   - {function(): void} restartGame - Function to reset and start a new game.
- *   - {function(): void} undoMove - Function to undo the last move.
- *   - {function(): void} continueGame - Function to continue playing after winning (reaching 2048).
- *   - {Tile[]} animatedTiles - An array of tiles with their current and previous positions for animation.
- *   - {number} score - The current score of the game.
- *   - {number | null} highScore - The highest score recorded for this game, or null if none exists.
- *   - {boolean} canUndo - True if the last move can be undone.
- */
+  /**
+   * Custom hook for 2048 game logic and state management.
+   *
+   * @returns {object} An object containing:
+   *   - {boolean} isGameOver - True if the game is currently in a game over state.
+   *   - {boolean} isWon - True if the player has reached the 2048 tile.
+   *   - {function(direction: Direction): void} makeMove - Function to perform a tile move in a given direction.
+   *   - {function(): void} restartGame - Function to reset and start a new game.
+   *   - {function(): void} undoMove - Function to undo the last move.
+   *   - {function(): void} continueGame - Function to continue playing after winning (reaching 2048).
+   *   - {Tile[]} animatedTiles - An array of tiles with their current and previous positions for animation.
+   *   - {number} score - The current score of the game.
+   *   - {number | null} highScore - The highest score recorded for this game, or null if none exists.
+   *   - {number} highestTile - The highest tile value achieved in the current game.
+   *   - {number | null} bestHighestTile - The highest tile value ever achieved, or null if none exists.
+   *   - {boolean} canUndo - True if the last move can be undone.
+   */
 export const use2048 = () => {
   // Custom hook to generate unique IDs for tiles
   const [getNextId] = useIds();
@@ -39,8 +41,8 @@ export const use2048 = () => {
   const [state, dispatch] = useReducer(GameReducer, undefined, () => initializeBoard(getNextId));
   // Destructure relevant state variables for easier access
   const { tiles, byIds, hasChanged, inMotion, score, isGameOver, isWon, canUndo } = state;
-  // useHighScores hook integrates persistent high score tracking for the '2048' game
-  const { highScore, updateHighScore } = useHighScores('2048');
+  // useHighScores hook integrates persistent high score and highest tile tracking for the '2048' game
+  const { highScore, updateHighScore, highestTile: bestHighestTile, updateHighestTile } = useHighScores('2048');
 
   // Memoized array of tiles for rendering, including animation data
   const animatedTiles = byIds.map(id => tiles[id]);
@@ -164,13 +166,17 @@ export const use2048 = () => {
     dispatch({ type: 'END_MOVE' });
   }, []); // Runs only once on mount
 
-  // Effect to update the high score when the game is over or won.
+  // Effect to update the high score and highest tile when the game is over or won.
   useEffect(() => {
     if (isGameOver || isWon) {
       // Update high score using the 'highest' strategy
       updateHighScore(score, 'highest');
+      // Update highest tile if current is higher
+      if (state.highestTile > (bestHighestTile ?? 0)) {
+        updateHighestTile(state.highestTile);
+      }
     }
-  }, [isGameOver, isWon, score, updateHighScore]); // Dependencies for high score update
+  }, [isGameOver, isWon, score, state.highestTile, bestHighestTile, updateHighScore, updateHighestTile]); // Dependencies for high score and tile update
 
   // Keyboard event handler for tile movements.
   useEffect(() => {
@@ -208,6 +214,8 @@ export const use2048 = () => {
     animatedTiles,
     score,
     highScore,
+    highestTile: state.highestTile,
+    bestHighestTile,
     canUndo,
   };
 };

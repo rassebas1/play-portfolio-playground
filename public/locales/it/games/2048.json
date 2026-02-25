@@ -1,0 +1,58 @@
+{
+  "title": "2048",
+  "description": "Unisci le tessere, raggiungi 2048!",
+  "instructions": {
+    "desktop": "Usa le frecce per muovere le tessere. Combina i numeri uguali per raggiungere 2048!",
+    "mobile": "Scorri in qualsiasi direzione per muovere le tessere. Combina i numeri uguali per raggiungere 2048!"
+  },
+  "how_to_play": {
+    "title": "Come Giocare",
+    "items": [
+      "Scorri o usa le frecce per muovere tutte le tessere",
+      "Quando due tessere con lo stesso numero si toccano, si fondono in una!",
+      "Ogni mossa aggiunge una nuova tessera (2 o 4) alla griglia",
+      "Obiettivo: Creare una tessera con il numero 2048"
+    ]
+  },
+  "tips": {
+    "title": "Consigli Pro",
+    "items": [
+      "Tieni la tua tessera di valore più alto in un angolo",
+      "Costruisci catene di valori decrescenti intorno",
+      "Pianifica diverse mosse in anticipo - non affrettarti!",
+      "Mantieni la griglia più pulita possibile"
+    ]
+  },
+  "status": {
+    "playing": "In corso...",
+    "won": "Hai raggiunto 2048!",
+    "game_over": "Nessuna mossa disponibile!"
+  },
+  "scoreboard": {
+    "score": "Punteggio",
+    "best": "Migliore",
+    "highest_tile": "Tessera Max"
+  },
+  "celebration": {
+    "title": "Congratulazioni per aver raggiunto: {{value}}",
+    "subtitle": "Incredibile!",
+    "keep_going": "Fino a dove puoi arrivare?"
+  },
+  "actions": {
+    "continue": "Continua a Giocare",
+    "new_game": "Nuova Partita",
+    "home": "Home",
+    "undo": "Annulla"
+  },
+  "aria": {
+    "board": "Griglia di 2048 con {{count}} tessere",
+    "tile": "Tessera con valore {{value}} alla riga {{row}}, colonna {{col}}",
+    "empty_cell": "Cella vuota alla riga {{row}}, colonna {{col}}",
+    "new_tile": "Nuova tessera {{value}} apparsa alla riga {{row}}, colonna {{col}}",
+    "merged": "Due tessere {{value}} fuse in {{newValue}}",
+    "score_increased": "Punteggio aumentato di {{points}} punti",
+    "move_made": "Mossa {{direction}}",
+    "game_won": "Congratulazioni! Hai raggiunto 2048!",
+    "game_over": "Partita finita! Nessuna mossa disponibile."
+  }
+}

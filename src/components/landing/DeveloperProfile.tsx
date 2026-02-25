@@ -12,28 +12,35 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
  * @returns {JSX.Element} The rendered developer profile card.
  */
 export const DeveloperProfile: React.FC = () => {
-  // `useTranslation` hook provides access to the translation function `t`.
   const { t } = useTranslation('common');
 
   return (
-    <Card>
-      <CardHeader className="text-center">
-        {/* Developer Avatar */}
-        <Avatar className="w-24 h-24 mx-auto mb-4">
-          <AvatarImage src="https://github.com/rassebas1.png" alt="Sebastián Espitia Londoño" />
-          <AvatarFallback>SEL</AvatarFallback> {/* Fallback text if image fails to load */}
-        </Avatar>
-        {/* Developer's Name */}
-        <CardTitle className="text-2xl">Sebastián Espitia Londoño</CardTitle>
-        {/* Developer's Title (translated) */}
-        <p className="text-muted-foreground">{t('developer_title')}</p>
-      </CardHeader>
-      <CardContent>
-        {/* Developer's Description (translated) */}
-        <p className="text-center text-muted-foreground">
-          {t('developer_description')}
-        </p>
-      </CardContent>
+    <Card className="overflow-hidden group hover:shadow-xl transition-all duration-300">
+      {/* Gradient border effect on hover */}
+      <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/50 to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl" />
+      <div className="relative bg-card m-0.5 rounded-xl">
+        <CardHeader className="text-center">
+          {/* Developer Avatar with ring effect */}
+          <div className="relative inline-block">
+            <Avatar className="w-28 h-28 mx-auto mb-4 ring-4 ring-primary/20 group-hover:ring-primary/40 transition-all duration-300 group-hover:scale-105">
+              <AvatarImage src="https://github.com/rassebas1.png" alt="Sebastián Espitia Londoño" />
+              <AvatarFallback className="text-xl">SEL</AvatarFallback>
+            </Avatar>
+            {/* Status indicator */}
+            <span className="absolute bottom-4 right-1/2 translate-x-8 w-4 h-4 bg-green-500 rounded-full border-2 border-card" />
+          </div>
+          {/* Developer's Name */}
+          <CardTitle className="text-2xl group-hover:text-primary transition-colors">Sebastián Espitia Londoño</CardTitle>
+          {/* Developer's Title (translated) */}
+          <p className="text-muted-foreground font-medium">{t('developer_title')}</p>
+        </CardHeader>
+        <CardContent>
+          {/* Developer's Description (translated) */}
+          <p className="text-center text-muted-foreground leading-relaxed">
+            {t('developer_description')}
+          </p>
+        </CardContent>
+      </div>
     </Card>
   );
 };

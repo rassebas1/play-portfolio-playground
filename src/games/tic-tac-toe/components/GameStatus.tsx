@@ -1,102 +1,132 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Trophy, Users } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { X, Circle, Trophy, Users } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import type { GameResult, Player } from '../types';
 
 /**
+ * PlayerToken component - Displays animated player icon
+ */
+interface PlayerTokenProps {
+  player: Player;
+  isActive: boolean;
+  size?: 'sm' | 'lg';
+}
+
+const PlayerToken: React.FC<PlayerTokenProps> = ({ player, isActive, size = 'lg' }) => {
+  const sizeClasses = size === 'lg' ? 'w-10 h-10' : 'w-6 h-6';
+  const containerClasses = size === 'lg' ? 'w-14 h-14' : 'w-9 h-9';
+  
+  return (
+    <div className={cn(
+      containerClasses,
+      "rounded-xl flex items-center justify-center transition-all duration-300",
+      "border-2",
+      player === 'X' 
+        ? "bg-blue-500/10 border-blue-500 text-blue-500"
+        : "bg-orange-500/10 border-orange-500 text-orange-500",
+      isActive && "scale-110 shadow-lg",
+      isActive && player === 'X' && "shadow-blue-500/30",
+      isActive && player === 'O' && "shadow-orange-500/30",
+      !isActive && "opacity-40 scale-95 grayscale"
+    )}>
+      {player === 'X' ? (
+        <X className={cn(sizeClasses, "stroke-[3]")} />
+      ) : (
+        <Circle className={cn(sizeClasses, "stroke-[3]")} />
+      )}
+    </div>
+  );
+};
+
+/**
  * Props for the GameStatus component.
- * @interface GameStatusProps
- * @property {GameResult} gameResult - The current result of the game ('ongoing', 'win', 'draw').
- * @property {Player | null} winner - The winning player ('X' or 'O') if gameResult is 'win', otherwise null.
- * @property {string} gameStatusMessage - A human-readable message describing the current game status.
- * @property {number} moveCount - The total number of moves made in the current game.
- * @property {boolean} gameStarted - True if the game has started, false otherwise.
- * @property {Player} currentPlayer - The player whose turn it is currently.
  */
 interface GameStatusProps {
   gameResult: GameResult;
   winner: Player | null;
-  gameStatusMessage: string;
   moveCount: number;
   gameStarted: boolean;
   currentPlayer: Player;
 }
 
 /**
- * GameStatus component for Tic Tac Toe.
- * Displays the current status of the game, including messages, move count,
- * and the current player. It uses badges and icons for visual cues.
- *
- * @param {GameStatusProps} props - Props passed to the component.
- * @returns {JSX.Element} The rendered game status card.
+ * GameStatus component - Floating indicator with animated player tokens
  */
 export const GameStatus: React.FC<GameStatusProps> = ({
   gameResult,
   winner,
-  gameStatusMessage,
   moveCount,
   gameStarted,
   currentPlayer,
 }) => {
-  /**
-   * Determines the appropriate badge variant (color/style) based on the game result.
-   * @returns {'default' | 'secondary' | 'outline'} The variant string for the Badge component.
-   */
-  const getStatusBadgeVariant = () => {
-    switch (gameResult) {
-      case 'win':
-        return 'default'; // Green for win
-      case 'draw':
-        return 'secondary'; // Grey for draw
-      default:
-        return 'outline'; // Default for ongoing/idle
-    }
-  };
+  const { t } = useTranslation('games/tic-tac-toe');
+  const { t: tCommon } = useTranslation('common');
 
-  /**
-   * Gets the appropriate icon to display next to the status message.
-   * @returns {JSX.Element | null} A Lucide icon component or null if no icon is needed.
-   */
-  const getStatusIcon = () => {
-    if (gameResult === 'win') {
-      return <Trophy className="w-4 h-4 mr-1" />; // Trophy icon for a win
+  const isXActive = gameResult === 'ongoing' && currentPlayer === 'X';
+  const isOActive = gameResult === 'ongoing' && currentPlayer === 'O';
+  const showWinner = gameResult === 'win' && winner;
+
+  // Generate status message based on game state
+  const getStatusMessage = () => {
+    if (gameResult === 'win' && winner) {
+      return t('status.win', { player: winner });
     }
     if (gameResult === 'draw') {
-      return <Users className="w-4 h-4 mr-1" />; // Users icon for a draw
+      return t('status.draw');
     }
-    return null; // No icon for ongoing/idle
+    if (!gameStarted) {
+      return t('status.start');
+    }
+    return t('status.turn', { player: currentPlayer });
   };
 
   return (
-    <Card className="lg:col-span-1">
-      <CardHeader className="text-center">
-        <CardTitle className="text-lg">Game Status</CardTitle>
-      </CardHeader>
-      <CardContent className="text-center space-y-4">
-        {/* Badge displaying the main game status message */}
-        <Badge
-          variant={getStatusBadgeVariant()} // Dynamic variant based on game result
-          className="text-sm px-3 py-1"
-        >
-          {getStatusIcon()} {/* Dynamic icon */}
-          {gameStatusMessage} {/* The status message */}
-        </Badge>
-
-        {/* Display move count and current player */}
-        <div className="space-y-2 text-sm text-muted-foreground">
-          <div>Move Count: {moveCount}</div>
-          {gameStarted && ( // Only show current player if the game has started
-            <div>Next Player:
-              <span className={`ml-1 font-semibold ${
-                currentPlayer === 'X' ? 'text-game-info' : 'text-game-danger' // Dynamic color for current player
-              }`}>
-                {currentPlayer}
-              </span>
-            </div>
+    <div className="flex justify-center mb-6">
+      <div className={cn(
+        "inline-flex items-center gap-4 px-6 py-3 rounded-2xl",
+        "bg-card/80 backdrop-blur-sm border border-border shadow-xl",
+        "transition-all duration-300"
+      )}>
+        {/* Player X Token */}
+        <div className="relative">
+          <PlayerToken 
+            player="X" 
+            isActive={showWinner ? winner === 'X' : isXActive} 
+          />
+          {isXActive && (
+            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
           )}
         </div>
-      </CardContent>
-    </Card>
+
+        {/* Status Content */}
+        <div className="flex flex-col items-center min-w-[140px]">
+          {/* Status Icon and Text */}
+          <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+            {gameResult === 'win' && <Trophy className="w-4 h-4 text-yellow-500" />}
+            {gameResult === 'draw' && <Users className="w-4 h-4 text-muted-foreground" />}
+            <span>{getStatusMessage()}</span>
+          </div>
+          
+          {/* Move Count with pluralization */}
+          <div className="text-xs text-muted-foreground mt-1">
+            {tCommon('move_count', { count: moveCount })}
+          </div>
+        </div>
+
+        {/* Player O Token */}
+        <div className="relative">
+          <PlayerToken 
+            player="O" 
+            isActive={showWinner ? winner === 'O' : isOActive} 
+          />
+          {isOActive && (
+            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
+          )}
+        </div>
+      </div>
+    </div>
   );
 };
+
+export default GameStatus;

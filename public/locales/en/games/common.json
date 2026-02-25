@@ -1,0 +1,54 @@
+{
+  "game_board": "Game Board",
+  "how_to_play": "How to Play",
+  "rules": "Rules",
+  "strategy_tips": "Strategy Tips",
+  "game_status": "Game Status",
+  "move_count": "Move {{count}}",
+  "move_count_plural": "Moves {{count}}",
+  "player_wins": "{{player}} Wins!",
+  "its_a_draw": "It's a Draw!",
+  "current_player": "Current Player: {{player}}",
+  "next_player": "Next Player: {{player}}",
+  "click_to_start": "Click any cell to start playing!",
+  "keyboard_instructions": "Use arrow keys to navigate, Enter or Space to place mark",
+  "restart_game": "Restart Game",
+  "play_again": "Play Again",
+  "fewest_moves": "Fewest Moves",
+  "high_score": "High Score",
+  "score": "Score: {{count}}",
+  "level": "Level {{count}}",
+  "lives": "Lives: {{count}}",
+  "game_over": "Game Over",
+  "you_win": "You Win!",
+  "you_lose": "You Lose!",
+  "pause": "Pause",
+  "resume": "Resume",
+  "quit": "Quit",
+  "back_to_games": "Back to Games",
+  "difficulty": {
+    "easy": "Easy",
+    "medium": "Medium",
+    "hard": "Hard"
+  },
+  "status": {
+    "win": "Winner!",
+    "draw": "Draw",
+    "ongoing": "Game in Progress",
+    "paused": "Paused",
+    "game_over": "Game Over"
+  },
+  "player": {
+    "x": "Player X",
+    "o": "Player O",
+    "one": "Player 1",
+    "two": "Player 2",
+    "computer": "Computer",
+    "you": "You"
+  },
+  "celebration": {
+    "winner_text": "{{player}} Wins!",
+    "winner_subtitle": "Congratulations!",
+    "play_again_prompt": "Play again?"
+  }
+}

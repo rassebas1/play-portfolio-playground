@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 /**
  * Props for the GameHeader component.
@@ -22,22 +23,21 @@ interface GameHeaderProps {
  * @returns {JSX.Element} The rendered game header.
  */
 export const GameHeader: React.FC<GameHeaderProps> = ({ title, description, lives, level }) => {
+  const { t } = useTranslation('common');
+  
   return (
     <div className="text-center mb-8">
-      {/* Game Title: Large, bold, with a gradient text effect */}
       <h1 className="text-5xl font-bold bg-gradient-primary bg-clip-text text-transparent mb-4">
         {title}
       </h1>
-      {/* Game Description: Muted foreground text for a subtle look */}
       <p className="text-muted-foreground text-lg">
         {description}
       </p>
-      {/* Display Lives and Level if provided */}
       {(lives !== undefined || level !== undefined) && (
         <div className="text-muted-foreground text-md mt-2">
-          {lives !== undefined && <span>Lives: {lives}</span>}
+          {lives !== undefined && <span>{t('lives', { count: lives })}</span>}
           {lives !== undefined && level !== undefined && <span className="mx-2">|</span>}
-          {level !== undefined && <span>Level: {level}</span>}
+          {level !== undefined && <span>{t('level', { count: level })}</span>}
         </div>
       )}
     </div>

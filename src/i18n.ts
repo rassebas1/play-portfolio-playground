@@ -3,9 +3,6 @@
  * 
  * Configuration file for i18next with external JSON translations.
  * Translations are loaded from public/locales/[lang]/[namespace].json
- * 
- * @deprecated This configuration uses external JSON files.
- * The previous bundled translation approach is deprecated.
  */
 
 import i18n from 'i18next';
@@ -20,14 +17,14 @@ i18n
   .init({
     debug: false,
     fallbackLng: 'en',
-    keySeparator: '.',
-    nsSeparator: ':',
     interpolation: {
       escapeValue: false,
     },
     backend: {
       loadPath: '/play-portfolio-playground/locales/{{lng}}/{{ns}}.json',
     },
+    ns: ['common', 'games'],
+    defaultNS: 'common',
   });
 
 export default i18n;

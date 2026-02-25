@@ -1,0 +1,58 @@
+{
+  "title": "2048",
+  "description": "Joignez les tuiles, atteignez 2048 !",
+  "instructions": {
+    "desktop": "Utilisez les flèches pour déplacer les tuiles. Combinez les nombres identiques pour atteindre 2048 !",
+    "mobile": "Faites glisser dans n'importe quelle direction pour déplacer les tuiles. Combinez les nombres identiques pour atteindre 2048 !"
+  },
+  "how_to_play": {
+    "title": "Comment Jouer",
+    "items": [
+      "Faites glisser ou utilisez les flèches pour déplacer toutes les tuiles",
+      "Quand deux tuiles avec le même nombre se touchent, elles fusionnent en une seule !",
+      "Chaque mouvement ajoute une nouvelle tuile (2 ou 4) au plateau",
+      "Objectif : Créer une tuile avec le nombre 2048"
+    ]
+  },
+  "tips": {
+    "title": "Conseils Pro",
+    "items": [
+      "Gardez votre tuile de plus grande valeur dans un coin",
+      "Construisez des chaînes de valeurs décroissantes autour",
+      "Planifiez plusieurs mouvements à l'avance - ne vous précipitez pas !",
+      "Gardez le plateau aussi propre que possible"
+    ]
+  },
+  "status": {
+    "playing": "En cours...",
+    "won": "Vous avez atteint 2048 !",
+    "game_over": "Plus de mouvements disponibles !"
+  },
+  "scoreboard": {
+    "score": "Score",
+    "best": "Meilleur",
+    "highest_tile": "Tuile Max"
+  },
+  "celebration": {
+    "title": "Félicitations pour avoir atteint : {{value}}",
+    "subtitle": "Incroyable !",
+    "keep_going": "Jusqu'où pourrez-vous aller ?"
+  },
+  "actions": {
+    "continue": "Continuer à Jouer",
+    "new_game": "Nouvelle Partie",
+    "home": "Accueil",
+    "undo": "Annuler"
+  },
+  "aria": {
+    "board": "Plateau de 2048 avec {{count}} tuiles",
+    "tile": "Tuile avec valeur {{value}} à la ligne {{row}}, colonne {{col}}",
+    "empty_cell": "Cellule vide à la ligne {{row}}, colonne {{col}}",
+    "new_tile": "Nouvelle tuile {{value}} apparue à la ligne {{row}}, colonne {{col}}",
+    "merged": "Deux tuiles {{value}} fusionnées en {{newValue}}",
+    "score_increased": "Score augmenté de {{points}} points",
+    "move_made": "Déplacement {{direction}}",
+    "game_won": "Félicitations ! Vous avez atteint 2048 !",
+    "game_over": "Partie terminée ! Plus de mouvements disponibles."
+  }
+}

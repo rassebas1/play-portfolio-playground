@@ -20,24 +20,55 @@ interface TileProps {
  * @param {TileProps} { tile } - Props passed to the component.
  * @returns {JSX.Element} The rendered tile.
  */
-export const Tile: React.FC<TileProps > = ({ tile }) => {
+// Helper function to get tile color based on value
+const getTileColor = (value: number): string => {
+  const colorMap: { [key: number]: string } = {
+    2: "bg-gray-300 text-gray-700",
+    4: "bg-gray-400 text-gray-800",
+    8: "bg-yellow-300 text-gray-900",
+    16: "bg-yellow-400 text-gray-900",
+    32: "bg-orange-400 text-white",
+    64: "bg-orange-500 text-white",
+    128: "bg-red-400 text-white",
+    256: "bg-red-500 text-white",
+    512: "bg-purple-400 text-white",
+    1024: "bg-purple-500 text-white",
+    2048: "bg-gradient-to-br from-yellow-400 via-orange-400 to-yellow-500 text-white shadow-lg shadow-yellow-500/50",
+  };
+  
+  if (colorMap[value]) {
+    return colorMap[value];
+  }
+  
+  // Dynamic gradient generator for values > 2048
+  // Cycle through hues based on the power of 2
+  const power = Math.log2(value);
+  const hue = ((power - 11) * 25) % 360; // Start cycling after 2048 (2^11)
+  const hue2 = (hue + 40) % 360;
+  
+  return `bg-gradient-to-br from-[hsl(${hue},80%,55%)] to-[hsl(${hue2},90%,45%)] text-white shadow-lg`;
+};
+
+// Helper function to get font size based on value
+const getFontSize = (value: number): string => {
+  if (value >= 10000) return "text-sm";
+  if (value >= 1000) return "text-lg";
+  if (value >= 100) return "text-xl";
+  return "text-2xl";
+};
+
+export const Tile: React.FC<TileProps> = ({ tile }) => {
+  // Get dynamic color and font size
+  const colorClass = getTileColor(tile.value);
+  const fontSizeClass = getFontSize(tile.value);
+  
   // Dynamically generate CSS classes based on tile properties using `cn` utility.
   const tileClasses = cn(
-    "absolute rounded-lg flex items-center justify-center text-2xl font-bold",
+    "absolute rounded-lg flex items-center justify-center font-bold",
+    colorClass,
+    fontSizeClass,
     `transition-all duration-${ANIMATION_DURATION} ease-out`, // Apply transition for smooth movement
     {
-      // Background and text colors based on tile value
-      "bg-gray-300 text-gray-700": tile.value === 2,
-      "bg-gray-400 text-gray-800": tile.value === 4,
-      "bg-yellow-300 text-gray-900": tile.value === 8,
-      "bg-yellow-400 text-gray-900": tile.value === 16,
-      "bg-orange-400 text-white": tile.value === 32,
-      "bg-orange-500 text-white": tile.value === 64,
-      "bg-red-400 text-white": tile.value === 128,
-      "bg-red-500 text-white": tile.value === 256,
-      "bg-purple-400 text-white": tile.value === 512,
-      "bg-purple-500 text-white": tile.value === 1024,
-      "bg-blue-500 text-white": tile.value === 2048,
       // Animation classes for different tile states
       "scale-0 animate-scale-in": tile.isNew, // Scale-in animation for newly created tiles
       "animate-pop": tile.isMerged, // Pop animation for tiles that have just merged

@@ -1,15 +1,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { CheckCircle } from 'lucide-react'; // For custom bullet points
+import { CheckCircle, Briefcase } from 'lucide-react';
 
-/**
- * Props for the ExperienceCard component.
- * @interface ExperienceCardProps
- * @property {string} company - The name of the company.
- * @property {string} title - The job title.
- * @property {string} date - The duration of the employment (e.g., "Jan. 2023 – Sept. 2024").
- * @property {string[]} activities - An array of key responsibilities and achievements.
- */
 interface ExperienceCardProps {
   company: string;
   title: string;
@@ -17,38 +9,30 @@ interface ExperienceCardProps {
   activities: string[];
 }
 
-/**
- * ExperienceCard component.
- * Renders a single work experience entry, displaying the company name, job title,
- * employment dates, and a list of key activities/achievements.
- * It uses a `Card` component for styling and `CheckCircle` icons for bullet points.
- *
- * @param {ExperienceCardProps} { company, title, date, activities } - Props passed to the component.
- * @returns {JSX.Element} The rendered experience card.
- */
 export const ExperienceCard: React.FC<ExperienceCardProps> = ({ company, title, date, activities }) => {
   return (
-    <Card className="hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+    <Card className="group hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border-l-4 border-l-primary">
+      <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-xl" />
       <CardHeader className="pb-2">
-        <div className="flex justify-between items-start">
-          <div>
-            {/* Company Name */}
-            <CardTitle className="text-xl font-semibold text-primary">{company}</CardTitle>
-            {/* Job Title */}
+        <div className="flex justify-between items-start gap-4">
+          <div className="flex-1">
+            <div className="flex items-center gap-2 mb-1">
+              <Briefcase className="h-4 w-4 text-primary" />
+              <CardTitle className="text-xl font-semibold text-primary group-hover:text-primary/80 transition-colors">{company}</CardTitle>
+            </div>
             <p className="text-muted-foreground text-base">{title}</p>
           </div>
-          {/* Employment Dates */}
-          <p className="text-muted-foreground text-sm whitespace-nowrap">{date}</p>
+          <p className="text-sm text-muted-foreground whitespace-nowrap bg-muted px-3 py-1 rounded-full text-xs font-medium">
+            {date}
+          </p>
         </div>
       </CardHeader>
       <CardContent className="pt-2">
-        {/* List of Activities/Achievements */}
-        <ul className="space-y-2">
+        <ul className="space-y-3">
           {activities.map((activity, index) => (
-            <li key={index} className="flex items-start text-muted-foreground">
-              {/* Custom bullet point icon */}
-              <CheckCircle className="h-4 w-4 mr-2 mt-1 flex-shrink-0 text-green-500" />
-              <span>{activity}</span>
+            <li key={index} className="flex items-start text-muted-foreground group/item">
+              <CheckCircle className="h-4 w-4 mr-3 mt-1 flex-shrink-0 text-green-500 group-hover/item:text-green-400 transition-colors" />
+              <span className="leading-relaxed">{activity}</span>
             </li>
           ))}
         </ul>

@@ -1,0 +1,37 @@
+{
+  "title": "Tic Tac Toe",
+  "description": "Classic strategy game for two players. First to get three in a row wins!",
+  "short_description": "Classic strategy game",
+  "rules": {
+    "title": "Rules",
+    "items": [
+      "Players take turns placing X or O",
+      "First player to get 3 in a row wins",
+      "Rows, columns, or diagonals count",
+      "If all cells are filled, it's a draw"
+    ]
+  },
+  "strategy": {
+    "title": "Strategy Tips",
+    "items": [
+      "Control the center when possible",
+      "Block opponent's winning moves",
+      "Create multiple winning opportunities",
+      "Think ahead and plan your moves"
+    ]
+  },
+  "status": {
+    "win": "{{player}} wins!",
+    "draw": "It's a draw!",
+    "start": "Click any cell to start playing!",
+    "turn": "Current player: {{player}}"
+  },
+  "celebration": {
+    "winner_title": "{{player}}",
+    "winner_subtitle": "Wins!"
+  },
+  "cells": {
+    "aria_label_empty": "Row {{row}}, Column {{col}}, empty",
+    "aria_label_filled": "Row {{row}}, Column {{col}}, {{player}}"
+  }
+}

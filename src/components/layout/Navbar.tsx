@@ -30,7 +30,7 @@ const navItems = [
  */
 export const Navbar: React.FC = () => {
   // `useTranslation` hook for internationalization, providing translation function `t` and i18n instance.
-  const { t, i18n } = useTranslation('common');
+  const { t, i18n } = useTranslation(['games','common']);
 
   /**
    * Changes the application's language using i18next.
@@ -49,7 +49,7 @@ export const Navbar: React.FC = () => {
           <nav aria-label="Desktop navigation" className="hidden md:flex items-center space-x-4 lg:space-x-6">
             {/* Portfolio Logo/Brand Link */}
             <Link to="/" className="mr-6 flex items-center space-x-2">
-              <span className="font-bold inline-block">{t('portfolio')}</span>
+              <span className="font-bold inline-block">{t('portfolio', { ns: 'common' })}</span>
             </Link>
             {/* Main Navigation Links */}
             {navItems.map((item) => (
@@ -64,27 +64,32 @@ export const Navbar: React.FC = () => {
               </NavLink>
             ))}
 
-            {/* Games Dropdown for Desktop */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
+            {/* Games Dropdown for Desktop - Hover to show dropdown, Click to go to /games */}
+            <div className="relative group">
+              <Link to="/games">
                 <Button
                   variant="ghost"
                   className="text-sm font-medium transition-colors hover:text-primary data-[state=open]:text-primary"
                 >
                   {t('Games')} {/* Translated "Games" label */}
                 </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" forceMount>
-                {/* Filter and map through games that are "Ready to Play" */}
-                {games.filter(game => game.status === 'Ready to Play').map((game) => (
-                  <DropdownMenuItem key={game.id} asChild>
-                    <Link to={`/game/${game.id}`}>
-                      {game.icon} {game.name} {/* Game icon and name */}
+              </Link>
+              {/* Dropdown menu shown on hover */}
+              <div className="absolute left-0 top-full z-50 min-w-[200px] overflow-hidden rounded-md border bg-popover text-popover-foreground shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                <div className="p-1">
+                  {/* Filter and map through games that are "Ready to Play" */}
+                  {games.filter(game => game.status === 'status.ready_to_play').map((game) => (
+                    <Link
+                      key={game.id}
+                      to={`/game/${game.id}`}
+                      className="relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground"
+                    >
+                      {game.icon} {t(game.name, { ns: 'games' })} {/* Game icon and translated name */}
                     </Link>
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
+                  ))}
+                </div>
+              </div>
+            </div>
           </nav>
 
           {/* Mobile Navigation (Sheet/Sidebar) */}
@@ -93,44 +98,48 @@ export const Navbar: React.FC = () => {
               <Button
                 variant="ghost"
                 size="icon"
-                className="md:hidden" // Only visible on mobile
+                className="md:hidden min-w-[44px] min-h-[44px]"
               >
-                <Menu className="h-6 w-6" /> {/* Hamburger menu icon */}
-                <span className="sr-only">{t('toggle_menu_aria_label')}</span> {/* Hamburger menu icon */} {/* Screen reader text */}
+                <Menu className="h-6 w-6" />
+                <span className="sr-only">{t('toggle_menu_aria_label')}</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="w-[300px] sm:w-[400px]">
+            <SheetContent side="left" className="w-[300px] sm:w-[400px] pt-12">
               <SheetTitle className="sr-only">{t('mobile_navigation_aria_label')}</SheetTitle>
-              <nav className="flex flex-col gap-4 pt-6">
-                {/* Portfolio Logo/Brand Link for Mobile */}
-                <Link to="/" className="mb-4 flex items-center space-x-2">
-                  <span className="font-bold">{t('portfolio')}</span>
+              <nav className="flex flex-col gap-2">
+                <Link 
+                  to="/" 
+                  className="mb-4 flex items-center space-x-2 text-lg font-semibold px-3 py-2 rounded-md hover:bg-accent"
+                >
+                  <span>{t('portfolio', { ns: 'common' })}</span>
                 </Link>
-                {/* Main Navigation Links for Mobile */}
                 {navItems.map((item) => (
                   <NavLink
                     key={item.name}
                     to={item.href}
                     className={({ isActive }) =>
-                      `text-lg font-medium transition-colors hover:text-primary ${isActive ? 'text-primary' : 'text-foreground'}`
+                      `text-base font-medium transition-colors rounded-md px-3 py-3 min-h-[44px] flex items-center ${
+                        isActive 
+                          ? 'bg-primary/10 text-primary' 
+                          : 'hover:bg-accent hover:text-primary text-foreground'
+                      }`
                     }
                   >
-                    {t(item.name)} {/* Translated navigation item name */}
+                    {t(item.name)}
                   </NavLink>
                 ))}
 
-                {/* Games Section for Mobile */}
-                <div className="mt-4">
-                  <h4 className="mb-2 text-lg font-semibold">{t('Games')}</h4> {/* Translated "Games" label */}
-                  <div className="flex flex-col gap-2 pl-4">
-                    {/* Filter and map through games that are "Ready to Play" */}
-                    {games.filter(game => game.status === 'Ready to Play').map((game) => (
+                <div className="mt-4 pt-4 border-t">
+                  <h4 className="mb-3 text-sm font-semibold text-muted-foreground px-3">{t('Games')}</h4>
+                  <div className="flex flex-col gap-1">
+                    {games.filter(game => game.status === 'status.ready_to_play').map((game) => (
                       <Link
                         key={game.id}
                         to={`/game/${game.id}`}
-                        className="text-base text-muted-foreground hover:text-primary"
+                        className="text-base text-muted-foreground hover:text-primary hover:bg-accent rounded-md px-3 py-3 min-h-[44px] flex items-center"
                       >
-                        {game.icon} {game.name} {/* Game icon and name */}
+                        <span className="mr-3 text-xl">{game.icon}</span>
+                        {t(game.name, { ns: 'games' })}
                       </Link>
                     ))}
                   </div>
@@ -141,28 +150,26 @@ export const Navbar: React.FC = () => {
         </div>
 
         {/* Right-aligned utilities: Theme Switcher and Language Selector */}
-        <div className="flex items-center">
-          <ThemeSwitcher /> {/* Component for switching between light/dark themes */}
-          {/* Language Selection Dropdown */}
+        <div className="flex items-center gap-1">
+          <ThemeSwitcher />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" aria-label={t('change_language_aria_label')}>
-                <Languages className="h-6 w-6" /> {/* Language icon */}
+              <Button variant="ghost" size="icon" className="min-w-[44px] min-h-[44px]" aria-label={t('change_language_aria_label')}>
+                <Languages className="h-6 w-6" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {/* Language Options */}
-              <DropdownMenuItem onClick={() => changeLanguage('en')}>
-                <span className="mr-2">🇬🇧</span> {t('language.english')}
+            <DropdownMenuContent align="end" className="min-w-[160px]">
+              <DropdownMenuItem onClick={() => changeLanguage('en')} className="min-h-[44px]">
+                <span className="mr-3 text-lg">🇬🇧</span> {t('language.english', { ns: 'common' })}
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => changeLanguage('es')}>
-                <span className="mr-2">🇪🇸</span> {t('language.spanish')}
+              <DropdownMenuItem onClick={() => changeLanguage('es')} className="min-h-[44px]">
+                <span className="mr-3 text-lg">🇪🇸</span> {t('language.spanish', { ns: 'common' })}
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => changeLanguage('fr')}>
-                <span className="mr-2">🇫🇷</span> {t('language.french')}
+              <DropdownMenuItem onClick={() => changeLanguage('fr')} className="min-h-[44px]">
+                <span className="mr-3 text-lg">🇫🇷</span> {t('language.french', { ns: 'common' })}
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => changeLanguage('it')}>
-                <span className="mr-2">🇮🇹</span> {t('language.italian')}
+              <DropdownMenuItem onClick={() => changeLanguage('it')} className="min-h-[44px]">
+                <span className="mr-3 text-lg">🇮🇹</span> {t('language.italian', { ns: 'common' })}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

@@ -1,0 +1,37 @@
+{
+  "title": "Morpion",
+  "description": "Jeu de stratégie classique pour deux joueurs. Le premier à aligner trois symboles gagne !",
+  "short_description": "Jeu de stratégie classique",
+  "rules": {
+    "title": "Règles",
+    "items": [
+      "Les joueurs jouent à tour de rôle en plaçant X ou O",
+      "Le premier joueur à aligner 3 symboles gagne",
+      "Les lignes, colonnes ou diagonales comptent",
+      "Si toutes les cellules sont remplies, c'est un match nul"
+    ]
+  },
+  "strategy": {
+    "title": "Conseils de Stratégie",
+    "items": [
+      "Contrôlez le centre quand c'est possible",
+      "Bloquez les coups gagnants de l'adversaire",
+      "Créez plusieurs opportunités de victoire",
+      "Pensez en avance et planifiez vos coups"
+    ]
+  },
+  "status": {
+    "win": "{{player}} gagne !",
+    "draw": "Match nul !",
+    "start": "Cliquez sur n'importe quelle cellule pour commencer !",
+    "turn": "Joueur actuel : {{player}}"
+  },
+  "celebration": {
+    "winner_title": "{{player}}",
+    "winner_subtitle": "Gagne !"
+  },
+  "cells": {
+    "aria_label_empty": "Ligne {{row}}, Colonne {{col}}, vide",
+    "aria_label_filled": "Ligne {{row}}, Colonne {{col}}, {{player}}"
+  }
+}

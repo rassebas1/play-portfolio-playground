@@ -10,9 +10,13 @@ type ScoreStrategy = 'highest' | 'lowest';
  * @returns {object} An object containing:
  *   - {number | null} highScore - The current high score for the game, or null if no score is recorded.
  *   - {function(score: number, strategy?: ScoreStrategy): void} updateHighScore - Function to update the high score.
+ *   - {number | null} highestTile - The highest tile value achieved (for games like 2048).
+ *   - {function(tile: number): void} updateHighestTile - Function to update the highest tile.
+ *   - {function(): void} resetHighScore - Function to reset all high scores.
  */
 export const useHighScores = (gameId: string) => {
   const localStorageKey = `highScore_${gameId}`;
+  const highestTileKey = `highestTile_${gameId}`;
 
   // Initialize state with the value from localStorage, or null if not found
   const [highScore, setHighScore] = useState<number | null>(() => {
@@ -21,6 +25,17 @@ export const useHighScores = (gameId: string) => {
       return storedScore ? JSON.parse(storedScore) : null;
     } catch (error) {
       console.error("Error reading high score from localStorage:", error);
+      return null;
+    }
+  });
+
+  // Initialize highest tile state
+  const [highestTile, setHighestTile] = useState<number | null>(() => {
+    try {
+      const storedTile = localStorage.getItem(highestTileKey);
+      return storedTile ? JSON.parse(storedTile) : null;
+    } catch (error) {
+      console.error("Error reading highest tile from localStorage:", error);
       return null;
     }
   });
@@ -50,15 +65,33 @@ export const useHighScores = (gameId: string) => {
     });
   }, [localStorageKey]);
 
-  // Optionally, you might want to expose a way to reset the high score
+  // Callback to update the highest tile
+  const updateHighestTile = useCallback((newTile: number) => {
+    setHighestTile((prevTile) => {
+      // Only update if new tile is higher
+      if (prevTile === null || newTile > prevTile) {
+        try {
+          localStorage.setItem(highestTileKey, JSON.stringify(newTile));
+        } catch (error) {
+          console.error("Error writing highest tile to localStorage:", error);
+        }
+        return newTile;
+      }
+      return prevTile;
+    });
+  }, [highestTileKey]);
+
+  // Reset all high scores
   const resetHighScore = useCallback(() => {
     setHighScore(null);
+    setHighestTile(null);
     try {
       localStorage.removeItem(localStorageKey);
+      localStorage.removeItem(highestTileKey);
     } catch (error) {
-      console.error("Error removing high score from localStorage:", error);
+      console.error("Error removing high scores from localStorage:", error);
     }
-  }, [localStorageKey]);
+  }, [localStorageKey, highestTileKey]);
 
-  return { highScore, updateHighScore, resetHighScore };
+  return { highScore, updateHighScore, highestTile, updateHighestTile, resetHighScore };
 };

@@ -4,6 +4,15 @@ import { Badge } from '@/components/ui/badge';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 
+const categoryColors: Record<string, string> = {
+  Languages: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100 border-blue-200 dark:border-blue-800',
+  Frontend: 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-100 border-purple-200 dark:border-purple-800',
+  'Backend & APIs': 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100 border-green-200 dark:border-green-800',
+  'Cloud & DevOps': 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-100 border-orange-200 dark:border-orange-800',
+  'Tools & Platforms': 'bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-100 border-pink-200 dark:border-pink-800',
+  Methodologies: 'bg-cyan-100 text-cyan-800 dark:bg-cyan-900 dark:text-cyan-100 border-cyan-200 dark:border-cyan-800',
+};
+
 const skillCategoriesData = {
   Languages: 'category.languages',
   Frontend: 'category.frontend',
@@ -73,65 +82,62 @@ const skillsData = {
  * @returns {JSX.Element} The rendered skills card.
  */
 export const Skills: React.FC = () => {
-  // `useTranslation` hook for internationalized category titles.
   const { t } = useTranslation(['skills', 'common']);
-  // Get the current language from i18n instance for dynamic content selection.
 
-
-  // Framer Motion variants for the main container.
   const containerVariants = {
-    hidden: { opacity: 0 }, // Initial state: invisible.
+    hidden: { opacity: 0 },
     visible: {
-      opacity: 1, // Final state: fully visible.
+      opacity: 1,
       transition: {
-        staggerChildren: 0.1, // Stagger the animation of child elements (categories).
-        delayChildren: 0.1, // Delay before the first child starts animating.
+        staggerChildren: 0.1,
+        delayChildren: 0.1,
       },
     },
   };
 
-  // Framer Motion variants for each skill category.
   const categoryVariants = {
-    hidden: { opacity: 0, x: 50 }, // Initial state: invisible and shifted right.
+    hidden: { opacity: 0, x: 50 },
     visible: {
-      opacity: 1, x: 0, // Final state: fully visible and at original position.
+      opacity: 1, x: 0,
       transition: {
-        duration: 0.4, // Animation duration for the category itself.
-        staggerChildren: 0.05, // Stagger the animation of child elements (individual skills).
-        delayChildren: 0.1, // Delay before the first skill in the category starts animating.
+        duration: 0.4,
+        staggerChildren: 0.05,
+        delayChildren: 0.1,
       },
     },
   };
 
-  // Framer Motion variants for each individual skill badge.
   const itemVariants = {
-    hidden: { opacity: 0, x: 20 }, // Initial state: invisible and shifted right.
-    visible: { opacity: 1, x: 0, transition: { duration: 0.3 } }, // Final state: fully visible and at original position.
+    hidden: { opacity: 0, x: 20 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.3 } },
   };
 
   return (
-    <Card>
+    <Card className="overflow-hidden group">
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
       <CardHeader>
-        <CardTitle>{t('Skills')}</CardTitle> {/* Translated "Skills" title */}
+        <CardTitle className="group-hover:text-primary transition-colors">{t('Skills')}</CardTitle>
       </CardHeader>
-      {/* Main container for all skill categories, with staggered animation */}
       <motion.div 
         className="space-y-4 p-6 pt-0"
-        variants={containerVariants} // Apply container animation variants.
-        initial="hidden" // Start from the 'hidden' state.
-        animate="visible" // Animate to the 'visible' state.
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
       >
-        {/* Iterate through skill categories defined in `skillCategoriesData` */}
         {Object.entries(skillCategoriesData).map(([categoryKey, categoryNameKey]) => (
           <motion.div key={categoryKey} variants={categoryVariants}>
-            {/* Category Title (translated) */}
-            <h3 className="text-lg font-semibold mb-2">{t(categoryNameKey)}</h3>
-            {/* Container for skill badges within the category */}
+            <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
+              <span className={`w-3 h-3 rounded-full ${categoryColors[categoryKey]?.split(' ')[0]} bg-current`} />
+              {t(categoryNameKey)}
+            </h3>
             <motion.div className="flex flex-wrap gap-2">
-              {/* Iterate through skills for the current category */}
               {skillsData[categoryKey as keyof typeof skillsData].map(skillKey => (
                 <motion.div key={skillKey} variants={itemVariants}>
-                  <Badge variant="secondary">{t(skillKey)}</Badge> {/* Render each skill as a badge */}
+                  <Badge 
+                    className={`${categoryColors[categoryKey]} border hover:scale-105 transition-transform cursor-default`}
+                  >
+                    {t(skillKey)}
+                  </Badge>
                 </motion.div>
               ))}
             </motion.div>

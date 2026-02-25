@@ -1,0 +1,58 @@
+{
+  "title": "2048",
+  "description": "¡Une las fichas, llega a 2048!",
+  "instructions": {
+    "desktop": "Usa las flechas para mover las fichas. ¡Combina números iguales para llegar a 2048!",
+    "mobile": "Desliza en cualquier dirección para mover las fichas. ¡Combina números iguales para llegar a 2048!"
+  },
+  "how_to_play": {
+    "title": "Cómo Jugar",
+    "items": [
+      "Desliza o usa las flechas para mover todas las fichas",
+      "¡Cuando dos fichas con el mismo número se tocan, se fusionan en una!",
+      "Cada movimiento agrega una nueva ficha (2 o 4) al tablero",
+      "Objetivo: Crear una ficha con el número 2048"
+    ]
+  },
+  "tips": {
+    "title": "Consejos Pro",
+    "items": [
+      "Mantén tu ficha de mayor valor en una esquina",
+      "Construye cadenas de valores decrecientes alrededor",
+      "¡Planea varios movimientos adelante, no te apresures!",
+      "Mantén el tablero lo más limpio posible"
+    ]
+  },
+  "status": {
+    "playing": "Jugando...",
+    "won": "¡Llegaste a 2048!",
+    "game_over": "¡No hay más movimientos disponibles!"
+  },
+  "scoreboard": {
+    "score": "Puntuación",
+    "best": "Mejor",
+    "highest_tile": "Ficha Máxima"
+  },
+  "celebration": {
+    "title": "¡Felicidades por lograr: {{value}}!",
+    "subtitle": "¡Increíble!",
+    "keep_going": "¿Hasta dónde puedes llegar?"
+  },
+  "actions": {
+    "continue": "Seguir Jugando",
+    "new_game": "Nuevo Juego",
+    "home": "Inicio",
+    "undo": "Deshacer"
+  },
+  "aria": {
+    "board": "Tablero de 2048 con {{count}} fichas",
+    "tile": "Ficha con valor {{value}} en fila {{row}}, columna {{col}}",
+    "empty_cell": "Celda vacía en fila {{row}}, columna {{col}}",
+    "new_tile": "Nueva ficha {{value}} apareció en fila {{row}}, columna {{col}}",
+    "merged": "Dos fichas {{value}} se fusionaron en {{newValue}}",
+    "score_increased": "Puntuación aumentada en {{points}} puntos",
+    "move_made": "Movimiento {{direction}}",
+    "game_won": "¡Felicidades! ¡Llegaste a 2048!",
+    "game_over": "¡Juego terminado! No hay más movimientos disponibles."
+  }
+}

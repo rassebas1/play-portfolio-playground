@@ -1,0 +1,58 @@
+{
+  "title": "2048",
+  "description": "Join the tiles, get to 2048!",
+  "instructions": {
+    "desktop": "Use arrow keys to move tiles. Combine matching numbers to reach 2048!",
+    "mobile": "Swipe in any direction to move tiles. Combine matching numbers to reach 2048!"
+  },
+  "how_to_play": {
+    "title": "How to Play",
+    "items": [
+      "Swipe or use arrow keys to move all tiles",
+      "When two tiles with the same number touch, they merge into one!",
+      "Every move adds a new tile (2 or 4) to the board",
+      "Goal: Create a tile with the number 2048"
+    ]
+  },
+  "tips": {
+    "title": "Pro Tips",
+    "items": [
+      "Keep your highest value tile in a corner",
+      "Build chains of decreasing values around it",
+      "Plan several moves ahead - don't rush!",
+      "Keep the board as clean as possible"
+    ]
+  },
+  "status": {
+    "playing": "Playing...",
+    "won": "You reached 2048!",
+    "game_over": "No more moves available!"
+  },
+  "scoreboard": {
+    "score": "Score",
+    "best": "Best",
+    "highest_tile": "Highest Tile"
+  },
+  "celebration": {
+    "title": "Congratulations for Achieving: {{value}}",
+    "subtitle": "Amazing!",
+    "keep_going": "How far can you go?"
+  },
+  "actions": {
+    "continue": "Continue Playing",
+    "new_game": "New Game",
+    "home": "Home",
+    "undo": "Undo"
+  },
+  "aria": {
+    "board": "2048 game board with {{count}} tiles",
+    "tile": "Tile with value {{value}} at row {{row}}, column {{col}}",
+    "empty_cell": "Empty cell at row {{row}}, column {{col}}",
+    "new_tile": "New tile {{value}} appeared at row {{row}}, column {{col}}",
+    "merged": "Two {{value}} tiles merged into {{newValue}}",
+    "score_increased": "Score increased by {{points}} points",
+    "move_made": "Moved {{direction}}",
+    "game_won": "Congratulations! You reached 2048!",
+    "game_over": "Game over! No more moves available."
+  }
+}
