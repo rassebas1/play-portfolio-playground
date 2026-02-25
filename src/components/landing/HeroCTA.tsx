@@ -71,12 +71,21 @@ export const HeroCTA: React.FC = () => {
         variants={itemVariants}
         className="w-full flex justify-center mt-8"
       >
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+        <button
+          onClick={() => {
+            const element = document.getElementById('featured-projects');
+            element?.scrollIntoView({ behavior: 'smooth' });
+          }}
+          className="p-2 rounded-full hover:bg-primary/10 transition-colors"
+          aria-label="Scroll to featured projects"
         >
-          <ArrowDown className="w-6 h-6 text-muted-foreground" />
-        </motion.div>
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <ArrowDown className="w-6 h-6 text-muted-foreground" />
+          </motion.div>
+        </button>
       </motion.div>
     </motion.div>
   );

@@ -5,6 +5,8 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { TypingEffect } from '@/components/landing/TypingEffect';
 import { HeroCTA } from '@/components/landing/HeroCTA';
 import { BentoGrid } from '@/components/landing/BentoGrid';
+import { ProjectsCarousel } from '@/components/landing/ProjectsCarousel';
+import { SeniorityBadges } from '@/components/landing/SeniorityBadges';
 
 const Home: React.FC = () => {
   const { t } = useTranslation('common');
@@ -81,8 +83,18 @@ const Home: React.FC = () => {
       </section>
 
       {/* Bento Grid Skills Section */}
-      <section className="container mx-auto px-4 pb-20">
+      <section className="container mx-auto px-4">
         <BentoGrid />
+      </section>
+
+      {/* Projects Carousel Section */}
+      <section id="featured-projects" className="container mx-auto px-4">
+        <ProjectsCarousel />
+      </section>
+
+      {/* Seniority Badges Section */}
+      <section className="container mx-auto px-4 pb-20">
+        <SeniorityBadges />
       </section>
     </div>
   );
