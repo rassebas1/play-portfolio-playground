@@ -8,11 +8,13 @@ vi.mock('framer-motion', async () => {
   return {
     ...actual,
     motion: {
-      div: ({ children }) => <div>{children}</div>,
-      h3: ({ children }) => <h3>{children}</h3>,
-      p: ({ children }) => <p>{children}</p>,
-      ul: ({ children }) => <ul>{children}</ul>,
-      h4: ({ children }) => <h4>{children}</h4>,
+      div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+      h3: ({ children, ...props }: any) => <h3 {...props}>{children}</h3>,
+      p: ({ children, ...props }: any) => <p {...props}>{children}</p>,
+      ul: ({ children, ...props }: any) => <ul {...props}>{children}</ul>,
+      li: ({ children, ...props }: any) => <li {...props}>{children}</li>,
+      h4: ({ children, ...props }: any) => <h4 {...props}>{children}</h4>,
+      span: ({ children, ...props }: any) => <span {...props}>{children}</span>,
     },
     useInView: () => true,
   };
@@ -25,11 +27,17 @@ vi.mock('react-i18next', () => ({
   }),
 }));
 
+// Mock Badge component
+vi.mock('@/components/ui/badge', () => ({
+  Badge: ({ children, ...props }: any) => <span data-testid="badge" {...props}>{children}</span>,
+}));
+
+// Mock Avatar
 vi.mock('@/components/ui/avatar', async () => {
-  const actual = await vi.importActual('@/components/ui/avatar');
   return {
-    ...actual,
-    AvatarImage: (props) => <img {...props} />,
+    Avatar: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+    AvatarImage: (props: any) => <img {...props} />,
+    AvatarFallback: ({ children }: any) => <span>{children}</span>,
   };
 });
 

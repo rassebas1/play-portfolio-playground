@@ -1,24 +1,9 @@
 import React from 'react';
 import { motion, useInView } from 'framer-motion';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useTranslation } from 'react-i18next';
+import { BookOpen, Award, Sparkles, School } from 'lucide-react';
 
-/**
- * Props for the EducationCard component.
- * @interface EducationCardProps
- * @property {string} degree - The degree obtained (e.g., "Master of Science in Big Data").
- * @property {string} university - The name and location of the university.
- * @property {string} years - The period of study (e.g., "2025-2026").
- * @property {string} logo - URL or path to the university's logo.
- * @property {string} hook - A brief, catchy description or focus of the study.
- * @property {string[]} skills - An array of relevant skills acquired.
- * @property {string[]} courses - An array of key courses taken.
- * @property {object} project - Details about a signature project.
- * @property {string} project.title - The title of the project.
- * @property {string} project.thumbnail - URL or path to the project's thumbnail image.
- */
 interface EducationCardProps {
   degree: string;
   university: string;
@@ -31,17 +16,35 @@ interface EducationCardProps {
     title: string;
     thumbnail: string;
   };
+  align?: 'left' | 'right';
+  index?: number;
 }
 
-/**
- * EducationCard component.
- * Renders a single educational entry with details such as degree, university,
- * years, logo, key courses, skills, and a signature project.
- * It uses `framer-motion` for scroll-triggered animations to reveal content.
- *
- * @param {EducationCardProps} props - Props passed to the component.
- * @returns {JSX.Element} The rendered education card.
- */
+const cardVariants = {
+  hidden: { opacity: 0, x: 0 },
+  visible: (index: number) => ({
+    opacity: 1,
+    x: 0,
+    transition: {
+      delay: index * 0.2,
+      duration: 0.8,
+      ease: [0.25, 0.46, 0.45, 0.94] as const,
+    },
+  }),
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: 0.3 + i * 0.1,
+      duration: 0.5,
+    },
+  }),
+};
+
 export const EducationCard: React.FC<EducationCardProps> = ({
   degree,
   university,
@@ -51,102 +54,196 @@ export const EducationCard: React.FC<EducationCardProps> = ({
   skills = [],
   courses = [],
   project,
+  align = 'left',
+  index = 0,
 }) => {
-  // Ref to attach to the main div for `useInView` to track visibility.
   const ref = React.useRef(null);
-  // `useTranslation` hook for internationalized labels.
   const { t } = useTranslation('common');
-  // `useInView` hook from Framer Motion to detect when the component is in the viewport.
-  const isInView = useInView(ref, { amount: 0.5 }); // Trigger when 50% of the component is visible.
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
 
-  // Variants for Framer Motion animations (though not directly used with `variants` prop here,
-  // the `animate` prop uses similar logic).
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
-  };
+  const isLeft = align === 'left';
 
   return (
     <motion.div
-      ref={ref} // Attach ref for scroll-triggered animations.
-      initial={{ opacity: 0, y: 50 }} // Initial state for animation.
-      // Animate based on `isInView` status.
-      animate={{ opacity: isInView ? 1 : 0.5, y: isInView ? 0 : 20 }}
-      transition={{ duration: 0.6, ease: "easeOut" }} // Animation properties.
-      className="relative pl-10" // Padding for timeline line.
+      ref={ref}
+      custom={index}
+      variants={cardVariants}
+      initial="hidden"
+      animate={isInView ? "visible" : "hidden"}
+      className={`relative flex items-center ${isLeft ? 'justify-start' : 'justify-end'}`}
     >
-      {/* Timeline vertical line (background) */}
-      <div className="absolute left-0 top-0 h-full w-px bg-border"></div>
-      {/* Timeline node (animated circle) */}
-      <motion.div
-        className="absolute left-[-8px] top-4 h-4 w-4 rounded-full bg-primary border-2 border-background"
-        initial={{ scale: 0 }} // Initial scale for node animation.
-        animate={isInView ? { scale: 1 } : { scale: 0 }} // Animate scale based on visibility.
-        transition={{ delay: 0.2, duration: 0.4 }} // Animation properties.
-      ></motion.div>
+      {/* Timeline node */}
+      <motion.div 
+        className="absolute left-1/2 top-8 -translate-x-1/2 z-20"
+        initial={{ scale: 0 }}
+        animate={isInView ? { scale: 1 } : { scale: 0 }}
+        transition={{ delay: 0.2 + index * 0.2, duration: 0.4, type: "spring" }}
+      >
+        <div className="relative">
+          <div className="w-4 h-4 rounded-full bg-primary shadow-[0_0_20px_rgba(142,76,36,0.6)]" />
+          <motion.div 
+            className="absolute inset-0 rounded-full bg-primary"
+            animate={{ scale: [1, 1.5, 1], opacity: [0.5, 0, 0.5] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          />
+        </div>
+      </motion.div>
 
-      {/* Animated background gradient for the card */}
-      <motion.div
-        className="absolute inset-0 rounded-lg bg-gradient-to-r from-primary/10 to-transparent -z-10"
-        initial={{ opacity: 0 }} // Initial opacity for gradient animation.
-        animate={{ opacity: isInView ? 1 : 0 }} // Animate opacity based on visibility.
-        transition={{ duration: 0.5 }} // Animation properties.
-      ></motion.div>
-
-      <Card className="w-full overflow-hidden border-transparent bg-transparent shadow-none">
-        <CardHeader className="flex flex-row items-start gap-4">
-          {/* University Logo/Avatar */}
-          <motion.div variants={itemVariants}>
-            <Avatar className="h-12 w-12">
-              <AvatarImage src={logo} alt={`${university} logo`} />
-              <AvatarFallback>{university.charAt(0)}</AvatarFallback>
-            </Avatar>
-          </motion.div>
-          {/* Degree, University, Years, and Hook */}
-          <div className="flex-grow">
-            <motion.h3 variants={itemVariants} className="text-xl font-bold">{degree}</motion.h3>
-            <motion.p variants={itemVariants} className="text-muted-foreground">{university}</motion.p>
-            <motion.p variants={itemVariants} className="text-sm text-muted-foreground">{years}</motion.p>
-            <motion.p variants={itemVariants} className="mt-2 text-primary">{hook}</motion.p>
-          </div>
-        </CardHeader>
-        <CardContent>
-          {/* Animated content section */}
+      {/* Card */}
+      <div className={`w-full md:w-[calc(50%-2rem)] ${isLeft ? 'md:mr-auto' : 'md:ml-auto'}`}>
+        <motion.div
+          className="group relative glass-card rounded-2xl overflow-hidden"
+          whileHover={{ y: -8 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+        >
+          {/* Ambient glow on hover */}
           <motion.div
-            className="mt-4 space-y-4"
-            initial={{ opacity: 0, y: 20 }} // Initial state for content animation.
-            animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 20 }} // Animate based on visibility.
-            transition={{ delay: 0.2, duration: 0.4 }} // Animation properties.
-          >
-            {/* Key Courses Section */}
-            <div>
-              <motion.h4 variants={itemVariants} className="font-semibold">{t('key_courses')}</motion.h4>
-              <motion.ul variants={itemVariants} className="mt-2 list-disc list-inside text-muted-foreground">
-                {courses.map((course) => (
-                  <li key={course}>{course}</li>
+            className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+          />
+
+          {/* Corner accents */}
+          <div className="absolute top-0 left-0 w-16 h-16 overflow-hidden">
+            <div className="absolute top-2 left-2 w-8 h-8 border-t-2 border-l-2 border-primary/30 rounded-tl-lg" />
+          </div>
+          <div className="absolute top-0 right-0 w-16 h-16 overflow-hidden">
+            <div className="absolute top-2 right-2 w-8 h-8 border-t-2 border-r-2 border-primary/30 rounded-tr-lg" />
+          </div>
+
+          {/* Content */}
+          <div className="relative p-6 sm:p-8">
+            {/* Header with logo and year */}
+            <motion.div 
+              className="flex items-start justify-between gap-4 mb-6"
+              custom={0}
+              variants={itemVariants}
+            >
+              <div className="flex items-center gap-4">
+                <div className="relative">
+                  <div className="w-14 h-14 rounded-xl overflow-hidden bg-muted flex items-center justify-center border border-border">
+                    <img 
+                      src={logo} 
+                      alt={`${university} logo`}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                        const fallback = document.createElement('span');
+                        fallback.className = 'text-muted-foreground font-bold text-xl';
+                        fallback.textContent = university.charAt(0);
+                        target.parentElement?.appendChild(fallback);
+                      }}
+                    />
+                  </div>
+                  <motion.div 
+                    className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-primary flex items-center justify-center"
+                    initial={{ scale: 0 }}
+                    animate={isInView ? { scale: 1 } : { scale: 0 }}
+                    transition={{ delay: 0.5 + index * 0.2 }}
+                  >
+                    <School className="w-3 h-3 text-primary-foreground" />
+                  </motion.div>
+                </div>
+                <div>
+                  <span className="inline-block px-3 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full mb-2">
+                    {years}
+                  </span>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Degree and hook */}
+            <motion.div custom={1} variants={itemVariants}>
+              <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
+                {degree}
+              </h3>
+              <p className="text-muted-foreground text-sm mb-3">{university}</p>
+              <div className="flex items-center gap-2 text-primary/80">
+                <Sparkles className="w-4 h-4" />
+                <span className="text-sm font-medium">{hook}</span>
+              </div>
+            </motion.div>
+
+            {/* Divider */}
+            <motion.div 
+              className="h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent my-6"
+              custom={2}
+              variants={itemVariants}
+            />
+
+            {/* Skills */}
+            <motion.div custom={3} variants={itemVariants}>
+              <div className="flex items-center gap-2 mb-3">
+                <Award className="w-4 h-4 text-primary" />
+                <span className="text-sm font-semibold text-foreground">{t('Skills', { ns: 'common' })}</span>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {skills.map((skill, i) => (
+                  <motion.div
+                    key={skill}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                    transition={{ delay: 0.6 + index * 0.2 + i * 0.05 }}
+                  >
+                    <Badge 
+                      variant="secondary"
+                      className="group-hover:bg-primary/20 group-hover:text-primary transition-colors cursor-default"
+                    >
+                      {skill}
+                    </Badge>
+                  </motion.div>
                 ))}
-              </motion.ul>
-            </div>
-            {/* Signature Project Section */}
-            <div>
-              <motion.h4 variants={itemVariants} className="font-semibold">{t('signature_project')}</motion.h4>
-              <motion.div variants={itemVariants} className="mt-2 flex items-center gap-4">
-                <img src={project.thumbnail} alt={project.title} className="h-16 w-16 rounded-md object-cover" />
-                <p className="font-medium">{project.title}</p>
-              </motion.div>
-            </div>
-            {/* Skills Section */}
-            <div>
-              <motion.h4 variants={itemVariants} className="font-semibold">{t('Skills')}</motion.h4>
-              <motion.div variants={itemVariants} className="mt-2 flex flex-wrap gap-2">
-                {skills.map((skill) => (
-                  <Badge key={skill} variant="secondary">{skill}</Badge>
+              </div>
+            </motion.div>
+
+            {/* Key Courses */}
+            <motion.div custom={4} variants={itemVariants} className="mt-6">
+              <div className="flex items-center gap-2 mb-3">
+                <BookOpen className="w-4 h-4 text-primary" />
+                <span className="text-sm font-semibold text-foreground">{t('key_courses', { ns: 'common' })}</span>
+              </div>
+              <ul className="space-y-2">
+                {courses.slice(0, 3).map((course, i) => (
+                  <motion.li 
+                    key={course}
+                    className="flex items-start gap-2 text-sm text-muted-foreground"
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={isInView ? { opacity: 1, x: 0 } : {}}
+                    transition={{ delay: 0.7 + index * 0.2 + i * 0.1 }}
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-primary/50 mt-2 flex-shrink-0" />
+                    <span>{course}</span>
+                  </motion.li>
                 ))}
+              </ul>
+            </motion.div>
+
+            {/* Project */}
+            <motion.div custom={5} variants={itemVariants} className="mt-6">
+              <div className="flex items-center gap-2 mb-3">
+                <Sparkles className="w-4 h-4 text-primary" />
+                <span className="text-sm font-semibold text-foreground">{t('signature_project', { ns: 'common' })}</span>
+              </div>
+              <motion.div 
+                className="flex items-center gap-4 p-3 rounded-xl bg-muted/50 group-hover:bg-muted/80 transition-colors"
+                whileHover={{ scale: 1.02 }}
+              >
+                <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-muted flex-shrink-0">
+                  <img 
+                    src={project.thumbnail} 
+                    alt={project.title}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                    }}
+                  />
+                </div>
+                <p className="text-sm font-medium text-foreground">{project.title}</p>
               </motion.div>
-            </div>
-          </motion.div>
-        </CardContent>
-      </Card>
+            </motion.div>
+          </div>
+        </motion.div>
+      </div>
     </motion.div>
   );
 };

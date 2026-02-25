@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { motion, useScroll, useSpring } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { EducationCard } from '@/components/landing/EducationCard';
 
 const educationData = [
@@ -75,55 +75,131 @@ const educationData = [
   },
 ];
 
-/**
- * Education component.
- * Displays the user's educational background using a timeline-like layout.
- * Features internationalization and scroll-based animations for the timeline progress.
- *
- * @returns {JSX.Element} The rendered education page.
- */
 const Education: React.FC = () => {
   const { t } = useTranslation(['education', 'common']);
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start start", "end end"],
-  });
-  const scaleY = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001
+    offset: ["start end", "end start"],
   });
 
+  const scaleY = useTransform(scrollYProgress, [0, 1], [0, 1]);
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
   return (
-    <div className="container mx-auto px-4 py-16">
-      <div className="text-center mb-20 pt-10">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
-          {t('education_heading')}
-        </h1>
-      </div>
-      <div ref={containerRef} className="max-w-3xl mx-auto relative">
-        <div className="absolute left-4 top-0 h-full w-1 bg-border -z-10">
-          <motion.div className="h-full w-full bg-primary origin-top" style={{ scaleY }} />
-        </div>
-        <div className="space-y-12">
-          {educationData.map((edu) => (
-            <EducationCard
-              key={edu.degree}
-              degree={t(edu.degree)}
-              university={edu.university}
-              years={edu.years}
-              logo={edu.logo}
-              hook={t(edu.hook)}
-              skills={edu.skills}
-              courses={edu.courses.map(course => t(course))}
-              project={{
-                title: t(edu.project.title),
-                thumbnail: edu.project.thumbnail,
-              }}
+    <div ref={containerRef} className="relative min-h-screen overflow-hidden">
+      {/* Decorative background */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-50" />
+      <div className="absolute inset-0 bg-radial-glow" />
+      
+      {/* Floating gradient orbs */}
+      <motion.div 
+        className="absolute top-1/4 -left-32 w-96 h-96 rounded-full bg-primary/5 blur-3xl"
+        animate={{
+          x: [0, 50, 0],
+          y: [0, 30, 0],
+        }}
+        transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div 
+        className="absolute bottom-1/4 -right-32 w-80 h-80 rounded-full bg-accent/5 blur-3xl"
+        animate={{
+          x: [0, -30, 0],
+          y: [0, -50, 0],
+        }}
+        transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      <div className="container mx-auto px-4 py-20 relative z-10">
+        {/* Header */}
+        <motion.div 
+          initial={{ opacity: 0, y: -30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="text-center mb-24"
+        >
+          <motion.span 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="inline-block text-sm font-medium text-primary/80 tracking-[0.3em] uppercase mb-4"
+          >
+            {t('academic_journey', { ns: 'common' })}
+          </motion.span>
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6">
+            <span className="bg-gradient-to-r from-foreground via-foreground to-primary/60 bg-clip-text text-transparent">
+              {t('education_heading')}
+            </span>
+          </h1>
+          <motion.p 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            className="text-muted-foreground text-lg max-w-2xl mx-auto"
+          >
+            {t('education_subtitle', { ns: 'common' })}
+          </motion.p>
+        </motion.div>
+
+        {/* Timeline */}
+        <div className="relative max-w-5xl mx-auto">
+          {/* Central timeline line */}
+          <div className="absolute left-1/2 top-0 bottom-0 w-px -translate-x-1/2">
+            <motion.div 
+              className="h-full w-full bg-gradient-to-b from-transparent via-primary/30 to-transparent"
+              style={{ scaleY }}
             />
-          ))}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-primary shadow-[0_0_20px_rgba(142,76,36,0.5)]" />
+          </div>
+
+          {/* Cards */}
+          <motion.div 
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="space-y-32"
+          >
+            {educationData.map((edu, index) => (
+              <EducationCard
+                key={edu.degree}
+                degree={t(edu.degree)}
+                university={edu.university}
+                years={edu.years}
+                logo={edu.logo}
+                hook={t(edu.hook)}
+                skills={edu.skills}
+                courses={edu.courses.map(course => t(course))}
+                project={{
+                  title: t(edu.project.title),
+                  thumbnail: edu.project.thumbnail,
+                }}
+                align={index % 2 === 0 ? 'left' : 'right'}
+                index={index}
+              />
+            ))}
+          </motion.div>
         </div>
+
+        {/* Decorative end element */}
+        <motion.div 
+          initial={{ opacity: 0, scale: 0 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.5, duration: 0.6 }}
+          className="flex justify-center mt-32"
+        >
+          <div className="w-2 h-2 rounded-full bg-primary shadow-[0_0_15px_rgba(142,76,36,0.8)]" />
+        </motion.div>
       </div>
     </div>
   );
