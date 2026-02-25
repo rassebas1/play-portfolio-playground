@@ -1,0 +1,51 @@
+{
+  "title": "Flappy Bird",
+  "description": "¡Toca o presiona espacio para aletear y evita los tubos!",
+  "short_description": "Aletea a través de los tubos",
+  "instructions": {
+    "desktop": "Presiona ESPACIO o flecha ARRIBA para aletear. ¡Evita los tubos!",
+    "mobile": "Toca la pantalla para aletear. ¡Evita los tubos!"
+  },
+  "how_to_play": {
+    "title": "Cómo Jugar",
+    "items": [
+      "Presiona ESPACIO o toca para aletear",
+      "Evita chocar con los tubos",
+      "No caigas por debajo de la pantalla",
+      "¡Llega lo más lejos que puedas!"
+    ]
+  },
+  "tips": {
+    "title": "Consejos Profesionales",
+    "items": [
+      "Encuentra un ritmo consistente",
+      "Toca temprano para más impulso",
+      "Apunta al centro de los espacios",
+      "Mantén la calma - precipitarse lleva a errores"
+    ]
+  },
+  "status": {
+    "start": "¡Presiona ESPACIO para comenzar!",
+    "playing": "Aleteando...",
+    "game_over": "¡Fin del Juego!"
+  },
+  "scoreboard": {
+    "score": "Puntuación",
+    "best": "Mejor"
+  },
+  "celebration": {
+    "title": "Puntuación: {{score}}",
+    "subtitle": "¡Nueva Mejor Puntuación!",
+    "game_over_title": "Fin del Juego",
+    "game_over_subtitle": "Puntuación: {{score}}"
+  },
+  "actions": {
+    "start": "Iniciar Juego",
+    "restart": "Jugar de Nuevo"
+  },
+  "aria": {
+    "bird": "Pájaro en posición vertical {{y}}",
+    "score": "Puntuación: {{score}}",
+    "game_over": "¡Fin del juego! Puntuación final: {{score}}"
+  }
+}

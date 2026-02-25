@@ -12,6 +12,7 @@ import { Instructions } from '@/components/game/Instructions';
 import { useFlappyBird } from './hooks/useFlappyBird';
 import GameArea from './components/GameArea';
 import { cn } from '@/lib/utils';
+import { useTranslation } from 'react-i18next';
 
 /**
  * Main Flappy Bird Game Component.
@@ -19,15 +20,10 @@ import { cn } from '@/lib/utils';
  * rendering the game area, controls, and displaying game status and scores.
  */
 const FlappyBird: React.FC = () => {
-  // Destructure game state and control functions from the custom useFlappyBird hook
-  // gameState: object containing bird, pipes, score, high score, and game status
-  // gameDimensions: constants for game area size
-  // jump: function to make the bird jump
-  // startNewGame: function to initiate a new game
-  // restartGame: function to restart the current game
   const { gameState, gameDimensions, jump, startNewGame, restartGame } = useFlappyBird();
-  // useNavigate hook from react-router-dom for navigation
   const navigate = useNavigate();
+  const { t } = useTranslation('games/flappy-bird');
+  const { t: tCommon } = useTranslation('common');
 
   /**
    * Navigates the user back to the main portfolio page.
@@ -42,8 +38,8 @@ const FlappyBird: React.FC = () => {
       <div className="max-w-2xl mx-auto">
         {/* Game Header: Displays the game title and a brief description */}
         <GameHeader 
-          title="🐦 Flappy Bird"
-          description="Navigate through the pipes and set a high score!"
+          title={t('title')}
+          description={t('description')}
         />
 
         {/* Score Section: Displays current score and the highest score */}
@@ -70,13 +66,13 @@ const FlappyBird: React.FC = () => {
         {/* Instructions: Provides guidance on how to play the game */}
         <Instructions>
           <p className="text-sm text-muted-foreground">
-            <span className="font-semibold">Desktop:</span> Press SPACE or ↑ arrow key to jump
+            <span className="font-semibold">Desktop:</span> {t('instructions.desktop')}
           </p>
           <p className="text-sm text-muted-foreground">
-            <span className="font-semibold">Mobile:</span> Tap the game area to jump
+            <span className="font-semibold">Mobile:</span> {t('instructions.mobile')}
           </p>
           <p className="text-xs text-muted-foreground/80">
-            Navigate through the pipes without hitting them or the ground!
+            {t('how_to_play.items.3')}
           </p>
         </Instructions>
 

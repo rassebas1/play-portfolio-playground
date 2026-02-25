@@ -1,0 +1,59 @@
+{
+  "title": "Rompere Mattoni",
+  "description": "Rompi tutti i mattoni per avanzare al livello successivo!",
+  "short_description": "Rompi i mattoni con una palla",
+  "instructions": {
+    "desktop": "Usa le frecce Sinistra/Destra per muovere la racchetta. Premi Spazio per lanciare o mettere in pausa.",
+    "mobile": "Tocca e trascina per muovere la racchetta orizzontalmente."
+  },
+  "how_to_play": {
+    "title": "Come Giocare",
+    "items": [
+      "Muovi la racchetta per far rimbalzare la palla",
+      "Rompi tutti i mattoni per completare il livello",
+      "Non lasciar cadere la palla sotto la racchetta",
+      "Raccogli i power-up per effetti bonus"
+    ]
+  },
+  "tips": {
+    "title": "Consigli Professionali",
+    "items": [
+      "Mira ai bordi dei mattoni per angoli migliori",
+      "Tieni la palla al centro della racchetta",
+      "Fai attenzione ai power-up che cadono",
+      "Muoviti rapidamente per afferrare la palla"
+    ]
+  },
+  "status": {
+    "idle": "Premi SPAZIO per iniziare",
+    "playing": "In gioco...",
+    "paused": "In pausa",
+    "game_over": "Partita Finita!",
+    "level_cleared": "Livello Completato!"
+  },
+  "scoreboard": {
+    "score": "Punteggio",
+    "best": "Miglior",
+    "level": "Livello",
+    "lives": "Vite"
+  },
+  "celebration": {
+    "title": "Livello {{level}} Completato!",
+    "subtitle": "Preparati per la prossima sfida",
+    "game_over_title": "Partita Finita",
+    "game_over_subtitle": "Punteggio Finale: {{score}}"
+  },
+  "actions": {
+    "start": "Inizia Gioco",
+    "pause": "Pausa",
+    "resume": "Riprendi",
+    "restart": "Ricomincia"
+  },
+  "aria": {
+    "paddle": "Racchetta alla posizione orizzontale {{x}}",
+    "ball": "Palla alla posizione ({{x}}, {{y}})",
+    "brick": "Mattone alla riga {{row}}, colonna {{col}}",
+    "score": "Punteggio: {{score}}",
+    "lives": "Vite rimanenti: {{lives}}"
+  }
+}

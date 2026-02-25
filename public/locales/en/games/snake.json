@@ -1,0 +1,65 @@
+{
+  "title": "Snake",
+  "description": "Eat the food, grow longer, and don't hit yourself!",
+  "short_description": "Classic snake game - eat and grow",
+  "instructions": {
+    "desktop": "Use arrow keys to control the snake. Eat the food to grow longer.",
+    "mobile": "Swipe to control the snake direction. Eat food to grow."
+  },
+  "how_to_play": {
+    "title": "How to Play",
+    "items": [
+      "Use arrow keys to change direction",
+      "Eat the red food to grow and score points",
+      "Avoid hitting the walls or yourself",
+      "Longer snake = higher score"
+    ]
+  },
+  "tips": {
+    "title": "Pro Tips",
+    "items": [
+      "Plan your path ahead of time",
+      "Don't trap yourself in corners",
+      "Keep the snake in the middle when possible",
+      "Watch for patterns in the food spawning"
+    ]
+  },
+  "status": {
+    "start": "Press any arrow key to start!",
+    "playing": "Playing...",
+    "game_over": "Game Over!",
+    "paused": "Paused"
+  },
+  "scoreboard": {
+    "score": "Score",
+    "best": "Best",
+    "length": "Length"
+  },
+  "difficulty": {
+    "label": "Difficulty",
+    "1": "Very Easy",
+    "2": "Easy",
+    "3": "Medium Easy",
+    "4": "Medium",
+    "5": "Medium Hard",
+    "6": "Hard",
+    "7": "Very Hard",
+    "8": "Extreme",
+    "9": "Impossible"
+  },
+  "celebration": {
+    "title": "Score: {{score}}",
+    "subtitle": "New High Score!",
+    "keep_going": "Play again?"
+  },
+  "actions": {
+    "start": "Start Game",
+    "restart": "Play Again"
+  },
+  "aria": {
+    "snake": "Snake at position ({{x}}, {{y}})",
+    "food": "Food at position ({{x}}, {{y}})",
+    "score": "Score: {{score}}",
+    "game_over": "Game Over! Final score: {{score}}"
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "title": "Gioco di Memoria",
+  "description": "Trova tutte le coppie di carte!",
+  "short_description": "Abbina le coppie di carte",
+  "instructions": {
+    "desktop": "Clicca sulle carte per girarle. Trova tutte le coppie.",
+    "mobile": "Tocca le carte per girarle. Trova tutte le coppie."
+  },
+  "how_to_play": {
+    "title": "Come Giocare",
+    "items": [
+      "Clicca o tocca una carta per girarla",
+      "Clicca o tocca un'altra carta per trovare una coppia",
+      "Abbina tutte le coppie per vincere",
+      "Mosse minori = punteggio migliore!"
+    ]
+  },
+  "tips": {
+    "title": "Consigli Professionali",
+    "items": [
+      "Ricorda dove hai visto ogni carta",
+      "Inizia girando le carte in modo sistematico",
+      "Concentrati sulle carte che non corrispondono",
+      "Prenditi il tuo tempo - senza timer!"
+    ]
+  },
+  "status": {
+    "start": "Clicca su una carta per iniziare!",
+    "playing": "Trova le coppie...",
+    "game_over": "Hai trovato tutte le coppie!"
+  },
+  "scoreboard": {
+    "score": "Punteggio",
+    "best": "Miglior",
+    "moves": "Mosse",
+    "pairs": "Coppie",
+    "time": "Tempo"
+  },
+  "celebration": {
+    "title": "Complimenti!",
+    "subtitle": "Hai trovato tutte le coppie in {{moves}} mosse!",
+    "time_subtitle": "Tempo: {{time}} secondi"
+  },
+  "actions": {
+    "new_game": "Nuovo Gioco",
+    "restart": "Ricomincia",
+    "start": "Inizia Gioco"
+  },
+  "difficulty": {
+    "label": "Difficoltà",
+    "easy": "Facile",
+    "medium": "Medio",
+    "hard": "Difficile"
+  },
+  "aria": {
+    "card": "Carta {{index}}, lato {{face}}",
+    "card_flipped": "Carta {{index}} girata, mostra {{value}}",
+    "card_matched": "Carta {{index}} abbinata!",
+    "moves": "Mosse: {{count}}",
+    "pairs": "Coppie trovate: {{count}} di {{total}}"
+  }
+}

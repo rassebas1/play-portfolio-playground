@@ -1,0 +1,65 @@
+{
+  "title": "Serpent",
+  "description": "Mange la nourriture, grandis et ne te frappe pas toi-même!",
+  "short_description": "Jeu de serpent classique - mange et grandis",
+  "instructions": {
+    "desktop": "Utilisez les flèches pour contrôler le serpent. Mangez la nourriture pour grandir.",
+    "mobile": "Glissez pour contrôler la direction du serpent. Mangez pour grandir."
+  },
+  "how_to_play": {
+    "title": "Comment Jouer",
+    "items": [
+      "Utilisez les flèches pour changer de direction",
+      "Mangez la nourriture rouge pour grandir et marquer des points",
+      "Évitez de heurter les murs ou vous-même",
+      "Plus le serpent est long = plus le score est élevé"
+    ]
+  },
+  "tips": {
+    "title": "Conseils Professionnels",
+    "items": [
+      "Planifiez votre chemin à l'avance",
+      "Ne vous coincez pas dans les coins",
+      "Gardez le serpent au milieu quand possible",
+      "Surveillez les schémas d'apparition de la nourriture"
+    ]
+  },
+  "status": {
+    "start": "Appuyez sur une flèche pour commencer!",
+    "playing": "En jeu...",
+    "game_over": "Partie Terminée!",
+    "paused": "En pause"
+  },
+  "scoreboard": {
+    "score": "Score",
+    "best": "Meilleur",
+    "length": "Longueur"
+  },
+  "difficulty": {
+    "label": "Difficulté",
+    "1": "Très Facile",
+    "2": "Facile",
+    "3": "Moyen Facile",
+    "4": "Moyen",
+    "5": "Moyen Difficile",
+    "6": "Difficile",
+    "7": "Très Difficile",
+    "8": "Extrême",
+    "9": "Impossible"
+  },
+  "celebration": {
+    "title": "Score: {{score}}",
+    "subtitle": "Nouveau Meilleur Score!",
+    "keep_going": "Rejouer?"
+  },
+  "actions": {
+    "start": "Commencer",
+    "restart": "Rejouer"
+  },
+  "aria": {
+    "snake": "Serpent à la position ({{x}}, {{y}})",
+    "food": "Nourriture à la position ({{x}}, {{y}})",
+    "score": "Score: {{score}}",
+    "game_over": "Partie terminée! Score final: {{score}}"
+  }
+}

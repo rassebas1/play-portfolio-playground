@@ -1,0 +1,62 @@
+{
+  "title": "Juego de Memoria",
+  "description": "¡Encuentra todas las parejas de cartas!",
+  "short_description": "Empareja parejas de cartas",
+  "instructions": {
+    "desktop": "Haz clic en las cartas para voltearlas. Encuentra todas las parejas.",
+    "mobile": "Toca las cartas para voltearlas. Encuentra todas las parejas."
+  },
+  "how_to_play": {
+    "title": "Cómo Jugar",
+    "items": [
+      "Haz clic o toca una carta para voltearla",
+      "Haz clic o toca otra carta para encontrar una pareja",
+      "Empareja todas las parejas para ganar",
+      "¡Menos movimientos = mejor puntuación!"
+    ]
+  },
+  "tips": {
+    "title": "Consejos Profesionales",
+    "items": [
+      "Recuerda dónde has visto cada carta",
+      "Comienza volteando las cartas sistemáticamente",
+      "Enfócate en las cartas que no coinciden",
+      "Tómate tu tiempo - ¡sin temporizador!"
+    ]
+  },
+  "status": {
+    "start": "¡Haz clic en cualquier carta para comenzar!",
+    "playing": "Encuentra las parejas...",
+    "game_over": "¡Encontraste todas las parejas!"
+  },
+  "scoreboard": {
+    "score": "Puntuación",
+    "best": "Mejor",
+    "moves": "Movimientos",
+    "pairs": "Parejas",
+    "time": "Tiempo"
+  },
+  "celebration": {
+    "title": "¡Felicidades!",
+    "subtitle": "¡Encontraste todas las parejas en {{moves}} movimientos!",
+    "time_subtitle": "Tiempo: {{time}} segundos"
+  },
+  "actions": {
+    "new_game": "Nuevo Juego",
+    "restart": "Reiniciar",
+    "start": "Iniciar Juego"
+  },
+  "difficulty": {
+    "label": "Dificultad",
+    "easy": "Fácil",
+    "medium": "Medio",
+    "hard": "Difícil"
+  },
+  "aria": {
+    "card": "Carta {{index}}, reverso {{face}}",
+    "card_flipped": "Carta {{index}} volteada, muestra {{value}}",
+    "card_matched": "¡Carta {{index}} emparejada!",
+    "moves": "Movimientos: {{count}}",
+    "pairs": "Parejas encontradas: {{count}} de {{total}}"
+  }
+}

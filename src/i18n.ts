@@ -23,7 +23,20 @@ i18n
     backend: {
       loadPath: '/play-portfolio-playground/locales/{{lng}}/{{ns}}.json',
     },
-    ns: ['common', 'games'],
+    ns: [
+      'common', 
+      'games',
+      'games/2048',
+      'games/tic-tac-toe',
+      'games/common',
+      'games/snake',
+      'games/brick-breaker',
+      'games/memory-game',
+      'games/flappy-bird',
+      'experience',
+      'education',
+      'skills'
+    ],
     defaultNS: 'common',
   });
 

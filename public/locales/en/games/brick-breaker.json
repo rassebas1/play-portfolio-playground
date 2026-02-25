@@ -1,0 +1,59 @@
+{
+  "title": "Brick Breaker",
+  "description": "Break all the bricks to advance to the next level!",
+  "short_description": "Break bricks with a bouncing ball",
+  "instructions": {
+    "desktop": "Use Left/Right arrow keys to move the paddle. Press Space to launch or pause.",
+    "mobile": "Touch and drag to move the paddle horizontally."
+  },
+  "how_to_play": {
+    "title": "How to Play",
+    "items": [
+      "Move the paddle to bounce the ball",
+      "Break all bricks to clear the level",
+      "Don't let the ball fall past the paddle",
+      "Collect power-ups for bonus effects"
+    ]
+  },
+  "tips": {
+    "title": "Pro Tips",
+    "items": [
+      "Aim for the edges of bricks for better angles",
+      "Keep the ball in the middle of the paddle",
+      "Watch for falling power-ups",
+      "Move quickly to catch the ball"
+    ]
+  },
+  "status": {
+    "idle": "Press SPACE to start",
+    "playing": "Playing...",
+    "paused": "Paused",
+    "game_over": "Game Over!",
+    "level_cleared": "Level Complete!"
+  },
+  "scoreboard": {
+    "score": "Score",
+    "best": "Best",
+    "level": "Level",
+    "lives": "Lives"
+  },
+  "celebration": {
+    "title": "Level {{level}} Complete!",
+    "subtitle": "Get ready for the next challenge",
+    "game_over_title": "Game Over",
+    "game_over_subtitle": "Final Score: {{score}}"
+  },
+  "actions": {
+    "start": "Start Game",
+    "pause": "Pause",
+    "resume": "Resume",
+    "restart": "Restart"
+  },
+  "aria": {
+    "paddle": "Paddle at horizontal position {{x}}",
+    "ball": "Ball at position ({{x}}, {{y}})",
+    "brick": "Brick at row {{row}}, column {{col}}",
+    "score": "Score: {{score}}",
+    "lives": "Lives remaining: {{lives}}"
+  }
+}

@@ -8,7 +8,8 @@ import { GameOverModal } from '@/components/game/GameOverModal';
 import { Instructions } from '@/components/game/Instructions';
 import { GameStatus } from './types';
 import { Button } from '@/components/ui/button';
-import { useIsMobile } from '@/hooks/use-mobile'; // Import useIsMobile
+import { useIsMobile } from '@/hooks/use-mobile';
+import { useTranslation } from 'react-i18next';
 
 /**
  * Main Brick Breaker Game Component.
@@ -18,6 +19,8 @@ import { useIsMobile } from '@/hooks/use-mobile'; // Import useIsMobile
 const BrickBreaker: React.FC = () => {
   const gameBoardRef = useRef<HTMLDivElement>(null);
   const { state, dispatch, highScore } = useBrickBreaker(gameBoardRef);
+  const { t } = useTranslation('games/brick-breaker');
+  const isMobile = useIsMobile();
 
   /**
    * Resets the game to its initial state.
@@ -48,8 +51,8 @@ const BrickBreaker: React.FC = () => {
     <div className="flex flex-col items-center p-4 min-h-screen">
       {/* Game Header: Displays the game title and a brief description */}
       <GameHeader
-        title="Brick Breaker"
-        description="Break all the bricks to advance to the next level!"
+        title={t('title')}
+        description={t('description')}
         lives={state.lives}
         level={state.level}
       />
@@ -63,9 +66,9 @@ const BrickBreaker: React.FC = () => {
 
       {/* Instructions: Provides guidance on how to play the game */}
       <Instructions>
-        <p>Use <strong>Arrow Left</strong> and <strong>Arrow Right</strong> to move the paddle.</p>
-        <p>Press <strong>SPACEBAR</strong> to start, pause, or resume the game.</p>
-        <p>Press <strong>R</strong> to reset the game.</p>
+        <p><strong>Arrow Left</strong> / <strong>Arrow Right</strong>: {isMobile ? t('instructions.mobile') : t('instructions.desktop')}</p>
+        <p><strong>SPACEBAR</strong>: {t('actions.start')} / {t('status.paused')} / {t('actions.resume')}</p>
+        <p><strong>R</strong>: {t('actions.restart')}</p>
       </Instructions>
 
       {/* Game Board: The main canvas where the game is played, integrates touch input */}
@@ -79,9 +82,9 @@ const BrickBreaker: React.FC = () => {
 
       {/* Main Game Control Button: Changes text based on game status */}
       <Button onClick={handleGameControl} className="mt-4 w-48">
-        {state.gameStatus === GameStatus.IDLE && "Start Game"}
-        {state.gameStatus === GameStatus.PLAYING && "Pause Game"}
-        {state.gameStatus === GameStatus.PAUSED && "Resume Game"}
+        {state.gameStatus === GameStatus.IDLE && t('actions.start')}
+        {state.gameStatus === GameStatus.PLAYING && t('actions.pause')}
+        {state.gameStatus === GameStatus.PAUSED && t('actions.resume')}
       </Button>
 
       {/* Game Over Modal: Displays when the game is over */}

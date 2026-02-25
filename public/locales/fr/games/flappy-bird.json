@@ -1,0 +1,51 @@
+{
+  "title": "Flappy Bird",
+  "description": "Appuyez sur espace ou tapez pour voleter et évitez les tuyaux!",
+  "short_description": "Voletez à travers les tuyaux",
+  "instructions": {
+    "desktop": "Appuyez sur ESPACE ou flèche HAUT pour voleter. Évitez les tuyaux!",
+    "mobile": "Tapez sur l'écran pour voleter. Évitez les tuyaux!"
+  },
+  "how_to_play": {
+    "title": "Comment Jouer",
+    "items": [
+      "Appuyez sur ESPACE ou tapez pour voleter",
+      "Évitez de heurter les tuyaux",
+      "Ne tombez pas sous l'écran",
+      "Allez le plus loin possible!"
+    ]
+  },
+  "tips": {
+    "title": "Conseils Professionnels",
+    "items": [
+      "Trouvez un rythme constant",
+      "Appuyez tôt pour plus de portance",
+      "Visez le milieu des ouverture",
+      "Restez calme - se précipiter mène aux erreurs"
+    ]
+  },
+  "status": {
+    "start": "Appuyez sur ESPACE pour commencer!",
+    "playing": "En vol...",
+    "game_over": "Partie Terminée!"
+  },
+  "scoreboard": {
+    "score": "Score",
+    "best": "Meilleur"
+  },
+  "celebration": {
+    "title": "Score: {{score}}",
+    "subtitle": "Nouveau Meilleur Score!",
+    "game_over_title": "Partie Terminée",
+    "game_over_subtitle": "Score: {{score}}"
+  },
+  "actions": {
+    "start": "Commencer",
+    "restart": "Rejouer"
+  },
+  "aria": {
+    "bird": "Oiseau à la position verticale {{y}}",
+    "score": "Score: {{score}}",
+    "game_over": "Partie terminée! Score final: {{score}}"
+  }
+}

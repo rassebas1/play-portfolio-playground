@@ -5,8 +5,9 @@ import { Scoreboard } from '@/components/game/Scoreboard';
 import { GameOverModal } from '@/components/game/GameOverModal';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useSwipeGesture } from '@/hooks/useSwipeGesture';
-import { Direction, Difficulty } from './types'; // Import Difficulty
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'; // Import Select components
+import { Direction, Difficulty } from './types';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useTranslation } from 'react-i18next';
 
 /**
  * Main component for the Snake game.
@@ -14,8 +15,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
  * rendering the game board, controls, and displaying game status and scores.
  */
 const SnakeGame: React.FC = () => {
-  const { state, startGame, resetGame, dispatch, setDifficulty, highScore } = useSnakeGame(); // Destructure highScore
+  const { state, startGame, resetGame, dispatch, setDifficulty, highScore } = useSnakeGame();
   const { score, gameOver, gameStarted, difficulty } = state;
+  const { t } = useTranslation('games/snake');
 
   /**
    * Handles swipe gestures on the game board to change the snake's direction.
@@ -57,20 +59,20 @@ const SnakeGame: React.FC = () => {
     <div className="flex flex-col items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <CardTitle className="text-4xl font-bold mb-2">Snake Game</CardTitle>
+          <CardTitle className="text-4xl font-bold mb-2">{t('title')}</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col items-center">
           <Scoreboard score={score} bestScore={highScore || 0} /> {/* Pass highScore to Scoreboard */}
 
           <div className="flex items-center space-x-2 mb-4">
-            <label htmlFor="difficulty-select" className="text-lg">Difficulty:</label>
+            <label htmlFor="difficulty-select" className="text-lg">{t('difficulty.label')}:</label>
             <Select onValueChange={(value) => setDifficulty(Number(value) as Difficulty)} value={String(difficulty)}>
               <SelectTrigger className="w-[100px]">
-                <SelectValue placeholder="Select Difficulty" />
+                <SelectValue placeholder={t('difficulty.label')} />
               </SelectTrigger>
               <SelectContent>
                 {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((level) => (
-                  <SelectItem key={level} value={String(level)}>{level}</SelectItem>
+                  <SelectItem key={level} value={String(level)}>{t(`difficulty.${level}`)}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -93,7 +95,7 @@ const SnakeGame: React.FC = () => {
                   onClick={() => startGame(difficulty)}
                   className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
                 >
-                  Start Game
+                  {t('actions.start')}
                 </Button>
               )}
 
@@ -102,7 +104,7 @@ const SnakeGame: React.FC = () => {
               )}
 
               {gameStarted && !gameOver && (
-                <p className="text-gray-400">Use Arrow Keys to Move</p>
+                <p className="text-gray-400">{t('instructions.desktop')}</p>
               )}
             </>
           </div>
