@@ -24,6 +24,8 @@ dist-ssr
 *.sw?
 
 # Local env files
-##TODO.md
+TODO.md
 CV.pdf
-#Gemini.md
+Gemini.md
+.opencode
+.opencode/*
