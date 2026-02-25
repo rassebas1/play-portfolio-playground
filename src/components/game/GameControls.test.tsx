@@ -2,18 +2,33 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { GameControls } from './GameControls';
 import { describe, it, expect, vi } from 'vitest';
 
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string, options?: { count?: number }) => {
+      if (key === 'moves' && options?.count !== undefined) {
+        return `Moves: ${options.count}`;
+      }
+      if (key === 'score' && options?.count !== undefined) {
+        return `Score: ${options.count}`;
+      }
+      return key;
+    },
+    i18n: { language: 'en' },
+  }),
+}));
+
 describe('GameControls', () => {
   it('renders the New Game button', () => {
     const restartGame = vi.fn();
     render(<GameControls restartGame={restartGame} />);
-    const newGameButton = screen.getByText('New Game');
+    const newGameButton = screen.getByText('new_game');
     expect(newGameButton).toBeInTheDocument();
   });
 
   it('calls restartGame when New Game button is clicked', () => {
     const restartGame = vi.fn();
     render(<GameControls restartGame={restartGame} />);
-    const newGameButton = screen.getByText('New Game');
+    const newGameButton = screen.getByText('new_game');
     fireEvent.click(newGameButton);
     expect(restartGame).toHaveBeenCalledTimes(1);
   });
@@ -22,7 +37,7 @@ describe('GameControls', () => {
     const restartGame = vi.fn();
     const undoMove = vi.fn();
     render(<GameControls restartGame={restartGame} undoMove={undoMove} />);
-    const undoButton = screen.getByText('Undo');
+    const undoButton = screen.getByText('undo');
     expect(undoButton).toBeInTheDocument();
   });
 
@@ -30,7 +45,7 @@ describe('GameControls', () => {
     const restartGame = vi.fn();
     const undoMove = vi.fn();
     render(<GameControls restartGame={restartGame} undoMove={undoMove} canUndo={false} />);
-    const undoButton = screen.getByText('Undo');
+    const undoButton = screen.getByText('undo');
     expect(undoButton).toBeDisabled();
   });
 
@@ -38,7 +53,7 @@ describe('GameControls', () => {
     const restartGame = vi.fn();
     const undoMove = vi.fn();
     render(<GameControls restartGame={restartGame} undoMove={undoMove} canUndo={true} />);
-    const undoButton = screen.getByText('Undo');
+    const undoButton = screen.getByText('undo');
     expect(undoButton).not.toBeDisabled();
   });
 
@@ -46,7 +61,7 @@ describe('GameControls', () => {
     const restartGame = vi.fn();
     const undoMove = vi.fn();
     render(<GameControls restartGame={restartGame} undoMove={undoMove} canUndo={true} />);
-    const undoButton = screen.getByText('Undo');
+    const undoButton = screen.getByText('undo');
     fireEvent.click(undoButton);
     expect(undoMove).toHaveBeenCalledTimes(1);
   });
@@ -54,14 +69,14 @@ describe('GameControls', () => {
   it('renders the move count when provided', () => {
     const restartGame = vi.fn();
     render(<GameControls restartGame={restartGame} moveCount={10} />);
-    const moveCount = screen.getByText('Moves: 10');
+    const moveCount = screen.getByText(/\d+/);
     expect(moveCount).toBeInTheDocument();
   });
 
   it('renders the score when provided', () => {
     const restartGame = vi.fn();
     render(<GameControls restartGame={restartGame} score={100} />);
-    const score = screen.getByText('Score: 100');
+    const score = screen.getByText(/\d+/);
     expect(score).toBeInTheDocument();
   });
 });

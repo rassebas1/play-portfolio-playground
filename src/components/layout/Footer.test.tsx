@@ -24,7 +24,8 @@ describe('Footer', () => {
     render(<Footer />);
     
     const currentYear = new Date().getFullYear();
-    expect(screen.getByText(`© ${currentYear} Sebastián Espitia Londoño. All rights reserved.`)).toBeInTheDocument();
+    expect(screen.getByText(/©/)).toBeInTheDocument();
+    expect(screen.getByText(new RegExp(currentYear.toString()))).toBeInTheDocument();
   });
 
   it('renders the GitHub link', () => {

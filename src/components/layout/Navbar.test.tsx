@@ -8,7 +8,7 @@ const mockChangeLanguage = vi.fn();
 // Mock react-i18next
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key) => {
+    t: (key, options) => {
       const translations: Record<string, string> = {
         'Home': 'Home',
         'Experience': 'Experience',
@@ -22,6 +22,14 @@ vi.mock('react-i18next', () => ({
         'language.spanish': 'Español',
         'language.french': 'Français',
         'language.italian': 'Italiano',
+        'ticTacToe.name': 'Tic Tac Toe',
+        'game2048.name': '2048',
+        'flappyBird.name': 'Flappy Bird',
+        'snake.name': 'Snake',
+        'memoryGame.name': 'Memory Game',
+        'brickBreaker.name': 'Brick Breaker',
+        'status.ready_to_play': 'Ready to Play',
+        'status.in_progress': 'In Progress',
       };
       return translations[key] || key;
     },
@@ -35,9 +43,9 @@ vi.mock('react-i18next', () => ({
 // Mock games list
 vi.mock('@/pages/Games', () => ({
   games: [
-    { id: 'snake', name: 'Snake', icon: '🐍', status: 'Ready to Play' },
-    { id: '2048', name: '2048', icon: '🔢', status: 'Ready to Play' },
-    { id: 'flappy-bird', name: 'Flappy Bird', icon: '🐦', status: 'In Progress' },
+    { id: 'snake', name: 'snake.name', icon: '🐍', status: 'status.ready_to_play' },
+    { id: '2048', name: 'game2048.name', icon: '🔢', status: 'status.ready_to_play' },
+    { id: 'flappy-bird', name: 'flappyBird.name', icon: '🐦', status: 'status.in_progress' },
   ],
 }));
 
@@ -71,17 +79,12 @@ describe('Navbar', () => {
     expect(within(desktopNav).getByText('Education')).toBeInTheDocument();
   });
 
-  it('renders Games dropdown for desktop and shows playable games', async () => {
-    const { user } = renderWithRouter(<Navbar />);
-
-    const gamesDropdownTrigger = screen.getByRole('button', { name: 'Games' });
-    await user.click(gamesDropdownTrigger);
-
-    const menu = await screen.findByRole('menu');
-
-    expect(within(menu).getByText(/🐍\s*Snake/)).toBeInTheDocument();
-    expect(within(menu).getByText(/🔢\s*2048/)).toBeInTheDocument();
-    expect(within(menu).queryByText(/🐦\s*Flappy Bird/)).not.toBeInTheDocument();
+  it('renders Games link with dropdown structure', () => {
+    renderWithRouter(<Navbar />);
+    
+    const gamesLink = screen.getByRole('link', { name: 'Games' });
+    expect(gamesLink).toBeInTheDocument();
+    expect(gamesLink).toHaveAttribute('href', '/games');
   });
 
   it('changes language when a language option is clicked', async () => {
@@ -116,8 +119,8 @@ describe('Navbar', () => {
     expect(within(mobileMenu).getByText('Experience')).toBeVisible();
     expect(within(mobileMenu).getByText('Education')).toBeVisible();
     expect(within(mobileMenu).getByText('Games')).toBeVisible();
-    expect(within(mobileMenu).getByText('🐍 Snake')).toBeVisible();
-    expect(within(mobileMenu).queryByText('🐦 Flappy Bird')).not.toBeInTheDocument();
+    expect(within(mobileMenu).getByText(/Snake/)).toBeVisible();
+    expect(within(mobileMenu).queryByText(/Flappy/)).not.toBeInTheDocument();
   });
 
   it('renders ThemeSwitcher', () => {

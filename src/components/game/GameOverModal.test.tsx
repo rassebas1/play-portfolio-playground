@@ -1,7 +1,14 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { GameOverModal } from './GameOverModal';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
+
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => key,
+    i18n: { language: 'en' },
+  }),
+}));
 
 const mockNavigate = vi.fn();
 vi.mock('react-router-dom', async () => {
@@ -47,7 +54,7 @@ describe('GameOverModal', () => {
         />
       </MemoryRouter>
     );
-    expect(screen.getByText('💔 Game Over')).toBeInTheDocument();
+    expect(screen.getByText(/💔/)).toBeInTheDocument();
   });
 
   it('renders "You Win!" message when isGameOver is true and isWon is true', () => {
@@ -62,7 +69,7 @@ describe('GameOverModal', () => {
         />
       </MemoryRouter>
     );
-    expect(screen.getByText('🎉 You Win!')).toBeInTheDocument();
+    expect(screen.getByText(/🎉/)).toBeInTheDocument();
   });
 
   it('displays the final score', () => {
@@ -92,7 +99,7 @@ describe('GameOverModal', () => {
         />
       </MemoryRouter>
     );
-    expect(screen.getByText('New Best! 🏆')).toBeInTheDocument();
+    expect(screen.getByText(/🏆/)).toBeInTheDocument();
   });
 
   it('does not display "New Best!" badge when score is less than bestScore', () => {
@@ -122,7 +129,7 @@ describe('GameOverModal', () => {
         />
       </MemoryRouter>
     );
-    fireEvent.click(screen.getByText('Play Again'));
+    fireEvent.click(screen.getByText('game_over.play_again'));
     expect(restartGame).toHaveBeenCalledTimes(1);
   });
 
@@ -138,7 +145,7 @@ describe('GameOverModal', () => {
         />
       </MemoryRouter>
     );
-    fireEvent.click(screen.getByText('Home'));
+    fireEvent.click(screen.getByText('game_over.home'));
     expect(mockNavigate).toHaveBeenCalledWith('/games');
   });
 
@@ -156,7 +163,7 @@ describe('GameOverModal', () => {
         />
       </MemoryRouter>
     );
-    expect(screen.getByText('Continue')).toBeInTheDocument();
+    expect(screen.getByText('game_over.continue')).toBeInTheDocument();
   });
 
   it('does not render "Continue" button when canContinue is false', () => {
@@ -173,7 +180,7 @@ describe('GameOverModal', () => {
         />
       </MemoryRouter>
     );
-    expect(screen.queryByText('Continue')).not.toBeInTheDocument();
+    expect(screen.queryByText('game_over.continue')).not.toBeInTheDocument();
   });
 
   it('calls continueGame when "Continue" button is clicked', () => {
@@ -190,7 +197,7 @@ describe('GameOverModal', () => {
         />
       </MemoryRouter>
     );
-    fireEvent.click(screen.getByText('Continue'));
+    fireEvent.click(screen.getByText('game_over.continue'));
     expect(continueGame).toHaveBeenCalledTimes(1);
   });
 });
