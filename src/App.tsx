@@ -1,5 +1,4 @@
 import React from "react";
-import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -7,6 +6,7 @@ import { createBrowserRouter, RouterProvider, Outlet, useNavigation, useLocation
 import { motion, AnimatePresence } from "framer-motion";
 import { ThemeProvider } from "next-themes";
 import { Layout } from "@/components/ui/layout";
+import { ErrorBoundary } from "@/components/ui/error-boundary";
 
 // Lazy load all page components for better performance
 const Home = React.lazy(() => import("./pages/Home"));
@@ -79,21 +79,16 @@ const router = createBrowserRouter([
  * @returns {JSX.Element} The root of the React application.
  */
 const App = () => (
-  // QueryClientProvider makes the queryClient available to all components.
-  <QueryClientProvider client={queryClient}>
-    {/* ThemeProvider enables dark mode/light mode switching. */}
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      {/* TooltipProvider manages tooltip state and accessibility. */}
-      <TooltipProvider>
-        {/* Toaster for displaying traditional toast notifications. */}
-        <Toaster />
-        {/* Sonner for displaying modern, more customizable toast notifications. */}
-        <Sonner />
-        {/* RouterProvider renders the application's UI based on the current URL. */}
-        <RouterProvider router={router} />
-      </TooltipProvider>
-    </ThemeProvider>
-  </QueryClientProvider>
+  <ErrorBoundary>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <TooltipProvider>
+          <Sonner />
+          <RouterProvider router={router} />
+        </TooltipProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
+  </ErrorBoundary>
 );
 
 export default App;

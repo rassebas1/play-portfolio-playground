@@ -20,6 +20,7 @@
     "italian": "Italiano"
   },
   "change_language_aria_label": "Cambiar idioma",
+  "skip_to_main": "Ir al contenido principal",
   "toggle_menu_aria_label": "Abrir menú",
   "mobile_navigation_aria_label": "Navegación móvil",
   "game_zone_heading": "Zona de Juegos",
@@ -70,5 +71,21 @@
     "continue": "Continuar",
     "play_again": "Jugar de Nuevo",
     "home": "Inicio"
-  }
+  },
+  "hero_tagline": "Conectando Ingeniería de Software, Seguridad Middleware & Big Data",
+  "hero_role_1": "Ingeniero de Software",
+  "hero_role_2": "Desarrollador Full-Stack",
+  "hero_role_3": "Ingeniero de Big Data",
+  "hero_cta_github": "Ver GitHub",
+  "hero_cta_linkedin": "Conectar en LinkedIn",
+  "hero_cta_games": "Jugar 2048",
+  "skills_bento_subtitle": "Un enfoque multidisciplinario para resolver desafíos técnicos complejos",
+  "skills_bento_frontend_title": "Experto en Frontend",
+  "skills_bento_frontend_desc": "Aplicaciones web modernas con frameworks reactivos y arquitecturas de componentes",
+  "skills_bento_backend_title": "Backend y Seguridad",
+  "skills_bento_backend_desc": "Middleware empresarial, gateways API y sistemas de autenticación segura",
+  "skills_bento_cloud_title": "Cloud y DevOps",
+  "skills_bento_cloud_desc": "Infraestructura escalable, orquestación de contenedores y pipelines CI/CD",
+  "skills_bento_data_title": "Big Data e IA",
+  "skills_bento_data_desc": "Computación distribuida, modelos de machine learning y pipelines de datos"
 }

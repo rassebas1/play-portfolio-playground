@@ -7,7 +7,7 @@
   "intro_paragraph": "Software Engineer with a passion for building modern web applications and games.",
   "experience_heading": "Experience & Skills",
   "education_heading": "Education & Achievements",
-  "Skills": "Skills",
+  "Skills": "Technical Skills",
   "developer_title": "Software Engineer",
   "developer_description": "Software Engineer with a background in Electronics Engineering and current Big Data specialization. Expertise spans modern web architectures, secure integration platforms, and cloud-native solutions, with proven success in leading digital transformation for major financial and telecommunications clients.",
   "key_courses": "Key Courses",
@@ -20,6 +20,7 @@
     "italian": "Italian"
   },
   "change_language_aria_label": "Change language",
+  "skip_to_main": "Skip to main content",
   "toggle_menu_aria_label": "Toggle Menu",
   "mobile_navigation_aria_label": "Mobile Navigation",
   "game_zone_heading": "Game Zone",
@@ -70,5 +71,21 @@
     "continue": "Continue",
     "play_again": "Play Again",
     "home": "Home"
-  }
+  },
+  "hero_tagline": "Bridging Software Engineering, Middleware Security & Big Data",
+  "hero_role_1": "Software Engineer",
+  "hero_role_2": "Full-Stack Developer",
+  "hero_role_3": "Big Data Engineer",
+  "hero_cta_github": "View GitHub",
+  "hero_cta_linkedin": "Connect on LinkedIn",
+  "hero_cta_games": "Play 2048",
+  "skills_bento_subtitle": "A multidisciplinary approach to solving complex technical challenges",
+  "skills_bento_frontend_title": "Frontend Expert",
+  "skills_bento_frontend_desc": "Modern web applications with reactive frameworks and component architectures",
+  "skills_bento_backend_title": "Backend & Security",
+  "skills_bento_backend_desc": "Enterprise middleware, API gateways, and secure authentication systems",
+  "skills_bento_cloud_title": "Cloud & DevOps",
+  "skills_bento_cloud_desc": "Scalable infrastructure, container orchestration, and CI/CD pipelines",
+  "skills_bento_data_title": "Big Data & AI",
+  "skills_bento_data_desc": "Distributed computing, machine learning models, and data pipelines"
 }

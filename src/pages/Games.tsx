@@ -88,7 +88,7 @@ const Games: React.FC = () => {
     <div className="container mx-auto px-4 py-16">
       {/* Page Header */}
       <div className="text-center mb-20 pt-10">
-        <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
           {t('game_zone_heading')}
         </h1>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-10">
@@ -96,26 +96,32 @@ const Games: React.FC = () => {
         </p>
       </div>
       {/* Games Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* Map through the `games` array to render each game card */}
-        {games.map((game) => (
+        {games.map((game, index) => (
           <Card
-            key={game.id} // Unique key for list rendering
-            className="group relative overflow-hidden rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
+            key={game.id}
+            className="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 hover:border-primary/30"
+            style={{
+              animationDelay: `${index * 100}ms`,
+            }}
           >
-            <CardHeader className="text-center p-6">
+            {/* Gradient overlay on hover */}
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+            
+            <CardHeader className="text-center p-6 pb-2">
               {/* Game Icon with hover animation */}
-              <div className="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">
+              <div className="text-5xl mb-4 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
                 {game.icon}
               </div>
               {/* Game Name */}
-              <CardTitle className="text-2xl mb-2">{t(game.name, { ns: 'games' })}</CardTitle>
+              <CardTitle className="text-2xl mb-2 group-hover:text-primary transition-colors">{t(game.name, { ns: 'games' })}</CardTitle>
               {/* Game Difficulty and Category Badges */}
-              <div className="flex justify-center gap-2 mb-4">
+              <div className="flex justify-center gap-2 mb-2 flex-wrap">
                 <Badge
                   variant="outline"
                   className="text-xs font-semibold"
-                  style={{ borderColor: game.color, color: game.color }} // Dynamic color based on game theme
+                  style={{ borderColor: game.color, color: game.color }}
                 >
                   {t(game.difficulty, { ns: 'common' })}
                 </Badge>
@@ -124,9 +130,9 @@ const Games: React.FC = () => {
                 </Badge>
               </div>
             </CardHeader>
-            <CardContent className="p-6">
+            <CardContent className="p-6 pt-0">
               {/* Game Description */}
-              <CardDescription className="text-center mb-6">
+              <CardDescription className="text-center mb-6 line-clamp-3">
                 {t(game.description, { ns: 'games' })}
               </CardDescription>
               {/* Conditional rendering for "Coming Soon" or "Play Game" button */}
@@ -134,15 +140,14 @@ const Games: React.FC = () => {
                 <Button
                   className="w-full"
                   size="lg"
-                  disabled // Disable button for coming soon games
+                  disabled
                 >
                   {t('status.coming_soon', { ns: 'common' })}
                 </Button>
               ) : (
-                // Link to the game page if it's ready to play
                 <Link to={`/game/${game.id}`} className="block">
                   <Button
-                    className="w-full bg-primary hover:bg-primary-glow transition-colors"
+                    className="w-full bg-primary hover:bg-primary-glow transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
                     size="lg"
                   >
                     {t('button.play_game', { ns: 'common' })}

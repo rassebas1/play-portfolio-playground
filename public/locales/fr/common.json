@@ -20,6 +20,7 @@
     "italian": "Italien"
   },
   "change_language_aria_label": "Changer de langue",
+  "skip_to_main": "Aller au contenu principal",
   "toggle_menu_aria_label": "Ouvrir le menu",
   "mobile_navigation_aria_label": "Navigation mobile",
   "game_zone_heading": "Zone de jeux",
@@ -70,5 +71,21 @@
     "continue": "Continuer",
     "play_again": "Rejouer",
     "home": "Accueil"
-  }
+  },
+  "hero_tagline": "Ingénierie Logicielle, Sécurité Middleware & Big Data",
+  "hero_role_1": "Ingénieur Logiciel",
+  "hero_role_2": "Développeur Full-Stack",
+  "hero_role_3": "Ingénieur Big Data",
+  "hero_cta_github": "Voir GitHub",
+  "hero_cta_linkedin": "Connecter sur LinkedIn",
+  "hero_cta_games": "Jouer à 2048",
+  "skills_bento_subtitle": "Une approche multidisciplinaire pour résoudre des défis techniques complexes",
+  "skills_bento_frontend_title": "Expert Frontend",
+  "skills_bento_frontend_desc": "Applications web modernes avec frameworks réactifs et architectures à composants",
+  "skills_bento_backend_title": "Backend et Sécurité",
+  "skills_bento_backend_desc": "Middleware d'entreprise, passerelles API et systèmes d'authentification sécurisés",
+  "skills_bento_cloud_title": "Cloud et DevOps",
+  "skills_bento_cloud_desc": "Infrastructure évolutive, orchestration de conteneurs et pipelines CI/CD",
+  "skills_bento_data_title": "Big Data et IA",
+  "skills_bento_data_desc": "Calcul distribué, modèles de machine learning et pipelines de données"
 }

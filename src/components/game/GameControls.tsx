@@ -43,10 +43,10 @@ export const GameControls: React.FC<GameControlsProps> = ({
       <Button
         onClick={restartGame}
         variant="outline"
-        size="sm"
-        className="gap-2"
+        size="lg"
+        className="min-h-[48px] min-w-[120px] touch-manipulation"
       >
-        <RotateCcw className="w-4 h-4" />
+        <RotateCcw className="w-5 h-5" />
         {t('new_game')}
       </Button>
       
@@ -55,22 +55,22 @@ export const GameControls: React.FC<GameControlsProps> = ({
           onClick={undoMove}
           disabled={!canUndo}
           variant="outline"
-          size="sm"
-          className="gap-2"
+          size="lg"
+          className="min-h-[48px] min-w-[100px] touch-manipulation"
         >
-          <Undo2 className="w-4 h-4" />
+          <Undo2 className="w-5 h-5" />
           {t('undo')}
         </Button>
       )}
 
       {moveCount !== undefined && (
-        <Badge variant="secondary" className="px-3 py-1">
+        <Badge variant="secondary" className="px-4 py-3 min-h-[48px] flex items-center text-base">
           {t('moves', { count: moveCount })}
         </Badge>
       )}
 
       {score !== undefined && (
-        <Badge variant="secondary" className="px-3 py-1">
+        <Badge variant="secondary" className="px-4 py-3 min-h-[48px] flex items-center text-base">
           {t('score', { count: score })}
         </Badge>
       )}
