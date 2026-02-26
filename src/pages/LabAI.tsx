@@ -8,7 +8,7 @@ import { AudioFileReader, MicrophoneRecorder } from '@/lab-ai/core/audio/AudioIn
 import { DSPEngine } from '@/lab-ai/core/dsp/DSPEngine';
 import { inferenceEngine } from '@/lab-ai/core/model/InferenceEngine';
 import { useLabAIStore } from '@/lab-ai/store/labAIStore';
-import type { ModelType, AudioSignal, SpectrogramData, ClassificationResult } from '@/lab-ai/types';
+import type { ModelType, AudioSignal, SpectrogramData, ClassificationResult, MelSpectrogram } from '@/lab-ai/types';
 import { Sparkles, FlaskConical, Binary } from 'lucide-react';
 
 const LabAI: React.FC = () => {
@@ -30,7 +30,6 @@ const LabAI: React.FC = () => {
     setProcessingProgress,
     setSelectedModel,
     setInferenceResults,
-    reset,
   } = useLabAIStore();
 
   const audioReaderRef = useRef<AudioFileReader | null>(null);
@@ -39,63 +38,33 @@ const LabAI: React.FC = () => {
   const recordingIntervalRef = useRef<number | null>(null);
   const [recordingTime, setRecordingTime] = useState(0);
 
-  // Debug: Log state changes
-  useEffect(() => {
-    console.log('[LabAI] State changed:', {
-      isProcessing,
-      isRecording,
-      selectedModel,
-      progressStage: processingProgress.stage,
-      hasAudioSignal: !!audioSignal,
-      hasSpectrogram: !!spectrogramData,
-      resultsCount: inferenceResults.length,
-    });
-  }, [isProcessing, isRecording, selectedModel, processingProgress.stage, audioSignal, spectrogramData, inferenceResults]);
-
   const initializeComponents = useCallback(() => {
-    console.log('[LabAI] Initializing components...');
     if (!audioReaderRef.current) {
-      console.log('[LabAI] Creating AudioFileReader');
       audioReaderRef.current = new AudioFileReader();
     }
     if (!dspEngineRef.current) {
-      console.log('[LabAI] Creating DSPEngine with params: window=4096, hop=512, mel=40, melLow=125, melHigh=7500');
       dspEngineRef.current = new DSPEngine(4096, 512, 40, 125, 7500);
     }
   }, []);
 
-  const runInference = useCallback(async (melSpectrogram: number[][]) => {
-    console.log('[LabAI] Starting inference with model:', selectedModel);
+  const runInference = useCallback(async (melSpectrogram: MelSpectrogram) => {
     setProcessingProgress({ stage: 'inference', progress: 80, message: 'Running inference...' });
 
     try {
-      console.log('[LabAI] Loading model...');
       await inferenceEngine.loadModel(selectedModel);
-      console.log('[LabAI] Model loaded, preparing input...');
-
-      // Use the mel spectrogram directly - already has shape [55, 40]
-      console.log('[LabAI] Mel spectrogram shape:', melSpectrogram.length, 'x', melSpectrogram[0]?.length);
-
-      console.log('[LabAI] Running inference...');
       const results: ClassificationResult[] = await inferenceEngine.infer(melSpectrogram);
-      console.log('[LabAI] Inference results:', results);
 
       setInferenceResults(results);
       setProcessingProgress({ stage: 'complete', progress: 100, message: 'Inference complete!' });
-    } catch (error) {
-      console.error('[LabAI] Inference error:', error);
+    } catch {
       setProcessingProgress({ stage: 'error', progress: 0, message: 'Inference failed' });
     } finally {
-      console.log('[LabAI] Setting isProcessing to false');
       setIsProcessing(false);
     }
   }, [selectedModel, setProcessingProgress, setInferenceResults, setIsProcessing]);
 
-  const handleFileSelect = useCallback(async (file: File) => {
-    console.log('[LabAI] File selected:', file?.name, file?.type, file?.size);
-    
+  const handleFileSelect = useCallback(async (file: File | null) => {
     if (!file) {
-      console.log('[LabAI] Clearing audio signal');
       setAudioSignal(null);
       setSpectrogramData(null);
       setInferenceResults([]);
@@ -108,23 +77,18 @@ const LabAI: React.FC = () => {
     setProcessingProgress({ stage: 'loading', progress: 10, message: 'Loading audio file...' });
 
     try {
-      console.log('[LabAI] Decoding audio file...');
-      const signal = await audioReaderRef.current!.decodeAudioFile(file);
-      console.log('[LabAI] Audio decoded:', signal.sampleRate, signal.channels, signal.duration);
+      const reader = audioReaderRef.current;
+      const dsp = dspEngineRef.current;
+      if (!reader || !dsp) {
+        throw new Error('Components not initialized');
+      }
+
+      const signal = await reader.decodeAudioFile(file);
+      const resampled = await reader.resample(signal, 16000);
       
-      console.log('[LabAI] Resampling to 16kHz...');
-      const resampled = await audioReaderRef.current!.resample(signal, 16000);
-      console.log('[LabAI] Resampled:', resampled.sampleRate, resampled.channels, resampled.duration);
+      const loudestSlice = dsp.extractLoudestSlice(resampled.data, resampled.sampleRate, 2000);
+      const int16Data = dsp.convertToInt16(loudestSlice);
       
-      // Use extractLoudestSlice to match training pipeline (center on max amplitude)
-      console.log('[LabAI] Extracting loudest 2000ms slice...');
-      const loudestSlice = dspEngineRef.current!.extractLoudestSlice(resampled.data, resampled.sampleRate, 2000);
-      
-      // Convert to int16 to match training pipeline
-      console.log('[LabAI] Converting to int16...');
-      const int16Data = dspEngineRef.current!.convertToInt16(loudestSlice);
-      
-      // Convert back to Float32 for DSP processing (librosa does this internally)
       const floatData = new Float32Array(int16Data.length);
       for (let i = 0; i < int16Data.length; i++) {
         floatData[i] = int16Data[i] / 32767;
@@ -136,17 +100,13 @@ const LabAI: React.FC = () => {
         data: floatData,
         duration: 2000 / 1000,
       };
-      console.log('[LabAI] Audio sliced:', slicedAudio.data.length, 'samples,', slicedAudio.duration, 's');
       
       setAudioSignal(slicedAudio);
       setProcessingProgress({ stage: 'audio', progress: 30, message: 'Processing audio...' });
 
-      console.log('[LabAI] Computing mel spectrogram...');
-      const melSpectrogram = dspEngineRef.current!.computeMelSpectrogram(slicedAudio);
-      console.log('[LabAI] Mel spectrogram computed:', melSpectrogram.length, 'x', melSpectrogram[0]?.length);
+      const melSpectrogram = dsp.computeMelSpectrogram(slicedAudio);
       
-      // Create spectrogram data for visualization
-      const spectrogram = {
+      const spectrogram: SpectrogramData = {
         frequencies: Array.from({ length: melSpectrogram[0]?.length || 40 }, (_, i) => i),
         times: Array.from({ length: melSpectrogram.length }, (_, i) => i * 512 / 16000),
         magnitudes: melSpectrogram,
@@ -158,20 +118,24 @@ const LabAI: React.FC = () => {
       setProcessingProgress({ stage: 'dsp', progress: 60, message: 'Computing features...' });
 
       await runInference(melSpectrogram);
-    } catch (error) {
-      console.error('[LabAI] Error processing audio:', error);
+    } catch {
       setProcessingProgress({ stage: 'error', progress: 0, message: 'Error processing audio' });
       setIsProcessing(false);
     }
   }, [initializeComponents, setAudioSignal, setIsProcessing, setProcessingProgress, setSpectrogramData, runInference]);
 
+  const handleFileClear = useCallback(() => {
+    setAudioSignal(null);
+    setSpectrogramData(null);
+    setInferenceResults([]);
+    setProcessingProgress({ stage: 'idle', progress: 0, message: 'Ready to process audio' });
+  }, [setAudioSignal, setSpectrogramData, setInferenceResults, setProcessingProgress]);
+
   const handleStartRecording = useCallback(async () => {
-    console.log('[LabAI] Starting recording...');
     initializeComponents();
     
     micRecorderRef.current = new MicrophoneRecorder();
     const hasPermission = await micRecorderRef.current.requestPermission();
-    console.log('[LabAI] Mic permission:', hasPermission);
     
     if (!hasPermission) {
       setProcessingProgress({ 
@@ -186,7 +150,6 @@ const LabAI: React.FC = () => {
     setRecordingTime(0);
     setProcessingProgress({ stage: 'audio', progress: 50, message: 'Recording...' });
     micRecorderRef.current.startRecording();
-    console.log('[LabAI] Recording started');
 
     recordingIntervalRef.current = window.setInterval(() => {
       setRecordingTime(prev => prev + 1);
@@ -194,14 +157,13 @@ const LabAI: React.FC = () => {
   }, [initializeComponents, setIsRecording, setProcessingProgress]);
 
   const handleStopRecording = useCallback(async () => {
-    console.log('[LabAI] Stopping recording...');
     if (recordingIntervalRef.current) {
       clearInterval(recordingIntervalRef.current);
       recordingIntervalRef.current = null;
     }
 
-    if (!micRecorderRef.current) {
-      console.log('[LabAI] No mic recorder instance');
+    const recorder = micRecorderRef.current;
+    if (!recorder) {
       return;
     }
 
@@ -210,29 +172,34 @@ const LabAI: React.FC = () => {
     setProcessingProgress({ stage: 'audio', progress: 30, message: 'Processing recording...' });
 
     try {
-      console.log('[LabAI] Processing recorded audio...');
-      const signal = await micRecorderRef.current.stopRecording();
-      console.log('[LabAI] Recording processed:', signal.sampleRate, signal.channels, signal.duration);
+      const signal = await recorder.stopRecording();
       
-      const resampled = await audioReaderRef.current!.resample(signal, 16000);
+      const reader = audioReaderRef.current;
+      const dsp = dspEngineRef.current;
+      if (!reader || !dsp) {
+        throw new Error('Components not initialized');
+      }
+
+      const resampled = await reader.resample(signal, 16000);
       
-      // Slice to 2000ms
       const targetSamples = 2000 * 16;
-      let slicedAudio = resampled;
+      let slicedAudio: AudioSignal;
       if (resampled.data.length > targetSamples) {
         slicedAudio = {
           ...resampled,
           data: resampled.data.slice(0, targetSamples),
           duration: 2,
         };
+      } else {
+        slicedAudio = resampled;
       }
       
       setAudioSignal(slicedAudio);
       setRecordingDuration(recordingTime);
       
-      const melSpectrogram = dspEngineRef.current!.computeMelSpectrogram(slicedAudio);
+      const melSpectrogram = dsp.computeMelSpectrogram(slicedAudio);
       
-      const spectrogram = {
+      const spectrogram: SpectrogramData = {
         frequencies: Array.from({ length: melSpectrogram[0]?.length || 40 }, (_, i) => i),
         times: Array.from({ length: melSpectrogram.length }, (_, i) => i * 512 / 16000),
         magnitudes: melSpectrogram,
@@ -244,8 +211,7 @@ const LabAI: React.FC = () => {
       setProcessingProgress({ stage: 'dsp', progress: 60, message: 'Computing features...' });
 
       await runInference(melSpectrogram);
-    } catch (error) {
-      console.error('[LabAI] Error processing recording:', error);
+    } catch {
       setProcessingProgress({ stage: 'error', progress: 0, message: 'Error processing recording' });
       setIsProcessing(false);
     }
@@ -254,15 +220,12 @@ const LabAI: React.FC = () => {
   }, [setIsRecording, setIsProcessing, setProcessingProgress, setAudioSignal, setRecordingDuration, setSpectrogramData, runInference, recordingTime]);
 
   const handleModelSelect = useCallback((model: ModelType) => {
-    console.log('[LabAI] Model selected:', model);
     setSelectedModel(model);
   }, [setSelectedModel]);
 
-  // Debug: Log model loading on mount
   useEffect(() => {
-    console.log('[LabAI] Pre-loading models in background...');
-    inferenceEngine.loadModel('precision').catch(e => console.log('[LabAI] Precision model pre-load:', e.message));
-    inferenceEngine.loadModel('efficiency').catch(e => console.log('[LabAI] Efficiency model pre-load:', e.message));
+    inferenceEngine.loadModel('precision').catch(() => {});
+    inferenceEngine.loadModel('efficiency').catch(() => {});
   }, []);
 
   return (
@@ -274,7 +237,6 @@ const LabAI: React.FC = () => {
       transition={{ duration: 0.3 }}
       className="min-h-screen bg-background"
     >
-      {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-grid-pattern opacity-50" />
         <div className="absolute inset-0 bg-radial-glow" />
@@ -300,7 +262,6 @@ const LabAI: React.FC = () => {
             </p>
           </motion.div>
 
-          {/* Tech badges */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -322,15 +283,8 @@ const LabAI: React.FC = () => {
         </div>
       </div>
 
-      {/* Main Content - 3 Zone Layout */}
       <div className="container mx-auto px-4 pb-16">
-        {/* Debug info - remove in production */}
-        <div className="mb-4 p-2 bg-muted/50 rounded text-xs font-mono">
-          DEBUG: isProcessing={String(isProcessing)} | isRecording={String(isRecording)} | model={selectedModel}
-        </div>
-        
         <div className="grid lg:grid-cols-3 gap-6">
-          {/* Zone 1: Input Bay */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -339,6 +293,7 @@ const LabAI: React.FC = () => {
           >
             <InputBay
               onFileSelect={handleFileSelect}
+              onFileClear={handleFileClear}
               onStartRecording={handleStartRecording}
               onStopRecording={handleStopRecording}
               onModelSelect={handleModelSelect}
@@ -349,7 +304,6 @@ const LabAI: React.FC = () => {
             />
           </motion.div>
 
-          {/* Zone 2: Processing Tunnel */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -359,11 +313,10 @@ const LabAI: React.FC = () => {
             <ProcessingTunnel
               spectrogramData={spectrogramData}
               processingProgress={processingProgress}
-              audioData={audioSignal?.data || null}
+              audioData={audioSignal?.data ?? null}
             />
           </motion.div>
 
-          {/* Zone 3: Result Insight */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}

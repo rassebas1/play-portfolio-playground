@@ -9,28 +9,56 @@ interface FilterBankData {
 }
 
 export class DSPEngine {
+  // ==================== Constants ====================
+  // These match the Python BioDCASE preprocessing pipeline
+  
+  /** Scaling factor for quantized mel filterbank weights (2^12 = 4096) */
+  private static readonly WEIGHT_SCALING_BITS = 12;
+  
+  /** Scaling factor for post-mel log transform (2^6 = 64) */
+  private static readonly MEL_POST_SCALING_BITS = 6;
+  
+  /** Target number of time frames in output mel spectrogram (matches model input) */
+  private static readonly DEFAULT_TARGET_FRAMES = 55;
+  
+  /** Number of mel frequency bins (matches model input) */
+  private static readonly DEFAULT_MEL_BINS = 40;
+  
+  /** Default duration in milliseconds for audio slice extraction */
+  private static readonly DEFAULT_SLICE_DURATION_MS = 2000;
+
+  // ==================== Instance Properties ====================
   private windowSize: number;
   private hopSize: number;
   private numCoefficients: number;
   private melLowHz: number;
   private melHighHz: number;
-  private targetFrames: number = 55;
-  private targetMelBins: number = 40;
+  private targetFrames: number;
+  private targetMelBins: number;
   private windowScalingBits: number;
   private melPostScalingBits: number;
-  private WEIGHT_SCALING_BITS = 12;  // 2^12 = 4096
   private weights: Float32Array[] = [];   // Quantized weights
   private unweights: Float32Array[] = []; // Quantized unweights
   private filterBankData: FilterBankData | null = null;
 
+  /**
+   * Creates a new DSPEngine instance.
+   * @param windowSize - FFT window size (default: 4096)
+   * @param hopSize - Hop size for STFT (default: 512)
+   * @param numCoefficients - Number of mel coefficients (default: 40)
+   * @param melLowHz - Low frequency bound for mel filterbank (default: 125)
+   * @param melHighHz - High frequency bound for mel filterbank (default: 7500)
+   * @param windowScalingBits - Window scaling bits (default: 12)
+   * @param melPostScalingBits - Mel post scaling bits (default: 6)
+   */
   constructor(
     windowSize: number = 4096, 
     hopSize: number = 512, 
-    numCoefficients: number = 40,
+    numCoefficients: number = DSPEngine.DEFAULT_MEL_BINS,
     melLowHz: number = 125,
     melHighHz: number = 7500,
-    windowScalingBits: number = 12,
-    melPostScalingBits: number = 6
+    windowScalingBits: number = DSPEngine.WEIGHT_SCALING_BITS,
+    melPostScalingBits: number = DSPEngine.MEL_POST_SCALING_BITS
   ) {
     this.windowSize = windowSize;
     this.hopSize = hopSize;
@@ -39,9 +67,37 @@ export class DSPEngine {
     this.melHighHz = melHighHz;
     this.windowScalingBits = windowScalingBits;
     this.melPostScalingBits = melPostScalingBits;
+    this.targetFrames = DSPEngine.DEFAULT_TARGET_FRAMES;
+    this.targetMelBins = DSPEngine.DEFAULT_MEL_BINS;
   }
 
-  extractLoudestSlice(audioData: Float32Array, sampleRate: number, durationMs: number): Float32Array {
+  /**
+   * Extracts the loudest slice from an audio signal.
+   * This matches the Python training pipeline which centers the extraction
+   * on the point of maximum amplitude rather than using the first N seconds.
+   * 
+   * @param audioData - Input audio samples (Float32Array)
+   * @param sampleRate - Audio sample rate in Hz
+   * @param durationMs - Duration of slice to extract in milliseconds (default: 2000ms)
+   * @returns Float32Array containing the extracted slice
+   * 
+   * @example
+   * // Extract 2-second slice centered on loudest point
+   * const slice = dsp.extractLoudestSlice(audioData, 16000, 2000);
+   */
+  extractLoudestSlice(
+    audioData: Float32Array, 
+    sampleRate: number, 
+    durationMs: number = DSPEngine.DEFAULT_SLICE_DURATION_MS
+  ): Float32Array {
+    if (!audioData || audioData.length === 0) {
+      return new Float32Array(0);
+    }
+    
+    if (sampleRate <= 0) {
+      return new Float32Array(0);
+    }
+
     const sliceNSamples = Math.floor(durationMs / 1000 * sampleRate);
     const audioNSamples = audioData.length;
     const leftEdge = Math.floor(sliceNSamples / 2);
@@ -79,10 +135,17 @@ export class DSPEngine {
       }
     }
 
-    console.log(`[DSPEngine] extractLoudestSlice: maxIndex=${maxIndex}, slice from ${startIndex} to ${endIndex}`);
     return slice;
   }
 
+  /**
+   * Converts float audio data to int16 format.
+   * This matches the Python training pipeline which processes audio as int16
+   * before feature extraction (librosa does this internally).
+   * 
+   * @param audioData - Input audio samples normalized to [-1, 1]
+   * @returns Int16Array with values in range [-32767, 32767]
+   */
   convertToInt16(audioData: Float32Array): Int16Array {
     const INT16_MAX = 32767;
     const int16Data = new Int16Array(audioData.length);
@@ -245,12 +308,36 @@ export class DSPEngine {
     };
   }
 
+  /**
+   * Computes mel spectrogram from audio signal.
+   * 
+   * This implements the full BioDCASE preprocessing pipeline:
+   * 1. Compute STFT (Short-Time Fourier Transform) with Hann window
+   * 2. Compute power spectrum (magnitude²)
+   * 3. Apply quantized mel filterbank with HTK scaling
+   * 4. Apply square root to filterbank energies
+   * 5. Apply log transform with mel_post_scaling
+   * 6. Zero FFT bins outside mel frequency range (125-7500 Hz)
+   * 7. Pad/truncate to exactly 55 frames
+   * 
+   * @param signal - AudioSignal containing audio data and sample rate
+   * @returns 2D array of shape [55, 40] - log mel spectrogram
+   * 
+   * @remarks
+   * The output shape [55, 40] matches the TensorFlow.js model input:
+   * - 55 time frames (derived from 2000ms audio with 512 hop, 4096 window)
+   * - 40 mel frequency bins
+   */
   computeMelSpectrogram(signal: AudioSignal): number[][] {
+    if (!signal || !signal.data || signal.data.length === 0 || signal.sampleRate <= 0) {
+      return Array.from({ length: this.targetFrames }, () => 
+        Array(this.targetMelBins).fill(0)
+      );
+    }
+
     const stftResult = this.computeSTFT(signal);
     const numFrames = stftResult.magnitudes.length;
     const freqBins = stftResult.frequencies.length;
-    
-    console.log(`[DSPEngine] STFT: ${numFrames} frames, ${freqBins} freq bins`);
     
     // Create filterbank with quantized weight/unweight system
     this.createMelFilterbank(this.numCoefficients, freqBins, signal.sampleRate);
@@ -301,23 +388,11 @@ export class DSPEngine {
       const sqrtEnergies = filterEnergies.map(e => Math.sqrt(Math.max(e, 0)));
       
       // Apply log transform and scaling (like Python: vec_log32 with mel_post_scaling_bits)
-      // Using natural log approximation
       const logEnergies = sqrtEnergies.map(e => {
         if (e <= 0) return 0;
-        // log32 approximation: log(e) * scale
         const scaled = Math.log(e) * melPostScale;
         return scaled;
       });
-      
-      // Debug: log first frame values
-      if (frame === 0) {
-        const rawBeforeLog = filterEnergies.slice(0, 5).map(e => e.toExponential(2));
-        const sqrtVals = sqrtEnergies.slice(0, 5).map(e => e.toFixed(2));
-        const logVals = logEnergies.slice(0, 5).map(e => e.toFixed(2));
-        console.log(`[DSPEngine] Raw mel before log: ${rawBeforeLog}`);
-        console.log(`[DSPEngine] After sqrt: ${sqrtVals}`);
-        console.log(`[DSPEngine] After log: ${logVals}`);
-      }
       
       melSpec.push(logEnergies);
     }
@@ -338,15 +413,10 @@ export class DSPEngine {
       result = melSpec;
     }
     
-    console.log(`[DSPEngine] Mel spectrogram shape: ${result.length} x ${result[0]?.length}`);
-    const flat = result.flat();
-    console.log(`[DSPEngine] Mel range: min=${Math.min(...flat).toFixed(2)}, max=${Math.max(...flat).toFixed(2)}`);
     return result;
   }
 
   private createMelFilterbank(numFilters: number, numBins: number, sampleRate: number): void {
-    const FILTER_BANK_WEIGHT_SCALING_BITS = 12;
-    
     // Use float32 precision to match Python
     const freqToMel = (freq: number): number => {
       const f = Float32Array.from([freq])[0];
@@ -372,8 +442,6 @@ export class DSPEngine {
     const spectrumSize = numBins;  // n_fft/2 + 1
     const hzPerBin = sampleRate / (this.windowSize);
     const fftStartIndex = Math.round(1 + this.melLowHz / hzPerBin);
-    
-    console.log(`[DSPEngine] Creating filterbank: numFilters=${numFilters}, fftStart=${fftStartIndex}, hzPerBin=${hzPerBin.toFixed(2)}`);
     
     // Calculate channel frequency starts and widths
     const chFreqStarts: number[] = [];
@@ -426,8 +494,8 @@ export class DSPEngine {
         const unweight = 1 - weight;
         
         // Quantize weights (like Python: weight * 2^12)
-        const quantWeight = Math.round(weight * (1 << FILTER_BANK_WEIGHT_SCALING_BITS));
-        const quantUnweight = Math.round(unweight * (1 << FILTER_BANK_WEIGHT_SCALING_BITS));
+        const quantWeight = Math.round(weight * (1 << DSPEngine.WEIGHT_SCALING_BITS));
+        const quantUnweight = Math.round(unweight * (1 << DSPEngine.WEIGHT_SCALING_BITS));
         
         channelWeights[freqStart + j] = quantWeight;
         channelUnweights[freqStart + j] = quantUnweight;
@@ -436,21 +504,6 @@ export class DSPEngine {
       this.weights.push(channelWeights);
       this.unweights.push(channelUnweights);
     }
-    
-    // Debug: log first channel weights
-    const firstChanWeights = this.weights[0] ? Array.from(this.weights[0]).slice(fftStartIndex, fftStartIndex + 5) : [];
-    console.log(`[DSPEngine] First channel quantized weights at bins ${fftStartIndex}-${fftStartIndex+4}: ${firstChanWeights.map(v => v.toFixed(0))}`);
-  }
-
-  private frequencyToMel(freq: number): number {
-    // HTK formula - matches BioDCASE pipeline exactly
-    // Uses log1p instead of log10, and coefficient 1127 instead of 2595
-    return 1127.0 * Math.log1p(freq / 700.0);
-  }
-
-  private melToFrequency(mel: number): number {
-    // Inverse of HTK formula
-    return 700.0 * (Math.expm1(mel / 1127.0));
   }
 
   private dct(input: number[], numCoeffs: number): number[] {

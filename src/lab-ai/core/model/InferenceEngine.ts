@@ -1,6 +1,13 @@
 import * as tf from '@tensorflow/tfjs';
-import type { ClassificationResult, ModelConfig, ModelType } from '../../types';
+import type { ClassificationResult, ModelConfig, ModelType, MelSpectrogram } from '../../types';
 
+/**
+ * Model configurations for the BioDCASE 2025 TinyML Bird Classifier.
+ * 
+ * Two model variants are available:
+ * - precision: Higher accuracy (98%), larger memory (16KB)
+ * - efficiency: Lower accuracy (94%), smaller memory (12KB)
+ */
 const MODEL_CONFIGS: Record<ModelType, ModelConfig> = {
   precision: {
     id: 'E_model_tfjs',
@@ -22,14 +29,40 @@ const MODEL_CONFIGS: Record<ModelType, ModelConfig> = {
 
 const BASE_PATH = '/play-portfolio-playground';
 
+/**
+ * InferenceEngine - Handles TensorFlow.js model loading and inference.
+ * 
+ * This class manages:
+ * - Loading GraphModel from TensorFlow.js format
+ * - Preprocessing mel spectrogram to model input shape
+ * - Running inference and parsing predictions
+ * - Model lifecycle (loading, disposal)
+ * 
+ * @example
+ * ```typescript
+ * const engine = new InferenceEngine();
+ * await engine.loadModel('precision');
+ * const results = await engine.infer(melSpectrogram);
+ * // results: [{ species: 'Yellowhammer', confidence: 0.88, inferenceTime: 27 }]
+ * ```
+ */
 export class InferenceEngine {
+  /** Fallback probabilities for mock inference when model fails to load */
+  private static readonly MOCK_PROBABILITIES = [0.75, 0.25] as const;
+  
   private model: tf.GraphModel | tf.LayersModel | null = null;
   private currentModelType: ModelType | null = null;
   private isLoaded: boolean = false;
 
+  /**
+   * Loads a TensorFlow.js model by type.
+   * If the requested model is already loaded, skips reload.
+   * 
+   * @param modelType - Either 'precision' or 'efficiency'
+   * @throws Error if model file cannot be found or parsed
+   */
   async loadModel(modelType: ModelType): Promise<void> {
     if (this.currentModelType === modelType && this.isLoaded) {
-      console.log(`[InferenceEngine] Model ${modelType} already loaded`);
       return;
     }
 
@@ -44,57 +77,52 @@ export class InferenceEngine {
     const config = MODEL_CONFIGS[modelType];
     const modelPath = `${BASE_PATH}/models/${config.id}/model.json`;
     
-    console.log(`[InferenceEngine] Loading model from: ${modelPath}`);
-    
     try {
       this.model = await tf.loadGraphModel(modelPath);
       this.currentModelType = modelType;
       this.isLoaded = true;
-      console.log(`[InferenceEngine] ✅ Successfully loaded ${config.name} (TensorFlow.js format)`);
-      
-      // Log model info
-      console.log(`[InferenceEngine] Model inputs:`, this.model.inputs);
-      console.log(`[InferenceEngine] Model outputs:`, this.model.outputs);
       
     } catch (error) {
-      console.error(`[InferenceEngine] ❌ Failed to load model:`, error);
+      console.error(`[InferenceEngine] Failed to load model:`, error);
       this.isLoaded = false;
     }
   }
 
-  async infer(inputData: number[][] | number[][][]): Promise<ClassificationResult[]> {
+  /**
+   * Runs inference on a mel spectrogram.
+   * 
+   * Input shape: [55, 40] - 2D mel spectrogram
+   * Model expects: [batch, height, width, channels] = [1, 55, 40, 1]
+   * 
+   * The model outputs softmax probabilities for 2 classes:
+   * - Index 0: 'Other' (background noise, other birds)
+   * - Index 1: 'Yellowhammer' (target species)
+   * 
+   * @param inputData - MelSpectrogram of shape [55, 40]
+   * @returns Array of ClassificationResult sorted by confidence (highest first)
+   * 
+   * @example
+   * ```typescript
+   * const melSpec = dsp.computeMelSpectrogram(audioSignal);
+   * const results = await engine.infer(melSpec);
+   * // [{ species: 'Yellowhammer', confidence: 0.88, inferenceTime: 27 },
+   * //  { species: 'Other', confidence: 0.12, inferenceTime: 27 }]
+   * ```
+   */
+  async infer(inputData: MelSpectrogram): Promise<ClassificationResult[]> {
     const startTime = performance.now();
     
     let predictions: number[];
     
     if (this.model && this.isLoaded) {
-      console.log(`[InferenceEngine] Running inference with input:`, 
-        Array.isArray(inputData) ? `${inputData.length} x ${(inputData[0] as number[])?.length}` : 'unknown');
-      
       try {
-        // Input should be [55, 40] - log mel spectrogram (already preprocessed)
-        // Pass directly without normalization - model expects specific preprocessing
         let normalizedInput: number[][];
         
-        if (Array.isArray(inputData) && inputData.length > 0) {
-          if (Array.isArray(inputData[0]) && inputData[0].length > 0) {
-            normalizedInput = inputData as number[][];
-            const flat = normalizedInput.flat();
-            const min = Math.min(...flat);
-            const max = Math.max(...flat);
-            const mean = flat.reduce((a, b) => a + b, 0) / flat.length;
-            // Log statistics about the input
-            console.log(`[DSPEngine] Input stats: min=${min.toFixed(2)}, max=${max.toFixed(2)}, mean=${mean.toFixed(2)}, range=${(max-min).toFixed(2)}`);
-            // Log a few sample values from different parts
-            console.log(`[DSPEngine] Sample values: [0,0]=${normalizedInput[0][0].toFixed(2)}, [27,20]=${normalizedInput[27]?.[20]?.toFixed(2)}, [54,39]=${normalizedInput[54]?.[39]?.toFixed(2)}`);
-          } else {
-            normalizedInput = [[0]];
-          }
+        if (inputData.length > 0 && inputData[0].length > 0) {
+          normalizedInput = inputData.map(row => Array.from(row));
         } else {
           normalizedInput = [[0]];
         }
-        
-        console.log(`[InferenceEngine] Normalized input shape:`, normalizedInput.length, 'x', normalizedInput[0]?.length);
         
         // Reshape to [batch, height, width, channels] = [1, 55, 40, 1]
         // TensorFlow.js uses [batch, H, W, channels] format
@@ -118,28 +146,21 @@ export class InferenceEngine {
         
         const inputTensor = tf.tensor(input4D, [1, height, width, 1]);
         
-        console.log(`[InferenceEngine] Input tensor shape:`, inputTensor.shape);
-        
         // Run inference
         const result = this.model.predict(inputTensor) as tf.Tensor;
-        console.log(`[InferenceEngine] Output tensor shape:`, result.shape);
         
         const probabilities = await result.data();
-        console.log(`[InferenceEngine] Raw output probabilities:`, probabilities);
         predictions = Array.from(probabilities);
         
         // Cleanup
         inputTensor.dispose();
         result.dispose();
         
-        console.log(`[InferenceEngine] Raw predictions:`, predictions);
-        
       } catch (error) {
         console.error(`[InferenceEngine] Inference error:`, error);
         predictions = this.mockInference();
       }
     } else {
-      console.log(`[InferenceEngine] Using mock inference (model not loaded)`);
       predictions = this.mockInference();
     }
     
@@ -155,13 +176,11 @@ export class InferenceEngine {
       .sort((a, b) => b.confidence - a.confidence)
       .slice(0, 2);
     
-    console.log(`[InferenceEngine] Sorted results:`, results);
     return results;
   }
 
   private mockInference(): number[] {
-    // Mock probabilities for 2-class model
-    const mockProbabilities = [0.75, 0.25];
+    const mockProbabilities = [...InferenceEngine.MOCK_PROBABILITIES];
     const sum = mockProbabilities.reduce((a, b) => a + b, 0);
     return mockProbabilities.map(p => p / sum);
   }

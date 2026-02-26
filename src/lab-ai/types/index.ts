@@ -36,16 +36,45 @@ export interface ModelConfig {
   labels: string[];
 }
 
-export interface ProcessingProgress {
-  stage: 'idle' | 'loading' | 'audio' | 'dsp' | 'inference' | 'complete' | 'error';
-  progress: number;
-  message: string;
-}
+/**
+ * Processing stages for the audio classification pipeline.
+ * Used to track progress through loading, DSP, and inference phases.
+ */
+export type ProcessingStage = 'idle' | 'loading' | 'audio' | 'dsp' | 'inference' | 'complete' | 'error';
 
+/**
+ * Error codes for the LabAI feature.
+ * Provides specific error categorization for better error handling.
+ */
+export type LabAIErrorCode = 
+  | 'AUDIO_DECODE_ERROR'    // Failed to decode audio file
+  | 'RESAMPLE_ERROR'         // Failed to resample audio
+  | 'DSP_ERROR'              // DSP processing failed
+  | 'MODEL_LOAD_ERROR'       // Failed to load TensorFlow.js model
+  | 'INFERENCE_ERROR'       // Model inference failed
+  | 'MICROPHONE_ERROR'      // Microphone access denied or failed
+  | 'UNKNOWN_ERROR';        // Unclassified error
+
+/**
+ * Error object for LabAI feature.
+ * Contains error code, message, and optional details for debugging.
+ */
 export interface LabAIError {
-  code: string;
+  code: LabAIErrorCode;
   message: string;
   details?: string;
+}
+
+/**
+ * Progress tracking for the processing pipeline.
+ * @property stage - Current processing stage
+ * @property progress - Progress percentage (0-100)
+ * @property message - Human-readable status message
+ */
+export interface ProcessingProgress {
+  stage: ProcessingStage;
+  progress: number;
+  message: string;
 }
 
 export type ModelType = 'precision' | 'efficiency';
@@ -62,3 +91,10 @@ export interface WaveformState {
   currentTime: number;
   duration: number;
 }
+
+/**
+ * Type alias for mel spectrogram data.
+ * Represents a 2D array of shape [frames, mel_bins] = [55, 40]
+ * where each value is the log-mel energy for that time-frequency bin.
+ */
+export type MelSpectrogram = readonly (readonly number[])[];

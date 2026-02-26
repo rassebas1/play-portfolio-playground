@@ -9,7 +9,8 @@ import { Badge } from '@/components/ui/badge';
 import type { ModelType, AudioSignal } from '../../types';
 
 interface InputBayProps {
-  onFileSelect: (file: File) => void;
+  onFileSelect: (file: File | null) => void;
+  onFileClear?: () => void;
   onStartRecording: () => void;
   onStopRecording: () => void;
   onModelSelect: (model: ModelType) => void;
@@ -21,6 +22,7 @@ interface InputBayProps {
 
 export const InputBay: React.FC<InputBayProps> = ({
   onFileSelect,
+  onFileClear,
   onStartRecording,
   onStopRecording,
   onModelSelect,
@@ -141,7 +143,7 @@ export const InputBay: React.FC<InputBayProps> = ({
                     size="sm"
                     onClick={(e) => {
                       e.stopPropagation();
-                      onFileSelect(null as unknown as File);
+                      onFileClear?.();
                     }}
                     className="text-xs text-muted-foreground hover:text-destructive"
                   >
