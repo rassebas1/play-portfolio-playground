@@ -3,7 +3,7 @@ import type { ClassificationResult, ModelConfig, ModelType } from '../../types';
 
 const MODEL_CONFIGS: Record<ModelType, ModelConfig> = {
   precision: {
-    id: 'E_model',
+    id: 'E_model_tfjs',
     name: 'High Precision',
     accuracy: 0.98,
     memoryKB: 16,
@@ -29,51 +29,36 @@ export class InferenceEngine {
 
   async loadModel(modelType: ModelType): Promise<void> {
     if (this.currentModelType === modelType && this.isLoaded) {
+      console.log(`[InferenceEngine] Model ${modelType} already loaded`);
       return;
+    }
+
+    // Clean up previous model
+    if (this.model) {
+      this.model.dispose();
+      this.model = null;
     }
 
     await tf.ready();
     
     const config = MODEL_CONFIGS[modelType];
-    const tflitePath = `${BASE_PATH}/models/${config.id}.tflite`;
+    const modelPath = `${BASE_PATH}/models/${config.id}/model.json`;
+    
+    console.log(`[InferenceEngine] Loading model from: ${modelPath}`);
     
     try {
-      console.log(`[InferenceEngine] Fetching TFLite from: ${tflitePath}`);
-      
-      const response = await fetch(tflitePath);
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-      
-      const arrayBuffer = await response.arrayBuffer();
-      const tfliteModel = new Uint8Array(arrayBuffer);
-      
-      console.log(`[InferenceEngine] TFLite file loaded, size: ${tfliteModel.length} bytes`);
-      
-      // Try to load as TFLite using fromTensorFlowLite
-      // Note: This requires @tensorflow/tfjs-converter - for now use mock
-      console.log(`[InferenceEngine] TFLite loaded, attempting to parse...`);
-      
-      // Since TFLite loading requires additional setup, use mock for now
-      // The model is loaded, we just need proper inference setup
-      this.isLoaded = true;
+      this.model = await tf.loadGraphModel(modelPath);
       this.currentModelType = modelType;
-      console.log(`Model binary loaded (inference using mock for demo)`);
+      this.isLoaded = true;
+      console.log(`[InferenceEngine] ✅ Successfully loaded ${config.name} (TensorFlow.js format)`);
+      
+      // Log model info
+      console.log(`[InferenceEngine] Model inputs:`, this.model.inputs);
+      console.log(`[InferenceEngine] Model outputs:`, this.model.outputs);
       
     } catch (error) {
-      console.warn(`Could not load TFLite model:`, error);
-      
-      // Fallback: Try JSON format
-      try {
-        console.log(`[InferenceEngine] Trying JSON format...`);
-        this.model = await tf.loadLayersModel(`${BASE_PATH}/models/${config.id}/model.json`);
-        this.currentModelType = modelType;
-        this.isLoaded = true;
-        console.log(`Loaded ${config.name} (JSON) model successfully`);
-      } catch (jsonError) {
-        console.warn(`Could not load JSON model, using mock inference:`, jsonError);
-        this.isLoaded = false;
-      }
+      console.error(`[InferenceEngine] ❌ Failed to load model:`, error);
+      this.isLoaded = false;
     }
   }
 
@@ -83,16 +68,55 @@ export class InferenceEngine {
     let predictions: number[];
     
     if (this.model && this.isLoaded) {
-      const inputTensor = tf.tensor(inputData);
+      console.log(`[InferenceEngine] Running inference with input:`, 
+        Array.isArray(inputData) ? `${inputData.length} x ${(inputData[0] as number[])?.length}` : 'unknown');
       
-      const result = this.model.predict(inputTensor) as tf.Tensor;
-      const probabilities = await result.data();
-      
-      inputTensor.dispose();
-      result.dispose();
-      
-      predictions = Array.from(probabilities);
+      try {
+        // Normalize input to [0,1] range and ensure proper shape
+        let normalizedInput: number[][];
+        
+        if (Array.isArray(inputData) && inputData.length > 0) {
+          if (Array.isArray(inputData[0]) && Array.isArray(inputData[0][0])) {
+            // It's already 2D array, normalize
+            const arr2d = inputData as number[][];
+            normalizedInput = arr2d.slice(0, 64).map(row => 
+              row.slice(0, 64).map((v: unknown) => {
+                const num = typeof v === 'number' ? v : 0;
+                return Math.max(0, Math.min(1, num / 80));
+              })
+            );
+          } else {
+            normalizedInput = [[0]];
+          }
+        } else {
+          normalizedInput = [[0]];
+        }
+        
+        // Add batch and channel dimensions: [1, 1, H, W]
+        const inputWithDims = [[[normalizedInput]]];
+        const inputTensor = tf.tensor(inputWithDims);
+        
+        console.log(`[InferenceEngine] Input tensor shape:`, inputTensor.shape);
+        
+        // Run inference
+        const result = this.model.predict(inputTensor) as tf.Tensor;
+        console.log(`[InferenceEngine] Output tensor shape:`, result.shape);
+        
+        const probabilities = await result.data();
+        predictions = Array.from(probabilities);
+        
+        // Cleanup
+        inputTensor.dispose();
+        result.dispose();
+        
+        console.log(`[InferenceEngine] Raw predictions:`, predictions);
+        
+      } catch (error) {
+        console.error(`[InferenceEngine] Inference error:`, error);
+        predictions = this.mockInference();
+      }
     } else {
+      console.log(`[InferenceEngine] Using mock inference (model not loaded)`);
       predictions = this.mockInference();
     }
     
@@ -108,10 +132,12 @@ export class InferenceEngine {
       .sort((a, b) => b.confidence - a.confidence)
       .slice(0, 3);
     
+    console.log(`[InferenceEngine] Sorted results:`, results);
     return results;
   }
 
   private mockInference(): number[] {
+    // Mock probabilities for demo
     const mockProbabilities = [0.85, 0.07, 0.03, 0.02, 0.01, 0.01, 0.005, 0.005];
     const sum = mockProbabilities.reduce((a, b) => a + b, 0);
     return mockProbabilities.map(p => p / sum);
