@@ -3,7 +3,7 @@ import type { ClassificationResult, ModelConfig, ModelType } from '../../types';
 
 const MODEL_CONFIGS: Record<ModelType, ModelConfig> = {
   precision: {
-    id: 'bird-classifier-precision',
+    id: 'E_model',
     name: 'High Precision',
     accuracy: 0.98,
     memoryKB: 16,
@@ -11,7 +11,7 @@ const MODEL_CONFIGS: Record<ModelType, ModelConfig> = {
     labels: ['Robin', 'Sparrow', 'Wren', 'Blackbird', 'Blue Tit', 'Chaffinch', 'Dunnock', 'Great Tit'],
   },
   efficiency: {
-    id: 'bird-classifier-efficiency',
+    id: 'N_Enrich_model',
     name: 'High Efficiency',
     accuracy: 0.94,
     memoryKB: 12,
@@ -21,7 +21,7 @@ const MODEL_CONFIGS: Record<ModelType, ModelConfig> = {
 };
 
 export class InferenceEngine {
-  private model: tf.LayersModel | null = null;
+  private model: tf.GraphModel | tf.LayersModel | null = null;
   private currentModelType: ModelType | null = null;
   private isLoaded: boolean = false;
 
@@ -35,12 +35,20 @@ export class InferenceEngine {
     const config = MODEL_CONFIGS[modelType];
     
     try {
-      this.model = await tf.loadLayersModel(`/models/${config.id}/model.json`);
+      this.model = await tf.loadGraphModel(`/models/${config.id}.tflite`);
       this.currentModelType = modelType;
       this.isLoaded = true;
-    } catch (error) {
-      console.warn(`Model not found at /models/${config.id}/, using mock inference`);
-      this.isLoaded = false;
+      console.log(`Loaded ${config.name} (TFLite) model successfully`);
+    } catch {
+      try {
+        this.model = await tf.loadLayersModel(`/models/${config.id}/model.json`);
+        this.currentModelType = modelType;
+        this.isLoaded = true;
+        console.log(`Loaded ${config.name} (JSON) model successfully`);
+      } catch (error) {
+        console.warn(`Could not load model, using mock inference:`, error);
+        this.isLoaded = false;
+      }
     }
   }
 
