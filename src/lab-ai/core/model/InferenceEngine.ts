@@ -7,16 +7,16 @@ const MODEL_CONFIGS: Record<ModelType, ModelConfig> = {
     name: 'High Precision',
     accuracy: 0.98,
     memoryKB: 16,
-    inputShape: [1, 1, 64, 64],
-    labels: ['Robin', 'Sparrow', 'Wren', 'Blackbird', 'Blue Tit', 'Chaffinch', 'Dunnock', 'Great Tit'],
+    inputShape: [1, 55, 40, 1],
+    labels: ['Yellowhammer', 'Other'],
   },
   efficiency: {
     id: 'N_Enrich_model',
     name: 'High Efficiency',
     accuracy: 0.94,
     memoryKB: 12,
-    inputShape: [1, 1, 32, 32],
-    labels: ['Robin', 'Sparrow', 'Wren', 'Blackbird', 'Blue Tit', 'Chaffinch', 'Dunnock', 'Great Tit'],
+    inputShape: [1, 55, 40, 1],
+    labels: ['Yellowhammer', 'Other'],
   },
 };
 
@@ -148,20 +148,20 @@ export class InferenceEngine {
     
     const results: ClassificationResult[] = predictions
       .map((prob, index) => ({
-        species: config.labels[index] || `Species ${index}`,
+        species: config.labels[index] || `Class ${index}`,
         confidence: prob,
         inferenceTime,
       }))
       .sort((a, b) => b.confidence - a.confidence)
-      .slice(0, 3);
+      .slice(0, 2);
     
     console.log(`[InferenceEngine] Sorted results:`, results);
     return results;
   }
 
   private mockInference(): number[] {
-    // Mock probabilities for demo
-    const mockProbabilities = [0.85, 0.07, 0.03, 0.02, 0.01, 0.01, 0.005, 0.005];
+    // Mock probabilities for 2-class model
+    const mockProbabilities = [0.75, 0.25];
     const sum = mockProbabilities.reduce((a, b) => a + b, 0);
     return mockProbabilities.map(p => p / sum);
   }
