@@ -20,6 +20,8 @@ const MODEL_CONFIGS: Record<ModelType, ModelConfig> = {
   },
 };
 
+const BASE_PATH = '/play-portfolio-playground';
+
 export class InferenceEngine {
   private model: tf.GraphModel | tf.LayersModel | null = null;
   private currentModelType: ModelType | null = null;
@@ -35,13 +37,15 @@ export class InferenceEngine {
     const config = MODEL_CONFIGS[modelType];
     
     try {
-      this.model = await tf.loadGraphModel(`/models/${config.id}.tflite`);
+      console.log(`[InferenceEngine] Loading TFLite from: ${BASE_PATH}/models/${config.id}.tflite`);
+      this.model = await tf.loadGraphModel(`${BASE_PATH}/models/${config.id}.tflite`);
       this.currentModelType = modelType;
       this.isLoaded = true;
       console.log(`Loaded ${config.name} (TFLite) model successfully`);
     } catch {
       try {
-        this.model = await tf.loadLayersModel(`/models/${config.id}/model.json`);
+        console.log(`[InferenceEngine] Loading JSON from: ${BASE_PATH}/models/${config.id}/model.json`);
+        this.model = await tf.loadLayersModel(`${BASE_PATH}/models/${config.id}/model.json`);
         this.currentModelType = modelType;
         this.isLoaded = true;
         console.log(`Loaded ${config.name} (JSON) model successfully`);
