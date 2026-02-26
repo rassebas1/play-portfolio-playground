@@ -1,0 +1,62 @@
+{
+  "title": "Jeu de Mémoire",
+  "description": "Trouvez toutes les paires de cartes!",
+  "short_description": "Associez les paires de cartes",
+  "instructions": {
+    "desktop": "Cliquez sur les cartes pour les retourner. Trouvez toutes les paires.",
+    "mobile": "Touchez les cartes pour les retourner. Trouvez toutes les paires."
+  },
+  "how_to_play": {
+    "title": "Comment Jouer",
+    "items": [
+      "Cliquez ou touchez une carte pour la retourner",
+      "Cliquez ou touchez une autre carte pour trouver une paire",
+      "Associez toutes les paires pour gagner",
+      "Moins de mouvements = meilleur score!"
+    ]
+  },
+  "tips": {
+    "title": "Conseils Professionnels",
+    "items": [
+      "Souvenez-vous où vous avez vu chaque carte",
+      "Commencez par retourner les cartes systématiquement",
+      "Concentrez-vous sur les cartes qui ne correspondent pas",
+      "Prenez votre temps - pas de timer!"
+    ]
+  },
+  "status": {
+    "start": "Cliquez sur une carte pour commencer!",
+    "playing": "Trouvez les paires...",
+    "game_over": "Vous avez trouvé toutes les paires!"
+  },
+  "scoreboard": {
+    "score": "Score",
+    "best": "Meilleur",
+    "moves": "Mouvements",
+    "pairs": "Paires",
+    "time": "Temps"
+  },
+  "celebration": {
+    "title": "Félicitations!",
+    "subtitle": "Vous avez trouvé toutes les paires en {{moves}} mouvements!",
+    "time_subtitle": "Temps: {{time}} secondes"
+  },
+  "actions": {
+    "new_game": "Nouveau Jeu",
+    "restart": "Redémarrer",
+    "start": "Commencer"
+  },
+  "difficulty": {
+    "label": "Difficulté",
+    "easy": "Facile",
+    "medium": "Moyen",
+    "hard": "Difficile"
+  },
+  "aria": {
+    "card": "Carte {{index}}, face {{face}}",
+    "card_flipped": "Carte {{index}} retournée, montre {{value}}",
+    "card_matched": "Carte {{index}} appariée!",
+    "moves": "Mouvements: {{count}}",
+    "pairs": "Paires trouvées: {{count}} sur {{total}}"
+  }
+}

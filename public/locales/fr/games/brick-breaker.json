@@ -1,0 +1,59 @@
+{
+  "title": "Casse-Briques",
+  "description": "Détruisez toutes les briques pour passer au niveau suivant!",
+  "short_description": "Détruisez les briques avec une balle",
+  "instructions": {
+    "desktop": "Utilisez les flèches Gauche/Droite pour déplacer la raquette. Appuyez sur Espace pour lancer ou mettre en pause.",
+    "mobile": "Touchez et faites glisser pour déplacer la raquette horizontalement."
+  },
+  "how_to_play": {
+    "title": "Comment Jouer",
+    "items": [
+      "Déplacez la raquette pour faire rebondir la balle",
+      "Détruisez toutes les briques pour valider le niveau",
+      "Ne laissez pas la balle passer sous la raquette",
+      "Collectez les power-ups pour des effets bonus"
+    ]
+  },
+  "tips": {
+    "title": "Conseils Professionnels",
+    "items": [
+      "Visez les bords des briques pour de meilleurs angles",
+      "Gardez la balle au centre de la raquette",
+      "Surveillez les power-ups qui tombent",
+      "Déplacez-vous rapidement pour attraper la balle"
+    ]
+  },
+  "status": {
+    "idle": "Appuyez sur ESPACE pour commencer",
+    "playing": "En jeu...",
+    "paused": "En pause",
+    "game_over": "Partie Terminée!",
+    "level_cleared": "Niveau Terminé!"
+  },
+  "scoreboard": {
+    "score": "Score",
+    "best": "Meilleur",
+    "level": "Niveau",
+    "lives": "Vies"
+  },
+  "celebration": {
+    "title": "Niveau {{level}} Terminé!",
+    "subtitle": "Préparez-vous pour le prochain défi",
+    "game_over_title": "Partie Terminée",
+    "game_over_subtitle": "Score Final: {{score}}"
+  },
+  "actions": {
+    "start": "Commencer",
+    "pause": "Pause",
+    "resume": "Reprendre",
+    "restart": "Redémarrer"
+  },
+  "aria": {
+    "paddle": "Raquette à la position horizontale {{x}}",
+    "ball": "Balle à la position ({{x}}, {{y}})",
+    "brick": "Brique à la rangée {{row}}, colonne {{col}}",
+    "score": "Score: {{score}}",
+    "lives": "Vies restantes: {{lives}}"
+  }
+}

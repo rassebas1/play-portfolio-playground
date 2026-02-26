@@ -1,0 +1,65 @@
+{
+  "title": "Serpiente",
+  "description": "¡Come la comida, hazte más larga y no choques contigo misma!",
+  "short_description": "Juego clásico de serpiente - come y crece",
+  "instructions": {
+    "desktop": "Usa las flechas del teclado para controlar la serpiente. Come la comida para crecer.",
+    "mobile": "Desliza para controlar la dirección de la serpiente. Come comida para crecer."
+  },
+  "how_to_play": {
+    "title": "Cómo Jugar",
+    "items": [
+      "Usa las flechas para cambiar de dirección",
+      "Come la comida roja para crecer y sumar puntos",
+      "Evita chocar con las paredes o contigo misma",
+      "Más larga la serpiente = mayor puntuación"
+    ]
+  },
+  "tips": {
+    "title": "Consejos Profesionales",
+    "items": [
+      "Planifica tu camino con anticipación",
+      "No te atrapes en las esquinas",
+      "Mantén la serpiente en el medio cuando sea posible",
+      "Observa los patrones de aparición de la comida"
+    ]
+  },
+  "status": {
+    "start": "¡Presiona cualquier flecha para comenzar!",
+    "playing": "Jugando...",
+    "game_over": "¡Fin del Juego!",
+    "paused": "Pausado"
+  },
+  "scoreboard": {
+    "score": "Puntuación",
+    "best": "Mejor",
+    "length": "Longitud"
+  },
+  "difficulty": {
+    "label": "Dificultad",
+    "1": "Muy Fácil",
+    "2": "Fácil",
+    "3": "Medio Fácil",
+    "4": "Medio",
+    "5": "Medio Difícil",
+    "6": "Difícil",
+    "7": "Muy Difícil",
+    "8": "Extremo",
+    "9": "Imposible"
+  },
+  "celebration": {
+    "title": "Puntuación: {{score}}",
+    "subtitle": "¡Nueva Mejor Puntuación!",
+    "keep_going": "¿Jugar de nuevo?"
+  },
+  "actions": {
+    "start": "Iniciar Juego",
+    "restart": "Jugar de Nuevo"
+  },
+  "aria": {
+    "snake": "Serpiente en posición ({{x}}, {{y}})",
+    "food": "Comida en posición ({{x}}, {{y}})",
+    "score": "Puntuación: {{score}}",
+    "game_over": "¡Fin del juego! Puntuación final: {{score}}"
+  }
+}

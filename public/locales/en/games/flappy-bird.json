@@ -1,0 +1,51 @@
+{
+  "title": "Flappy Bird",
+  "description": "Tap or press space to flap and avoid pipes!",
+  "short_description": "Flap your way through pipes",
+  "instructions": {
+    "desktop": "Press SPACE or UP arrow to flap. Avoid the pipes!",
+    "mobile": "Tap the screen to flap. Avoid the pipes!"
+  },
+  "how_to_play": {
+    "title": "How to Play",
+    "items": [
+      "Press SPACE or tap to flap",
+      "Avoid hitting the pipes",
+      "Don't fall below the screen",
+      "Get as far as you can!"
+    ]
+  },
+  "tips": {
+    "title": "Pro Tips",
+    "items": [
+      "Find a consistent rhythm",
+      "Tap early for more lift",
+      "Aim for the middle of gaps",
+      "Stay calm - rushing leads to mistakes"
+    ]
+  },
+  "status": {
+    "start": "Press SPACE to start!",
+    "playing": "Flapping...",
+    "game_over": "Game Over!"
+  },
+  "scoreboard": {
+    "score": "Score",
+    "best": "Best"
+  },
+  "celebration": {
+    "title": "Score: {{score}}",
+    "subtitle": "New High Score!",
+    "game_over_title": "Game Over",
+    "game_over_subtitle": "Score: {{score}}"
+  },
+  "actions": {
+    "start": "Start Game",
+    "restart": "Play Again"
+  },
+  "aria": {
+    "bird": "Bird at vertical position {{y}}",
+    "score": "Score: {{score}}",
+    "game_over": "Game Over! Final score: {{score}}"
+  }
+}

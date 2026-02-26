@@ -1,0 +1,51 @@
+{
+  "title": "Flappy Bird",
+  "description": "Tocca o premi spazio per sbattere le ali ed evita i tubi!",
+  "short_description": "Sbatti le ali attraverso i tubi",
+  "instructions": {
+    "desktop": "Premi SPAZIO o freccia SU per sbattere le ali. Evita i tubi!",
+    "mobile": "Tocca lo schermo per sbattere le ali. Evita i tubi!"
+  },
+  "how_to_play": {
+    "title": "Come Giocare",
+    "items": [
+      "Premi SPAZIO o tocca per sbattere le ali",
+      "Evita di colpire i tubi",
+      "Non cadere sotto lo schermo",
+      "Arriva più lontano che puoi!"
+    ]
+  },
+  "tips": {
+    "title": "Consigli Professionali",
+    "items": [
+      "Trova un ritmo costante",
+      "Tocca presto per più sollevamento",
+      "Mira al centro delle aperture",
+      "Resta calmo - fretta porta a errori"
+    ]
+  },
+  "status": {
+    "start": "Premi SPAZIO per iniziare!",
+    "playing": "In volo...",
+    "game_over": "Partita Finita!"
+  },
+  "scoreboard": {
+    "score": "Punteggio",
+    "best": "Miglior"
+  },
+  "celebration": {
+    "title": "Punteggio: {{score}}",
+    "subtitle": "Nuovo Punteggio Migliore!",
+    "game_over_title": "Partita Finita",
+    "game_over_subtitle": "Punteggio: {{score}}"
+  },
+  "actions": {
+    "start": "Inizia Gioco",
+    "restart": "Gioca Ancora"
+  },
+  "aria": {
+    "bird": "Uccello alla posizione verticale {{y}}",
+    "score": "Punteggio: {{score}}",
+    "game_over": "Partita finita! Punteggio finale: {{score}}"
+  }
+}

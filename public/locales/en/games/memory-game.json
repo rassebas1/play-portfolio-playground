@@ -1,0 +1,62 @@
+{
+  "title": "Memory Game",
+  "description": "Find all matching pairs of cards!",
+  "short_description": "Match pairs of cards",
+  "instructions": {
+    "desktop": "Click cards to flip them. Find all matching pairs.",
+    "mobile": "Tap cards to flip them. Find all matching pairs."
+  },
+  "how_to_play": {
+    "title": "How to Play",
+    "items": [
+      "Click or tap a card to flip it",
+      "Click or tap another card to find a match",
+      "Match all pairs to win",
+      "Fewer moves = better score!"
+    ]
+  },
+  "tips": {
+    "title": "Pro Tips",
+    "items": [
+      "Remember where you've seen each card",
+      "Start by flipping cards systematically",
+      "Focus on the cards that don't match",
+      "Take your time - no timer!"
+    ]
+  },
+  "status": {
+    "start": "Click any card to start!",
+    "playing": "Find the matches...",
+    "game_over": "You found all pairs!"
+  },
+  "scoreboard": {
+    "score": "Score",
+    "best": "Best",
+    "moves": "Moves",
+    "pairs": "Pairs",
+    "time": "Time"
+  },
+  "celebration": {
+    "title": "Congratulations!",
+    "subtitle": "You found all pairs in {{moves}} moves!",
+    "time_subtitle": "Time: {{time}} seconds"
+  },
+  "actions": {
+    "new_game": "New Game",
+    "restart": "Restart",
+    "start": "Start Game"
+  },
+  "difficulty": {
+    "label": "Difficulty",
+    "easy": "Easy",
+    "medium": "Medium",
+    "hard": "Hard"
+  },
+  "aria": {
+    "card": "Card {{index}}, face {{face}}",
+    "card_flipped": "Card {{index}} flipped, shows {{value}}",
+    "card_matched": "Card {{index}} matched!",
+    "moves": "Moves: {{count}}",
+    "pairs": "Pairs found: {{count}} of {{total}}"
+  }
+}

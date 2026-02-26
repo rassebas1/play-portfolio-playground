@@ -1,0 +1,59 @@
+{
+  "title": "Rompe Ladrillos",
+  "description": "¡Rompe todos los ladrillos para avanzar al siguiente nivel!",
+  "short_description": "Rompe ladrillos con una pelota",
+  "instructions": {
+    "desktop": "Usa las flechas Izquierda/Derecha para mover la paleta. Presiona Espacio para lanzar o pausar.",
+    "mobile": "Toca y arrastra para mover la paleta horizontalmente."
+  },
+  "how_to_play": {
+    "title": "Cómo Jugar",
+    "items": [
+      "Mueve la paleta para rebotar la pelota",
+      "Rompe todos los ladrillos para clears el nivel",
+      "No dejes que la pelota caiga por debajo de la paleta",
+      "Recoge power-ups para efectos bonus"
+    ]
+  },
+  "tips": {
+    "title": "Consejos Profesionales",
+    "items": [
+      "Apunta a los bordes de los ladrillos para mejores ángulos",
+      "Mantén la pelota en el medio de la paleta",
+      "Cuidado con los power-ups que caen",
+      "Muévete rápido para atrapar la pelota"
+    ]
+  },
+  "status": {
+    "idle": "Presiona ESPACIO para comenzar",
+    "playing": "Jugando...",
+    "paused": "Pausado",
+    "game_over": "¡Fin del Juego!",
+    "level_cleared": "¡Nivel Completado!"
+  },
+  "scoreboard": {
+    "score": "Puntuación",
+    "best": "Mejor",
+    "level": "Nivel",
+    "lives": "Vidas"
+  },
+  "celebration": {
+    "title": "¡Nivel {{level}} Completado!",
+    "subtitle": "Prepárate para el siguiente desafío",
+    "game_over_title": "Fin del Juego",
+    "game_over_subtitle": "Puntuación Final: {{score}}"
+  },
+  "actions": {
+    "start": "Iniciar Juego",
+    "pause": "Pausar",
+    "resume": "Continuar",
+    "restart": "Reiniciar"
+  },
+  "aria": {
+    "paddle": "Paleta en posición horizontal {{x}}",
+    "ball": "Pelota en posición ({{x}}, {{y}})",
+    "brick": "Ladrillo en fila {{row}}, columna {{col}}",
+    "score": "Puntuación: {{score}}",
+    "lives": "Vidas restantes: {{lives}}"
+  }
+}

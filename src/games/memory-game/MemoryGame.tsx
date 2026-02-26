@@ -16,6 +16,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Trophy } from 'lucide-react';
 import { Scoreboard } from '@/components/game/Scoreboard';
+import { useTranslation } from 'react-i18next';
 
 /**
  * React functional component for the Memory Game.
@@ -24,13 +25,14 @@ import { Scoreboard } from '@/components/game/Scoreboard';
  */
 const MemoryGame: React.FC = () => {
   const { state, startGame, flipCard, resetGame, highScore } = useMemoryGame();
+  const { t } = useTranslation('games/memory-game');
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 p-4">
       <div className="max-w-4xl mx-auto">
         <GameHeader
-          title="Memory Game"
-          description="Test your memory by matching pairs of hidden cards."
+          title={t('title')}
+          description={t('description')}
         />
         <div>
           <Scoreboard score={state.timer} bestScore={highScore ?? 0} />
@@ -38,7 +40,7 @@ const MemoryGame: React.FC = () => {
           {/* Card for displaying current game time */}
           <Card className="text-center bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm text-muted-foreground">Time</CardTitle>
+              <CardTitle className="text-sm text-muted-foreground">{t('scoreboard.time')}</CardTitle>
             </CardHeader>
             <CardContent className="pt-0">
               <div className="text-2xl font-bold text-primary">
@@ -52,7 +54,7 @@ const MemoryGame: React.FC = () => {
             <CardHeader className="pb-2">
               <CardTitle className="text-sm text-muted-foreground flex items-center justify-center gap-1">
                 <Trophy className="w-4 h-4" />
-                Best Time
+                {t('scoreboard.best')}
               </CardTitle>
             </CardHeader>
             <CardContent className="pt-0">
@@ -69,19 +71,19 @@ const MemoryGame: React.FC = () => {
           {/* Difficulty Selector */}
           <Select onValueChange={(value) => startGame(value as Difficulty)} defaultValue={state.difficulty}>
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Difficulty" />
+              <SelectValue placeholder={t('difficulty.label')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value={Difficulty.Easy}>Easy</SelectItem>
-              <SelectItem value={Difficulty.Medium}>Medium</SelectItem>
-              <SelectItem value={Difficulty.Hard}>Hard</SelectItem>
+              <SelectItem value={Difficulty.Easy}>{t('difficulty.easy')}</SelectItem>
+              <SelectItem value={Difficulty.Medium}>{t('difficulty.medium')}</SelectItem>
+              <SelectItem value={Difficulty.Hard}>{t('difficulty.hard')}</SelectItem>
             </SelectContent>
           </Select>
           {/* Start Game or Reset Game Button based on game status */}
           {state.gameStatus === 'idle' || state.gameStatus === 'won' ? (
-            <Button onClick={() => startGame(state.difficulty)}>Start Game</Button>
+            <Button onClick={() => startGame(state.difficulty)}>{t('actions.start')}</Button>
           ) : (
-            <Button onClick={resetGame}>Reset Game</Button>
+            <Button onClick={resetGame}>{t('actions.restart')}</Button>
           )}
         </div>
 

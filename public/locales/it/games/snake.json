@@ -1,0 +1,65 @@
+{
+  "title": "Serpente",
+  "description": "Mangia il cibo, allungati e non sbattere contro te stesso!",
+  "short_description": "Gioco classico del serpente - mangia e cresci",
+  "instructions": {
+    "desktop": "Usa i tasti freccia per controllare il serpente. Mangia il cibo per crescere.",
+    "mobile": "Scorri per controllare la direzione del serpente. Mangia per crescere."
+  },
+  "how_to_play": {
+    "title": "Come Giocare",
+    "items": [
+      "Usa i tasti freccia per cambiare direzione",
+      "Mangia il cibo rosso per crescere e segnare punti",
+      "Evita di sbattere contro i muri o te stesso",
+      "Più lungo il serpente = punteggio più alto"
+    ]
+  },
+  "tips": {
+    "title": "Consigli Professionali",
+    "items": [
+      "Pianifica il tuo percorso in anticipo",
+      "Non intrappolarti negli angoli",
+      "Tieni il serpente al centro quando possibile",
+      "Nota i pattern di apparizione del cibo"
+    ]
+  },
+  "status": {
+    "start": "Premi un tasto freccia per iniziare!",
+    "playing": "In gioco...",
+    "game_over": "Partita Finita!",
+    "paused": "In pausa"
+  },
+  "scoreboard": {
+    "score": "Punteggio",
+    "best": "Miglior",
+    "length": "Lunghezza"
+  },
+  "difficulty": {
+    "label": "Difficoltà",
+    "1": "Molto Facile",
+    "2": "Facile",
+    "3": "Medio Facile",
+    "4": "Medio",
+    "5": "Medio Difficile",
+    "6": "Difficile",
+    "7": "Molto Difficile",
+    "8": "Estremo",
+    "9": "Impossibile"
+  },
+  "celebration": {
+    "title": "Punteggio: {{score}}",
+    "subtitle": "Nuovo Punteggio Migliore!",
+    "keep_going": "Giocare ancora?"
+  },
+  "actions": {
+    "start": "Inizia Gioco",
+    "restart": "Gioca Ancora"
+  },
+  "aria": {
+    "snake": "Serpente alla posizione ({{x}}, {{y}})",
+    "food": "Cibo alla posizione ({{x}}, {{y}})",
+    "score": "Punteggio: {{score}}",
+    "game_over": "Partita finita! Punteggio finale: {{score}}"
+  }
+}
