@@ -59,12 +59,12 @@ const LabAI: React.FC = () => {
       audioReaderRef.current = new AudioFileReader();
     }
     if (!dspEngineRef.current) {
-      console.log('[LabAI] Creating DSPEngine');
-      dspEngineRef.current = new DSPEngine(2048, 512, 13);
+      console.log('[LabAI] Creating DSPEngine with params: window=4096, hop=512, mel=40, melLow=125, melHigh=7500');
+      dspEngineRef.current = new DSPEngine(4096, 512, 40, 125, 7500);
     }
   }, []);
 
-  const runInference = useCallback(async (spectrogram: SpectrogramData, signal: AudioSignal) => {
+  const runInference = useCallback(async (melSpectrogram: number[][]) => {
     console.log('[LabAI] Starting inference with model:', selectedModel);
     setProcessingProgress({ stage: 'inference', progress: 80, message: 'Running inference...' });
 
@@ -73,13 +73,11 @@ const LabAI: React.FC = () => {
       await inferenceEngine.loadModel(selectedModel);
       console.log('[LabAI] Model loaded, preparing input...');
 
-      const inputData = spectrogram.magnitudes.slice(0, 64).map(row => 
-        row.slice(0, 64).map(val => val / 80)
-      );
-      console.log('[LabAI] Input shape:', inputData.length, 'x', inputData[0]?.length);
+      // Use the mel spectrogram directly - already has shape [55, 40]
+      console.log('[LabAI] Mel spectrogram shape:', melSpectrogram.length, 'x', melSpectrogram[0]?.length);
 
       console.log('[LabAI] Running inference...');
-      const results: ClassificationResult[] = await inferenceEngine.infer(inputData);
+      const results: ClassificationResult[] = await inferenceEngine.infer(melSpectrogram);
       console.log('[LabAI] Inference results:', results);
 
       setInferenceResults(results);
@@ -118,16 +116,39 @@ const LabAI: React.FC = () => {
       const resampled = await audioReaderRef.current!.resample(signal, 16000);
       console.log('[LabAI] Resampled:', resampled.sampleRate, resampled.channels, resampled.duration);
       
-      setAudioSignal(resampled);
+      // Slice audio to exactly 2000ms (32000 samples at 16kHz)
+      const targetSamples = 2000 * 16; // 32000 samples
+      let slicedAudio = resampled;
+      if (resampled.data.length > targetSamples) {
+        console.log('[LabAI] Slicing audio to 2000ms...');
+        slicedAudio = {
+          ...resampled,
+          data: resampled.data.slice(0, targetSamples),
+          duration: 2000 / 1000,
+        };
+      }
+      console.log('[LabAI] Audio sliced:', slicedAudio.data.length, 'samples,', slicedAudio.duration, 's');
+      
+      setAudioSignal(slicedAudio);
       setProcessingProgress({ stage: 'audio', progress: 30, message: 'Processing audio...' });
 
-      console.log('[LabAI] Computing spectrogram...');
-      const spectrogram = dspEngineRef.current!.computeSpectrogram(resampled);
-      console.log('[LabAI] Spectrogram computed:', spectrogram.magnitudes.length, 'frames');
+      console.log('[LabAI] Computing mel spectrogram...');
+      const melSpectrogram = dspEngineRef.current!.computeMelSpectrogram(slicedAudio);
+      console.log('[LabAI] Mel spectrogram computed:', melSpectrogram.length, 'x', melSpectrogram[0]?.length);
+      
+      // Create spectrogram data for visualization
+      const spectrogram = {
+        frequencies: Array.from({ length: melSpectrogram[0]?.length || 40 }, (_, i) => i),
+        times: Array.from({ length: melSpectrogram.length }, (_, i) => i * 512 / 16000),
+        magnitudes: melSpectrogram,
+        sampleRate: slicedAudio.sampleRate,
+        windowSize: 4096,
+        hopSize: 512,
+      };
       setSpectrogramData(spectrogram);
       setProcessingProgress({ stage: 'dsp', progress: 60, message: 'Computing features...' });
 
-      await runInference(spectrogram, resampled);
+      await runInference(melSpectrogram);
     } catch (error) {
       console.error('[LabAI] Error processing audio:', error);
       setProcessingProgress({ stage: 'error', progress: 0, message: 'Error processing audio' });
@@ -185,14 +206,35 @@ const LabAI: React.FC = () => {
       console.log('[LabAI] Recording processed:', signal.sampleRate, signal.channels, signal.duration);
       
       const resampled = await audioReaderRef.current!.resample(signal, 16000);
-      setAudioSignal(resampled);
+      
+      // Slice to 2000ms
+      const targetSamples = 2000 * 16;
+      let slicedAudio = resampled;
+      if (resampled.data.length > targetSamples) {
+        slicedAudio = {
+          ...resampled,
+          data: resampled.data.slice(0, targetSamples),
+          duration: 2,
+        };
+      }
+      
+      setAudioSignal(slicedAudio);
       setRecordingDuration(recordingTime);
       
-      const spectrogram = dspEngineRef.current!.computeSpectrogram(resampled);
+      const melSpectrogram = dspEngineRef.current!.computeMelSpectrogram(slicedAudio);
+      
+      const spectrogram = {
+        frequencies: Array.from({ length: melSpectrogram[0]?.length || 40 }, (_, i) => i),
+        times: Array.from({ length: melSpectrogram.length }, (_, i) => i * 512 / 16000),
+        magnitudes: melSpectrogram,
+        sampleRate: slicedAudio.sampleRate,
+        windowSize: 4096,
+        hopSize: 512,
+      };
       setSpectrogramData(spectrogram);
       setProcessingProgress({ stage: 'dsp', progress: 60, message: 'Computing features...' });
 
-      await runInference(spectrogram, resampled);
+      await runInference(melSpectrogram);
     } catch (error) {
       console.error('[LabAI] Error processing recording:', error);
       setProcessingProgress({ stage: 'error', progress: 0, message: 'Error processing recording' });

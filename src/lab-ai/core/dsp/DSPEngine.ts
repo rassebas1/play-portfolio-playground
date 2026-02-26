@@ -4,11 +4,23 @@ export class DSPEngine {
   private windowSize: number;
   private hopSize: number;
   private numCoefficients: number;
+  private melLowHz: number;
+  private melHighHz: number;
+  private targetFrames: number = 55;
+  private targetMelBins: number = 40;
 
-  constructor(windowSize: number = 2048, hopSize: number = 512, numCoefficients: number = 13) {
+  constructor(
+    windowSize: number = 4096, 
+    hopSize: number = 512, 
+    numCoefficients: number = 40,
+    melLowHz: number = 125,
+    melHighHz: number = 7500
+  ) {
     this.windowSize = windowSize;
     this.hopSize = hopSize;
     this.numCoefficients = numCoefficients;
+    this.melLowHz = melLowHz;
+    this.melHighHz = melHighHz;
   }
 
   private createHannWindow(size: number): Float32Array {
@@ -155,9 +167,52 @@ export class DSPEngine {
     };
   }
 
+  computeMelSpectrogram(signal: AudioSignal): number[][] {
+    const stftResult = this.computeSTFT(signal);
+    const numFrames = stftResult.magnitudes.length;
+    const freqBins = stftResult.frequencies.length;
+    
+    const melFilters = this.createMelFilterbank(this.numCoefficients, freqBins, signal.sampleRate);
+    
+    const melSpec: number[][] = [];
+    
+    for (let frame = 0; frame < numFrames; frame++) {
+      const frameMagnitudes = stftResult.magnitudes[frame];
+      
+      const filterEnergies = melFilters.map(filter => {
+        let sum = 0;
+        for (let i = 0; i < filter.length; i++) {
+          sum += filter[i] * frameMagnitudes[i];
+        }
+        return Math.max(1e-10, sum);
+      });
+      
+      melSpec.push(filterEnergies);
+    }
+    
+    // Pad or truncate to exactly 55 frames
+    let result: number[][];
+    if (melSpec.length < this.targetFrames) {
+      // Pad with zeros
+      const padding = this.targetFrames - melSpec.length;
+      result = [...melSpec];
+      for (let i = 0; i < padding; i++) {
+        result.push(new Array(this.numCoefficients).fill(0));
+      }
+    } else if (melSpec.length > this.targetFrames) {
+      // Truncate
+      result = melSpec.slice(0, this.targetFrames);
+    } else {
+      result = melSpec;
+    }
+    
+    console.log(`[DSPEngine] Mel spectrogram shape: ${result.length} x ${result[0]?.length}`);
+    return result;
+  }
+
   private createMelFilterbank(numFilters: number, numBins: number, sampleRate: number): number[][] {
-    const melMin = this.frequencyToMel(0);
-    const melMax = this.frequencyToMel(sampleRate / 2);
+    const melMin = this.frequencyToMel(this.melLowHz);
+    const melMax = this.frequencyToMel(this.melHighHz);
     const melPoints = Array.from({ length: numFilters + 2 }, (_, i) =>
       melMin + (melMax - melMin) * i / (numFilters + 1)
     );

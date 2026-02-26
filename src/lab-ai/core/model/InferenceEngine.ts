@@ -72,19 +72,22 @@ export class InferenceEngine {
         Array.isArray(inputData) ? `${inputData.length} x ${(inputData[0] as number[])?.length}` : 'unknown');
       
       try {
-        // Normalize input to [0,1] range and ensure proper shape
+        // Input should be [55, 40] - mel spectrogram
         let normalizedInput: number[][];
         
         if (Array.isArray(inputData) && inputData.length > 0) {
-          if (Array.isArray(inputData[0]) && Array.isArray(inputData[0][0])) {
-            // It's already 2D array, normalize
+          if (Array.isArray(inputData[0]) && inputData[0].length > 0) {
+            // It's already 2D [55, 40], normalize to 0-1 range
             const arr2d = inputData as number[][];
-            normalizedInput = arr2d.slice(0, 64).map(row => 
-              row.slice(0, 64).map((v: unknown) => {
-                const num = typeof v === 'number' ? v : 0;
-                return Math.max(0, Math.min(1, num / 80));
-              })
-            );
+            // Find max value for normalization
+            let maxVal = 0;
+            for (const row of arr2d) {
+              for (const v of row) {
+                if (v > maxVal) maxVal = v;
+              }
+            }
+            const scale = maxVal > 0 ? maxVal : 1;
+            normalizedInput = arr2d.map(row => row.map(v => v / scale));
           } else {
             normalizedInput = [[0]];
           }
@@ -92,9 +95,29 @@ export class InferenceEngine {
           normalizedInput = [[0]];
         }
         
-        // Add batch and channel dimensions: [1, 1, H, W]
-        const inputWithDims = [[[normalizedInput]]];
-        const inputTensor = tf.tensor(inputWithDims);
+        console.log(`[InferenceEngine] Normalized input shape:`, normalizedInput.length, 'x', normalizedInput[0]?.length);
+        
+        // Reshape to [batch, height, width, channels] = [1, 55, 40, 1]
+        // TensorFlow.js uses [batch, H, W, channels] format
+        const batchSize = 1;
+        const height = normalizedInput.length;
+        const width = normalizedInput[0]?.length || 40;
+        
+        // Create 4D tensor: [1, 55, 40, 1]
+        const input4D: number[][][][] = [];
+        for (let b = 0; b < batchSize; b++) {
+          const heightSlice: number[][][] = [];
+          for (let h = 0; h < height; h++) {
+            const widthSlice: number[][] = [];
+            for (let w = 0; w < width; w++) {
+              widthSlice.push([normalizedInput[h][w]]);
+            }
+            heightSlice.push(widthSlice);
+          }
+          input4D.push(heightSlice);
+        }
+        
+        const inputTensor = tf.tensor(input4D, [1, height, width, 1]);
         
         console.log(`[InferenceEngine] Input tensor shape:`, inputTensor.shape);
         
