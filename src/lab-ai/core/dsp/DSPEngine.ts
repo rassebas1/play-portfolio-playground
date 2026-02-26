@@ -1,5 +1,13 @@
 import type { AudioSignal, SpectrogramData, MFCCData } from '../../types';
 
+interface FilterBankData {
+  fftStartIndex: number;
+  fftEndIndex: number;
+  nChannels: number;
+  chFreqStarts: number[];
+  chWidths: number[];
+}
+
 export class DSPEngine {
   private windowSize: number;
   private hopSize: number;
@@ -8,19 +16,83 @@ export class DSPEngine {
   private melHighHz: number;
   private targetFrames: number = 55;
   private targetMelBins: number = 40;
+  private windowScalingBits: number;
+  private melPostScalingBits: number;
+  private WEIGHT_SCALING_BITS = 12;  // 2^12 = 4096
+  private weights: Float32Array[] = [];   // Quantized weights
+  private unweights: Float32Array[] = []; // Quantized unweights
+  private filterBankData: FilterBankData | null = null;
 
   constructor(
     windowSize: number = 4096, 
     hopSize: number = 512, 
     numCoefficients: number = 40,
     melLowHz: number = 125,
-    melHighHz: number = 7500
+    melHighHz: number = 7500,
+    windowScalingBits: number = 12,
+    melPostScalingBits: number = 6
   ) {
     this.windowSize = windowSize;
     this.hopSize = hopSize;
     this.numCoefficients = numCoefficients;
     this.melLowHz = melLowHz;
     this.melHighHz = melHighHz;
+    this.windowScalingBits = windowScalingBits;
+    this.melPostScalingBits = melPostScalingBits;
+  }
+
+  extractLoudestSlice(audioData: Float32Array, sampleRate: number, durationMs: number): Float32Array {
+    const sliceNSamples = Math.floor(durationMs / 1000 * sampleRate);
+    const audioNSamples = audioData.length;
+    const leftEdge = Math.floor(sliceNSamples / 2);
+    const rightEdge = sliceNSamples - leftEdge;
+
+    // Find max amplitude index (use absolute value)
+    let maxIndex = 0;
+    let maxValue = 0;
+    for (let i = 0; i < audioNSamples; i++) {
+      const absValue = Math.abs(audioData[i]);
+      if (absValue > maxValue) {
+        maxValue = absValue;
+        maxIndex = i;
+      }
+    }
+
+    // Calculate start and end indices centered on max
+    let startIndex = maxIndex - leftEdge;
+    let endIndex = maxIndex + rightEdge;
+
+    // Handle edge cases
+    if (startIndex < 0) {
+      startIndex = 0;
+      endIndex = sliceNSamples;
+    } else if (endIndex > audioNSamples) {
+      endIndex = audioNSamples;
+      startIndex = audioNSamples - sliceNSamples;
+    }
+
+    // Extract the slice
+    const slice = new Float32Array(sliceNSamples);
+    for (let i = 0; i < sliceNSamples; i++) {
+      if (startIndex + i < endIndex) {
+        slice[i] = audioData[startIndex + i];
+      }
+    }
+
+    console.log(`[DSPEngine] extractLoudestSlice: maxIndex=${maxIndex}, slice from ${startIndex} to ${endIndex}`);
+    return slice;
+  }
+
+  convertToInt16(audioData: Float32Array): Int16Array {
+    const INT16_MAX = 32767;
+    const int16Data = new Int16Array(audioData.length);
+    for (let i = 0; i < audioData.length; i++) {
+      // Clip to [-1, 1] range first
+      const clipped = Math.max(-1, Math.min(1, audioData[i]));
+      // Convert to int16
+      int16Data[i] = Math.round(clipped * INT16_MAX);
+    }
+    return int16Data;
   }
 
   private createHannWindow(size: number): Float32Array {
@@ -75,7 +147,7 @@ export class DSPEngine {
     const window = this.createHannWindow(this.windowSize);
     const numFrames = Math.floor((signal.data.length - this.windowSize) / this.hopSize) + 1;
     
-    const magnitudes: number[][] = [];
+    const magnitudes: number[][] = [];  // Actually power spectrum (magnitude²)
     const frequencies: number[] = [];
     const times: number[] = [];
     
@@ -83,6 +155,9 @@ export class DSPEngine {
     for (let i = 0; i <= freqBins; i++) {
       frequencies.push(i * signal.sampleRate / this.windowSize);
     }
+    
+    // Remove window scaling - Python pipeline doesn't use it the same way
+    // The window scaling is applied differently in the mel filterbank
     
     for (let frame = 0; frame < numFrames; frame++) {
       const start = frame * this.hopSize;
@@ -98,8 +173,10 @@ export class DSPEngine {
       const magnitude: number[] = [];
       
       for (let i = 0; i <= freqBins; i++) {
-        const mag = Math.sqrt(real[i] * real[i] + imag[i] * imag[i]);
-        magnitude.push(mag);
+        // Use POWER SPECTRUM (magnitude²) instead of magnitude - this is key!
+        // Python librosa uses power by default
+        const power = real[i] * real[i] + imag[i] * imag[i];
+        magnitude.push(power);
       }
       
       magnitudes.push(magnitude);
@@ -138,14 +215,15 @@ export class DSPEngine {
     const numFrames = stftResult.magnitudes.length;
     const freqBins = stftResult.frequencies.length;
     
-    const melFilters = this.createMelFilterbank(numFilters, freqBins, signal.sampleRate);
+    // Create filterbank (populates this.weights)
+    this.createMelFilterbank(numFilters, freqBins, signal.sampleRate);
     
     const mfcc: number[][] = [];
     
     for (let frame = 0; frame < numFrames; frame++) {
       const frameMagnitudes = stftResult.magnitudes[frame];
       
-      const filterEnergies = melFilters.map(filter => {
+      const filterEnergies = this.weights.map(filter => {
         let sum = 0;
         for (let i = 0; i < filter.length; i++) {
           sum += filter[i] * frameMagnitudes[i];
@@ -172,22 +250,76 @@ export class DSPEngine {
     const numFrames = stftResult.magnitudes.length;
     const freqBins = stftResult.frequencies.length;
     
-    const melFilters = this.createMelFilterbank(this.numCoefficients, freqBins, signal.sampleRate);
+    console.log(`[DSPEngine] STFT: ${numFrames} frames, ${freqBins} freq bins`);
+    
+    // Create filterbank with quantized weight/unweight system
+    this.createMelFilterbank(this.numCoefficients, freqBins, signal.sampleRate);
     
     const melSpec: number[][] = [];
+    const melPostScale = 1 << this.melPostScalingBits; // 2^6 = 64
     
     for (let frame = 0; frame < numFrames; frame++) {
-      const frameMagnitudes = stftResult.magnitudes[frame];
+      const framePower = stftResult.magnitudes[frame];
       
-      const filterEnergies = melFilters.map(filter => {
-        let sum = 0;
-        for (let i = 0; i < filter.length; i++) {
-          sum += filter[i] * frameMagnitudes[i];
+      // Zero FFT bins outside mel frequency range
+      const fb = this.filterBankData;
+      const paddedPower = new Float64Array(freqBins).fill(0);
+      for (let i = 0; i < freqBins; i++) {
+        if (i >= fb.fftStartIndex && i < fb.fftEndIndex) {
+          paddedPower[i] = framePower[i];
         }
-        return Math.max(1e-10, sum);
+      }
+      
+      // Apply weight/unweight cumulative filterbank (from Python _filter_bank)
+      const filterEnergies: number[] = [];
+      let weightAccumulator = 0;
+      let unweightAccumulator = 0;
+      
+      for (let ch = 0; ch < this.weights.length; ch++) {
+        const weightFilter = this.weights[ch];
+        const unweightFilter = this.unweights[ch];
+        const freqStart = fb.chFreqStarts[ch];
+        const width = fb.chWidths[ch];
+        
+        for (let j = 0; j < width; j++) {
+          const fftIdx = freqStart + j;
+          if (fftIdx < freqBins) {
+            weightAccumulator += weightFilter[fftIdx] * paddedPower[fftIdx];
+            unweightAccumulator += unweightFilter[fftIdx] * paddedPower[fftIdx];
+          }
+        }
+        
+        // Cumulative: output = weightAccumulator, then reset
+        const output = weightAccumulator;
+        filterEnergies.push(output);
+        
+        weightAccumulator = unweightAccumulator;
+        unweightAccumulator = 0;
+      }
+      
+      // Apply square root (like Python: vec_sqrt64)
+      const sqrtEnergies = filterEnergies.map(e => Math.sqrt(Math.max(e, 0)));
+      
+      // Apply log transform and scaling (like Python: vec_log32 with mel_post_scaling_bits)
+      // Using natural log approximation
+      const logEnergies = sqrtEnergies.map(e => {
+        if (e <= 0) return 0;
+        // log32 approximation: log(e) * scale
+        const scaled = Math.log(e) * melPostScale;
+        return scaled;
       });
       
-      melSpec.push(filterEnergies);
+      // Debug: log first frame values
+      if (frame === 0) {
+        const rawBeforeLog = filterEnergies.slice(0, 5).map(e => e.toExponential(2));
+        const sqrtVals = sqrtEnergies.slice(0, 5).map(e => e.toFixed(2));
+        const logVals = logEnergies.slice(0, 5).map(e => e.toFixed(2));
+        console.log(`[DSPEngine] Raw mel before log: ${rawBeforeLog}`);
+        console.log(`[DSPEngine] After sqrt: ${sqrtVals}`);
+        console.log(`[DSPEngine] After log: ${logVals}`);
+      }
+      
+      melSpec.push(logEnergies);
     }
     
     // Pad or truncate to exactly 55 frames
@@ -207,51 +339,118 @@ export class DSPEngine {
     }
     
     console.log(`[DSPEngine] Mel spectrogram shape: ${result.length} x ${result[0]?.length}`);
+    const flat = result.flat();
+    console.log(`[DSPEngine] Mel range: min=${Math.min(...flat).toFixed(2)}, max=${Math.max(...flat).toFixed(2)}`);
     return result;
   }
 
-  private createMelFilterbank(numFilters: number, numBins: number, sampleRate: number): number[][] {
-    const melMin = this.frequencyToMel(this.melLowHz);
-    const melMax = this.frequencyToMel(this.melHighHz);
-    const melPoints = Array.from({ length: numFilters + 2 }, (_, i) =>
-      melMin + (melMax - melMin) * i / (numFilters + 1)
-    );
+  private createMelFilterbank(numFilters: number, numBins: number, sampleRate: number): void {
+    const FILTER_BANK_WEIGHT_SCALING_BITS = 12;
     
-    const freqPoints = melPoints.map(m => this.melToFrequency(m));
-    const binPoints = freqPoints.map(f => Math.round(f * this.windowSize / sampleRate));
+    // Use float32 precision to match Python
+    const freqToMel = (freq: number): number => {
+      const f = Float32Array.from([freq])[0];
+      return 1127.0 * Math.log1p(f / 700.0);
+    };
     
-    const filters: number[][] = [];
+    const melToFreq = (mel: number): number => {
+      return 700.0 * (Math.expm1(mel / 1127.0));
+    };
     
-    for (let i = 0; i < numFilters; i++) {
-      const filter = new Array(numBins).fill(0);
-      const left = binPoints[i];
-      const center = binPoints[i + 1];
-      const right = binPoints[i + 2];
-      
-      for (let j = left; j < center; j++) {
-        if (j >= 0 && j < numBins) {
-          filter[j] = (j - left) / (center - left);
-        }
-      }
-      
-      for (let j = center; j < right; j++) {
-        if (j >= 0 && j < numBins) {
-          filter[j] = (right - j) / (right - center);
-        }
-      }
-      
-      filters.push(filter);
+    // Calculate center frequencies for mel channels
+    const melLow = freqToMel(this.melLowHz);
+    const melHigh = freqToMel(this.melHighHz);
+    const melSpan = melHigh - melLow;
+    const melSpacing = melSpan / numFilters;
+    
+    const centerFreqs: number[] = [];
+    for (let i = 1; i <= numFilters; i++) {
+      centerFreqs.push(melLow + melSpacing * i);
     }
     
-    return filters;
+    // Calculate FFT bin parameters
+    const spectrumSize = numBins;  // n_fft/2 + 1
+    const hzPerBin = sampleRate / (this.windowSize);
+    const fftStartIndex = Math.round(1 + this.melLowHz / hzPerBin);
+    
+    console.log(`[DSPEngine] Creating filterbank: numFilters=${numFilters}, fftStart=${fftStartIndex}, hzPerBin=${hzPerBin.toFixed(2)}`);
+    
+    // Calculate channel frequency starts and widths
+    const chFreqStarts: number[] = [];
+    const chWidths: number[] = [];
+    let chanFreqIndex = fftStartIndex;
+    
+    for (let chan = 0; chan < numFilters; chan++) {
+      const centerMel = centerFreqs[chan];
+      let freqIndex = chanFreqIndex;
+      
+      // Find the frequency where mel exceeds center frequency
+      while (freqToMel(freqIndex * hzPerBin) <= centerMel && freqIndex < spectrumSize) {
+        freqIndex++;
+      }
+      
+      const width = freqIndex - chanFreqIndex;
+      chFreqStarts.push(chanFreqIndex);
+      chWidths.push(width);
+      chanFreqIndex = freqIndex;
+    }
+    
+    // Store for use in mel spectrogram
+    this.filterBankData = {
+      fftStartIndex,
+      fftEndIndex: chanFreqIndex,
+      nChannels: numFilters,
+      chFreqStarts,
+      chWidths,
+    };
+    
+    // Create weight/unweight arrays for each channel
+    this.weights = [];
+    this.unweights = [];
+    
+    for (let chan = 0; chan < numFilters; chan++) {
+      const freqStart = chFreqStarts[chan];
+      const width = chWidths[chan];
+      const centerMel = centerFreqs[chan];
+      const prevCenterMel = chan === 0 ? melLow : centerFreqs[chan - 1];
+      
+      const channelWeights = new Float32Array(numBins).fill(0);
+      const channelUnweights = new Float32Array(numBins).fill(0);
+      
+      for (let j = 0; j < width; j++) {
+        const freq = (freqStart + j) * hzPerBin;
+        const mel = freqToMel(freq);
+        
+        // Triangular weight
+        const weight = (centerMel - mel) / (centerMel - prevCenterMel);
+        const unweight = 1 - weight;
+        
+        // Quantize weights (like Python: weight * 2^12)
+        const quantWeight = Math.round(weight * (1 << FILTER_BANK_WEIGHT_SCALING_BITS));
+        const quantUnweight = Math.round(unweight * (1 << FILTER_BANK_WEIGHT_SCALING_BITS));
+        
+        channelWeights[freqStart + j] = quantWeight;
+        channelUnweights[freqStart + j] = quantUnweight;
+      }
+      
+      this.weights.push(channelWeights);
+      this.unweights.push(channelUnweights);
+    }
+    
+    // Debug: log first channel weights
+    const firstChanWeights = this.weights[0] ? Array.from(this.weights[0]).slice(fftStartIndex, fftStartIndex + 5) : [];
+    console.log(`[DSPEngine] First channel quantized weights at bins ${fftStartIndex}-${fftStartIndex+4}: ${firstChanWeights.map(v => v.toFixed(0))}`);
   }
 
   private frequencyToMel(freq: number): number {
-    return 2595 * Math.log10(1 + freq / 700);
+    // HTK formula - matches BioDCASE pipeline exactly
+    // Uses log1p instead of log10, and coefficient 1127 instead of 2595
+    return 1127.0 * Math.log1p(freq / 700.0);
   }
 
   private melToFrequency(mel: number): number {
-    return 700 * (Math.pow(10, mel / 2595) - 1);
+    // Inverse of HTK formula
+    return 700.0 * (Math.expm1(mel / 1127.0));
   }
 
   private dct(input: number[], numCoeffs: number): number[] {

@@ -116,17 +116,26 @@ const LabAI: React.FC = () => {
       const resampled = await audioReaderRef.current!.resample(signal, 16000);
       console.log('[LabAI] Resampled:', resampled.sampleRate, resampled.channels, resampled.duration);
       
-      // Slice audio to exactly 2000ms (32000 samples at 16kHz)
-      const targetSamples = 2000 * 16; // 32000 samples
-      let slicedAudio = resampled;
-      if (resampled.data.length > targetSamples) {
-        console.log('[LabAI] Slicing audio to 2000ms...');
-        slicedAudio = {
-          ...resampled,
-          data: resampled.data.slice(0, targetSamples),
-          duration: 2000 / 1000,
-        };
+      // Use extractLoudestSlice to match training pipeline (center on max amplitude)
+      console.log('[LabAI] Extracting loudest 2000ms slice...');
+      const loudestSlice = dspEngineRef.current!.extractLoudestSlice(resampled.data, resampled.sampleRate, 2000);
+      
+      // Convert to int16 to match training pipeline
+      console.log('[LabAI] Converting to int16...');
+      const int16Data = dspEngineRef.current!.convertToInt16(loudestSlice);
+      
+      // Convert back to Float32 for DSP processing (librosa does this internally)
+      const floatData = new Float32Array(int16Data.length);
+      for (let i = 0; i < int16Data.length; i++) {
+        floatData[i] = int16Data[i] / 32767;
       }
+      
+      const slicedAudio: AudioSignal = {
+        sampleRate: resampled.sampleRate,
+        channels: resampled.channels,
+        data: floatData,
+        duration: 2000 / 1000,
+      };
       console.log('[LabAI] Audio sliced:', slicedAudio.data.length, 'samples,', slicedAudio.duration, 's');
       
       setAudioSignal(slicedAudio);

@@ -119,9 +119,13 @@ export const ProcessingTunnel: React.FC<ProcessingTunnelProps> = ({
     const g = svg.append('g')
       .attr('transform', `translate(${margin.left},${margin.top})`);
 
-    // Color scale - viridis-like
+    // Color scale - adjusted for log mel spectrogram values (around -13 to -4)
+    const flatValues = spectrogramData.magnitudes.flat();
+    const minVal = Math.min(...flatValues);
+    const maxVal = Math.max(...flatValues);
+    
     const colorScale = d3.scaleSequential()
-      .domain([0, 80])
+      .domain([minVal, maxVal])
       .interpolator(d3.interpolateViridis);
 
     // Flatten magnitudes for display

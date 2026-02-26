@@ -8,7 +8,7 @@ const MODEL_CONFIGS: Record<ModelType, ModelConfig> = {
     accuracy: 0.98,
     memoryKB: 16,
     inputShape: [1, 55, 40, 1],
-    labels: ['Yellowhammer', 'Other'],
+    labels: ['Other', 'Yellowhammer'],
   },
   efficiency: {
     id: 'N_Enrich_model',
@@ -16,7 +16,7 @@ const MODEL_CONFIGS: Record<ModelType, ModelConfig> = {
     accuracy: 0.94,
     memoryKB: 12,
     inputShape: [1, 55, 40, 1],
-    labels: ['Yellowhammer', 'Other'],
+    labels: ['Other', 'Yellowhammer'],
   },
 };
 
@@ -72,22 +72,21 @@ export class InferenceEngine {
         Array.isArray(inputData) ? `${inputData.length} x ${(inputData[0] as number[])?.length}` : 'unknown');
       
       try {
-        // Input should be [55, 40] - mel spectrogram
+        // Input should be [55, 40] - log mel spectrogram (already preprocessed)
+        // Pass directly without normalization - model expects specific preprocessing
         let normalizedInput: number[][];
         
         if (Array.isArray(inputData) && inputData.length > 0) {
           if (Array.isArray(inputData[0]) && inputData[0].length > 0) {
-            // It's already 2D [55, 40], normalize to 0-1 range
-            const arr2d = inputData as number[][];
-            // Find max value for normalization
-            let maxVal = 0;
-            for (const row of arr2d) {
-              for (const v of row) {
-                if (v > maxVal) maxVal = v;
-              }
-            }
-            const scale = maxVal > 0 ? maxVal : 1;
-            normalizedInput = arr2d.map(row => row.map(v => v / scale));
+            normalizedInput = inputData as number[][];
+            const flat = normalizedInput.flat();
+            const min = Math.min(...flat);
+            const max = Math.max(...flat);
+            const mean = flat.reduce((a, b) => a + b, 0) / flat.length;
+            // Log statistics about the input
+            console.log(`[DSPEngine] Input stats: min=${min.toFixed(2)}, max=${max.toFixed(2)}, mean=${mean.toFixed(2)}, range=${(max-min).toFixed(2)}`);
+            // Log a few sample values from different parts
+            console.log(`[DSPEngine] Sample values: [0,0]=${normalizedInput[0][0].toFixed(2)}, [27,20]=${normalizedInput[27]?.[20]?.toFixed(2)}, [54,39]=${normalizedInput[54]?.[39]?.toFixed(2)}`);
           } else {
             normalizedInput = [[0]];
           }
@@ -126,6 +125,7 @@ export class InferenceEngine {
         console.log(`[InferenceEngine] Output tensor shape:`, result.shape);
         
         const probabilities = await result.data();
+        console.log(`[InferenceEngine] Raw output probabilities:`, probabilities);
         predictions = Array.from(probabilities);
         
         // Cleanup
