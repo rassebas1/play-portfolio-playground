@@ -54,10 +54,10 @@ export const InputBay: React.FC<InputBayProps> = ({
   };
 
   return (
-    <Card className="h-full bg-gradient-to-br from-card via-card to-primary/5 border-primary/20 overflow-hidden">
-      <div className="absolute inset-0 bg-grid-pattern opacity-30" />
+    <Card className="h-full bg-gradient-to-br from-card via-card to-primary/5 border-primary/20 overflow-visible">
+      <div className="absolute inset-0 bg-grid-pattern opacity-30 pointer-events-none" style={{ zIndex: 0 }} />
       
-      <CardHeader className="relative pb-4">
+      <CardHeader className="relative pb-4" style={{ zIndex: 1 }}>
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-semibold flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
@@ -71,9 +71,9 @@ export const InputBay: React.FC<InputBayProps> = ({
         </div>
       </CardHeader>
 
-      <CardContent className="relative space-y-4">
+      <CardContent className="relative space-y-4" style={{ zIndex: 1 }}>
         {/* Model Selector */}
-        <div className="space-y-2">
+        <div className="space-y-2 pointer-events-auto">
           <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
             Model Selection
           </label>
@@ -106,13 +106,13 @@ export const InputBay: React.FC<InputBayProps> = ({
         <div
           {...getRootProps()}
           className={`
-            relative rounded-xl border-2 border-dashed transition-all duration-300 cursor-pointer
+            relative rounded-xl border-2 border-dashed transition-all duration-300 cursor-pointer pointer-events-auto
             ${isDragActive 
               ? 'border-primary bg-primary/10 scale-[1.02]' 
               : 'border-primary/30 hover:border-primary/50 bg-background/30'
             }
             ${audioSignal ? 'border-green-500/50 bg-green-500/5' : ''}
-            ${isProcessing ? 'opacity-50 cursor-not-allowed' : ''}
+            ${isProcessing ? 'opacity-50 cursor-not-allowed pointer-events-none' : ''}
           `}
         >
           <input {...getInputProps()} />
@@ -175,7 +175,7 @@ export const InputBay: React.FC<InputBayProps> = ({
         </div>
 
         {/* Recording Button */}
-        <div className="relative">
+        <div className="relative pointer-events-auto">
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/10 to-transparent opacity-0" />
           <Button
             variant={isRecording ? 'destructive' : 'outline'}
