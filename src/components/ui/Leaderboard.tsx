@@ -1,82 +1,54 @@
-import { useEffect, useState } from 'react'
+/**
+ * Leaderboard UI Component - Hexagonal Architecture
+ * 
+ * This component is part of the UI layer (adapter in hexagonal terms).
+ * It uses the useLeaderboard hook which connects to the service layer.
+ * 
+ * Architecture:
+ * - Domain: src/types/highScores.ts (GameName, HighScore, GameSession)
+ * - Port: src/services/highScores.ts (HighScoresPort interface)
+ * - Adapter (Hook): src/hooks/useLeaderboard.ts
+ * - Adapter (UI): This component
+ */
+
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Trophy, Medal, Crown, User, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/forms/input'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/display/card'
-import { HighScore, GameName, GameSession, createGameSession } from '@/types/highScores'
+import { useLeaderboard, useScoreSubmitter } from '@/hooks/useLeaderboard'
+import type { GameName, GameSession } from '@/types/highScores'
 
 interface LeaderboardProps {
   game: GameName
   limit?: number
-  onGameStart?: (session: GameSession) => void
   currentSession?: GameSession | null
+  autoFetch?: boolean
 }
 
-export function Leaderboard({ game, limit = 10, onGameStart, currentSession }: LeaderboardProps) {
+export function Leaderboard({ 
+  game, 
+  limit = 10, 
+  currentSession,
+  autoFetch = true 
+}: LeaderboardProps) {
   const { t } = useTranslation('common')
-  const [scores, setScores] = useState<HighScore[]>([])
-  const [loading, setLoading] = useState(true)
+  const { scores, loading, error, fetchScores, submitScore } = useLeaderboard(game, limit, { autoFetch })
   const [username, setUsername] = useState('')
-  const [submitting, setSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
 
-  useEffect(() => {
-    fetchScores()
-  }, [game, limit])
-
-  async function fetchScores() {
-    setLoading(true)
-    try {
-      const response = await fetch(`/api/scores?game=${game}&limit=${limit}`)
-      const data = await response.json()
-      if (Array.isArray(data)) {
-        setScores(data)
-      }
-    } catch (error) {
-      console.error('Failed to load leaderboard:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  async function handleSubmitScore() {
+  const handleSubmitScore = async () => {
     if (!username || username.length !== 3 || !currentSession) return
 
-    const sessionDuration = Date.now() - currentSession.startTime
+    const success = await submitScore(username, 0, currentSession)
     
-    setSubmitting(true)
-    setSubmitStatus('idle')
-
-    try {
-      const response = await fetch('/api/scores', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          game,
-          username: username.toUpperCase(),
-          score: 0,
-          sessionId: currentSession.id,
-          sessionDuration,
-          moves: currentSession.moves
-        })
-      })
-
-      const result = await response.json()
-      
-      if (result.success) {
-        setSubmitStatus('success')
-        setUsername('')
-        fetchScores()
-      } else {
-        setSubmitStatus('error')
-      }
-    } catch (error) {
-      console.error('Failed to submit score:', error)
+    if (success) {
+      setSubmitStatus('success')
+      setUsername('')
+    } else {
       setSubmitStatus('error')
-    } finally {
-      setSubmitting(false)
     }
   }
 
@@ -121,14 +93,10 @@ export function Leaderboard({ game, limit = 10, onGameStart, currentSession }: L
               />
               <Button
                 onClick={handleSubmitScore}
-                disabled={username.length !== 3 || submitting}
+                disabled={username.length !== 3}
                 className="min-w-[100px]"
               >
-                {submitting ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                ) : (
-                  t('high_scores.submit')
-                )}
+                {t('high_scores.submit')}
               </Button>
             </div>
             <AnimatePresence>
@@ -214,44 +182,10 @@ interface ScoreSubmitterProps {
 export function ScoreSubmitter({ game, finalScore, session }: ScoreSubmitterProps) {
   const { t } = useTranslation('common')
   const [username, setUsername] = useState('')
-  const [submitting, setSubmitting] = useState(false)
-  const [submitted, setSubmitted] = useState(false)
-  const [error, setError] = useState(false)
+  const { submit, submitting, submitted, error, reset } = useScoreSubmitter(game)
 
-  async function handleSubmit() {
-    if (!username || username.length !== 3) return
-
-    const sessionDuration = Date.now() - session.startTime
-    
-    setSubmitting(true)
-    setError(false)
-
-    try {
-      const response = await fetch('/api/scores', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          game,
-          username: username.toUpperCase(),
-          score: finalScore,
-          sessionId: session.id,
-          sessionDuration,
-          moves: session.moves
-        })
-      })
-
-      const result = await response.json()
-      
-      if (result.success) {
-        setSubmitted(true)
-      } else {
-        setError(true)
-      }
-    } catch {
-      setError(true)
-    } finally {
-      setSubmitting(false)
-    }
+  const handleSubmit = async () => {
+    await submit(username, finalScore, session)
   }
 
   if (submitted) {
