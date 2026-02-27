@@ -77,7 +77,6 @@ export const useSnakeGame = () => {
     startGame,
     resetGame,
     setDifficulty,
-    highScore, // Expose highScore
     dispatch,
   };
 };
