@@ -46,7 +46,6 @@ const Game2048: React.FC = () => {
   const [showContinueModal, setShowContinueModal] = useState(false);
   const [session, setSession] = useState<GameSession | null>(null);
   const prevIsWonRef = useRef(false);
-  const prevBoardRef = useRef<number[][] | null>(null);
 
   // Session tracking
   useEffect(() => {
@@ -56,16 +55,14 @@ const Game2048: React.FC = () => {
     }
     if (!gameStarted && !isGameOver) {
       setSession(null);
-      prevBoardRef.current = null;
     }
   }, [score, highestTile, isGameOver, session]);
 
-  // Track moves by watching board changes
+  // Track moves by watching score changes (each move increases score in 2048)
   useEffect(() => {
-    if (session && prevBoardRef.current) {
+    if (session && score > 0) {
       setSession(prev => prev ? { ...prev, moves: prev.moves + 1 } : null);
     }
-    prevBoardRef.current = use2048().score > -1 ? [[]] : null;
   }, [score]);
 
   // Integrate useSwipeGesture hook for touch-based input on the game board
