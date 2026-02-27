@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useCallback } from 'react';
+import React, { useRef, useEffect, useCallback, useState } from 'react';
 import { useBrickBreaker } from './hooks/useBrickBreaker';
 import GameBoard from './components/GameBoard';
 import { GameHeader } from '@/components/game/GameHeader';
@@ -6,10 +6,12 @@ import { Scoreboard } from '@/components/game/Scoreboard';
 import { GameControls } from '@/components/game/GameControls';
 import { GameOverModal } from '@/components/game/GameOverModal';
 import { Instructions } from '@/components/game/Instructions';
+import { Leaderboard } from '@/components/ui/Leaderboard';
 import { GameStatus } from './types';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useTranslation } from 'react-i18next';
+import { GameSession, createGameSession } from '@/types/highScores';
 
 /**
  * Main Brick Breaker Game Component.
@@ -21,6 +23,23 @@ const BrickBreaker: React.FC = () => {
   const { state, dispatch, highScore } = useBrickBreaker(gameBoardRef);
   const { t } = useTranslation('games/brick-breaker');
   const isMobile = useIsMobile();
+  const [session, setSession] = useState<GameSession | null>(null);
+
+  useEffect(() => {
+    const gameStarted = state.score > 0 || state.lives < 3;
+    if (gameStarted && !session) {
+      setSession(createGameSession('brick-breaker'));
+    }
+    if (!gameStarted && state.gameStatus === GameStatus.IDLE) {
+      setSession(null);
+    }
+  }, [state.score, state.lives, state.gameStatus, session]);
+
+  useEffect(() => {
+    if (session && state.gameStatus === GameStatus.PLAYING) {
+      setSession(prev => prev ? { ...prev, moves: prev.moves + 1 } : null);
+    }
+  }, [state.ball]);
 
   /**
    * Resets the game to its initial state.
@@ -97,6 +116,10 @@ const BrickBreaker: React.FC = () => {
           restartGame={restartGame} // Function to restart the game
         />
       )}
+      
+      <div className="mt-8">
+        <Leaderboard game="brick-breaker" limit={10} currentSession={session} />
+      </div>
     </div>
   );
 };

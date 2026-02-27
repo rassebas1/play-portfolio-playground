@@ -5,7 +5,7 @@
  * This component orchestrates the game by integrating the `useMemoryGame` hook for game logic,
  * rendering the game board, controls, and displaying game status and scores.
  */
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useMemoryGame } from './hooks/useMemoryGame';
 import GameBoard from './components/GameBoard';
 import { Difficulty } from './types';
@@ -16,7 +16,9 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Trophy } from 'lucide-react';
 import { Scoreboard } from '@/components/game/Scoreboard';
+import { Leaderboard } from '@/components/ui/Leaderboard';
 import { useTranslation } from 'react-i18next';
+import { GameSession, createGameSession } from '@/types/highScores';
 
 /**
  * React functional component for the Memory Game.
@@ -26,6 +28,23 @@ import { useTranslation } from 'react-i18next';
 const MemoryGame: React.FC = () => {
   const { state, startGame, flipCard, resetGame, highScore } = useMemoryGame();
   const { t } = useTranslation('games/memory-game');
+  const [session, setSession] = useState<GameSession | null>(null);
+
+  useEffect(() => {
+    const gameStarted = state.flippedCards.length > 0 || state.timer > 0;
+    if (gameStarted && !session) {
+      setSession(createGameSession('memory-game'));
+    }
+    if (!gameStarted && state.gameStatus === 'idle') {
+      setSession(null);
+    }
+  }, [state.flippedCards.length, state.timer, state.gameStatus, session]);
+
+  useEffect(() => {
+    if (session && state.flippedCards.length > 0) {
+      setSession(prev => prev ? { ...prev, moves: prev.moves + 1 } : null);
+    }
+  }, [state.flippedCards]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 p-4">
@@ -97,6 +116,10 @@ const MemoryGame: React.FC = () => {
           bestScore={highScore ?? 0}
           restartGame={resetGame}
         />
+      </div>
+
+      <div className="mt-8">
+        <Leaderboard game="memory-game" limit={10} currentSession={session} />
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -9,10 +9,12 @@ import { Scoreboard } from '@/components/game/Scoreboard';
 import { GameOverModal } from '@/components/game/GameOverModal';
 import { GameControls } from '@/components/game/GameControls';
 import { Instructions } from '@/components/game/Instructions';
+import { Leaderboard } from '@/components/ui/Leaderboard';
 import { useFlappyBird } from './hooks/useFlappyBird';
 import GameArea from './components/GameArea';
 import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
+import { GameSession, createGameSession } from '@/types/highScores';
 
 /**
  * Main Flappy Bird Game Component.
@@ -24,6 +26,23 @@ const FlappyBird: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useTranslation('games/flappy-bird');
   const { t: tCommon } = useTranslation('common');
+  const [session, setSession] = useState<GameSession | null>(null);
+
+  useEffect(() => {
+    const gameStarted = gameState.score > 0;
+    if (gameStarted && !session) {
+      setSession(createGameSession('flappy-bird'));
+    }
+    if (!gameStarted && !gameState.isGameOver) {
+      setSession(null);
+    }
+  }, [gameState.score, gameState.isGameOver, session]);
+
+  useEffect(() => {
+    if (session && gameState.score > 0) {
+      setSession(prev => prev ? { ...prev, moves: prev.moves + 1 } : null);
+    }
+  }, [gameState.score]);
 
   /**
    * Navigates the user back to the main portfolio page.
@@ -84,6 +103,10 @@ const FlappyBird: React.FC = () => {
           bestScore={gameState.highScore ?? 0} // Highest score recorded
           restartGame={restartGame} // Function to restart the game
         />
+      </div>
+
+      <div className="mt-8">
+        <Leaderboard game="flappy-bird" limit={10} currentSession={session} />
       </div>
     </div>
   );
