@@ -85,11 +85,16 @@
     "submit_title": "Invia il Tuo Punteggio",
     "username_label": "Inserisci 3 lettere",
     "username_placeholder": "ABC",
+    "username_hint": "Inserisci esattamente 3 lettere o numeri",
     "submit": "Invia",
     "submitting": "Invio...",
     "success": "Punteggio inviato!",
     "error": "Invio punteggio fallito",
-    "game_won": "Congratulazioni!"
+    "game_won": "Congratulazioni!",
+    "retry": "Riprova",
+    "offline": "Offline",
+    "offline_notice": "Stai visualizzando i punteggi memorizzati nella cache mentre sei offline.",
+    "last_updated": "Ultimo aggiornamento: {{time}}"
   },
   "hero_tagline": "Collegando Ingegneria del Software, Sicurezza Middleware & Big Data",
   "hero_role_1": "Ingegnere del Software",

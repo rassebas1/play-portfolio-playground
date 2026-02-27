@@ -85,11 +85,16 @@
     "submit_title": "Soumettez Votre Score",
     "username_label": "Entrez 3 lettres",
     "username_placeholder": "ABC",
+    "username_hint": "Entrez exactement 3 lettres ou chiffres",
     "submit": "Soumettre",
     "submitting": "Envoi...",
     "success": "Score soumis!",
     "error": "Échec de la soumission",
-    "game_won": "Félicitations!"
+    "game_won": "Félicitations!",
+    "retry": "Réessayer",
+    "offline": "Hors ligne",
+    "offline_notice": "Vous consultez les scores en cache hors ligne.",
+    "last_updated": "Dernière mise à jour: {{time}}"
   },
   "hero_tagline": "Ingénierie Logicielle, Sécurité Middleware & Big Data",
   "hero_role_1": "Ingénieur Logiciel",

@@ -85,11 +85,16 @@
     "submit_title": "Submit Your Score",
     "username_label": "Enter 3-letter name",
     "username_placeholder": "ABC",
+    "username_hint": "Enter exactly 3 letters or numbers",
     "submit": "Submit",
     "submitting": "Submitting...",
     "success": "Score submitted!",
     "error": "Failed to submit score",
-    "game_won": "Congratulations!"
+    "game_won": "Congratulations!",
+    "retry": "Try Again",
+    "offline": "Offline",
+    "offline_notice": "You are viewing cached scores while offline.",
+    "last_updated": "Last updated: {{time}}"
   },
   "hero_tagline": "Bridging Software Engineering, Middleware Security & Big Data",
   "hero_role_1": "Software Engineer",

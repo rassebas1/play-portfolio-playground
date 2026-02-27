@@ -85,11 +85,16 @@
     "submit_title": "Envía Tu Puntuación",
     "username_label": "Ingresa 3 letras",
     "username_placeholder": "ABC",
+    "username_hint": "Ingresa exactamente 3 letras o números",
     "submit": "Enviar",
     "submitting": "Enviando...",
     "success": "¡Puntuación enviada!",
     "error": "Error al enviar puntuación",
-    "game_won": "¡Felicitaciones!"
+    "game_won": "¡Felicitaciones!",
+    "retry": "Reintentar",
+    "offline": "Sin conexión",
+    "offline_notice": "Estás viendo puntuaciones en caché mientras estás sin conexión.",
+    "last_updated": "Última actualización: {{time}}"
   },
   "hero_tagline": "Conectando Ingeniería de Software, Seguridad Middleware & Big Data",
   "hero_role_1": "Ingeniero de Software",

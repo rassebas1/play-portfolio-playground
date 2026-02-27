@@ -9,6 +9,11 @@
  * - Port: src/services/highScores.ts (HighScoresPort interface)
  * - Adapter: This hook (React state management + service calls)
  * - UI: src/components/ui/Leaderboard.tsx
+ * 
+ * Features:
+ * - Offline handling with sessionStorage caching
+ * - Online/offline event detection
+ * - Accessibility support
  */
 
 import { useState, useEffect, useCallback } from 'react'
@@ -27,6 +32,9 @@ export interface LeaderboardState {
   scores: HighScore[]
   loading: boolean
   error: string | null
+  isOnline: boolean
+  isOffline: boolean
+  lastFetched: number | null
 }
 
 /**
@@ -35,12 +43,51 @@ export interface LeaderboardState {
 export interface LeaderboardActions {
   fetchScores: () => Promise<void>
   submitScore: (username: string, score: number, session: GameSession | null) => Promise<boolean>
+  retry: () => Promise<void>
 }
 
 /**
  * Combined return type for the useLeaderboard hook
  */
 export type UseLeaderboard = LeaderboardState & LeaderboardActions
+
+/**
+ * Session storage key generator for caching
+ */
+function getCacheKey(game: GameName, limit: number): string {
+  return `leaderboard_${game}_${limit}`
+}
+
+/**
+ * Load cached scores from sessionStorage
+ */
+function loadCachedScores(game: GameName, limit: number): { scores: HighScore[]; timestamp: number } | null {
+  try {
+    const key = getCacheKey(game, limit)
+    const cached = sessionStorage.getItem(key)
+    if (cached) {
+      return JSON.parse(cached)
+    }
+  } catch {
+    // sessionStorage not available
+  }
+  return null
+}
+
+/**
+ * Save scores to sessionStorage cache
+ */
+function saveScoresToCache(game: GameName, limit: number, scores: HighScore[]): void {
+  try {
+    const key = getCacheKey(game, limit)
+    sessionStorage.setItem(key, JSON.stringify({
+      scores,
+      timestamp: Date.now()
+    }))
+  } catch {
+    // sessionStorage not available or quota exceeded
+  }
+}
 
 /**
  * Custom hook for managing leaderboard state and actions
@@ -72,28 +119,94 @@ export function useLeaderboard(
   const [scores, setScores] = useState<HighScore[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [isOnline, setIsOnline] = useState(true)
+  const [isOffline, setIsOffline] = useState(false)
+  const [lastFetched, setLastFetched] = useState<number | null>(null)
 
   const service = options?.service || highScoresService
   const shouldAutoFetch = options?.autoFetch !== false
+
+  // Monitor online/offline status
+  useEffect(() => {
+    const updateOnlineStatus = () => {
+      const online = navigator.onLine
+      setIsOnline(online)
+      setIsOffline(!online)
+    }
+
+    // Set initial status
+    updateOnlineStatus()
+
+    // Listen for changes
+    window.addEventListener('online', updateOnlineStatus)
+    window.addEventListener('offline', updateOnlineStatus)
+
+    return () => {
+      window.removeEventListener('online', updateOnlineStatus)
+      window.removeEventListener('offline', updateOnlineStatus)
+    }
+  }, [])
+
+  // Load cached data on mount if offline
+  useEffect(() => {
+    if (!isOnline && !lastFetched) {
+      const cached = loadCachedScores(game, limit)
+      if (cached) {
+        setScores(cached.scores)
+        setLastFetched(cached.timestamp)
+      }
+    }
+  }, [isOnline, game, limit, lastFetched])
 
   /**
    * Fetches the leaderboard from the API
    */
   const fetchScores = useCallback(async () => {
+    // If offline, try to load from cache
+    if (!navigator.onLine) {
+      const cached = loadCachedScores(game, limit)
+      if (cached) {
+        setScores(cached.scores)
+        setLastFetched(cached.timestamp)
+        setIsOffline(true)
+        setError('Showing cached scores (offline)')
+        setLoading(false)
+        return
+      }
+    }
+
     setLoading(true)
     setError(null)
+    setIsOffline(false)
 
     try {
       const data = await service.fetchLeaderboard(game, limit)
       setScores(data)
+      setLastFetched(Date.now())
+      // Cache the data
+      saveScoresToCache(game, limit, data)
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to fetch scores'
       setError(message)
-      console.error('useLeaderboard: Failed to fetch scores:', err)
+      
+      // Try to load from cache on error
+      const cached = loadCachedScores(game, limit)
+      if (cached) {
+        setScores(cached.scores)
+        setLastFetched(cached.timestamp)
+      }
     } finally {
       setLoading(false)
     }
   }, [game, limit, service])
+
+  /**
+   * Retry fetching scores (useful after coming back online)
+   */
+  const retry = useCallback(async () => {
+    setError(null)
+    await fetchScores()
+  }, [fetchScores])
 
   /**
    * Submits a score to the leaderboard
@@ -152,8 +265,12 @@ export function useLeaderboard(
     scores,
     loading,
     error,
+    isOnline,
+    isOffline,
+    lastFetched,
     fetchScores,
     submitScore: submitScoreAction,
+    retry,
   }
 }
 
