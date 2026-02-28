@@ -14,7 +14,7 @@ function getCorsHeaders(origin: string) {
 }
 
 export default async function handler(req: Request) {
-  const origin = req.headers.get('origin') || process.env.VERCEL_URL
+  const origin = req.headers.get('origin') || process.env.VERCEL_URL || '*'
   const corsHeaders = getCorsHeaders(origin)
 
   if (req.method === 'OPTIONS') {

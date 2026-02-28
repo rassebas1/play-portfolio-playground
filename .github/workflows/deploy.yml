@@ -36,6 +36,9 @@ jobs:
       - name: Validate translations
         run: npm run validate:i18n
 
+      - name: Lint
+        run: npm run lint
+
       - name: Run tests
         run: npm test
 

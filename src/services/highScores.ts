@@ -32,7 +32,7 @@ export interface HighScoresPort {
  * Makes HTTP calls to the Vercel serverless API
  */
 
-const API_BASE = '/api'
+const API_BASE = import.meta.env.VITE_API_URL + '/api'
 
 async function handleResponse<T>(response: Response): Promise<T> {
   if (!response.ok) {
