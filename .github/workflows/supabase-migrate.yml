@@ -17,7 +17,7 @@ jobs:
 
       - name: Install Supabase CLI
         run: |
-          npm install -g supabase
+          npm install supabase
           supabase --version
 
       - name: Run SQL Migration
