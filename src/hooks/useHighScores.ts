@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { GameName, GameSession, createGameSession, ALLOWED_GAMES } from '@/types/highScores';
 
+const API_BASE = import.meta.env.VITE_API_URL + '/api';
+
 type ScoreStrategy = 'highest' | 'lowest';
 
 const GAME_NAME_MAP: Record<string, GameName> = {
@@ -150,7 +152,7 @@ export const useHighScores = (gameId: string, enableServerSync: boolean = true) 
     const sessionDuration = Date.now() - session.startTime;
 
     try {
-      const response = await fetch('/api/scores', {
+      const response = await fetch(`${API_BASE}/scores`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
