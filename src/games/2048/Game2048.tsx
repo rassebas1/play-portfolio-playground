@@ -6,6 +6,7 @@ import { use2048 } from './hooks/use2048';
 import GameBoard from './components/GameBoard';
 import { cn } from '@/lib/utils';
 import { useSwipeGesture } from '@/hooks/useSwipeGesture';
+import { Leaderboard } from '@/components/ui/Leaderboard';
 
 import { GameHeader } from '@/components/game/GameHeader';
 import { Scoreboard } from '@/components/game/Scoreboard';
@@ -13,6 +14,7 @@ import { GameControls } from '@/components/game/GameControls';
 import { Instructions } from '@/components/game/Instructions';
 import { GameOverModal } from '@/components/game/GameOverModal';
 import { WinCelebrationOverlay } from '@/components/game/WinCelebrationOverlay';
+import { GameSession, createGameSession } from '@/types/highScores';
 
 /**
  * Main 2048 Game Component.
@@ -42,7 +44,26 @@ const Game2048: React.FC = () => {
   // State for celebration and modal visibility
   const [showCelebration, setShowCelebration] = useState(false);
   const [showContinueModal, setShowContinueModal] = useState(false);
+  const [session, setSession] = useState<GameSession | null>(null);
   const prevIsWonRef = useRef(false);
+
+  // Session tracking
+  useEffect(() => {
+    const gameStarted = score > 0 || highestTile > 0;
+    if (gameStarted && !session) {
+      setSession(createGameSession('2048'));
+    }
+    if (!gameStarted && !isGameOver) {
+      setSession(null);
+    }
+  }, [score, highestTile, isGameOver, session]);
+
+  // Track moves by watching score changes (each move increases score in 2048)
+  useEffect(() => {
+    if (session && score > 0) {
+      setSession(prev => prev ? { ...prev, moves: prev.moves + 1 } : null);
+    }
+  }, [score]);
 
   // Integrate useSwipeGesture hook for touch-based input on the game board
   const { onTouchStart, onTouchEnd } = useSwipeGesture({
@@ -213,6 +234,10 @@ const Game2048: React.FC = () => {
           {isWon && t('status.won')}
           {isGameOver && !isWon && t('status.game_over')}
         </div>
+      </div>
+
+      <div className="mt-8">
+        <Leaderboard game="2048" limit={10} currentSession={session} />
       </div>
     </div>
   );

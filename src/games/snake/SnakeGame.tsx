@@ -3,11 +3,14 @@ import GameBoard from './components/GameBoard';
 import { Button } from '@/components/ui/button';
 import { Scoreboard } from '@/components/game/Scoreboard';
 import { GameOverModal } from '@/components/game/GameOverModal';
+import { Leaderboard, ScoreSubmitter } from '@/components/ui/Leaderboard';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useSwipeGesture } from '@/hooks/useSwipeGesture';
 import { Direction, Difficulty } from './types';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useTranslation } from 'react-i18next';
+import { useEffect, useState } from 'react';
+import { GameSession, createGameSession } from '@/types/highScores';
 
 /**
  * Main component for the Snake game.
@@ -18,6 +21,22 @@ const SnakeGame: React.FC = () => {
   const { state, startGame, resetGame, dispatch, setDifficulty, highScore } = useSnakeGame();
   const { score, gameOver, gameStarted, difficulty } = state;
   const { t } = useTranslation('games/snake');
+  const [session, setSession] = useState<GameSession | null>(null);
+
+  useEffect(() => {
+    if (gameStarted && !session) {
+      setSession(createGameSession('snake'));
+    }
+    if (!gameStarted && !gameOver) {
+      setSession(null);
+    }
+  }, [gameStarted, gameOver, session]);
+
+  useEffect(() => {
+    if (gameStarted && session) {
+      setSession(prev => prev ? { ...prev, moves: prev.moves + 1 } : null);
+    }
+  }, [state.snake]); // Track snake position changes as moves
 
   /**
    * Handles swipe gestures on the game board to change the snake's direction.
@@ -110,6 +129,10 @@ const SnakeGame: React.FC = () => {
           </div>
         </CardContent>
       </Card>
+
+      <div className="mt-8">
+        <Leaderboard game="snake" limit={10} currentSession={session} />
+      </div>
     </div>
   );
 };
