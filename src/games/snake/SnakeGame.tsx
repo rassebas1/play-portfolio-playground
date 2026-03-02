@@ -119,7 +119,15 @@ const SnakeGame: React.FC = () => {
               )}
 
               {gameOver && (
-                <GameOverModal isGameOver={gameOver} isWon={false} score={score} bestScore={highScore || 0} restartGame={resetGame} />
+                <GameOverModal 
+                  isGameOver={gameOver} 
+                  isWon={false} 
+                  score={score} 
+                  bestScore={highScore || 0} 
+                  game="snake"
+                  session={session}
+                  restartGame={resetGame} 
+                />
               )}
 
               {gameStarted && !gameOver && (

@@ -113,6 +113,8 @@ const BrickBreaker: React.FC = () => {
           isWon={isWon} // True if the current level is cleared
           score={state.score} // Final score of the game
           bestScore={highScore ?? 0} // Highest score recorded
+          game="brick-breaker"
+          session={session}
           restartGame={restartGame} // Function to restart the game
         />
       )}

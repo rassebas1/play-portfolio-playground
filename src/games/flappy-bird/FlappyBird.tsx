@@ -22,7 +22,7 @@ import { GameSession, createGameSession } from '@/types/highScores';
  * rendering the game area, controls, and displaying game status and scores.
  */
 const FlappyBird: React.FC = () => {
-  const { gameState, gameDimensions, jump, startNewGame, restartGame } = useFlappyBird();
+  const { gameState, gameDimensions, jump, startNewGame, startPlaying, restartGame } = useFlappyBird();
   const navigate = useNavigate();
   const { t } = useTranslation('games/flappy-bird');
   const { t: tCommon } = useTranslation('common');
@@ -79,6 +79,7 @@ const FlappyBird: React.FC = () => {
             gameState={gameState}
             dimensions={gameDimensions}
             onJump={jump}
+            onStartPlaying={startPlaying}
           />
         </div>
 
@@ -101,6 +102,8 @@ const FlappyBird: React.FC = () => {
           isWon={false} // Flappy Bird doesn't have a "win" state
           score={gameState.score} // Final score of the game
           bestScore={gameState.highScore ?? 0} // Highest score recorded
+          game="flappy-bird" // Game name for score submission
+          session={session} // Game session for score submission
           restartGame={restartGame} // Function to restart the game
         />
       </div>

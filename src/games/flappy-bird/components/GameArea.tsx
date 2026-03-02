@@ -12,12 +12,14 @@ import type { GameDimensions } from '@/types/global';
  * @property {FlappyBirdState} gameState - The current state of the Flappy Bird game.
  * @property {GameDimensions} dimensions - Object containing the width and height of the game area.
  * @property {() => void} onJump - Callback function to trigger the bird's jump action.
+ * @property {() => void} [onStartPlaying] - Callback to start playing from ready state.
  * @property {string} [className] - Optional additional CSS classes to apply to the game area container.
  */
 interface GameAreaProps {
   gameState: FlappyBirdState;
   dimensions: GameDimensions;
   onJump: () => void;
+  onStartPlaying?: () => void;
   className?: string;
 }
 
@@ -33,6 +35,7 @@ const GameArea: React.FC<GameAreaProps> = ({
   gameState,
   dimensions,
   onJump,
+  onStartPlaying,
   className
 }) => {
   // Ref to the main game area DOM element, used for attaching event listeners.
@@ -53,8 +56,19 @@ const GameArea: React.FC<GameAreaProps> = ({
    */
   const handleInteraction = useCallback((e: Event) => {
     e.preventDefault(); // Prevent default browser behavior (e.g., scrolling on touch)
-    onJump(); // Trigger the bird's jump action
-  }, [onJump]); // Dependency on onJump ensures callback stability
+    
+    // Handle different game states
+    if (!gameState.gameStarted) {
+      // Game hasn't started yet - onJump will trigger startNewGame via FlappyBird
+      onJump();
+    } else if (!gameState.isPlaying && !gameState.isGameOver && onStartPlaying) {
+      // Ready state - start playing
+      onStartPlaying();
+    } else {
+      // Normal gameplay - make the bird jump
+      onJump();
+    }
+  }, [onJump, onStartPlaying, gameState.gameStarted, gameState.isPlaying, gameState.isGameOver]);
 
   // Effect to attach and detach event listeners for touch interactions.
   useEffect(() => {
@@ -134,6 +148,17 @@ const GameArea: React.FC<GameAreaProps> = ({
             <h3 className="text-2xl font-bold mb-2">Flappy Bird</h3>
             <p className="text-lg mb-4">Click or tap to start!</p>
             <p className="text-sm opacity-80">Keep clicking to stay airborne</p>
+          </div>
+        </div>
+      )}
+
+      {/* Ready state overlay: Shown when game is ready to play but not yet started */}
+      {gameState.gameStarted && !gameState.isPlaying && !gameState.isGameOver && (
+        <div className="absolute inset-0 bg-black/30 flex items-center justify-center z-30">
+          <div className="text-center text-white">
+            <div className="text-4xl mb-4 animate-pulse">🐦</div>
+            <p className="text-xl font-bold mb-2">Ready!</p>
+            <p className="text-lg">Click or tap to fly!</p>
           </div>
         </div>
       )}

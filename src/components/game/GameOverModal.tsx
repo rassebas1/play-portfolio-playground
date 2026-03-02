@@ -6,6 +6,8 @@ import { Badge } from '@/components/ui/badge';
 import { RotateCcw, PlayCircle, Home } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useNavigate } from 'react-router-dom';
+import { ScoreSubmitter } from '@/components/ui/Leaderboard';
+import type { GameName, GameSession } from '@/types/highScores';
 
 /**
  * Props for the GameOverModal component.
@@ -14,6 +16,8 @@ import { useNavigate } from 'react-router-dom';
  * @property {boolean} isWon - True if the game was won, false if lost.
  * @property {number} score - The final score achieved in the game.
  * @property {number} bestScore - The highest score recorded for this game.
+ * @property {GameName} [game] - Optional: The game name for score submission.
+ * @property {GameSession} [session] - Optional: The game session for score submission.
  * @property {boolean} [canContinue=false] - Optional: True if there's an option to continue playing after winning (e.g., in 2048).
  * @property {() => void} [continueGame] - Optional: Callback function to continue the game if `canContinue` is true.
  * @property {() => void} restartGame - Callback function to restart the game.
@@ -23,6 +27,8 @@ interface GameOverModalProps {
   isWon: boolean;
   score: number;
   bestScore: number;
+  game?: GameName;
+  session?: GameSession | null;
   canContinue?: boolean;
   continueGame?: () => void;
   restartGame: () => void;
@@ -41,6 +47,8 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
   isWon,
   score,
   bestScore,
+  game,
+  session,
   canContinue = false,
   continueGame,
   restartGame,
@@ -84,6 +92,15 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
               </Badge>
             )}
           </div>
+
+          {/* Score submission form - shown when game and session are provided */}
+          {game && session && (
+            <ScoreSubmitter
+              game={game}
+              finalScore={score}
+              session={session}
+            />
+          )}
 
           <div className="flex gap-2 justify-center">
             {canContinue && isWon && (

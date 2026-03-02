@@ -114,6 +114,8 @@ const MemoryGame: React.FC = () => {
           isWon={true}
           score={state.timer}
           bestScore={highScore ?? 0}
+          game="memory-game"
+          session={session}
           restartGame={resetGame}
         />
       </div>

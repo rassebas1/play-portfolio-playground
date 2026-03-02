@@ -129,6 +129,7 @@ export const useFlappyBird = () => {
 
   /**
    * Starts a new game, resetting all game-specific and common game states.
+   * Sets game to "ready" state - player must press jump to start.
    * This function is memoized using `useCallback`.
    * @returns {void}
    */
@@ -137,9 +138,21 @@ export const useFlappyBird = () => {
     setBird(createInitialBird()); // Reset bird to initial position
     setPipes([]); // Clear all pipes
     lastPipeRef.current = 0; // Reset pipe generation timer
-    setIsPlaying(true); // Set game to playing
-    setGameStarted(true); // Mark game as started
-  }, [resetGameBase, setIsPlaying, setGameStarted]); // Dependencies for callback stability
+    // NOT setting isPlaying to true - game starts in "ready" state
+    // Player must press jump/space to actually start the game
+    setGameStarted(true); // Mark game as initialized (ready to play)
+  }, [resetGameBase, setGameStarted]); // Dependencies for callback stability
+
+  /**
+   * Actually starts the game (called when player presses jump for the first time).
+   * This function is memoized using `useCallback`.
+   * @returns {void}
+   */
+  const startPlaying = useCallback(() => {
+    if (gameStarted && !isPlaying && !isGameOver) {
+      setIsPlaying(true);
+    }
+  }, [gameStarted, isPlaying, isGameOver, setIsPlaying]);
 
   /**
    * Restarts the game. Currently just calls `startNewGame`.
@@ -170,7 +183,9 @@ export const useFlappyBird = () => {
       if (e.code === 'Space' || e.key === 'ArrowUp') {
         e.preventDefault(); // Prevent default browser actions (e.g., scrolling)
         if (!gameStarted) {
-          startNewGame(); // Start game if not already started
+          startNewGame(); // Start new game (goes to ready state)
+        } else if (!isPlaying && !isGameOver) {
+          startPlaying(); // Begin playing from ready state
         } else {
           jump(); // Jump if game is already playing
         }
@@ -180,7 +195,7 @@ export const useFlappyBird = () => {
     // Add and remove keyboard event listener
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [jump, gameStarted, startNewGame]); // Dependencies for effect re-run
+  }, [jump, gameStarted, isPlaying, isGameOver, startNewGame, startPlaying]); // Dependencies for effect re-run
 
   // Consolidate relevant game state into a single object for easier return
   const gameState = {
@@ -199,6 +214,7 @@ export const useFlappyBird = () => {
     gameDimensions: GAME_DIMENSIONS, // Game dimensions constants
     jump,
     startNewGame,
+    startPlaying,
     restartGame,
   };
 };

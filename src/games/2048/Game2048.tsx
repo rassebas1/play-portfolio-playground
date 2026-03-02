@@ -210,6 +210,8 @@ const Game2048: React.FC = () => {
           isWon={true}
           score={score}
           bestScore={highScore ?? 0}
+          game="2048"
+          session={session}
           canContinue={true}
           continueGame={handleContinue}
           restartGame={handleRestart}
@@ -221,6 +223,8 @@ const Game2048: React.FC = () => {
           isWon={false}
           score={score}
           bestScore={highScore ?? 0}
+          game="2048"
+          session={session}
           restartGame={restartGame}
         />
 
