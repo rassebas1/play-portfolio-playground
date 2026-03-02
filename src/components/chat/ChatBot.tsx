@@ -54,7 +54,6 @@ export function ChatBot({
     
     // If context response is a direct answer (rule-based), return it
     if (contextResponse.includes('\n') || contextResponse.length < 100) {
-      // Check if it's a short rule-based response
       const isShortAnswer = contextResponse.split('\n').length <= 3 && contextResponse.length < 150;
       if (isShortAnswer) {
         return contextResponse;
@@ -69,49 +68,53 @@ export function ChatBot({
     try {
       setLoading(true);
 
-      // Build prompt with portfolio context
+      // Get relevant context
       const relevantContext = findRelevantContext(userMessage);
-      const prompt = `You are a helpful assistant for a developer's portfolio. Answer questions based on the following context:
+      
+      // Simple Q&A format with few-shot example
+      const prompt = `Helpful assistant for a developer portfolio.
 
-${relevantContext}
+Context: ${relevantContext}
 
-User: ${userMessage}
-Assistant:`;
+Q: ${userMessage}
+A:`;
 
       const result = await generatorRef.current(prompt, {
-        max_new_tokens: 150,
-        num_beams: 1,
-        temperature: 0.7,
-        repetition_penalty: 1.2,
-        max_length: 300,
+        max_new_tokens: 60,
+        temperature: 0.5,
+        top_k: 50,
+        top_p: 0.9,
+        do_sample: true,
       });
 
       let generatedText = result[0].generated_text;
-      generatedText = generatedText.replace(prompt, '').trim();
+      
+      // Extract only the answer part
+      const answerPart = generatedText.split('A:')[1] || generatedText;
+      generatedText = answerPart.trim();
 
-      // Clean up the response
-      generatedText = generatedText
-        .split('\n')[0] // Take only first sentence/line
-        .replace(/^(User:|Assistant:|You:)/gi, '') // Remove any残留
-        .trim();
+      // Clean up - take first meaningful sentence
+      const sentences = generatedText.split(/[.!?]/).filter(s => s.trim().length > 5);
+      generatedText = sentences[0]?.trim() || '';
 
-      if (!generatedText || generatedText.length < 10) {
-        return contextResponse; // Fall back to context
-      }
-
-      // If generated text is too similar to context, use context instead
-      const similarity = generatedText.toLowerCase().split(' ').filter(word => 
-        relevantContext.toLowerCase().includes(word)
-      ).length / generatedText.split(' ').length;
-
-      if (similarity > 0.8) {
+      // If generation is too short or empty, use context
+      if (!generatedText || generatedText.length < 15) {
         return contextResponse;
       }
 
-      return generatedText;
+      // If generated text is basically the same as context, use context
+      const contextWords = contextResponse.toLowerCase().split(/\s+/);
+      const generatedWords = generatedText.toLowerCase().split(/\s+/);
+      const overlap = generatedWords.filter(w => w.length > 3 && contextWords.includes(w)).length;
+      
+      if (overlap > generatedWords.length * 0.7) {
+        return contextResponse;
+      }
+
+      return generatedText + '.';
     } catch (error) {
       console.error('Generation error:', error);
-      return contextResponse; // Fall back to context on error
+      return contextResponse;
     } finally {
       setLoading(false);
     }
