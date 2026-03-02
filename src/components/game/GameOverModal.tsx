@@ -93,8 +93,8 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
             )}
           </div>
 
-          {/* Score submission form - shown when game and session are provided */}
-          {game && session && (
+          {/* Score submission form - shown only when it's a new high score */}
+          {game && session && score === bestScore && (
             <ScoreSubmitter
               game={game}
               finalScore={score}
