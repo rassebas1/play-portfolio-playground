@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ThemeProvider } from "next-themes";
 import { Layout } from "@/components/ui/layout";
 import { ErrorBoundary } from "@/components/ui/error-boundary";
+import { GameScoreProvider } from "@/contexts/GameScoreContext";
 
 // Lazy load all page components for better performance
 const Home = React.lazy(() => import("./pages/Home"));
@@ -86,8 +87,10 @@ const App = () => (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <TooltipProvider>
-          <Sonner />
-          <RouterProvider router={router} />
+          <GameScoreProvider>
+            <Sonner />
+            <RouterProvider router={router} />
+          </GameScoreProvider>
         </TooltipProvider>
       </ThemeProvider>
     </QueryClientProvider>

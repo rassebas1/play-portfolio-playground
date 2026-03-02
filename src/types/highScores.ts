@@ -77,9 +77,12 @@ export function createGameSession(game: GameName): GameSession {
   }
 }
 
+export const USERNAME_MIN_LENGTH = 3
+export const USERNAME_MAX_LENGTH = 7
+
 export function validateUsername(username: string): boolean {
   const clean = username.toUpperCase().replace(/[^A-Z0-9]/g, '')
-  return clean.length === 3
+  return clean.length >= USERNAME_MIN_LENGTH && clean.length <= USERNAME_MAX_LENGTH
 }
 
 export function validateScore(score: number): boolean {

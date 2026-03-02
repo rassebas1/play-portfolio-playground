@@ -8,6 +8,16 @@ const supabase = createClient(
 
 const ALLOWED_GAMES = ['snake', '2048', 'flappy-bird', 'brick-breaker', 'memory-game']
 
+const PROFANITY_LIST = [
+  'fuck', 'shit', 'ass', 'bitch', 'damn', 'bastard', 'crap', 'dick',
+  'cock', 'pussy', 'cunt', 'whore', 'slut', 'fag', 'nigger', 'retard'
+]
+
+function containsProfanity(username: string): boolean {
+  const normalized = username.toLowerCase()
+  return PROFANITY_LIST.some(word => normalized.includes(word))
+}
+
 interface ScoreSubmission {
   game: string
   username: string
@@ -52,8 +62,12 @@ export default async function handler(
       }
 
       const cleanUsername = username.toUpperCase().replace(/[^A-Z0-9]/g, '')
-      if (cleanUsername.length !== 3) {
-        return response.status(400).json({ error: 'Username must be 3 characters' })
+      if (cleanUsername.length < 3 || cleanUsername.length > 7) {
+        return response.status(400).json({ error: 'Username must be 3-7 characters' })
+      }
+
+      if (containsProfanity(username)) {
+        return response.status(400).json({ error: 'Username contains inappropriate words' })
       }
 
       if (typeof score !== 'number' || score < 0 || score > 1000000) {

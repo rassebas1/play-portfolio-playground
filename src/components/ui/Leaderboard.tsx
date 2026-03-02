@@ -32,11 +32,14 @@ import { Input } from '@/components/ui/forms/input'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/display/card'
 import { useLeaderboard, useScoreSubmitter } from '@/hooks/useLeaderboard'
 import type { GameName, GameSession } from '@/types/highScores'
+import { validateUsername, containsProfanity } from '@/utils/profanityFilter'
+import { USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH } from '@/types/highScores'
 
 interface LeaderboardProps {
   game: GameName
   limit?: number
   currentSession?: GameSession | null
+  finalScore?: number
   autoFetch?: boolean
 }
 
@@ -44,6 +47,7 @@ export function Leaderboard({
   game, 
   limit = 10, 
   currentSession,
+  finalScore = 0,
   autoFetch = true 
 }: LeaderboardProps) {
   const { t } = useTranslation('common')
@@ -59,9 +63,19 @@ export function Leaderboard({
   } = useLeaderboard(game, limit, { autoFetch })
   
   const [username, setUsername] = useState('')
+  const [usernameError, setUsernameError] = useState<string | null>(null)
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
   const submitButtonRef = useRef<HTMLButtonElement>(null)
   const leaderboardRef = useRef<HTMLDivElement>(null)
+
+  const isUsernameValid = username.length >= USERNAME_MIN_LENGTH && username.length <= USERNAME_MAX_LENGTH && !containsProfanity(username)
+
+  // Clear error when username changes
+  useEffect(() => {
+    if (usernameError) {
+      setUsernameError(null)
+    }
+  }, [username])
 
   // Announce to screen readers when scores load
   useEffect(() => {
@@ -75,9 +89,15 @@ export function Leaderboard({
   }, [loading, scores.length, t])
 
   const handleSubmitScore = async () => {
-    if (!username || username.length !== 3 || !currentSession) return
+    if (!username || !isUsernameValid || !currentSession) return
 
-    const success = await submitScore(username, 0, currentSession)
+    const validation = validateUsername(username)
+    if (!validation.valid) {
+      setUsernameError(validation.error || 'Invalid username')
+      return
+    }
+
+    const success = await submitScore(username, finalScore, currentSession)
     
     if (success) {
       setSubmitStatus('success')
@@ -88,7 +108,7 @@ export function Leaderboard({
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && username.length === 3 && currentSession) {
+    if (e.key === 'Enter' && isUsernameValid && currentSession) {
       handleSubmitScore()
     }
   }
@@ -190,21 +210,22 @@ export function Leaderboard({
             <div className="flex gap-2">
               <Input
                 type="text"
-                maxLength={3}
+                maxLength={USERNAME_MAX_LENGTH}
                 placeholder={t('high_scores.username_placeholder')}
                 value={username}
-                onChange={(e) => setUsername(e.target.value.replace(/[^a-zA-Z0-9]/g, '').slice(0, 3))}
+                onChange={(e) => setUsername(e.target.value.replace(/[^a-zA-Z0-9]/g, '').slice(0, USERNAME_MAX_LENGTH))}
                 onKeyDown={handleKeyDown}
                 className="font-mono text-center tracking-widest uppercase"
                 aria-label={t('high_scores.username_label')}
                 aria-describedby="submit-title"
+                aria-invalid={usernameError ? 'true' : 'false'}
                 disabled={loading}
                 autoComplete="off"
               />
               <Button
                 ref={submitButtonRef}
                 onClick={handleSubmitScore}
-                disabled={username.length !== 3 || loading}
+                disabled={!isUsernameValid || loading}
                 className="min-w-[100px]"
                 aria-label={t('high_scores.submit')}
               >
@@ -240,6 +261,16 @@ export function Leaderboard({
                 </motion.p>
               )}
             </AnimatePresence>
+            {usernameError && (
+              <motion.p
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                className="text-sm text-red-600 mt-2"
+                role="alert"
+              >
+                {usernameError}
+              </motion.p>
+            )}
           </motion.div>
         )}
 
@@ -347,18 +378,33 @@ interface ScoreSubmitterProps {
 export function ScoreSubmitter({ game, finalScore, session }: ScoreSubmitterProps) {
   const { t } = useTranslation('common')
   const [username, setUsername] = useState('')
+  const [usernameError, setUsernameError] = useState<string | null>(null)
   const { submit, submitting, submitted, error, reset } = useScoreSubmitter(game)
   const inputRef = useRef<HTMLInputElement>(null)
 
+  const isUsernameValid = username.length >= USERNAME_MIN_LENGTH && username.length <= USERNAME_MAX_LENGTH && !containsProfanity(username)
+
   const handleSubmit = async () => {
+    const validation = validateUsername(username)
+    if (!validation.valid) {
+      setUsernameError(validation.error || 'Invalid username')
+      return
+    }
     await submit(username, finalScore, session)
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && username.length === 3) {
+    if (e.key === 'Enter' && isUsernameValid) {
       handleSubmit()
     }
   }
+
+  // Clear error when username changes
+  useEffect(() => {
+    if (usernameError) {
+      setUsernameError(null)
+    }
+  }, [username])
 
   // Focus input on mount
   useEffect(() => {
@@ -414,20 +460,30 @@ export function ScoreSubmitter({ game, finalScore, session }: ScoreSubmitterProp
           ref={inputRef}
           id="score-submitter-username"
           type="text"
-          maxLength={3}
+          maxLength={USERNAME_MAX_LENGTH}
           placeholder={t('high_scores.username_placeholder')}
           value={username}
-          onChange={(e) => setUsername(e.target.value.replace(/[^a-zA-Z0-9]/g, '').slice(0, 3))}
+          onChange={(e) => setUsername(e.target.value.replace(/[^a-zA-Z0-9]/g, '').slice(0, USERNAME_MAX_LENGTH))}
           onKeyDown={handleKeyDown}
           className="font-mono text-center text-2xl tracking-widest uppercase h-14"
           disabled={submitting}
           aria-describedby="username-hint"
+          aria-invalid={usernameError ? 'true' : 'false'}
           autoComplete="off"
         />
         <p id="username-hint" className="text-xs text-muted-foreground">
-          {t('high_scores.username_hint') || 'Enter exactly 3 letters or numbers'}
+          {t('high_scores.username_hint') || `Enter ${USERNAME_MIN_LENGTH}-${USERNAME_MAX_LENGTH} letters or numbers`}
         </p>
       </div>
+
+      {usernameError && (
+        <p 
+          className="text-sm text-red-600 text-center" 
+          role="alert"
+        >
+          {usernameError}
+        </p>
+      )}
 
       {error && (
         <p 
@@ -440,7 +496,7 @@ export function ScoreSubmitter({ game, finalScore, session }: ScoreSubmitterProp
 
       <Button
         onClick={handleSubmit}
-        disabled={username.length !== 3 || submitting}
+        disabled={!isUsernameValid || submitting}
         className="w-full h-12 text-lg"
         aria-label={submitting ? t('high_scores.submitting') : t('high_scores.submit')}
       >

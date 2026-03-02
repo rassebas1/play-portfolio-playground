@@ -18,6 +18,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import type { GameName, HighScore, GameSession } from '@/types/highScores'
+import { USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH } from '@/types/highScores'
 import { 
   fetchLeaderboard, 
   submitScore, 
@@ -221,8 +222,8 @@ export function useLeaderboard(
     score: number,
     session: GameSession | null
   ): Promise<boolean> => {
-    if (!username || username.length !== 3) {
-      setError('Username must be 3 characters')
+    if (!username || username.length < USERNAME_MIN_LENGTH || username.length > USERNAME_MAX_LENGTH) {
+      setError(`Username must be ${USERNAME_MIN_LENGTH}-${USERNAME_MAX_LENGTH} characters`)
       return false
     }
 
@@ -291,8 +292,8 @@ export function useScoreSubmitter(game: GameName) {
     score: number,
     session: GameSession | null
   ): Promise<boolean> => {
-    if (!username || username.length !== 3) {
-      setError('Username must be 3 characters')
+    if (!username || username.length < USERNAME_MIN_LENGTH || username.length > USERNAME_MAX_LENGTH) {
+      setError(`Username must be ${USERNAME_MIN_LENGTH}-${USERNAME_MAX_LENGTH} characters`)
       return false
     }
 
