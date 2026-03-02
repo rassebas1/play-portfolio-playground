@@ -29,6 +29,52 @@ export type Board = CellValue[][];
 export type GameResult = 'win' | 'draw' | 'ongoing';
 
 /**
+ * AI Difficulty levels - exhaustive literal union for type safety.
+ */
+export type Difficulty = 'beginner' | 'easy' | 'medium' | 'hard' | 'expert';
+
+/**
+ * Game mode - Player vs Player or Player vs AI.
+ */
+export type GameMode = 'pvp' | 'pve';
+
+/**
+ * AI move result with metadata.
+ */
+export interface AIMoveResult {
+  position: Position;
+  algorithm: string;
+}
+
+/**
+ * Difficulty metadata for UI rendering.
+ */
+export interface DifficultyInfo {
+  id: Difficulty;
+  labelKey: string;
+  descriptionKey: string;
+  algorithm: string;
+}
+
+/**
+ * Exhaustive constant array of difficulties - enables IDE autocomplete and exhaustive checking.
+ */
+export const DIFFICULTIES: DifficultyInfo[] = [
+  { id: 'beginner', labelKey: 'ai.difficulty.beginner', descriptionKey: 'ai.difficulty.beginner_desc', algorithm: 'random' },
+  { id: 'easy', labelKey: 'ai.difficulty.easy', descriptionKey: 'ai.difficulty.easy_desc', algorithm: 'block-win' },
+  { id: 'medium', labelKey: 'ai.difficulty.medium', descriptionKey: 'ai.difficulty.medium_desc', algorithm: 'minimax-3' },
+  { id: 'hard', labelKey: 'ai.difficulty.hard', descriptionKey: 'ai.difficulty.hard_desc', algorithm: 'minimax-full' },
+  { id: 'expert', labelKey: 'ai.difficulty.expert', descriptionKey: 'ai.difficulty.expert_desc', algorithm: 'minimax-mistake' },
+];
+
+/**
+ * Type-safe lookup for difficulty info.
+ */
+export const getDifficultyInfo = (difficulty: Difficulty): DifficultyInfo => {
+  return DIFFICULTIES.find(d => d.id === difficulty) ?? DIFFICULTIES[2];
+};
+
+/**
  * Represents a specific position on the game board.
  * @interface Position
  * @property {number} row - The row index of the position (0-2).
