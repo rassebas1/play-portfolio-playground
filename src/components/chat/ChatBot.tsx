@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Send, Loader2, MessageCircle, X, Bot, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import type { Message, ChatBotProps } from './types';
+import { findRelevantContext } from './portfolio-context';
 
 const INITIAL_MESSAGE: Message = {
   id: '1',
@@ -48,6 +49,19 @@ export function ChatBot({
   }, [messages]);
 
   const generateResponse = async (userMessage: string): Promise<string> => {
+    // First, try to find a rule-based or keyword-based response
+    const contextResponse = findRelevantContext(userMessage);
+    
+    // If context response is a direct answer (rule-based), return it
+    if (contextResponse.includes('\n') || contextResponse.length < 100) {
+      // Check if it's a short rule-based response
+      const isShortAnswer = contextResponse.split('\n').length <= 3 && contextResponse.length < 150;
+      if (isShortAnswer) {
+        return contextResponse;
+      }
+    }
+
+    // Use AI with portfolio context
     if (!generatorRef.current) {
       return "I'm still loading the AI model. Please wait a moment!";
     }
@@ -55,25 +69,49 @@ export function ChatBot({
     try {
       setLoading(true);
 
-      const prompt = `User: ${userMessage}\nAssistant:`;
+      // Build prompt with portfolio context
+      const relevantContext = findRelevantContext(userMessage);
+      const prompt = `You are a helpful assistant for a developer's portfolio. Answer questions based on the following context:
+
+${relevantContext}
+
+User: ${userMessage}
+Assistant:`;
 
       const result = await generatorRef.current(prompt, {
-        max_new_tokens: 100,
+        max_new_tokens: 150,
         num_beams: 1,
         temperature: 0.7,
+        repetition_penalty: 1.2,
+        max_length: 300,
       });
 
       let generatedText = result[0].generated_text;
       generatedText = generatedText.replace(prompt, '').trim();
 
+      // Clean up the response
+      generatedText = generatedText
+        .split('\n')[0] // Take only first sentence/line
+        .replace(/^(User:|Assistant:|You:)/gi, '') // Remove any残留
+        .trim();
+
       if (!generatedText || generatedText.length < 10) {
-        return "That's a great question! I'd love to tell you more about that.";
+        return contextResponse; // Fall back to context
+      }
+
+      // If generated text is too similar to context, use context instead
+      const similarity = generatedText.toLowerCase().split(' ').filter(word => 
+        relevantContext.toLowerCase().includes(word)
+      ).length / generatedText.split(' ').length;
+
+      if (similarity > 0.8) {
+        return contextResponse;
       }
 
       return generatedText;
     } catch (error) {
       console.error('Generation error:', error);
-      return "I appreciate the question! Let me think about that for a moment.";
+      return contextResponse; // Fall back to context on error
     } finally {
       setLoading(false);
     }

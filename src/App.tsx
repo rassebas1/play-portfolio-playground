@@ -8,6 +8,7 @@ import { ThemeProvider } from "next-themes";
 import { Layout } from "@/components/ui/layout";
 import { ErrorBoundary } from "@/components/ui/error-boundary";
 import { GameScoreProvider } from "@/contexts/GameScoreContext";
+import ChatBot from "./components/chat/ChatBot";
 
 // Lazy load all page components for better performance
 const Home = React.lazy(() => import("./pages/Home"));
@@ -90,6 +91,7 @@ const App = () => (
           <GameScoreProvider>
             <Sonner />
             <RouterProvider router={router} />
+            <ChatBot defaultOpen={false} position="bottom-right" />
           </GameScoreProvider>
         </TooltipProvider>
       </ThemeProvider>
