@@ -217,12 +217,14 @@ export function useLeaderboard(
    * @param username - 3-letter player name
    * @param score - The achieved score
    * @param session - Optional game session for validation
+   * @param metric - The metric being tracked (score, lines, etc.)
    * @returns true if submission was successful
    */
   const submitScoreAction = useCallback(async (
     username: string,
     score: number,
-    session: GameSession | null
+    session: GameSession | null,
+    metric: string = 'score'
   ): Promise<boolean> => {
     if (!username || username.length < USERNAME_MIN_LENGTH || username.length > USERNAME_MAX_LENGTH) {
       setError(`Username must be ${USERNAME_MIN_LENGTH}-${USERNAME_MAX_LENGTH} characters`)
@@ -239,6 +241,7 @@ export function useLeaderboard(
         game,
         username: username.toUpperCase(),
         score,
+        metric,
         sessionId: session?.id,
         sessionDuration,
         moves,
@@ -293,7 +296,7 @@ export function useScoreSubmitter(game: GameName) {
     username: string,
     score: number,
     session: GameSession | null,
-    metric: string = 'score'
+    metrics?: Record<string, number>
   ): Promise<boolean> => {
     if (!username || username.length < USERNAME_MIN_LENGTH || username.length > USERNAME_MAX_LENGTH) {
       setError(`Username must be ${USERNAME_MIN_LENGTH}-${USERNAME_MAX_LENGTH} characters`)
@@ -308,15 +311,17 @@ export function useScoreSubmitter(game: GameName) {
       const sessionDuration = session ? Date.now() - session.startTime : 0
       const moves = session?.moves || 0
 
-      const success = await submitScore({
+      const payload = {
         game,
         username: username.toUpperCase(),
         score,
-        metric,
+        metrics,
         sessionId: session?.id,
         sessionDuration,
         moves,
-      })
+      }
+
+      const success = await submitScore(payload)
 
       if (success) {
         setSubmitted(true)

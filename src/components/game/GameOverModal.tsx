@@ -32,7 +32,7 @@ interface GameOverModalProps {
   canContinue?: boolean;
   continueGame?: () => void;
   restartGame: () => void;
-  metric?: string;
+  metrics?: Record<string, number>;
 }
 
 /**
@@ -53,10 +53,11 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
   canContinue = false,
   continueGame,
   restartGame,
-  metric = 'score',
+  metrics,
 }) => {
   const navigate = useNavigate();
   const { t } = useTranslation('common');
+  const isNewHighScore = score === bestScore && score > 0;
 
   const goHome = () => {
     navigate('/games');
@@ -88,20 +89,21 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
             <p className="text-3xl font-bold text-primary">
               {score.toLocaleString()}
             </p>
-            {score === bestScore && (
+            {isNewHighScore && (
               <Badge className="mt-2 bg-accent text-accent-foreground">
                 {t('game_over.new_best')} 🏆
               </Badge>
             )}
           </div>
 
-          {/* Score submission form - shown only when it's a new high score */}
-          {game && session && score === bestScore && (
+          {/* Score submission form - always shown on game over */}
+          {game && session && (
             <ScoreSubmitter
               game={game}
               finalScore={score}
               session={session}
-              metric={metric}
+              metrics={metrics}
+              isNewHighScore={isNewHighScore}
             />
           )}
 

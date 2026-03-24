@@ -78,24 +78,10 @@ export function Leaderboard({
     isOffline, 
     lastFetched,
     fetchScores, 
-    submitScore,
     retry 
   } = useLeaderboard(game, limit, { autoFetch, metric: selectedMetric })
   
-  const [username, setUsername] = useState('')
-  const [usernameError, setUsernameError] = useState<string | null>(null)
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
-  const submitButtonRef = useRef<HTMLButtonElement>(null)
   const leaderboardRef = useRef<HTMLDivElement>(null)
-
-  const isUsernameValid = username.length >= USERNAME_MIN_LENGTH && username.length <= USERNAME_MAX_LENGTH && !containsProfanity(username)
-
-  // Clear error when username changes
-  useEffect(() => {
-    if (usernameError) {
-      setUsernameError(null)
-    }
-  }, [username])
 
   // Announce to screen readers when scores load
   useEffect(() => {
@@ -107,31 +93,6 @@ export function Leaderboard({
       }
     }
   }, [loading, scores.length, t])
-
-  const handleSubmitScore = async () => {
-    if (!username || !isUsernameValid || !currentSession) return
-
-    const validation = validateUsername(username)
-    if (!validation.valid) {
-      setUsernameError(validation.error || 'Invalid username')
-      return
-    }
-
-    const success = await submitScore(username, finalScore, currentSession)
-    
-    if (success) {
-      setSubmitStatus('success')
-      setUsername('')
-    } else {
-      setSubmitStatus('error')
-    }
-  }
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && isUsernameValid && currentSession) {
-      handleSubmitScore()
-    }
-  }
 
   const handleRetry = async () => {
     await retry()
@@ -234,86 +195,6 @@ export function Leaderboard({
             </p>
           </motion.div>
         )}
-        
-        {/* Score submission form */}
-        {currentSession && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="p-4 rounded-lg bg-primary/5 border border-primary/20"
-          >
-            <p 
-              className="text-sm font-medium mb-3"
-              id="submit-title"
-            >
-              {t('high_scores.submit_title')}
-            </p>
-            <div className="flex gap-2">
-              <Input
-                type="text"
-                maxLength={USERNAME_MAX_LENGTH}
-                placeholder={t('high_scores.username_placeholder')}
-                value={username}
-                onChange={(e) => setUsername(e.target.value.replace(/[^a-zA-Z0-9]/g, '').slice(0, USERNAME_MAX_LENGTH))}
-                onKeyDown={handleKeyDown}
-                className="font-mono text-center tracking-widest uppercase"
-                aria-label={t('high_scores.username_label')}
-                aria-describedby="submit-title"
-                aria-invalid={usernameError ? 'true' : 'false'}
-                disabled={loading}
-                autoComplete="off"
-              />
-              <Button
-                ref={submitButtonRef}
-                onClick={handleSubmitScore}
-                disabled={!isUsernameValid || loading}
-                className="min-w-[100px]"
-                aria-label={t('high_scores.submit')}
-              >
-                {loading ? (
-                  <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" />
-                ) : (
-                  t('high_scores.submit')
-                )}
-              </Button>
-            </div>
-            <AnimatePresence>
-              {submitStatus === 'success' && (
-                <motion.p
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  className="text-sm text-green-600 mt-2"
-                  role="status"
-                  aria-live="polite"
-                >
-                  {t('high_scores.success')}
-                </motion.p>
-              )}
-              {submitStatus === 'error' && (
-                <motion.p
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  className="text-sm text-red-600 mt-2"
-                  role="alert"
-                >
-                  {t('high_scores.error')}
-                </motion.p>
-              )}
-            </AnimatePresence>
-            {usernameError && (
-              <motion.p
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                className="text-sm text-red-600 mt-2"
-                role="alert"
-              >
-                {usernameError}
-              </motion.p>
-            )}
-          </motion.div>
-        )}
 
         {/* Loading state */}
         {loading ? (
@@ -414,10 +295,11 @@ interface ScoreSubmitterProps {
   game: GameName
   finalScore: number
   session: GameSession
-  metric?: string
+  metrics?: Record<string, number>
+  isNewHighScore?: boolean
 }
 
-export function ScoreSubmitter({ game, finalScore, session, metric = 'score' }: ScoreSubmitterProps) {
+export function ScoreSubmitter({ game, finalScore, session, metrics, isNewHighScore = false }: ScoreSubmitterProps) {
   const { t } = useTranslation('common')
   const [username, setUsername] = useState('')
   const [usernameError, setUsernameError] = useState<string | null>(null)
@@ -432,7 +314,7 @@ export function ScoreSubmitter({ game, finalScore, session, metric = 'score' }: 
       setUsernameError(validation.error || 'Invalid username')
       return
     }
-    await submit(username, finalScore, session, metric)
+    await submit(username, finalScore, session, metrics)
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -482,7 +364,9 @@ export function ScoreSubmitter({ game, finalScore, session, metric = 'score' }: 
       aria-label={t('high_scores.submit_title')}
     >
       <div className="text-center mb-4">
-        <p className="text-sm text-muted-foreground">{t('game_over.final_score')}</p>
+        <p className="text-sm text-muted-foreground">
+          {isNewHighScore ? t('high_scores.new_high_score') : t('high_scores.submit_title')}
+        </p>
         <p 
           className="text-4xl font-bold font-mono"
           aria-label={`${finalScore} points`}

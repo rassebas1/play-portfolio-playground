@@ -282,6 +282,7 @@ const Tetris: React.FC = () => {
           game="tetris"
           session={session}
           restartGame={handleRestart}
+          metrics={{ score, lines, level }}
         />
 
         {/* Status indicator */}

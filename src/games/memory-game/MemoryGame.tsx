@@ -117,6 +117,7 @@ const MemoryGame: React.FC = () => {
           game="memory-game"
           session={session}
           restartGame={resetGame}
+          metrics={{ score: state.timer }}
         />
       </div>
 

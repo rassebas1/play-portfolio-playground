@@ -22,6 +22,7 @@ export interface ScoreSubmission {
   username: string
   score: number
   metric?: string
+  metrics?: Record<string, number>
   sessionId?: string
   sessionDuration?: number
   moves?: number
