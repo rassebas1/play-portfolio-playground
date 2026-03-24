@@ -3,7 +3,7 @@
  * Main hook that integrates the game logic with React state
  */
 
-import { useReducer, useEffect, useCallback, useRef } from 'react';
+import { useReducer, useEffect, useCallback, useRef, useState } from 'react';
 import { TetrisState, TetrisAction } from '../types';
 import { tetrisReducer, createInitialState } from '../GameReducer';
 import { useTetrisInput, useTetrisSwipe } from './useTetrisInput';
@@ -19,6 +19,31 @@ export const useTetris = (options: UseTetrisOptions = {}) => {
   
   // High score management
   const { highScore, updateHighScore } = useHighScores('tetris');
+  
+  // Best lines tracking (localStorage)
+  const [bestLines, setBestLines] = useState<number | null>(() => {
+    try {
+      const stored = localStorage.getItem('bestLines_tetris');
+      return stored ? JSON.parse(stored) : null;
+    } catch {
+      return null;
+    }
+  });
+  
+  // Update best lines
+  const updateBestLines = useCallback((lines: number) => {
+    setBestLines(prev => {
+      if (prev === null || lines > prev) {
+        try {
+          localStorage.setItem('bestLines_tetris', JSON.stringify(lines));
+        } catch (e) {
+          console.error('Error saving best lines:', e);
+        }
+        return lines;
+      }
+      return prev;
+    });
+  }, []);
   
   // Track previous status for game over detection
   const prevStatusRef = useRef(state.status);
@@ -125,11 +150,13 @@ export const useTetris = (options: UseTetrisOptions = {}) => {
     };
   }, [state.status, state.level, tick]);
 
-  // Handle game over - update high score
+  // Handle game over - update high score and best lines
   useEffect(() => {
     if (prevStatusRef.current !== 'game_over' && state.status === 'game_over') {
       // Update high score
       updateHighScore(state.score);
+      // Update best lines
+      updateBestLines(state.lines);
       options.onGameOver?.(state.score, state.level, state.lines);
     }
     prevStatusRef.current = state.status;
@@ -154,6 +181,7 @@ export const useTetris = (options: UseTetrisOptions = {}) => {
     canHold: state.canHold,
     score: state.score,
     highScore,
+    bestLines,
     level: state.level,
     lines: state.lines,
     status: state.status,
