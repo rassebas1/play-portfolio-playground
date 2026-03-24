@@ -1,0 +1,46 @@
+{
+  "title": "Tetris",
+  "description": "Stack falling blocks to clear lines. Classic puzzle action!",
+  "instructions": {
+    "desktop": "Arrow keys to move/rotate • Space to drop • P to pause",
+    "mobile": "Swipe to move • Tap to rotate • Hold for hard drop"
+  },
+  "how_to_play": {
+    "title": "How to Play",
+    "items": [
+      "Use arrow keys to move pieces left/right",
+      "Up arrow or X to rotate clockwise",
+      "Down arrow to soft drop (faster fall)",
+      "Space to hard drop (instant placement)",
+      "Clear lines by filling every cell in a row"
+    ]
+  },
+  "tips": {
+    "title": "Pro Tips",
+    "items": [
+      "Build a flat foundation - gaps are hard to fill",
+      "Keep your options open - don't lock in early",
+      "Use T-spins for bonus points",
+      "Watch the next piece to plan ahead"
+    ]
+  },
+  "scoreboard": {
+    "score": "Score",
+    "level": "Level",
+    "lines": "Lines",
+    "next": "Next",
+    "hold": "Hold"
+  },
+  "status": {
+    "playing": "Playing...",
+    "paused": "Paused",
+    "game_over": "Game Over!"
+  },
+  "actions": {
+    "new_game": "New Game",
+    "pause": "Pause",
+    "resume": "Resume"
+  },
+  "level_up": "Level Up!",
+  "lines_cleared": "{{count}} line(s) cleared!"
+}

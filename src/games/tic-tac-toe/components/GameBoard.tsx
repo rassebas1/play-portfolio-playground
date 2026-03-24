@@ -161,6 +161,7 @@ interface GameBoardProps {
   isGameActive: boolean;
   currentPlayer: Player;
   winningLine: { positions: { row: number; col: number }[] } | null;
+  disabled?: boolean;
 }
 
 /**
@@ -172,7 +173,8 @@ const GameBoard: React.FC<GameBoardProps> = ({
   isCellInWinningLine,
   isGameActive,
   currentPlayer,
-  winningLine
+  winningLine,
+  disabled = false
 }) => {
   const boardRef = useRef<HTMLDivElement>(null);
   const [focusedCell, setFocusedCell] = useState<{ row: number; col: number }>({ row: 0, col: 0 });
@@ -216,7 +218,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
       case 'Enter':
       case ' ':
         e.preventDefault();
-        if (!getCellValue(row, col)) {
+        if (!disabled && !getCellValue(row, col)) {
           onCellClick(row, col);
         }
         return;
@@ -238,10 +240,10 @@ const GameBoard: React.FC<GameBoardProps> = ({
   // Update focused cell when clicking
   const handleCellClick = useCallback((row: number, col: number) => {
     setFocusedCell({ row, col });
-    if (isGameActive && !getCellValue(row, col)) {
+    if (!disabled && isGameActive && !getCellValue(row, col)) {
       onCellClick(row, col);
     }
-  }, [isGameActive, getCellValue, onCellClick]);
+  }, [disabled, isGameActive, getCellValue, onCellClick]);
 
   return (
     <div className="w-full">

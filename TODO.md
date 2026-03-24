@@ -8,6 +8,7 @@ This document tracks the features and tasks that need to be completed for the pr
 - [x] **Snake Game:** Fully implemented with core logic, state management (reducer), and integrated into the application.
 - [x] **Memory Game:** Fully implemented with difficulty levels and best score tracking.
 - [x] **Brick Breaker:** Fully implemented with paddle, ball physics, brick destruction, and level progression.
+- [x] **Tetris:** Fully implemented with tetromino shapes, collision detection, rotation, line clearing, scoring, levels, ghost piece, and retro-cyberpunk aesthetic.
 
 ### Refactoring & Component Extraction
 - [x] **Tic Tac Toe:** Extracted `GameHeader`, `GameStatus`, and `GameRules` components.
@@ -50,10 +51,15 @@ This document tracks the features and tasks that need to be completed for the pr
 
 ## 🚀 Future Features & Enhancements
 
-### New Games
-- [ ] Implement the **Tetris** game
-- [ ] Implement the **Minesweeper** game
-- [ ] Implement the **Tower Defense** game
+### 🎮 New Games (Priority: P0)
+> **Note:** These are high-impact features. See detailed tasks in game-specific sections below.
+> **Next Recommended:** **Tetris** - Classic game with clear implementation path and good learning opportunity.
+
+### Tetris (P0) ✅ COMPLETED
+- [x] Implement the Tetris game following the project structure conventions
+
+### Minesweeper (P0)
+- [ ] Implement the Minesweeper game following the project structure conventions
 
 ### Mobile Enhancements (Touch Controls)
 - [x] **Snake:** Implement swipe gestures on the game board for direction control.
@@ -64,6 +70,8 @@ This document tracks the features and tasks that need to be completed for the pr
 
 ### Game-specific Improvements
 
+> **Priority Guide:** P0 = High priority, P1 = Medium, P2 = Low
+
 #### Snake
 - [x] Implement difficulty selection (1-9).
 - [x] Adjust points per eaten food based on difficulty.
@@ -72,12 +80,6 @@ This document tracks the features and tasks that need to be completed for the pr
 #### Memory Game
 - [x] Create best time/moves tracking
 - [x] Store best scores per difficulty in localStorage
-
-#### Tetris
-- [ ] Implement the Tetris game following the project structure conventions
-
-#### Minesweeper
-- [ ] Implement the Minesweeper game following the project structure conventions
 
 #### Brick Breaker
 
@@ -107,8 +109,8 @@ This document tracks the features and tasks that need to be completed for the pr
 - [ ] Add visual feedback for paddle hits (e.g., paddle flashes, ball changes color/speed temporarily)
 - [ ] Create multiple level layouts with increasing difficulty
 
-#### Tower Defense
-- [ ] Implement the Tower Defense game (see project structure for guidance)
+#### Tower Defense (P1)
+> Complex game - see detailed implementation tasks below.
 
 ##### Setup & State Management
 - [ ] Create initial game state (towers, enemies, path, gold, lives, wave, game status)
@@ -165,22 +167,22 @@ This document tracks the features and tasks that need to be completed for the pr
 - [ ] Implement sound effects and background music
 - [ ] Save/load game progress (optional)
 
-#### 2048
+#### 2048 (P2)
 - [ ] Add a "You Win!" message that is more subtle and allows the user to continue playing without a modal.
 
-#### Flappy Bird
+#### Flappy Bird (P2)
 - [ ] Add a "Ready, Set, Go!" countdown before the game starts.
 
-#### Tic-Tac-Toe
+#### Tic-Tac-Toe (P1)
 - [ ] Add an AI opponent.
 
-### Animations
+### Animations (P2)
 - [ ] **Tic Tac Toe:** Animate 'X'/'O' appearance, winning line, and reset button.
 - [ ] **2048:** Animate tile movement, merging, and new tile appearance.
 - [ ] **Flappy Bird:** Animate bird's flapping, pipes' movement, and game over.
 - [ ] **Brick Breaker:** Animate brick breaking, ball bounce, and paddle movement.
 
-### General UI/UX Improvements
+### General UI/UX Improvements (P1-P2)
 - [x] Add animations to page transitions.
 - [x] Improve the styling of the navigation bar.
 - [x] Add a footer to the layout.
@@ -192,7 +194,7 @@ This document tracks the features and tasks that need to be completed for the pr
 - [ ] **Empty States Design:** Create user-friendly designs for sections where content might be missing (e.g., "No high scores yet," "No games found").
 - [ ] **Reduced Motion Preference:** Implement support for `prefers-reduced-motion` to respect user preferences for less animation, enhancing accessibility and user comfort.
 
-### Code Quality and Maintenance
+### Code Quality and Maintenance (P1)
 - [ ] Write unit tests for game logic.
 - [ ] Develop integration tests for UI components.
 - [ ] Set up a CI/CD pipeline for automated testing and deployment to GitHub Pages.
@@ -201,7 +203,7 @@ This document tracks the features and tasks that need to be completed for the pr
 
 ## 💡 Accessibility & Performance
 
-### Performance & Accessibility (a11y)
+### Performance & Accessibility (a11y) (P1)
 - [x] Perform an accessibility review (WCAG 2.1 AA) as a general goal
 - [ ] Implement ARIA attributes for custom components and dynamic content.
 - [ ] Ensure comprehensive keyboard navigation and focus management for all interactive elements.
@@ -266,7 +268,7 @@ This document tracks the features and tasks that need to be completed for the pr
 - [x] Position above Seniority Badges on Home page
 - [x] Add translations (EN, ES, FR, IT)
 
-### Phase 7: Big Data & AI Lab (⏳ PENDING - Requires Details)
+### Phase 7: Big Data & AI Lab (⏳ BLOCKED - Awaiting Requirements)
 **Requirements Needed from User:**
 - [ ] Power BI/Tableau visualizations or screenshots
 - [ ] SECGle project details (arrhythmia detector)

@@ -10,6 +10,7 @@ import snake from '../public/locales/en/games/snake.json';
 import brickBreaker from '../public/locales/en/games/brick-breaker.json';
 import memoryGame from '../public/locales/en/games/memory-game.json';
 import flappyBird from '../public/locales/en/games/flappy-bird.json';
+import tetris from '../public/locales/en/games/tetris.json';
 
 import 'i18next';
 
@@ -29,6 +30,7 @@ declare module 'i18next' {
       'games/brick-breaker': typeof brickBreaker;
       'games/memory-game': typeof memoryGame;
       'games/flappy-bird': typeof flappyBird;
+      'games/tetris': typeof tetris;
     };
   }
 }

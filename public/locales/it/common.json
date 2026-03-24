@@ -94,7 +94,12 @@
     "retry": "Riprova",
     "offline": "Offline",
     "offline_notice": "Stai visualizzando i punteggi memorizzati nella cache mentre sei offline.",
-    "last_updated": "Ultimo aggiornamento: {{time}}"
+    "last_updated": "Ultimo aggiornamento: {{time}}",
+    "score": "Punteggio",
+    "lines": "Linee",
+    "bricks": "Mattoni",
+    "highest_tile": "Tessera Più Alta",
+    "level": "Livello"
   },
   "hero_tagline": "Collegando Ingegneria del Software, Sicurezza Middleware & Big Data",
   "hero_role_1": "Ingegnere del Software",

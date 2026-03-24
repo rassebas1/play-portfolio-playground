@@ -1,0 +1,60 @@
+{
+  "title": "Tic Tac Toe",
+  "description": "Gioco di strategia classico per due giocatori. Il primo a mettere tre in fila vince!",
+  "short_description": "Gioco di strategia classico",
+  "rules": {
+    "title": "Regole",
+    "items": [
+      "I giocatori si alternano mettendo X o O",
+      "Il primo giocatore a mettere 3 in fila vince",
+      "Contano righe, colonne o diagonali",
+      "Se tutte le celle sono piene, è pareggio"
+    ]
+  },
+  "strategy": {
+    "title": "Consigli Strategici",
+    "items": [
+      "Controlla il centro quando possibile",
+      "Blocca le mosse vincenti dell'avversario",
+      "Crea più opportunità di vittoria",
+      "Pensa avanti e pianifica le tue mosse"
+    ]
+  },
+  "status": {
+    "win": "{{player}} vince!",
+    "draw": "È pareggio!",
+    "start": "Clicca su qualsiasi cella per iniziare!",
+    "turn": "Giocatore attuale: {{player}}"
+  },
+  "celebration": {
+    "winner_title": "{{player}}",
+    "winner_subtitle": "Vince!"
+  },
+  "cells": {
+    "aria_label_empty": "Riga {{row}}, Colonna {{col}}, vuota",
+    "aria_label_filled": "Riga {{row}}, Colonna {{col}}, {{player}}"
+  },
+  "ai": {
+    "title": "Giocare vs IA",
+    "mode": "Modalità di Gioco",
+    "pvp": "2 Giocatori",
+    "pve": "vs IA",
+    "difficulty": {
+      "label": "Difficoltà",
+      "beginner": "Principiante",
+      "beginner_desc": "Gioca completamente a caso",
+      "easy": "Facile",
+      "easy_desc": "Blocca e prende mosse vincenti",
+      "medium": "Medio",
+      "medium_desc": "Guarda 3 mosse avanti",
+      "hard": "Difficile",
+      "hard_desc": "Quasi imbattibile",
+      "expert": "Esperto",
+      "expert_desc": "Perfetto con errore occasionale"
+    },
+    "thinking": "L'IA sta pensando...",
+    "your_turn": "Tocca a te!",
+    "you_win": "Hai vinto!",
+    "ai_wins": "L'IA vince!"
+  }
+}

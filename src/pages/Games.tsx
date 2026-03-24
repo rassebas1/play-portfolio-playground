@@ -73,6 +73,16 @@ export const games: GameInfo[] = [
     color: 'hsl(var(--game-info))',
     status: 'status.ready_to_play',
   },
+  {
+    id: 'tetris',
+    name: 'tetris.name',
+    description: 'tetris.description',
+    difficulty: 'difficulty.medium',
+    category: 'category.puzzle',
+    icon: '🎮',
+    color: 'hsl(var(--game-warning))',
+    status: 'status.ready_to_play',
+  },
 ];
 
 /**

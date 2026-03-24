@@ -4,6 +4,7 @@ import { GameName, GameSession, createGameSession, ALLOWED_GAMES } from '@/types
 const API_BASE = import.meta.env.VITE_API_URL + '/api';
 
 type ScoreStrategy = 'highest' | 'lowest';
+type MetricType = 'score' | 'lines' | 'bricks' | 'highestTile' | 'level';
 
 const GAME_NAME_MAP: Record<string, GameName> = {
   'snake-game': 'snake',
@@ -15,6 +16,7 @@ const GAME_NAME_MAP: Record<string, GameName> = {
   'brickbreaker': 'brick-breaker',
   'memory-game': 'memory-game',
   'memory': 'memory-game',
+  'tetris': 'tetris',
 };
 
 /**
@@ -22,6 +24,7 @@ const GAME_NAME_MAP: Record<string, GameName> = {
  * Scores are persisted in localStorage and optionally submitted to server.
  *
  * @param {string} gameId - A unique identifier for the game (e.g., 'brick-breaker', '2048').
+ * @param {MetricType} metric - The metric to track (e.g., 'score', 'lines'). Default: 'score'.
  * @param {boolean} enableServerSync - Whether to enable server-side score submission (default: true).
  * @returns {object} An object containing:
  *   - {number | null} highScore - The current high score for the game, or null if no score is recorded.
@@ -34,10 +37,13 @@ const GAME_NAME_MAP: Record<string, GameName> = {
  *   - {function(): void} recordMove - Function to record a move in the session.
  *   - {function(): Promise<boolean>} submitScore - Function to submit score to server.
  *   - {function(): void} endSession - Function to end the current session.
+ *   - {string} currentMetric - The current metric being tracked.
  */
-export const useHighScores = (gameId: string, enableServerSync: boolean = true) => {
-  const localStorageKey = `highScore_${gameId}`;
+export const useHighScores = (gameId: string, metric: MetricType = 'score', enableServerSync: boolean = true) => {
+  // Use metric-specific localStorage key
+  const localStorageKey = `highScore_${gameId}_${metric}`;
   const highestTileKey = `highestTile_${gameId}`;
+  const currentMetric = metric;
   
   const sessionRef = useRef<GameSession | null>(null);
   const gameNameRef = useRef<GameName | null>(null);
@@ -159,6 +165,7 @@ export const useHighScores = (gameId: string, enableServerSync: boolean = true) 
           game: gameNameRef.current,
           username: 'UNK', // Will be set by UI
           score,
+          metric: currentMetric,
           sessionId: session.id,
           sessionDuration,
           moves: session.moves
@@ -171,7 +178,7 @@ export const useHighScores = (gameId: string, enableServerSync: boolean = true) 
       console.error('Failed to submit score to server:', error);
       return false;
     }
-  }, [enableServerSync]);
+  }, [enableServerSync, currentMetric]);
 
   return { 
     highScore, 
@@ -183,6 +190,7 @@ export const useHighScores = (gameId: string, enableServerSync: boolean = true) 
     startSession,
     recordMove,
     submitScore,
-    endSession
+    endSession,
+    currentMetric
   };
 };

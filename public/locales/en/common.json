@@ -94,7 +94,12 @@
     "retry": "Try Again",
     "offline": "Offline",
     "offline_notice": "You are viewing cached scores while offline.",
-    "last_updated": "Last updated: {{time}}"
+    "last_updated": "Last updated: {{time}}",
+    "score": "Score",
+    "lines": "Lines",
+    "bricks": "Bricks",
+    "highest_tile": "Highest Tile",
+    "level": "Level"
   },
   "hero_tagline": "Bridging Software Engineering, Middleware Security & Big Data",
   "hero_role_1": "Software Engineer",

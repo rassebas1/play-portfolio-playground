@@ -23,5 +23,9 @@
   "brickBreaker": {
     "name": "Casse-briques",
     "description": "Détruisez les briques avec une balle et une raquette. Cassez toutes les briques pour passer le niveau !"
+  },
+  "tetris": {
+    "name": "Tetris",
+    "description": "Empilez des blocs qui tombent pour effacer des lignes. Action classique de puzzle !"
   }
 }

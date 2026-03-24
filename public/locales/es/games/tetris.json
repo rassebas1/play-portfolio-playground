@@ -1,0 +1,46 @@
+{
+  "title": "Tetris",
+  "description": "Apila bloques que caen para borrar líneas. ¡Acción clásica de puzzles!",
+  "instructions": {
+    "desktop": "Flechas para mover/girar • Espacio para soltar • P para pausar",
+    "mobile": "Desliza para mover • Toca para girar • Mantén para soltar rápido"
+  },
+  "how_to_play": {
+    "title": "Cómo Jugar",
+    "items": [
+      "Usa las flechas para mover las piezas a izquierda/derecha",
+      "Flecha arriba o X para girar en sentido horario",
+      "Flecha abajo para caída suave (más rápido)",
+      "Espacio para caída dura (colocación instantánea)",
+      "Borra líneas rellenando cada celda de una fila"
+    ]
+  },
+  "tips": {
+    "title": "Consejos",
+    "items": [
+      "Construye una base plana - los huecos son difíciles de llenar",
+      "Mantén tus opciones abiertas - no te cierres temprano",
+      "Usa T-spins para puntos extra",
+      "Observa la siguiente pieza para planificar"
+    ]
+  },
+  "scoreboard": {
+    "score": "Puntos",
+    "level": "Nivel",
+    "lines": "Líneas",
+    "next": "Siguiente",
+    "hold": "Guardar"
+  },
+  "status": {
+    "playing": "Jugando...",
+    "paused": "Pausado",
+    "game_over": "¡Fin del Juego!"
+  },
+  "actions": {
+    "new_game": "Nueva Partida",
+    "pause": "Pausar",
+    "resume": "Continuar"
+  },
+  "level_up": "¡Subiste de Nivel!",
+  "lines_cleared": "¡{{count}} línea(s) borrada(s)!"
+}

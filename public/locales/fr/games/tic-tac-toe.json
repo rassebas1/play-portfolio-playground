@@ -33,5 +33,28 @@
   "cells": {
     "aria_label_empty": "Ligne {{row}}, Colonne {{col}}, vide",
     "aria_label_filled": "Ligne {{row}}, Colonne {{col}}, {{player}}"
+  },
+  "ai": {
+    "title": "Jouer vs IA",
+    "mode": "Mode de Jeu",
+    "pvp": "2 Joueurs",
+    "pve": "vs IA",
+    "difficulty": {
+      "label": "Difficulté",
+      "beginner": "Débutant",
+      "beginner_desc": "Joue complètement au hasard",
+      "easy": "Facile",
+      "easy_desc": "Bloque et prend les coups gagnants",
+      "medium": "Moyen",
+      "medium_desc": "Regarde 3 coups d'avance",
+      "hard": "Difficile",
+      "hard_desc": "Presque imbattable",
+      "expert": "Expert",
+      "expert_desc": "Parfait avec erreur occasionnelle"
+    },
+    "thinking": "L'IA réfléchit...",
+    "your_turn": "À votre tour !",
+    "you_win": "Vous gagnez !",
+    "ai_wins": "L'IA gagne !"
   }
 }

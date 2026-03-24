@@ -22,7 +22,7 @@
   },
   "status": {
     "win": "¡{{player}} gana!",
-    "draw": "¡Es un empate!",
+    "draw": "¡Es un empatE!",
     "start": "¡Haz clic en cualquier celda para comenzar!",
     "turn": "Jugador actual: {{player}}"
   },
@@ -33,5 +33,28 @@
   "cells": {
     "aria_label_empty": "Fila {{row}}, Columna {{col}}, vacía",
     "aria_label_filled": "Fila {{row}}, Columna {{col}}, {{player}}"
+  },
+  "ai": {
+    "title": "Jugar vs IA",
+    "mode": "Modo de Juego",
+    "pvp": "2 Jugadores",
+    "pve": "vs IA",
+    "difficulty": {
+      "label": "Dificultad",
+      "beginner": "Principiante",
+      "beginner_desc": "Juega completamente al azar",
+      "easy": "Fácil",
+      "easy_desc": "Bloquea y toma movimientos ganadora",
+      "medium": "Medio",
+      "medium_desc": "Mira 3 movimientos adelante",
+      "hard": "Difícil",
+      "hard_desc": "Casi imbatible",
+      "expert": "Experto",
+      "expert_desc": "Perfecto con error ocasional"
+    },
+    "thinking": "La IA está pensando...",
+    "your_turn": "¡Tu turno!",
+    "you_win": "¡Ganaste!",
+    "ai_wins": "¡La IA gana!"
   }
 }

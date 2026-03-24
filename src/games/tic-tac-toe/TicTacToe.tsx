@@ -1,9 +1,10 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Trophy } from 'lucide-react';
+import { Trophy, Bot } from 'lucide-react';
 import GameBoard from './components/GameBoard';
 import { useTicTacToe } from './hooks/useTicTacToe';
+import DifficultySelector from './components/DifficultySelector';
 
 import { GameHeader } from '@/components/game/GameHeader';
 import { GameControls } from '@/components/game/GameControls';
@@ -30,6 +31,11 @@ const TicTacToe: React.FC = () => {
     isCellInWinningLine,
     getCellValue,
     highScore,
+    difficulty,
+    setDifficulty,
+    gameMode,
+    setGameMode,
+    isAIThinking,
   } = useTicTacToe();
 
   /**
@@ -92,6 +98,17 @@ const TicTacToe: React.FC = () => {
         />
 
         <div className="max-w-4xl mx-auto">
+          {/* Difficulty Selector - Retro arcade style */}
+          <div className="mb-6">
+            <DifficultySelector
+              difficulty={difficulty}
+              onDifficultyChange={setDifficulty}
+              gameMode={gameMode}
+              onGameModeChange={setGameMode}
+              disabled={isAIThinking}
+            />
+          </div>
+
           {/* Floating Game Status - Now above the board */}
           <GameStatus
             gameResult={gameState.gameResult}
@@ -141,9 +158,10 @@ const TicTacToe: React.FC = () => {
                 onCellClick={makeMove}
                 getCellValue={getCellValue}
                 isCellInWinningLine={isCellInWinningLine}
-                isGameActive={isGameActive}
+                isGameActive={isGameActive && !isAIThinking}
                 currentPlayer={gameState.currentPlayer}
                 winningLine={gameState.winningLine}
+                disabled={isAIThinking}
               />
             </CardContent>
           </Card>

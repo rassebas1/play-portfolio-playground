@@ -22,7 +22,7 @@ import type {
  * with the high scores system. They can be mocked for testing.
  */
 export interface HighScoresPort {
-  fetchLeaderboard(game: GameName, limit?: number): Promise<HighScore[]>
+  fetchLeaderboard(game: GameName, limit?: number, metric?: string): Promise<HighScore[]>
   submitScore(data: ScoreSubmission & { username: string }): Promise<boolean>
   checkHealth(): Promise<HealthStatus>
 }
@@ -51,11 +51,13 @@ async function handleResponse<T>(response: Response): Promise<T> {
  */
 export async function fetchLeaderboard(
   game: GameName, 
-  limit: number = 10
+  limit: number = 10,
+  metric: string = 'score'
 ): Promise<HighScore[]> {
   const url = new URL(`${API_BASE}/scores`, window.location.origin)
   url.searchParams.set('game', game)
   url.searchParams.set('limit', String(limit))
+  url.searchParams.set('metric', metric)
 
   const response = await fetch(url.toString(), {
     method: 'GET',
@@ -122,10 +124,11 @@ export const highScoresService: HighScoresPort = {
 export function createHighScoresService(baseUrl: string): HighScoresPort {
   const apiBase = baseUrl || API_BASE
 
-  async function customFetchLeaderboard(game: GameName, limit: number = 10): Promise<HighScore[]> {
+  async function customFetchLeaderboard(game: GameName, limit: number = 10, metric: string = 'score'): Promise<HighScore[]> {
     const url = new URL(`${apiBase}/scores`, window.location.origin)
     url.searchParams.set('game', game)
     url.searchParams.set('limit', String(limit))
+    url.searchParams.set('metric', metric)
 
     const response = await fetch(url.toString())
     return handleResponse<HighScore[]>(response)

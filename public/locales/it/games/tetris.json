@@ -1,0 +1,46 @@
+{
+  "title": "Tetris",
+  "description": "Impila i blocchi che cadono per eliminare le linee. Azione classica di puzzle!",
+  "instructions": {
+    "desktop": "Frecce per muovere/ruotare • Spazio per caduta • P per pausa",
+    "mobile": "Scorri per muovere • Tocca per ruotare • Tieni premuto per caduta rapida"
+  },
+  "how_to_play": {
+    "title": "Come Giocare",
+    "items": [
+      "Usa le frecce per muovere i pezzi a sinistra/destra",
+      "Freccia su o X per ruotare in senso orario",
+      "Freccia giù per caduta soft (più veloce)",
+      "Spazio per caduta hard (posizionamento istantaneo)",
+      "Elimina le linee riempiendo ogni cella di una riga"
+    ]
+  },
+  "tips": {
+    "title": "Consigli",
+    "items": [
+      "Costruisci una base piana - i vuoti sono difficili da riempire",
+      "Mantieni le opzioni aperte - non chiuderti troppo presto",
+      "Usa gli T-spin per punti bonus",
+      "Guarda il prossimo pezzo per pianificare"
+    ]
+  },
+  "scoreboard": {
+    "score": "Punteggio",
+    "level": "Livello",
+    "lines": "Linee",
+    "next": "Prossimo",
+    "hold": "Tieni"
+  },
+  "status": {
+    "playing": "Giocando...",
+    "paused": "Pausa",
+    "game_over": "Fine Partita!"
+  },
+  "actions": {
+    "new_game": "Nuova Partita",
+    "pause": "Pausa",
+    "resume": "Riprendi"
+  },
+  "level_up": "Livello Superiore!",
+  "lines_cleared": "{{count}} linea(e) eliminata(e)!"
+}

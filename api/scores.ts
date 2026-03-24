@@ -6,7 +6,9 @@ const supabase = createClient(
   process.env.SUPABASE_ANON_KEY!
 )
 
-const ALLOWED_GAMES = ['snake', '2048', 'flappy-bird', 'brick-breaker', 'memory-game']
+const ALLOWED_GAMES = ['snake', '2048', 'flappy-bird', 'brick-breaker', 'memory-game', 'tetris']
+
+const ALLOWED_METRICS = ['score', 'lines']
 
 const PROFANITY_LIST = [
   'fuck', 'shit', 'ass', 'bitch', 'damn', 'bastard', 'crap', 'dick',
@@ -22,6 +24,7 @@ interface ScoreSubmission {
   game: string
   username: string
   score: number
+  metric?: string
   sessionId?: string
   sessionDuration?: number
   moves?: number
@@ -32,7 +35,8 @@ const GAME_MINIMUMS: Record<string, { minDuration: number; minMoves: number }> =
   '2048': { minDuration: 3000, minMoves: 5 },
   'flappy-bird': { minDuration: 3000, minMoves: 5 },
   'brick-breaker': { minDuration: 5000, minMoves: 10 },
-  'memory-game': { minDuration: 10000, minMoves: 8 }
+  'memory-game': { minDuration: 10000, minMoves: 8 },
+  tetris: { minDuration: 3000, minMoves: 5 }
 }
 
 export default async function handler(
@@ -51,7 +55,7 @@ export default async function handler(
   if (request.method === 'POST') {
     try {
       const body = request.body as ScoreSubmission
-      const { game, username, score, sessionId, sessionDuration, moves } = body
+      const { game, username, score, metric = 'score', sessionId, sessionDuration, moves } = body
 
       if (!game || !username || score === undefined) {
         return response.status(400).json({ error: 'Missing required fields' })
@@ -59,6 +63,12 @@ export default async function handler(
 
       if (!ALLOWED_GAMES.includes(game)) {
         return response.status(400).json({ error: 'Invalid game' })
+      }
+
+      // Validate metric if provided
+      const finalMetric = metric || 'score'
+      if (!ALLOWED_METRICS.includes(finalMetric)) {
+        return response.status(400).json({ error: 'Invalid metric' })
       }
 
       const cleanUsername = username.toUpperCase().replace(/[^A-Z0-9]/g, '')
@@ -95,7 +105,7 @@ export default async function handler(
 
       const { error } = await supabase
         .from('high_scores')
-        .insert({ game, username: cleanUsername, score })
+        .insert({ game, username: cleanUsername, score, metric: finalMetric })
 
       if (error) {
         console.error('Supabase error:', error)
@@ -111,16 +121,22 @@ export default async function handler(
 
   if (request.method === 'GET') {
     const game = request.query.game as string
+    const metric = (request.query.metric as string) || 'score'
     const limit = Math.min(parseInt((request.query.limit as string) || '10'), 100)
 
     if (!game || !ALLOWED_GAMES.includes(game)) {
       return response.status(400).json({ error: 'Invalid game parameter' })
     }
 
+    if (!ALLOWED_METRICS.includes(metric)) {
+      return response.status(400).json({ error: 'Invalid metric parameter' })
+    }
+
     const { data, error } = await supabase
       .from('high_scores')
       .select('username, score, created_at')
       .eq('game', game)
+      .eq('metric', metric)
       .order('score', { ascending: false })
       .limit(limit)
 

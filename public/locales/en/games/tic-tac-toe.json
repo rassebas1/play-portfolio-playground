@@ -33,5 +33,28 @@
   "cells": {
     "aria_label_empty": "Row {{row}}, Column {{col}}, empty",
     "aria_label_filled": "Row {{row}}, Column {{col}}, {{player}}"
+  },
+  "ai": {
+    "title": "Play vs AI",
+    "mode": "Game Mode",
+    "pvp": "2 Players",
+    "pve": "vs AI",
+    "difficulty": {
+      "label": "Difficulty",
+      "beginner": "Beginner",
+      "beginner_desc": "Plays completely randomly",
+      "easy": "Easy",
+      "easy_desc": "Blocks & takes winning moves",
+      "medium": "Medium",
+      "medium_desc": "Looks 3 moves ahead",
+      "hard": "Hard",
+      "hard_desc": "Almost unbeatable",
+      "expert": "Expert",
+      "expert_desc": "Perfect with occasional mistake"
+    },
+    "thinking": "AI is thinking...",
+    "your_turn": "Your turn!",
+    "you_win": "You win!",
+    "ai_wins": "AI wins!"
   }
 }

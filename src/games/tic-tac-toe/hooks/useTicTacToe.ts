@@ -4,8 +4,9 @@
  * Custom React hook for managing the state and logic of the Tic Tac Toe game.
  * It handles the game board, player turns, win/draw conditions, and integrates
  * with the high score system to track the fewest moves to win.
+ * Supports both PvP and PvE modes with 5 AI difficulty levels.
  */
-import { useState, useCallback, useMemo, useEffect } from 'react';
+import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import type {
   TicTacToeState,
   Board,
@@ -13,9 +14,12 @@ import type {
   CellValue,
   Position,
   WinningLine,
-  GameResult
+  GameResult,
+  Difficulty,
+  GameMode
 } from '../types';
 import { useHighScores } from '@/hooks/useHighScores';
+import { getAIMove } from '../ai/ticTacToeAI';
 
 /**
  * Creates an empty 3x3 game board, initialized with null values.
@@ -40,6 +44,7 @@ const initialState: TicTacToeState = {
 
 /**
  * Custom hook for managing Tic Tac Toe game state and logic.
+ * Supports both PvP and PvE modes.
  *
  * @returns {object} An object containing:
  *   - {TicTacToeState} gameState - The current state of the Tic Tac Toe game.
@@ -49,13 +54,27 @@ const initialState: TicTacToeState = {
  *   - {function(): void} resetGame - Function to reset the game to its initial state.
  *   - {function(row: number, col: number): boolean} isCellInWinningLine - Checks if a cell is part of the winning line.
  *   - {function(row: number, col: number): CellValue} getCellValue - Gets the value of a cell at a specific position.
+ *   - {Difficulty} difficulty - Current AI difficulty level.
+ *   - {function(Difficulty): void} setDifficulty - Function to set AI difficulty.
+ *   - {GameMode} gameMode - Current game mode (pvp or pve).
+ *   - {function(GameMode): void} setGameMode - Function to set game mode.
+ *   - {boolean} isAIThinking - Whether the AI is currently making a move.
  */
 export const useTicTacToe = () => {
   // State to hold the entire game state
   const [gameState, setGameState] = useState<TicTacToeState>(initialState);
+  
+  // AI state
+  const [difficulty, setDifficulty] = useState<Difficulty>('medium');
+  const [gameMode, setGameMode] = useState<GameMode>('pvp');
+  const [isAIThinking, setIsAIThinking] = useState(false);
+  
   // useHighScores hook integrates persistent high score tracking for the 'tic-tac-toe' game
   // High score for Tic Tac Toe is the fewest moves to win, so we'll use the 'lowest' strategy.
   const { highScore, updateHighScore } = useHighScores('tic-tac-toe');
+  
+  // Ref to track AI timeout for cleanup
+  const aiTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   /**
    * Checks if there's a winner on the board by iterating through all possible winning patterns.
@@ -111,6 +130,62 @@ export const useTicTacToe = () => {
   }, []); // No dependencies, stable callback
 
   /**
+   * Executes AI move after a delay
+   */
+  const executeAIMove = useCallback(() => {
+    if (aiTimeoutRef.current) {
+      clearTimeout(aiTimeoutRef.current);
+    }
+
+    setIsAIThinking(true);
+
+    // 400ms delay for realism
+    aiTimeoutRef.current = setTimeout(() => {
+      setGameState(prevState => {
+        if (prevState.gameResult !== 'ongoing' || prevState.currentPlayer !== 'O') {
+          setIsAIThinking(false);
+          return prevState;
+        }
+
+        const aiResult = getAIMove(prevState.board, difficulty, 'O');
+        const { row, col } = aiResult.position;
+
+        if (row === -1 || col === -1) {
+          setIsAIThinking(false);
+          return prevState;
+        }
+
+        const newBoard = prevState.board.map((boardRow, r) =>
+          boardRow.map((cell, c) => 
+            r === row && c === col ? 'O' : cell
+          )
+        );
+
+        const winningLine = checkWinner(newBoard);
+        let gameResult: GameResult = 'ongoing';
+        if (winningLine) {
+          gameResult = 'win';
+        } else if (isBoardFull(newBoard)) {
+          gameResult = 'draw';
+        }
+
+        setIsAIThinking(false);
+
+        return {
+          ...prevState,
+          board: newBoard,
+          currentPlayer: 'X',
+          gameResult,
+          winner: winningLine?.player || null,
+          winningLine,
+          moveCount: prevState.moveCount + 1,
+          gameStarted: true
+        };
+      });
+    }, 400 + Math.random() * 200); // 400-600ms range
+  }, [difficulty, checkWinner, isBoardFull]);
+
+  /**
    * Handles a player's move at the specified row and column.
    * Updates the board, checks for a win or draw, and switches the current player.
    * This function is memoized using `useCallback`.
@@ -120,6 +195,9 @@ export const useTicTacToe = () => {
    * @returns {void}
    */
   const makeMove = useCallback((row: number, col: number) => {
+    // Prevent moves during AI turn or when game is over
+    if (isAIThinking) return;
+
     setGameState(prevState => {
       // 1. Validate the move: ensure the game is ongoing and the selected cell is empty.
       if (prevState.gameResult !== 'ongoing' || prevState.board[row][col] !== null) {
@@ -154,7 +232,7 @@ export const useTicTacToe = () => {
         gameStarted: true // Mark game as started
       };
     });
-  }, [checkWinner, isBoardFull]); // Dependencies for callback stability
+  }, [checkWinner, isBoardFull, isAIThinking]); // Dependencies for callback stability
 
   /**
    * Resets the game to its initial state.
@@ -162,8 +240,32 @@ export const useTicTacToe = () => {
    * @returns {void}
    */
   const resetGame = useCallback(() => {
+    // Clear any pending AI timeout
+    if (aiTimeoutRef.current) {
+      clearTimeout(aiTimeoutRef.current);
+      aiTimeoutRef.current = null;
+    }
+    setIsAIThinking(false);
     setGameState(initialState); // Reset to the predefined initial state
   }, []); // No dependencies, stable callback
+
+  // Effect to trigger AI move when it's AI's turn
+  useEffect(() => {
+    // Only trigger in PVE mode, when game is ongoing, and it's O's turn (AI)
+    if (gameMode === 'pve' && 
+        gameState.gameResult === 'ongoing' && 
+        gameState.currentPlayer === 'O' &&
+        gameState.gameStarted) {
+      executeAIMove();
+    }
+
+    // Cleanup on unmount
+    return () => {
+      if (aiTimeoutRef.current) {
+        clearTimeout(aiTimeoutRef.current);
+      }
+    };
+  }, [gameState.currentPlayer, gameState.gameResult, gameState.gameStarted, gameMode]);
 
   // Effect to update the high score (fewest moves to win) when the game is won.
   useEffect(() => {
@@ -177,8 +279,8 @@ export const useTicTacToe = () => {
    * Checks if a cell at a given position is part of the winning line.
    * This function is memoized using `useCallback`.
    *
-   * @param {number} row - The row index of the cell.
-   * @param {number} col - The column index of the cell.
+   * @param {number} row - The cell.
+   * @param {number row index of the} col - The column index of the cell.
    * @returns {boolean} True if the cell is part of the winning line, false otherwise.
    */
   const isCellInWinningLine = useCallback((row: number, col: number): boolean => {
@@ -202,14 +304,16 @@ export const useTicTacToe = () => {
     return gameState.board[row][col];
   }, [gameState.board]); // Dependency on board state
 
-  /**
-   * Memoized game status message for display.
-   * Updates only when relevant game state properties change.
-   *
-   * @returns {string} A descriptive message about the current game status.
-   */
+  // Memoized game status message for display.
   const gameStatusMessage = useMemo(() => {
     if (gameState.gameResult === 'win') {
+      // In PVE mode, show who won
+      if (gameMode === 'pve') {
+        if (gameState.winner === 'X') {
+          return 'You win!';
+        }
+        return 'AI wins!';
+      }
       return `Player ${gameState.winner} wins!`;
     }
     if (gameState.gameResult === 'draw') {
@@ -218,8 +322,15 @@ export const useTicTacToe = () => {
     if (!gameState.gameStarted) {
       return "Click any cell to start playing!";
     }
+    // In PVE mode, show "Your turn" or "AI is thinking"
+    if (gameMode === 'pve' && gameState.currentPlayer === 'X') {
+      return 'Your turn!';
+    }
+    if (gameMode === 'pve' && gameState.currentPlayer === 'O') {
+      return 'AI is thinking...';
+    }
     return `Current player: ${gameState.currentPlayer}`;
-  }, [gameState.gameResult, gameState.winner, gameState.currentPlayer, gameState.gameStarted]); // Dependencies for memoization
+  }, [gameState.gameResult, gameState.winner, gameState.currentPlayer, gameState.gameStarted, gameMode]); // Dependencies for memoization
 
   // Return all relevant game state, high score, and control functions
   return {
@@ -234,6 +345,13 @@ export const useTicTacToe = () => {
     
     // Utilities
     isCellInWinningLine,
-    getCellValue
+    getCellValue,
+    
+    // AI State
+    difficulty,
+    setDifficulty,
+    gameMode,
+    setGameMode,
+    isAIThinking,
   };
 };
