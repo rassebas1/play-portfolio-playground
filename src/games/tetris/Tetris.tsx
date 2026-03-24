@@ -93,6 +93,7 @@ const Tetris: React.FC = () => {
     holdPiece,
     canHold,
     score,
+    highScore,
     level,
     lines,
     status,
@@ -282,7 +283,7 @@ const Tetris: React.FC = () => {
           isGameOver={showGameOver}
           isWon={false}
           score={score}
-          bestScore={0}
+          bestScore={highScore ?? 0}
           game="tetris"
           session={session}
           restartGame={handleRestart}

@@ -15,6 +15,7 @@ const GAME_NAME_MAP: Record<string, GameName> = {
   'brickbreaker': 'brick-breaker',
   'memory-game': 'memory-game',
   'memory': 'memory-game',
+  'tetris': 'tetris',
 };
 
 /**

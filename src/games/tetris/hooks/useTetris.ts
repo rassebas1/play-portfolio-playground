@@ -8,6 +8,7 @@ import { TetrisState, TetrisAction } from '../types';
 import { tetrisReducer, createInitialState } from '../GameReducer';
 import { useTetrisInput, useTetrisSwipe } from './useTetrisInput';
 import { getSpeedForLevel } from '../constants';
+import { useHighScores } from '@/hooks/useHighScores';
 
 interface UseTetrisOptions {
   onGameOver?: (score: number, level: number, lines: number) => void;
@@ -15,6 +16,9 @@ interface UseTetrisOptions {
 
 export const useTetris = (options: UseTetrisOptions = {}) => {
   const [state, dispatch] = useReducer(tetrisReducer, createInitialState());
+  
+  // High score management
+  const { highScore, updateHighScore } = useHighScores('tetris');
   
   // Track previous status for game over detection
   const prevStatusRef = useRef(state.status);
@@ -121,13 +125,15 @@ export const useTetris = (options: UseTetrisOptions = {}) => {
     };
   }, [state.status, state.level, tick]);
 
-  // Handle game over callback
+  // Handle game over - update high score
   useEffect(() => {
     if (prevStatusRef.current !== 'game_over' && state.status === 'game_over') {
+      // Update high score
+      updateHighScore(state.score);
       options.onGameOver?.(state.score, state.level, state.lines);
     }
     prevStatusRef.current = state.status;
-  }, [state.status, state.score, state.level, state.lines, options]);
+  }, [state.status, state.score, state.level, state.lines, options, updateHighScore]);
 
   // Clear animation lines after a delay
   useEffect(() => {
@@ -147,6 +153,7 @@ export const useTetris = (options: UseTetrisOptions = {}) => {
     holdPiece: state.holdPiece,
     canHold: state.canHold,
     score: state.score,
+    highScore,
     level: state.level,
     lines: state.lines,
     status: state.status,
