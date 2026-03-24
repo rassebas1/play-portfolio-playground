@@ -101,6 +101,13 @@
     "highest_tile": "Mejor Ficha",
     "level": "Nivel"
   },
+  "leaderboard": {
+    "score": "Puntos",
+    "lines": "Líneas",
+    "bricks": "Ladrillos",
+    "highest_tile": "Mejor Ficha",
+    "level": "Nivel"
+  },
   "hero_tagline": "Conectando Ingeniería de Software, Seguridad Middleware & Big Data",
   "hero_role_1": "Ingeniero de Software",
   "hero_role_2": "Desarrollador Full-Stack",

@@ -101,6 +101,13 @@
     "highest_tile": "Highest Tile",
     "level": "Level"
   },
+  "leaderboard": {
+    "score": "Score",
+    "lines": "Lines",
+    "bricks": "Bricks",
+    "highest_tile": "Highest Tile",
+    "level": "Level"
+  },
   "hero_tagline": "Bridging Software Engineering, Middleware Security & Big Data",
   "hero_role_1": "Software Engineer",
   "hero_role_2": "Full-Stack Developer",

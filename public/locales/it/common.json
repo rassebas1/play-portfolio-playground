@@ -101,6 +101,13 @@
     "highest_tile": "Tessera Più Alta",
     "level": "Livello"
   },
+  "leaderboard": {
+    "score": "Punteggio",
+    "lines": "Linee",
+    "bricks": "Mattoni",
+    "highest_tile": "Tessera Più Alta",
+    "level": "Livello"
+  },
   "hero_tagline": "Collegando Ingegneria del Software, Sicurezza Middleware & Big Data",
   "hero_role_1": "Ingegnere del Software",
   "hero_role_2": "Sviluppatore Full-Stack",

@@ -101,6 +101,13 @@
     "highest_tile": "Meilleure Tuile",
     "level": "Niveau"
   },
+  "leaderboard": {
+    "score": "Score",
+    "lines": "Lignes",
+    "bricks": "Briques",
+    "highest_tile": "Meilleure Tuile",
+    "level": "Niveau"
+  },
   "hero_tagline": "Ingénierie Logicielle, Sécurité Middleware & Big Data",
   "hero_role_1": "Ingénieur Logiciel",
   "hero_role_2": "Développeur Full-Stack",
