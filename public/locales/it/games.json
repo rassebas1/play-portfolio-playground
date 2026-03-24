@@ -23,5 +23,9 @@
   "brickBreaker": {
     "name": "Distruggi Mattoni",
     "description": "Distruggi i mattoni con una palla e una racchetta. Distruggi tutti i mattoni per completare il livello!"
+  },
+  "tetris": {
+    "name": "Tetris",
+    "description": "Impila i blocchi che cadono per eliminare le linee. Azione classica di puzzle!"
   }
 }
