@@ -94,6 +94,7 @@ const Tetris: React.FC = () => {
     canHold,
     score,
     highScore,
+    bestLines,
     level,
     lines,
     status,
@@ -110,32 +111,26 @@ const Tetris: React.FC = () => {
     doHoldPiece,
   } = useTetris();
 
-  // Session tracking for leaderboard
+  // Local session state for score submission (like Snake does)
   const [session, setSession] = useState<GameSession | null>(null);
+  const [prevPieceType, setPrevPieceType] = useState<string | null>(null);
   const [showGameOver, setShowGameOver] = useState(false);
 
   // Initialize game on mount
   useEffect(() => {
     startGame();
+    setSession(createGameSession('tetris'));
   }, []);
 
-  // Session tracking
+  // Track moves - increment when new piece spawns (previous piece locked)
   useEffect(() => {
-    const gameStarted = score > 0 || lines > 0;
-    if (gameStarted && !session) {
-      setSession(createGameSession('tetris'));
+    if (status === 'playing' && currentPiece && prevPieceType && currentPiece.type !== prevPieceType) {
+      setSession(prev => prev ? { ...prev, moves: prev.moves + 1 } : null);
     }
-    if (!gameStarted && status === 'idle') {
-      setSession(null);
+    if (currentPiece) {
+      setPrevPieceType(currentPiece.type);
     }
-  }, [score, lines, status, session]);
-
-  // Track moves
-  useEffect(() => {
-    if (session && currentPiece && status === 'playing') {
-      // Tetris doesn't have "moves" in the traditional sense, track by time
-    }
-  }, [session, currentPiece, status]);
+  }, [currentPiece, status, prevPieceType]);
 
   // Show game over modal when game ends
   useEffect(() => {
@@ -287,6 +282,7 @@ const Tetris: React.FC = () => {
           game="tetris"
           session={session}
           restartGame={handleRestart}
+          metrics={{ score, lines, level }}
         />
 
         {/* Status indicator */}
@@ -311,7 +307,7 @@ const Tetris: React.FC = () => {
 
       {/* Leaderboard */}
       <div className="mt-8 max-w-2xl mx-auto">
-        <Leaderboard game="tetris" limit={10} currentSession={session} />
+        <Leaderboard game="tetris" limit={10} currentSession={session} finalScore={score} />
       </div>
     </div>
   );

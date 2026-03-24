@@ -116,6 +116,7 @@ const BrickBreaker: React.FC = () => {
           game="brick-breaker"
           session={session}
           restartGame={restartGame} // Function to restart the game
+          metrics={{ score: state.score }}
         />
       )}
       

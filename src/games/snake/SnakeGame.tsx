@@ -126,7 +126,8 @@ const SnakeGame: React.FC = () => {
                   bestScore={highScore || 0} 
                   game="snake"
                   session={session}
-                  restartGame={resetGame} 
+                  restartGame={resetGame}
+                  metrics={{ score }}
                 />
               )}
 

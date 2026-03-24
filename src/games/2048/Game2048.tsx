@@ -215,6 +215,7 @@ const Game2048: React.FC = () => {
           canContinue={true}
           continueGame={handleContinue}
           restartGame={handleRestart}
+          metrics={{ score, highestTile }}
         />
 
         {/* Game Over Modal (when truly game over - no moves left) */}
@@ -226,6 +227,7 @@ const Game2048: React.FC = () => {
           game="2048"
           session={session}
           restartGame={restartGame}
+          metrics={{ score, highestTile }}
         />
 
         {/* Accessibility: Screen reader announcements */}

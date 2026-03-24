@@ -25,6 +25,7 @@ interface ScoreSubmission {
   username: string
   score: number
   metric?: string
+  metrics?: Record<string, number>
   sessionId?: string
   sessionDuration?: number
   moves?: number
@@ -55,7 +56,7 @@ export default async function handler(
   if (request.method === 'POST') {
     try {
       const body = request.body as ScoreSubmission
-      const { game, username, score, metric = 'score', sessionId, sessionDuration, moves } = body
+      const { game, username, score, metric, metrics, sessionId, sessionDuration, moves } = body
 
       if (!game || !username || score === undefined) {
         return response.status(400).json({ error: 'Missing required fields' })
@@ -63,12 +64,6 @@ export default async function handler(
 
       if (!ALLOWED_GAMES.includes(game)) {
         return response.status(400).json({ error: 'Invalid game' })
-      }
-
-      // Validate metric if provided
-      const finalMetric = metric || 'score'
-      if (!ALLOWED_METRICS.includes(finalMetric)) {
-        return response.status(400).json({ error: 'Invalid metric' })
       }
 
       const cleanUsername = username.toUpperCase().replace(/[^A-Z0-9]/g, '')
@@ -103,13 +98,39 @@ export default async function handler(
         }
       }
 
-      const { error } = await supabase
-        .from('high_scores')
-        .insert({ game, username: cleanUsername, score, metric: finalMetric })
+      // Determine which metrics to insert
+      const metricsToInsert: { metric: string; score: number }[] = []
 
-      if (error) {
-        console.error('Supabase error:', error)
-        return response.status(500).json({ error: 'Failed to save score' })
+      if (metrics && typeof metrics === 'object') {
+        // New format: insert one row per metric
+        for (const [m, s] of Object.entries(metrics)) {
+          if (typeof s !== 'number' || s < 0) {
+            return response.status(400).json({ error: `Invalid score for metric: ${m}` })
+          }
+          if (!ALLOWED_METRICS.includes(m)) {
+            return response.status(400).json({ error: `Invalid metric: ${m}` })
+          }
+          metricsToInsert.push({ metric: m, score: s })
+        }
+      } else {
+        // Backward compatible: use single metric
+        const finalMetric = metric || 'score'
+        if (!ALLOWED_METRICS.includes(finalMetric)) {
+          return response.status(400).json({ error: 'Invalid metric' })
+        }
+        metricsToInsert.push({ metric: finalMetric, score })
+      }
+
+      // Insert all metrics
+      for (const { metric: m, score: s } of metricsToInsert) {
+        const { error } = await supabase
+          .from('high_scores')
+          .insert({ game, username: cleanUsername, score: s, metric: m })
+
+        if (error) {
+          console.error('Supabase error:', error)
+          return response.status(500).json({ error: 'Failed to save score' })
+        }
       }
 
       return response.status(200).json({ success: true })

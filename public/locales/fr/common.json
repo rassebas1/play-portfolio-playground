@@ -83,6 +83,7 @@
     "points": "Points",
     "date": "Date",
     "submit_title": "Soumettez Votre Score",
+    "new_high_score": "🏆 Nouveau Record!",
     "username_label": "Entrez 3 lettres",
     "username_placeholder": "ABC",
     "username_hint": "Entrez exactement 3 lettres ou chiffres",
@@ -95,6 +96,13 @@
     "offline": "Hors ligne",
     "offline_notice": "Vous consultez les scores en cache hors ligne.",
     "last_updated": "Dernière mise à jour: {{time}}",
+    "score": "Score",
+    "lines": "Lignes",
+    "bricks": "Briques",
+    "highest_tile": "Meilleure Tuile",
+    "level": "Niveau"
+  },
+  "leaderboard": {
     "score": "Score",
     "lines": "Lignes",
     "bricks": "Briques",

@@ -105,6 +105,7 @@ const FlappyBird: React.FC = () => {
           game="flappy-bird" // Game name for score submission
           session={session} // Game session for score submission
           restartGame={restartGame} // Function to restart the game
+          metrics={{ score: gameState.score }}
         />
       </div>
 
