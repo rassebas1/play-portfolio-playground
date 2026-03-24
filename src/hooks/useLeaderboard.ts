@@ -292,7 +292,8 @@ export function useScoreSubmitter(game: GameName) {
   const submit = useCallback(async (
     username: string,
     score: number,
-    session: GameSession | null
+    session: GameSession | null,
+    metric: string = 'score'
   ): Promise<boolean> => {
     if (!username || username.length < USERNAME_MIN_LENGTH || username.length > USERNAME_MAX_LENGTH) {
       setError(`Username must be ${USERNAME_MIN_LENGTH}-${USERNAME_MAX_LENGTH} characters`)
@@ -311,6 +312,7 @@ export function useScoreSubmitter(game: GameName) {
         game,
         username: username.toUpperCase(),
         score,
+        metric,
         sessionId: session?.id,
         sessionDuration,
         moves,

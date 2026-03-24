@@ -32,6 +32,7 @@ interface GameOverModalProps {
   canContinue?: boolean;
   continueGame?: () => void;
   restartGame: () => void;
+  metric?: string;
 }
 
 /**
@@ -52,6 +53,7 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
   canContinue = false,
   continueGame,
   restartGame,
+  metric = 'score',
 }) => {
   const navigate = useNavigate();
   const { t } = useTranslation('common');
@@ -99,6 +101,7 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
               game={game}
               finalScore={score}
               session={session}
+              metric={metric}
             />
           )}
 

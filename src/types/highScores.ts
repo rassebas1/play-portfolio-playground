@@ -21,6 +21,7 @@ export interface ScoreSubmission {
   game: GameName
   username: string
   score: number
+  metric?: string
   sessionId?: string
   sessionDuration?: number
   moves?: number

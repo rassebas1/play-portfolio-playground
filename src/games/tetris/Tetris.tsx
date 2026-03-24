@@ -306,7 +306,7 @@ const Tetris: React.FC = () => {
 
       {/* Leaderboard */}
       <div className="mt-8 max-w-2xl mx-auto">
-        <Leaderboard game="tetris" limit={10} currentSession={session} />
+        <Leaderboard game="tetris" limit={10} currentSession={session} finalScore={score} />
       </div>
     </div>
   );

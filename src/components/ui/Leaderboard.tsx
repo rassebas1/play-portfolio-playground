@@ -414,9 +414,10 @@ interface ScoreSubmitterProps {
   game: GameName
   finalScore: number
   session: GameSession
+  metric?: string
 }
 
-export function ScoreSubmitter({ game, finalScore, session }: ScoreSubmitterProps) {
+export function ScoreSubmitter({ game, finalScore, session, metric = 'score' }: ScoreSubmitterProps) {
   const { t } = useTranslation('common')
   const [username, setUsername] = useState('')
   const [usernameError, setUsernameError] = useState<string | null>(null)
@@ -431,7 +432,7 @@ export function ScoreSubmitter({ game, finalScore, session }: ScoreSubmitterProp
       setUsernameError(validation.error || 'Invalid username')
       return
     }
-    await submit(username, finalScore, session)
+    await submit(username, finalScore, session, metric)
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
