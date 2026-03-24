@@ -8,7 +8,7 @@ const supabase = createClient(
 
 const ALLOWED_GAMES = ['snake', '2048', 'flappy-bird', 'brick-breaker', 'memory-game', 'tetris']
 
-const ALLOWED_METRICS = ['score', 'lines']
+const ALLOWED_METRICS = ['score', 'lines', 'level', 'bricks', 'highestTile']
 
 const PROFANITY_LIST = [
   'fuck', 'shit', 'ass', 'bitch', 'damn', 'bastard', 'crap', 'dick',

@@ -169,12 +169,95 @@ This document tracks the features and tasks that need to be completed for the pr
 
 #### 2048 (P2)
 - [ ] Add a "You Win!" message that is more subtle and allows the user to continue playing without a modal.
+- [ ] Add slide sound effects (optional)
 
 #### Flappy Bird (P2)
 - [ ] Add a "Ready, Set, Go!" countdown before the game starts.
+- [ ] Implement difficulty increase (faster pipes over time) - optional
+- [ ] Implement smooth bird wing flapping animation
+- [ ] Add parallax scrolling background
+- [ ] Create score popup animation when passing pipe
+- [ ] Add particle effects on collision
+- [ ] Implement flap sound effect
+- [ ] Add score ding sound
+- [ ] Create collision sound
+- [ ] Add visual feedback for flap action
 
 #### Tic-Tac-Toe (P1)
 - [ ] Add an AI opponent.
+- [ ] Track move history for undo (optional)
+- [ ] Implement score tracking across multiple games
+- [ ] Add difficulty levels for AI (easy, medium, hard)
+- [ ] Show game statistics (wins, losses, draws)
+- [ ] Implement symbol placement animation
+- [ ] Create winning line animation
+- [ ] Add sound effects for moves and wins
+- [ ] Create draw animation
+- [ ] Store game statistics in localStorage
+
+#### Memory Game
+- [ ] Prevent flipping during match checking delay
+- [ ] Calculate star rating based on moves (optional)
+- [ ] Show matched pairs counter
+- [ ] Add matched cards celebration effect
+- [ ] Create card shake animation for non-match
+- [ ] Add success sound for matches
+- [ ] Create flip sound effect
+- [ ] Implement victory fanfare
+- [ ] Add theme options (animals, emojis, colors, etc.)
+- [ ] Create combo/streak system for consecutive matches
+
+#### Tetris
+- [ ] Implement piece spawning logic (random piece generation)
+- [ ] Create collision detection system (walls, floor, other pieces)
+- [ ] Implement horizontal movement (left/right) with collision checks
+- [ ] Implement rotation logic with wall kicks
+- [ ] Add soft drop (faster fall) and hard drop (instant drop) mechanics
+- [ ] Implement line clearing detection and scoring
+- [ ] Create gravity system (automatic piece falling based on level)
+- [ ] Add scoring system (points for lines cleared, bonus for combos)
+- [ ] Implement level progression (speed increases)
+- [ ] Create "ghost piece" preview (shows where piece will land)
+- [ ] Add next piece preview display
+- [ ] Implement hold piece functionality (optional)
+- [ ] Add game over detection (piece can't spawn)
+- [ ] Handle keyboard controls (arrow keys, space, P for pause)
+- [ ] Build game board rendering component
+- [ ] Design score, level, and next piece display
+- [ ] Add pause/resume functionality
+- [ ] Create start screen and game over screen
+- [ ] Add restart button
+- [ ] Implement smooth animations for piece movement
+- [ ] Add visual feedback for line clears
+- [ ] Create sound effects (optional)
+- [ ] Add color schemes for different tetrominoes
+- [ ] Implement local high score storage
+
+#### Minesweeper
+- [ ] Implement mine placement algorithm (random, avoid first click)
+- [ ] Create adjacent mines calculation for all cells
+- [ ] Implement flood fill algorithm for revealing empty cells
+- [ ] Add flag/unflag cell functionality
+- [ ] Create win condition checker (all non-mine cells revealed)
+- [ ] Implement lose condition (mine revealed)
+- [ ] Add first-click safety (ensure first click is always safe)
+- [ ] Implement chord/double-click reveal (reveal adjacent cells if flags match number)
+- [ ] Create mine counter (total mines - flags placed)
+- [ ] Add game timer (starts on first click)
+- [ ] Prevent actions after game over
+- [ ] Handle left-click to reveal cells
+- [ ] Handle right-click to flag cells
+- [ ] Build board grid rendering component
+- [ ] Create cell component with different states (hidden, revealed, flagged, mine, number)
+- [ ] Design mine counter and timer display
+- [ ] Add difficulty selector
+- [ ] Create face button (reset game, shows emoji based on game state)
+- [ ] Add number colors (1-8 different colors)
+- [ ] Implement mine reveal animation on game over
+- [ ] Add flag and mine icons/emojis
+- [ ] Create victory and defeat screens
+- [ ] Add local best time storage per difficulty
+- [ ] Implement question mark flag option (optional)
 
 ### Animations (P2)
 - [ ] **Tic Tac Toe:** Animate 'X'/'O' appearance, winning line, and reset button.

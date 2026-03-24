@@ -70,17 +70,7 @@ vi.mock('react-i18next', () => ({
   }),
 }));
 
-// Mock skills_consts
-vi.mock('@/utils/skills_consts', () => ({
-  skillCategories: {
-    frontend: { en: 'Frontend', es: 'Frontend', fr: 'Frontend' },
-    backend: { en: 'Backend', es: 'Backend', fr: 'Backend' },
-  },
-  skills: {
-    frontend: ['React', 'TypeScript'],
-    backend: ['Node.js', 'Express'],
-  },
-}));
+
 
 describe('Skills', () => {
   it('renders the skills categories and skills', () => {
