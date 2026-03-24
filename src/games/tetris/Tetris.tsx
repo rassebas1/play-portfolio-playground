@@ -18,6 +18,7 @@ import { GameHeader } from '@/components/game/GameHeader';
 import { GameControls } from '@/components/game/GameControls';
 import { Instructions } from '@/components/game/Instructions';
 import { GameOverModal } from '@/components/game/GameOverModal';
+import { GameSession, createGameSession } from '@/types/highScores';
 
 // Tetromino preview component
 const TetrominoPreview = ({
@@ -108,17 +109,28 @@ const Tetris: React.FC = () => {
     rotateClockwise,
     hardDrop,
     doHoldPiece,
-    session,
-    startSession,
   } = useTetris();
 
+  // Local session state for score submission (like Snake does)
+  const [session, setSession] = useState<GameSession | null>(null);
+  const [prevPieceType, setPrevPieceType] = useState<string | null>(null);
   const [showGameOver, setShowGameOver] = useState(false);
 
   // Initialize game on mount
   useEffect(() => {
     startGame();
-    startSession();
+    setSession(createGameSession('tetris'));
   }, []);
+
+  // Track moves - increment when new piece spawns (previous piece locked)
+  useEffect(() => {
+    if (status === 'playing' && currentPiece && prevPieceType && currentPiece.type !== prevPieceType) {
+      setSession(prev => prev ? { ...prev, moves: prev.moves + 1 } : null);
+    }
+    if (currentPiece) {
+      setPrevPieceType(currentPiece.type);
+    }
+  }, [currentPiece, status, prevPieceType]);
 
   // Show game over modal when game ends
   useEffect(() => {
