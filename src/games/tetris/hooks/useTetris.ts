@@ -21,12 +21,7 @@ export const useTetris = (options: UseTetrisOptions = {}) => {
   const { highScore, updateHighScore, submitScore: submitScoreToServer, session, startSession, recordMove, endSession } = useHighScores('tetris', 'score');
   
   // Best lines tracking - lines metric (using server-backed hook)
-  const { highScore: bestLines, updateHighScore: updateBestLines } = useHighScores('tetris', 'lines');
-  
-  // Submit lines to server
-  const submitLinesToServer = useCallback(async (lines: number): Promise<boolean> => {
-    return submitScoreToServer(lines);
-  }, [submitScoreToServer]);
+  const { highScore: bestLines, updateHighScore: updateBestLines, submitScore: submitLinesToServer } = useHighScores('tetris', 'lines');
   
   // Track previous piece for move counting
   const prevPieceRef = useRef(state.currentPiece);
@@ -143,12 +138,14 @@ export const useTetris = (options: UseTetrisOptions = {}) => {
       updateHighScore(state.score);
       // Update best lines
       updateBestLines(state.lines);
+      // Submit lines to server (fire and forget)
+      submitLinesToServer(state.lines);
       // End session
       endSession();
       options.onGameOver?.(state.score, state.level, state.lines);
     }
     prevStatusRef.current = state.status;
-  }, [state.status, state.score, state.level, state.lines, options, updateHighScore, updateBestLines, endSession]);
+  }, [state.status, state.score, state.level, state.lines, options, updateHighScore, updateBestLines, submitLinesToServer, endSession]);
 
   // Track moves - count piece locks (when currentPiece changes from not null to new piece)
   useEffect(() => {
@@ -209,5 +206,8 @@ export const useTetris = (options: UseTetrisOptions = {}) => {
     startSession,
     recordMove,
     endSession,
+    
+    // Submit lines to server
+    submitLinesToServer,
   };
 };
