@@ -23,5 +23,9 @@
   "brickBreaker": {
     "name": "Brick Breaker",
     "description": "Destroy bricks with a ball and paddle. Break all bricks to clear the level!"
+  },
+  "tetris": {
+    "name": "Tetris",
+    "description": "Stack falling blocks to clear lines. Classic puzzle action!"
   }
 }

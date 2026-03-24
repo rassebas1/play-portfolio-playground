@@ -6,6 +6,7 @@ import FlappyBird from '@/games/flappy-bird/FlappyBird';
 import SnakeGame from '@/games/snake/SnakeGame';
 import MemoryGame from '@/games/memory-game/MemoryGame';
 import BrickBreaker from '@/games/brick-breaker/BrickBreaker';
+import Tetris from '@/games/tetris/Tetris';
 import type { GameType } from '@/types/global';
 import useTitle from '@/hooks/use-title';
 import { Button } from '@/components/ui/button';
@@ -30,7 +31,7 @@ const GamePage: React.FC = () => {
    * @returns {id is GameType} True if the ID is a valid game type, false otherwise.
    */
   const isValidGameId = (id: string | undefined): id is GameType => {
-    const validGames: GameType[] = ['tic-tac-toe', '2048', 'flappy-bird', 'snake', 'memory-game', 'brick-breaker'];
+    const validGames: GameType[] = ['tic-tac-toe', '2048', 'flappy-bird', 'snake', 'memory-game', 'brick-breaker', 'tetris'];
     return id !== undefined && validGames.includes(id as GameType);
   };
 
@@ -62,6 +63,8 @@ const GamePage: React.FC = () => {
         return <MemoryGame />;
       case 'brick-breaker':
         return <BrickBreaker />;
+      case 'tetris':
+        return <Tetris />;
       default:
         return <Navigate to="/games" replace />;
     }

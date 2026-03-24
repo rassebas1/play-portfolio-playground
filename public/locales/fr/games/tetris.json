@@ -1,0 +1,46 @@
+{
+  "title": "Tetris",
+  "description": "Empilez des blocs qui tombent pour effacer des lignes. Action classique de puzzle !",
+  "instructions": {
+    "desktop": "Flèches pour déplacer/tourner • Espace pour tomber • P pour pause",
+    "mobile": "Glissez pour déplacer • Touchez pour tourner • Maintenez pour chute rapide"
+  },
+  "how_to_play": {
+    "title": "Comment Jouer",
+    "items": [
+      "Utilisez les flèches pour déplacer les pièces à gauche/droite",
+      "Flèche haut ou X pour tourner dans le sens horaire",
+      "Flèche bas pour chute douce (plus rapide)",
+      "Espace pour chute rapide (placement instantané)",
+      "Effacez les lignes en remplissant chaque cellule d'une rangée"
+    ]
+  },
+  "tips": {
+    "title": "Conseils",
+    "items": [
+      "Construisez une base plate - les lacunes sont difficiles à combler",
+      "Gardez vos options ouvertes - ne vous fermez pas trop tôt",
+      "Utilisez les T-spins pour des points bonus",
+      "Regardez la prochaine pièce pour planifier"
+    ]
+  },
+  "scoreboard": {
+    "score": "Score",
+    "level": "Niveau",
+    "lines": "Lignes",
+    "next": "Suivante",
+    "hold": "Conserver"
+  },
+  "status": {
+    "playing": "En cours...",
+    "paused": "En pause",
+    "game_over": "Fin de partie !"
+  },
+  "actions": {
+    "new_game": "Nouvelle Partie",
+    "pause": "Pause",
+    "resume": "Reprendre"
+  },
+  "level_up": "Niveau Supérieur !",
+  "lines_cleared": "{{count}} ligne(s) effacée(s) !"
+}
