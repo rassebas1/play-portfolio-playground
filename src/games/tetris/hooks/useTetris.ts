@@ -18,7 +18,7 @@ export const useTetris = (options: UseTetrisOptions = {}) => {
   const [state, dispatch] = useReducer(tetrisReducer, createInitialState());
   
   // High score management - score metric
-  const { highScore, updateHighScore, submitScore: submitScoreToServer } = useHighScores('tetris', 'score');
+  const { highScore, updateHighScore, submitScore: submitScoreToServer, session, startSession, recordMove, endSession } = useHighScores('tetris', 'score');
   
   // Best lines tracking - lines metric (using server-backed hook)
   const { highScore: bestLines, updateHighScore: updateBestLines } = useHighScores('tetris', 'lines');
@@ -27,6 +27,9 @@ export const useTetris = (options: UseTetrisOptions = {}) => {
   const submitLinesToServer = useCallback(async (lines: number): Promise<boolean> => {
     return submitScoreToServer(lines);
   }, [submitScoreToServer]);
+  
+  // Track previous piece for move counting
+  const prevPieceRef = useRef(state.currentPiece);
   
   // Track previous status for game over detection
   const prevStatusRef = useRef(state.status);
@@ -140,10 +143,24 @@ export const useTetris = (options: UseTetrisOptions = {}) => {
       updateHighScore(state.score);
       // Update best lines
       updateBestLines(state.lines);
+      // End session
+      endSession();
       options.onGameOver?.(state.score, state.level, state.lines);
     }
     prevStatusRef.current = state.status;
-  }, [state.status, state.score, state.level, state.lines, options, updateHighScore]);
+  }, [state.status, state.score, state.level, state.lines, options, updateHighScore, updateBestLines, endSession]);
+
+  // Track moves - count piece locks (when currentPiece changes from not null to new piece)
+  useEffect(() => {
+    if (state.status === 'playing' && state.currentPiece && prevPieceRef.current) {
+      // If piece changed (new piece spawned), increment moves
+      if (prevPieceRef.current.type !== state.currentPiece.type || 
+          prevPieceRef.current.position.y !== state.currentPiece.position.y) {
+        recordMove();
+      }
+    }
+    prevPieceRef.current = state.currentPiece;
+  }, [state.currentPiece, state.status, recordMove]);
 
   // Clear animation lines after a delay
   useEffect(() => {
@@ -186,5 +203,11 @@ export const useTetris = (options: UseTetrisOptions = {}) => {
     // Touch handlers
     onTouchStart,
     onTouchEnd,
+    
+    // Session management
+    session,
+    startSession,
+    recordMove,
+    endSession,
   };
 };

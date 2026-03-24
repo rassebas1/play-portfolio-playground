@@ -18,7 +18,6 @@ import { GameHeader } from '@/components/game/GameHeader';
 import { GameControls } from '@/components/game/GameControls';
 import { Instructions } from '@/components/game/Instructions';
 import { GameOverModal } from '@/components/game/GameOverModal';
-import { GameSession, createGameSession } from '@/types/highScores';
 
 // Tetromino preview component
 const TetrominoPreview = ({
@@ -94,6 +93,7 @@ const Tetris: React.FC = () => {
     canHold,
     score,
     highScore,
+    bestLines,
     level,
     lines,
     status,
@@ -108,34 +108,17 @@ const Tetris: React.FC = () => {
     rotateClockwise,
     hardDrop,
     doHoldPiece,
+    session,
+    startSession,
   } = useTetris();
 
-  // Session tracking for leaderboard
-  const [session, setSession] = useState<GameSession | null>(null);
   const [showGameOver, setShowGameOver] = useState(false);
 
   // Initialize game on mount
   useEffect(() => {
     startGame();
+    startSession();
   }, []);
-
-  // Session tracking
-  useEffect(() => {
-    const gameStarted = score > 0 || lines > 0;
-    if (gameStarted && !session) {
-      setSession(createGameSession('tetris'));
-    }
-    if (!gameStarted && status === 'idle') {
-      setSession(null);
-    }
-  }, [score, lines, status, session]);
-
-  // Track moves
-  useEffect(() => {
-    if (session && currentPiece && status === 'playing') {
-      // Tetris doesn't have "moves" in the traditional sense, track by time
-    }
-  }, [session, currentPiece, status]);
 
   // Show game over modal when game ends
   useEffect(() => {
