@@ -94,7 +94,12 @@
     "retry": "Reintentar",
     "offline": "Sin conexión",
     "offline_notice": "Estás viendo puntuaciones en caché mientras estás sin conexión.",
-    "last_updated": "Última actualización: {{time}}"
+    "last_updated": "Última actualización: {{time}}",
+    "score": "Puntos",
+    "lines": "Líneas",
+    "bricks": "Ladrillos",
+    "highest_tile": "Mejor Ficha",
+    "level": "Nivel"
   },
   "hero_tagline": "Conectando Ingeniería de Software, Seguridad Middleware & Big Data",
   "hero_role_1": "Ingeniero de Software",

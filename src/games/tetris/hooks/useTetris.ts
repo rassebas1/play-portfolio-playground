@@ -17,33 +17,16 @@ interface UseTetrisOptions {
 export const useTetris = (options: UseTetrisOptions = {}) => {
   const [state, dispatch] = useReducer(tetrisReducer, createInitialState());
   
-  // High score management
-  const { highScore, updateHighScore } = useHighScores('tetris');
+  // High score management - score metric
+  const { highScore, updateHighScore, submitScore: submitScoreToServer } = useHighScores('tetris', 'score');
   
-  // Best lines tracking (localStorage)
-  const [bestLines, setBestLines] = useState<number | null>(() => {
-    try {
-      const stored = localStorage.getItem('bestLines_tetris');
-      return stored ? JSON.parse(stored) : null;
-    } catch {
-      return null;
-    }
-  });
+  // Best lines tracking - lines metric (using server-backed hook)
+  const { highScore: bestLines, updateHighScore: updateBestLines } = useHighScores('tetris', 'lines');
   
-  // Update best lines
-  const updateBestLines = useCallback((lines: number) => {
-    setBestLines(prev => {
-      if (prev === null || lines > prev) {
-        try {
-          localStorage.setItem('bestLines_tetris', JSON.stringify(lines));
-        } catch (e) {
-          console.error('Error saving best lines:', e);
-        }
-        return lines;
-      }
-      return prev;
-    });
-  }, []);
+  // Submit lines to server
+  const submitLinesToServer = useCallback(async (lines: number): Promise<boolean> => {
+    return submitScoreToServer(lines);
+  }, [submitScoreToServer]);
   
   // Track previous status for game over detection
   const prevStatusRef = useRef(state.status);

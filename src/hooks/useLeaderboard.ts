@@ -55,16 +55,16 @@ export type UseLeaderboard = LeaderboardState & LeaderboardActions
 /**
  * Session storage key generator for caching
  */
-function getCacheKey(game: GameName, limit: number): string {
-  return `leaderboard_${game}_${limit}`
+function getCacheKey(game: GameName, limit: number, metric: string = 'score'): string {
+  return `leaderboard_${game}_${limit}_${metric}`
 }
 
 /**
  * Load cached scores from sessionStorage
  */
-function loadCachedScores(game: GameName, limit: number): { scores: HighScore[]; timestamp: number } | null {
+function loadCachedScores(game: GameName, limit: number, metric: string = 'score'): { scores: HighScore[]; timestamp: number } | null {
   try {
-    const key = getCacheKey(game, limit)
+    const key = getCacheKey(game, limit, metric)
     const cached = sessionStorage.getItem(key)
     if (cached) {
       return JSON.parse(cached)
@@ -78,9 +78,9 @@ function loadCachedScores(game: GameName, limit: number): { scores: HighScore[];
 /**
  * Save scores to sessionStorage cache
  */
-function saveScoresToCache(game: GameName, limit: number, scores: HighScore[]): void {
+function saveScoresToCache(game: GameName, limit: number, scores: HighScore[], metric: string = 'score'): void {
   try {
-    const key = getCacheKey(game, limit)
+    const key = getCacheKey(game, limit, metric)
     sessionStorage.setItem(key, JSON.stringify({
       scores,
       timestamp: Date.now()
@@ -115,6 +115,7 @@ export function useLeaderboard(
   options?: {
     service?: HighScoresPort
     autoFetch?: boolean
+    metric?: string
   }
 ): UseLeaderboard {
   const [scores, setScores] = useState<HighScore[]>([])
@@ -126,6 +127,7 @@ export function useLeaderboard(
 
   const service = options?.service || highScoresService
   const shouldAutoFetch = options?.autoFetch !== false
+  const metric = options?.metric || 'score'
 
   // Monitor online/offline status
   useEffect(() => {
@@ -165,7 +167,7 @@ export function useLeaderboard(
   const fetchScores = useCallback(async () => {
     // If offline, try to load from cache
     if (!navigator.onLine) {
-      const cached = loadCachedScores(game, limit)
+      const cached = loadCachedScores(game, limit, metric)
       if (cached) {
         setScores(cached.scores)
         setLastFetched(cached.timestamp)
@@ -181,17 +183,17 @@ export function useLeaderboard(
     setIsOffline(false)
 
     try {
-      const data = await service.fetchLeaderboard(game, limit)
+      const data = await service.fetchLeaderboard(game, limit, metric)
       setScores(data)
       setLastFetched(Date.now())
       // Cache the data
-      saveScoresToCache(game, limit, data)
+      saveScoresToCache(game, limit, data, metric)
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to fetch scores'
       setError(message)
       
       // Try to load from cache on error
-      const cached = loadCachedScores(game, limit)
+      const cached = loadCachedScores(game, limit, metric)
       if (cached) {
         setScores(cached.scores)
         setLastFetched(cached.timestamp)
@@ -199,7 +201,7 @@ export function useLeaderboard(
     } finally {
       setLoading(false)
     }
-  }, [game, limit, service])
+  }, [game, limit, metric, service])
 
   /**
    * Retry fetching scores (useful after coming back online)

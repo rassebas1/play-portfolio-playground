@@ -34,6 +34,7 @@ import { useLeaderboard, useScoreSubmitter } from '@/hooks/useLeaderboard'
 import type { GameName, GameSession } from '@/types/highScores'
 import { validateUsername, containsProfanity } from '@/utils/profanityFilter'
 import { USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH } from '@/types/highScores'
+import { getGameMetrics, hasMultipleMetrics, type GameMetric } from '@/types/games'
 
 interface LeaderboardProps {
   game: GameName
@@ -41,6 +42,7 @@ interface LeaderboardProps {
   currentSession?: GameSession | null
   finalScore?: number
   autoFetch?: boolean
+  metric?: string
 }
 
 export function Leaderboard({ 
@@ -48,9 +50,27 @@ export function Leaderboard({
   limit = 10, 
   currentSession,
   finalScore = 0,
-  autoFetch = true 
+  autoFetch = true,
+  metric: initialMetric
 }: LeaderboardProps) {
   const { t } = useTranslation('common')
+  
+  // Get game metrics configuration
+  const gameMetrics = getGameMetrics(game)
+  const primaryMetric = gameMetrics?.primary || 'score'
+  const availableMetrics = gameMetrics?.metrics || [{ key: 'score', labelKey: 'leaderboard.score', strategy: 'highest' as const }]
+  const supportsMultipleMetrics = availableMetrics.length > 1
+  
+  // State for selected metric
+  const [selectedMetric, setSelectedMetric] = useState<string>(initialMetric || primaryMetric)
+  
+  // Update selected metric when initialMetric changes
+  useEffect(() => {
+    if (initialMetric) {
+      setSelectedMetric(initialMetric)
+    }
+  }, [initialMetric])
+  
   const { 
     scores, 
     loading, 
@@ -60,7 +80,7 @@ export function Leaderboard({
     fetchScores, 
     submitScore,
     retry 
-  } = useLeaderboard(game, limit, { autoFetch })
+  } = useLeaderboard(game, limit, { autoFetch, metric: selectedMetric })
   
   const [username, setUsername] = useState('')
   const [usernameError, setUsernameError] = useState<string | null>(null)
@@ -176,6 +196,27 @@ export function Leaderboard({
           <p className="text-xs text-muted-foreground mt-1">
             {t('high_scores.last_updated', { time: formatLastFetched(lastFetched) })}
           </p>
+        )}
+        
+        {/* Metric Tabs - Only show if game has multiple metrics */}
+        {supportsMultipleMetrics && (
+          <div className="flex gap-1 mt-2" role="tablist" aria-label="Leaderboard metrics">
+            {availableMetrics.map((m: GameMetric) => (
+              <button
+                key={m.key}
+                role="tab"
+                aria-selected={selectedMetric === m.key}
+                onClick={() => setSelectedMetric(m.key)}
+                className={`flex-1 px-3 py-1.5 text-sm rounded-md transition-colors ${
+                  selectedMetric === m.key
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                }`}
+              >
+                {t(m.labelKey)}
+              </button>
+            ))}
+          </div>
         )}
       </CardHeader>
       
