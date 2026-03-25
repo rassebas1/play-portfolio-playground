@@ -13,9 +13,11 @@ import { GameState, GameStatus } from "../types";
  * @interface GameBoardProps
  * @property {GameState} state - The current state of the Brick Breaker game,
  *                               including paddle, ball, bricks, and game status.
+ * @property {boolean} isMobile - Whether the device is mobile.
  */
 interface GameBoardProps {
   state: GameState;
+  isMobile?: boolean;
 }
 
 /**
@@ -25,7 +27,7 @@ interface GameBoardProps {
  * @param {GameBoardProps} { state } - Props passed to the component.
  * @returns {JSX.Element} The rendered game board canvas.
  */
-const GameBoard: React.FC<GameBoardProps> = ({ state }) => {
+const GameBoard: React.FC<GameBoardProps> = ({ state, isMobile = false }) => {
   // Ref to access the HTMLCanvasElement directly.
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -70,14 +72,17 @@ const GameBoard: React.FC<GameBoardProps> = ({ state }) => {
     ctx.font = "24px Arial"; // Set font style
     ctx.textAlign = "center"; // Center align text
 
+    const actionText = isMobile ? "Tap" : "Press SPACE";
+    const restartText = isMobile ? "Double-tap" : "Press R";
+
     if (state.gameStatus === GameStatus.IDLE) {
-      ctx.fillText("Press SPACE to Start", state.canvas.width / 2, state.canvas.height / 2);
+      ctx.fillText(`${actionText} to Start`, state.canvas.width / 2, state.canvas.height / 2);
     } else if (state.gameStatus === GameStatus.PAUSED) {
-      ctx.fillText("PAUSED - Press SPACE to Resume", state.canvas.width / 2, state.canvas.height / 2);
+      ctx.fillText(`PAUSED - ${actionText} to Resume`, state.canvas.width / 2, state.canvas.height / 2);
     } else if (state.gameStatus === GameStatus.GAME_OVER) {
-      ctx.fillText("GAME OVER - Press R to Restart", state.canvas.width / 2, state.canvas.height / 2);
+      ctx.fillText(`GAME OVER - ${restartText} to Restart`, state.canvas.width / 2, state.canvas.height / 2);
     } else if (state.gameStatus === GameStatus.LEVEL_CLEARED) {
-      ctx.fillText("LEVEL CLEARED! - Press R for Next Level", state.canvas.width / 2, state.canvas.height / 2);
+      ctx.fillText(`LEVEL CLEARED! - ${restartText} for Next Level`, state.canvas.width / 2, state.canvas.height / 2);
     }
 
   }, [state]); // Re-run effect whenever the game state changes

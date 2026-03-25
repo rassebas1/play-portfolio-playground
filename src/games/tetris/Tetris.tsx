@@ -3,16 +3,18 @@
  * Main game component with retro-cyberpunk aesthetic
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Trophy, Layers, Zap } from 'lucide-react';
+import { Trophy, Layers, Zap, RotateCcw, Pause, Play, ArrowLeft, ArrowRight, ArrowDown, Undo2, Hand, Box } from 'lucide-react';
 import { useTetris } from './hooks/useTetris';
 import GameBoard from './components/GameBoard';
 import { cn } from '@/lib/utils';
 import { useSwipeGesture } from '@/hooks/useSwipeGesture';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { Leaderboard } from '@/components/ui/Leaderboard';
 import { getTetrominoColor, TETROMINOES } from './constants';
+import { Button } from '@/components/ui/button';
 
 import { GameHeader } from '@/components/game/GameHeader';
 import { GameControls } from '@/components/game/GameControls';
@@ -115,6 +117,8 @@ const Tetris: React.FC = () => {
   const [session, setSession] = useState<GameSession | null>(null);
   const [prevPieceType, setPrevPieceType] = useState<string | null>(null);
   const [showGameOver, setShowGameOver] = useState(false);
+  const isMobile = useIsMobile();
+  const lastTapRef = useRef<number | null>(null);
 
   // Initialize game on mount
   useEffect(() => {
@@ -155,11 +159,39 @@ const Tetris: React.FC = () => {
           moveDown();
           break;
         case 'up':
-          rotateClockwise();
+          hardDrop();
           break;
       }
     },
   });
+
+  // Handle tap for start/pause/resume
+  const handleBoardTap = useCallback(() => {
+    const now = Date.now();
+    
+    // Double-tap to restart (within 300ms)
+    if (lastTapRef.current && now - lastTapRef.current < 300) {
+      if (status === 'game_over') {
+        handleRestart();
+      } else if (status === 'idle' || status === 'paused') {
+        startGame();
+      }
+      lastTapRef.current = null;
+      return;
+    }
+    lastTapRef.current = now;
+
+    // Single tap actions
+    setTimeout(() => {
+      if (status === 'idle') {
+        startGame();
+      } else if (status === 'paused') {
+        resumeGame();
+      } else if (status === 'playing') {
+        rotateClockwise();
+      }
+    }, 300);
+  }, [status, startGame, resumeGame, rotateClockwise]);
 
   const handleRestart = () => {
     setShowGameOver(false);
@@ -229,11 +261,16 @@ const Tetris: React.FC = () => {
         </div>
 
         {/* Side panels for next/hold pieces */}
-        <div className="grid grid-cols-[1fr_auto_1fr] gap-4 mb-4">
-          {/* Hold piece */}
+        {/* Desktop: side panels, Mobile: hidden (shown in compact mode) */}
+        <div className={cn(
+          "grid gap-4 mb-4",
+          isMobile ? "grid-cols-[auto] justify-center" : "grid-cols-[1fr_auto_1fr]"
+        )}>
+          {/* Hold piece - hidden on mobile, shown in compact badge */}
           <div className={cn(
             "transition-opacity duration-300",
-            !canHold && "opacity-50"
+            !canHold && "opacity-50",
+            isMobile && "hidden"
           )}>
             <TetrominoPreview
               type={holdPiece}
@@ -245,6 +282,7 @@ const Tetris: React.FC = () => {
           <div
             onTouchStart={onTouchStart}
             onTouchEnd={onTouchEnd}
+            onClick={isMobile ? handleBoardTap : undefined}
             className="touch-none"
           >
             <GameBoard
@@ -252,15 +290,58 @@ const Tetris: React.FC = () => {
               currentPiece={currentPiece}
               ghostPosition={ghostPosition}
               clearedLines={clearedLines}
+              isMobile={isMobile}
+              gameStatus={status}
             />
           </div>
 
-          {/* Next piece */}
-          <TetrominoPreview
-            type={nextPiece}
-            title={t('scoreboard.next')}
-          />
+          {/* Next piece - hidden on mobile */}
+          <div className={cn(isMobile && "hidden")}>
+            <TetrominoPreview
+              type={nextPiece}
+              title={t('scoreboard.next')}
+            />
+          </div>
         </div>
+
+        {/* Mobile: Compact next/hold display */}
+        {isMobile && (
+          <div className="flex justify-center gap-6 mb-3 text-xs">
+            <div className={cn("flex items-center gap-2", !canHold && "opacity-50")}>
+              <span className="text-muted-foreground">{t('scoreboard.hold')}:</span>
+              <div className="w-8 h-8 flex items-center justify-center">
+                {holdPiece && (
+                  <div className="grid gap-[1px]" style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}>
+                    {TETROMINOES[holdPiece as keyof typeof TETROMINOES]?.shape.flat().slice(0, 8).map((cell, i) => (
+                      <div
+                        key={i}
+                        className="w-1.5 h-1.5"
+                        style={{ backgroundColor: cell ? TETROMINOES[holdPiece as keyof typeof TETROMINOES].color : 'transparent' }}
+                      />
+                    ))}
+                  </div>
+                )}
+                {!holdPiece && <span className="text-muted-foreground/50">-</span>}
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-muted-foreground">{t('scoreboard.next')}:</span>
+              <div className="w-8 h-8 flex items-center justify-center">
+                {nextPiece && (
+                  <div className="grid gap-[1px]" style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}>
+                    {TETROMINOES[nextPiece as keyof typeof TETROMINOES]?.shape.flat().slice(0, 8).map((cell, i) => (
+                      <div
+                        key={i}
+                        className="w-1.5 h-1.5"
+                        style={{ backgroundColor: cell ? TETROMINOES[nextPiece as keyof typeof TETROMINOES].color : 'transparent' }}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Game Controls */}
         <GameControls restartGame={handleNewGame} />
@@ -272,6 +353,94 @@ const Tetris: React.FC = () => {
             <span className="sm:hidden">{t('instructions.mobile')}</span>
           </p>
         </Instructions>
+
+        {/* Mobile Control Buttons */}
+        {isMobile && (status === 'playing' || status === 'paused') && (
+          <div className="mt-4 mb-2 px-2">
+            {status === 'paused' ? (
+              /* Resume button when paused */
+              <div className="flex justify-center">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="h-16 w-32 text-xl bg-green-600/80 border-green-500/50 text-white"
+                  onTouchStart={() => resumeGame()}
+                >
+                  <Play className="w-6 h-6 mr-2" />
+                  Resume
+                </Button>
+              </div>
+            ) : (
+              <>
+                {/* Row 1: Move controls */}
+                <div className="flex justify-center gap-2 mb-2">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="h-14 w-14 text-xl bg-slate-800/80 border-cyan-500/30 text-cyan-400"
+                    onTouchStart={() => moveLeft()}
+                  >
+                    <ArrowLeft className="w-6 h-6" />
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="h-14 w-14 text-xl bg-slate-800/80 border-purple-500/30 text-purple-400"
+                    onTouchStart={() => rotateClockwise()}
+                  >
+                    <RotateCcw className="w-6 h-6" />
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="h-14 w-14 text-xl bg-slate-800/80 border-cyan-500/30 text-cyan-400"
+                    onTouchStart={() => moveRight()}
+                  >
+                    <ArrowRight className="w-6 h-6" />
+                  </Button>
+                </div>
+                {/* Row 2: Actions */}
+                <div className="flex justify-center gap-2">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="h-12 w-16 text-sm bg-slate-800/80 border-yellow-500/30 text-yellow-400"
+                    onTouchStart={() => moveDown()}
+                  >
+                    ↓ Soft
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="h-12 w-16 text-sm bg-slate-800/80 border-red-500/30 text-red-400"
+                    onTouchStart={() => hardDrop()}
+                  >
+                    ⬇ Hard
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className={cn(
+                      "h-12 w-16 text-sm bg-slate-800/80 border-green-500/30",
+                      canHold ? "text-green-400" : "text-green-400/50"
+                    )}
+                    onTouchStart={() => canHold && doHoldPiece()}
+                  >
+                    <Hand className="w-4 h-4 mr-1" />
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="h-12 w-12 text-sm bg-slate-800/80 border-white/30"
+                    onTouchStart={() => pauseGame()}
+                  >
+                    <Pause className="w-5 h-5" />
+                  </Button>
+                </div>
+              </>
+            )}
+          </div>
+        )}
 
         {/* Game Over Modal */}
         <GameOverModal
@@ -285,14 +454,7 @@ const Tetris: React.FC = () => {
           metrics={{ score, lines, level }}
         />
 
-        {/* Status indicator */}
-        {status === 'paused' && (
-          <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
-            <div className="text-4xl font-bold text-white animate-pulse">
-              {t('status.paused')}
-            </div>
-          </div>
-        )}
+        {/* Status indicator - removed, now handled by GameBoard overlay + Resume button */}
 
         {/* Accessibility */}
         <div

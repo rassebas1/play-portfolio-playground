@@ -85,9 +85,19 @@ const BrickBreaker: React.FC = () => {
 
       {/* Instructions: Provides guidance on how to play the game */}
       <Instructions>
-        <p><strong>Arrow Left</strong> / <strong>Arrow Right</strong>: {isMobile ? t('instructions.mobile') : t('instructions.desktop')}</p>
-        <p><strong>SPACEBAR</strong>: {t('actions.start')} / {t('status.paused')} / {t('actions.resume')}</p>
-        <p><strong>R</strong>: {t('actions.restart')}</p>
+        {isMobile ? (
+          <>
+            <p><strong>Drag</strong>: {t('instructions.mobile')}</p>
+            <p><strong>Tap</strong>: {t('actions.start')} / {t('status.paused')} / {t('actions.resume')}</p>
+            <p><strong>Double-tap</strong>: {t('actions.restart')}</p>
+          </>
+        ) : (
+          <>
+            <p><strong>Arrow Left</strong> / <strong>Arrow Right</strong>: {t('instructions.desktop')}</p>
+            <p><strong>SPACEBAR</strong>: {t('actions.start')} / {t('status.paused')} / {t('actions.resume')}</p>
+            <p><strong>R</strong>: {t('actions.restart')}</p>
+          </>
+        )}
       </Instructions>
 
       {/* Game Board: The main canvas where the game is played, integrates touch input */}
@@ -96,7 +106,7 @@ const BrickBreaker: React.FC = () => {
         className="touch-none relative my-4" // Prevents default browser touch behaviors, add vertical margin
         style={{ width: state.canvas.width, height: state.canvas.height }}
       >
-        <GameBoard state={state} />
+        <GameBoard state={state} isMobile={isMobile} />
       </div>
 
       {/* Main Game Control Button: Changes text based on game status */}
