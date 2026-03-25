@@ -6,14 +6,14 @@
  * and integrates with the high score system.
  */
 import { useCallback, useEffect, useMemo, useReducer, useRef } from 'react';
-import type { Board, Direction, Tile } from '../types';
-import { initializeBoard, isBoardFull } from '../utils/boardUtils';
-import { processMove } from '../utils/moveProcessor';
-import { canMove } from '../utils/moveProcessor2';
-import { addRandomTile } from '../utils/tileUtils';
-import { ANIMATION_DURATION } from '@/utils/2048_const';
-import { GameReducer, initialState } from '../GameReducer';
-import { useIds } from '../useIds';
+import type { Board, Direction, Tile } from '@/games/2048/types';
+import { initializeBoard, isBoardFull } from '@/games/2048/utils/boardUtils';
+import { processMove } from '@/games/2048/utils/moveProcessor';
+import { canMove } from '@/games/2048/utils/moveProcessor2';
+import { addRandomTile } from '@/games/2048/utils/tileUtils';
+import { ANIMATION_DURATION } from '@/games/2048/constants';
+import { GameReducer, initialState } from '@/games/2048/GameReducer';
+import { useIds } from '@/games/2048/useIds';
 import { useHighScores } from '@/hooks/useHighScores';
 
   /**

@@ -12,11 +12,10 @@ import {
   BALL_DX,
   BALL_DY,
   BALL_SPEED,
-  PADDLE_WIDTH,
   PADDLE_HEIGHT,
   BRICK_WIDTH,
   BRICK_HEIGHT,
-} from "../../utils/brick_breaker_const";
+} from "./constants";
 
 /**
  * Updates the ball's position based on its current velocity and handles collisions with canvas walls.

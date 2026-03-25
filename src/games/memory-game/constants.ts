@@ -1,5 +1,5 @@
 /**
- * src/utils/memory-game_const.ts
+ * src/games/memory-game/constants.ts
  *
  * Defines constants used throughout the Memory Game.
  * This includes the set of possible card values (emojis) and

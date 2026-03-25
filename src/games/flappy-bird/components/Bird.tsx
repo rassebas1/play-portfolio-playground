@@ -1,6 +1,6 @@
 import React from 'react';
 import { cn } from '@/lib/utils'; // Utility for conditionally joining class names
-import type { Bird as BirdType, GameDimensions } from '../types';
+import type { Bird as BirdType, GameDimensions } from '@/games/flappy-bird/types';
 import BirdSVG from '@/components/game/BirdSVG'; // Import BirdSVG
 
 /**

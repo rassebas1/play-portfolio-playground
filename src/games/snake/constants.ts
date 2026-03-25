@@ -1,5 +1,5 @@
 /**
- * src/utils/snake_const.ts
+ * src/games/snake/constants.ts
  *
  * Defines constants used throughout the Snake game.
  * These constants configure the game board dimensions, initial snake properties,

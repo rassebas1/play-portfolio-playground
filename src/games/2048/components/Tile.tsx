@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Tile as TileType } from '../types';
+import type { Tile as TileType } from '@/games/2048/types';
 import { cn } from '@/lib/utils'; // Utility for conditionally joining class names
-import { ANIMATION_DURATION } from '@/utils/2048_const'; // Constant for animation duration
+import { ANIMATION_DURATION } from '@/games/2048/constants'; // Constant for animation duration
 
 /**
  * Props for the Tile component.

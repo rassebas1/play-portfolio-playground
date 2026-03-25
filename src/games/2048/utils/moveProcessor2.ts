@@ -1,4 +1,4 @@
-import type { Board } from '../types';
+import type { Board } from '@/games/2048/types';
 import { getEmptyPositions } from './boardUtils';
 
 /**

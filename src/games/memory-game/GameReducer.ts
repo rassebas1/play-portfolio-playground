@@ -6,7 +6,7 @@
  */
 
 import { GameState, Action, Difficulty, Card } from './types';
-import { EMOJI_CARDS, DIFFICULTY_SETTINGS } from '../../utils/memory-game_const';
+import { EMOJI_CARDS, DIFFICULTY_SETTINGS } from './constants';
 
 /**
  * Creates a shuffled array of cards for the memory game based on the chosen difficulty.

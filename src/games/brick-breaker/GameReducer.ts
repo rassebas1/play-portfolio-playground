@@ -7,7 +7,7 @@
  */
 
 import { Action, Ball, Brick, GameState, GameStatus, Paddle } from "./types";
-import * as Constants from "../../utils/brick_breaker_const";
+import * as Constants from "./constants";
 
 /**
  * Creates an array of bricks for a given level.

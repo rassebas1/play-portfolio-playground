@@ -1,5 +1,5 @@
 /**
- * src/utils/brick_breaker_const.ts
+ * src/games/brick-breaker/constants.ts
  *
  * Defines constants used throughout the Brick Breaker game.
  * These constants configure the game's canvas dimensions, properties of the paddle,

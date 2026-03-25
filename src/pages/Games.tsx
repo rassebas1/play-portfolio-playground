@@ -83,6 +83,16 @@ export const games: GameInfo[] = [
     color: 'hsl(var(--game-warning))',
     status: 'status.ready_to_play',
   },
+  {
+    id: 'minesweeper',
+    name: 'minesweeper.name',
+    description: 'minesweeper.description',
+    difficulty: 'difficulty.medium',
+    category: 'category.puzzle',
+    icon: '💣',
+    color: 'hsl(var(--game-danger))',
+    status: 'status.ready_to_play',
+  },
 ];
 
 /**

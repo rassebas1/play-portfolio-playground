@@ -1,12 +1,6 @@
 import React from 'react';
 import { useParams, useNavigate, Navigate } from 'react-router-dom';
-import TicTacToe from '@/games/tic-tac-toe/TicTacToe';
-import Game2048 from '@/games/2048/Game2048';
-import FlappyBird from '@/games/flappy-bird/FlappyBird';
-import SnakeGame from '@/games/snake/SnakeGame';
-import MemoryGame from '@/games/memory-game/MemoryGame';
-import BrickBreaker from '@/games/brick-breaker/BrickBreaker';
-import Tetris from '@/games/tetris/Tetris';
+import { GAME_REGISTRY, getAllGameIds } from '@/games';
 import type { GameType } from '@/types/global';
 import useTitle from '@/hooks/use-title';
 import { Button } from '@/components/ui/button';
@@ -31,7 +25,7 @@ const GamePage: React.FC = () => {
    * @returns {id is GameType} True if the ID is a valid game type, false otherwise.
    */
   const isValidGameId = (id: string | undefined): id is GameType => {
-    const validGames: GameType[] = ['tic-tac-toe', '2048', 'flappy-bird', 'snake', 'memory-game', 'brick-breaker', 'tetris'];
+    const validGames = getAllGameIds();
     return id !== undefined && validGames.includes(id as GameType);
   };
 
@@ -45,29 +39,15 @@ const GamePage: React.FC = () => {
 
   /**
    * Renders the appropriate game component based on the validated `gameId`.
-   * If `gameId` somehow becomes invalid (should be caught by the check above),
-   * it defaults to redirecting to the home page.
+   * Uses the game registry for dynamic loading.
    * @returns {JSX.Element} The React component for the selected game.
    */
   const renderGame = () => {
-    switch (gameId) {
-      case 'tic-tac-toe':
-        return <TicTacToe />;
-      case '2048':
-        return <Game2048 />;
-      case 'flappy-bird':
-        return <FlappyBird />;
-      case 'snake':
-        return <SnakeGame />;
-      case 'memory-game':
-        return <MemoryGame />;
-      case 'brick-breaker':
-        return <BrickBreaker />;
-      case 'tetris':
-        return <Tetris />;
-      default:
-        return <Navigate to="/games" replace />;
+    const GameComponent = GAME_REGISTRY[gameId as GameType]?.component;
+    if (!GameComponent) {
+      return <Navigate to="/games" replace />;
     }
+    return <GameComponent />;
   };
 
   return (

@@ -59,7 +59,7 @@ This portfolio features the following games:
 
 ## Development Guidelines
 
-*   **Centralized Constants:** Constants are organized within the `src/utils/` directory, with each game having its own dedicated constants file (e.g., `src/utils/brick_breaker_const.ts`).
+*   **Game Structure:** Each game follows a consistent folder structure: `src/games/[game-name]/` with components, hooks, types, and constants organized within the game folder.
 
 ## Contributing
 

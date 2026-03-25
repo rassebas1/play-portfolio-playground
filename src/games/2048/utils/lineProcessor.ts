@@ -1,4 +1,4 @@
-import type { Tile } from '../types';
+import type { Tile } from '@/games/2048/types';
 
 /**
  * Moves and merges tiles in a single row/column.

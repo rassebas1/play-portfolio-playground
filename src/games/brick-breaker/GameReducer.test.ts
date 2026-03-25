@@ -1,10 +1,10 @@
 /**
  * src/games/brick-breaker/GameReducer.test.ts
  */
-import { describe, it, expect } from 'vitest';
+import { beforeEach, describe, it, expect } from 'vitest';
 import { gameReducer, getInitialState } from './GameReducer';
 import { GameStatus, GameState } from './types';
-import * as Constants from '../../utils/brick_breaker_const';
+import * as Constants from './constants';
 
 describe('Brick Breaker GameReducer', () => {
   const canvasWidth = 800;
@@ -59,9 +59,14 @@ describe('Brick Breaker GameReducer', () => {
       
       const newState = gameReducer(modifiedState, { type: 'LEVEL_UP' });
 
+      // Calculate expected paddle position using the same responsive logic as the reducer
+      const responsivePaddleWidth = Math.max(
+        Constants.PADDLE_WIDTH_MIN,
+        Math.min(canvasWidth * Constants.PADDLE_WIDTH_RATIO, Constants.PADDLE_WIDTH_MAX)
+      );
       const expectedPaddleY = canvasHeight - Constants.PADDLE_HEIGHT - 20;
       expect(newState.paddle.y).toBe(expectedPaddleY);
-      expect(newState.paddle.x).toBe((canvasWidth - Constants.PADDLE_WIDTH) / 2);
+      expect(newState.paddle.x).toBe((canvasWidth - responsivePaddleWidth) / 2);
 
       const expectedBallY = expectedPaddleY - Constants.BALL_RADIUS;
       expect(newState.ball.y).toBe(expectedBallY);
