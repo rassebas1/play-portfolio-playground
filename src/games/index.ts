@@ -32,7 +32,7 @@ export const GAME_REGISTRY: Record<GameType, GameRegistryEntry> = {
     color: 'hsl(120, 100%, 40%)',
   },
   snake: {
-    component: lazy(() => import('./snake/SnakeGame')),
+    component: lazy(() => import('./snake/Snake')),
     difficulty: 'Medium',
     category: 'Arcade',
     icon: '🐍',
