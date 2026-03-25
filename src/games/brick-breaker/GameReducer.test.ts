@@ -59,9 +59,14 @@ describe('Brick Breaker GameReducer', () => {
       
       const newState = gameReducer(modifiedState, { type: 'LEVEL_UP' });
 
+      // Calculate expected paddle position using the same responsive logic as the reducer
+      const responsivePaddleWidth = Math.max(
+        Constants.PADDLE_WIDTH_MIN,
+        Math.min(canvasWidth * Constants.PADDLE_WIDTH_RATIO, Constants.PADDLE_WIDTH_MAX)
+      );
       const expectedPaddleY = canvasHeight - Constants.PADDLE_HEIGHT - 20;
       expect(newState.paddle.y).toBe(expectedPaddleY);
-      expect(newState.paddle.x).toBe((canvasWidth - Constants.PADDLE_WIDTH) / 2);
+      expect(newState.paddle.x).toBe((canvasWidth - responsivePaddleWidth) / 2);
 
       const expectedBallY = expectedPaddleY - Constants.BALL_RADIUS;
       expect(newState.ball.y).toBe(expectedBallY);
