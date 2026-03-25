@@ -5,7 +5,7 @@
  * It integrates a reducer for complex state transitions, handles the main game loop,
  * keyboard input for paddle control, and interacts with the high score system.
  */
-import { useReducer, useEffect, useRef, useCallback } from "react";
+import { useReducer, useEffect, useRef, useCallback, type RefObject } from "react";
 import { gameReducer, getInitialState } from "../GameReducer";
 import { GameStatus } from "../types";
 import {
@@ -42,7 +42,11 @@ export const useBrickBreaker = (gameBoardRef: RefObject<HTMLDivElement>) => {
   const CANVAS_ASPECT_RATIO = isMobile ? MOBILE_CANVAS_ASPECT_RATIO : DESKTOP_CANVAS_ASPECT_RATIO;
 
   // Calculate responsive canvas dimensions
-  const responsiveCanvasWidth = Math.max(320, Math.min(windowWidth * 0.9, MAX_CANVAS_WIDTH)); // 90% of window width, max 800, min 320
+  // Account for parent container padding (p-4 = 16px * 2 = 32px) and safe areas on mobile
+  const PADDING = 32;
+  const SAFE_AREA_BUFFER = isMobile ? 20 : 0;
+  const availableWidth = windowWidth - PADDING - SAFE_AREA_BUFFER;
+  const responsiveCanvasWidth = Math.max(280, Math.min(availableWidth * 0.95, MAX_CANVAS_WIDTH));
   const responsiveCanvasHeight = responsiveCanvasWidth * CANVAS_ASPECT_RATIO;
 
   // useReducer manages the complex state transitions of the game

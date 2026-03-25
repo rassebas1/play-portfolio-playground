@@ -56,10 +56,13 @@ const createBricks = (level: number, canvasWidth: number): Brick[] => {
  * @returns {GameState} The initial game state.
  */
 export const getInitialState = (canvasWidth: number, canvasHeight: number): GameState => {
-  // Recalculate dependent constants based on dynamic canvas size
-  const PADDLE_WIDTH = Constants.PADDLE_WIDTH;
+  // Calculate responsive paddle width based on canvas width
+  const responsivePaddleWidth = Math.max(
+    Constants.PADDLE_WIDTH_MIN,
+    Math.min(canvasWidth * Constants.PADDLE_WIDTH_RATIO, Constants.PADDLE_WIDTH_MAX)
+  );
   const PADDLE_HEIGHT = Constants.PADDLE_HEIGHT;
-  const PADDLE_START_X = (canvasWidth - PADDLE_WIDTH) / 2;
+  const PADDLE_START_X = (canvasWidth - responsivePaddleWidth) / 2;
   const PADDLE_START_Y = canvasHeight - PADDLE_HEIGHT - 20; // 20px from bottom
 
   const BALL_RADIUS = Constants.BALL_RADIUS;
@@ -70,7 +73,7 @@ export const getInitialState = (canvasWidth: number, canvasHeight: number): Game
     paddle: {
       x: PADDLE_START_X,
       y: PADDLE_START_Y,
-      width: PADDLE_WIDTH,
+      width: responsivePaddleWidth,
       height: PADDLE_HEIGHT,
       dx: 0, // Initial horizontal velocity of the paddle
     },
@@ -223,8 +226,11 @@ export const gameReducer = (state: GameState, action: Action): GameState => {
       const nextLevel = state.level + 1;
       const speedMultiplier = 1 + (nextLevel - 1) * 0.1; // Increase speed by 10% each level
 
-      // Recalculate dependent constants based on dynamic canvas size
-      const PADDLE_WIDTH_LVL_UP = Constants.PADDLE_WIDTH;
+      // Recalculate responsive paddle width based on canvas size
+      const PADDLE_WIDTH_LVL_UP = Math.max(
+        Constants.PADDLE_WIDTH_MIN,
+        Math.min(state.canvas.width * Constants.PADDLE_WIDTH_RATIO, Constants.PADDLE_WIDTH_MAX)
+      );
       const PADDLE_HEIGHT_LVL_UP = Constants.PADDLE_HEIGHT;
       const PADDLE_START_X_LVL_UP = (state.canvas.width - PADDLE_WIDTH_LVL_UP) / 2;
       const PADDLE_START_Y_LVL_UP = state.canvas.height - PADDLE_HEIGHT_LVL_UP - 20; // Consistent positioning

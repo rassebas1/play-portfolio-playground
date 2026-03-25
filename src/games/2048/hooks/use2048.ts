@@ -89,7 +89,14 @@ export const use2048 = () => {
     const result = processMove(currentBoard, direction);
 
     // If no tiles moved, do nothing
-    if (!result.moved) return;
+    if (!result.moved) {
+      // But check if game is over (board full with no possible merges)
+      if (!canMove(currentBoard)) {
+        dispatch({ type: "GAME_OVER" });
+        dispatch({ type: "END_MOVE" });
+      }
+      return;
+    }
 
     dispatch({ type: "START_MOVE" }); // Indicate start of move for animation purposes
 
@@ -112,20 +119,25 @@ export const use2048 = () => {
     // Dispatch action to update the board state with new tiles and score
     dispatch({ type: "UPDATE_ALL_TILES", tiles: newTiles, byIds: newByIds, score: result.score });
 
-    // Add a random tile after a short delay to allow for animation
-    setTimeout(() => {
-      generateRandomTile(); // Add a new tile
-      dispatch({ type: "END_MOVE" }); // Indicate end of move
-    }, animationDuration);
-
-    // Check for game over and win conditions after the move
-    const isGameOverAfterMove = (!canMove(result.board) || isBoardFull(currentBoard));
+    // Check for game over BEFORE adding random tile
+    const isGameOverAfterMove = !canMove(result.board);
     const hasWonThisMove = result.hasWon;
 
     if (isGameOverAfterMove && !hasWonThisMove) {
-      dispatch({ type: "GAME_OVER" }); // Dispatch game over if no more moves are possible
+      dispatch({ type: "GAME_OVER" });
+      dispatch({ type: "END_MOVE" });
     } else if (hasWonThisMove) {
-      dispatch({ type: "WIN_GAME" }); // Dispatch win game if 2048 tile is created
+      dispatch({ type: "WIN_GAME" });
+      setTimeout(() => {
+        generateRandomTile();
+        dispatch({ type: "END_MOVE" });
+      }, animationDuration);
+    } else {
+      // Only add random tile if game isn't over
+      setTimeout(() => {
+        generateRandomTile();
+        dispatch({ type: "END_MOVE" });
+      }, animationDuration);
     }
 
   }, [dispatch, generateRandomTile]); // Dependencies for callback stability
@@ -181,20 +193,23 @@ export const use2048 = () => {
   // Keyboard event handler for tile movements.
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
-      e.preventDefault(); // Prevent default browser actions (e.g., scrolling)
-      switch (e.key) {
-        case 'ArrowUp':
-          makeMove('up');
-          break;
-        case 'ArrowDown':
-          makeMove('down');
-          break;
-        case 'ArrowLeft':
-          makeMove('left');
-          break;
-        case 'ArrowRight':
-          makeMove('right');
-          break;
+      // Only prevent default and handle game controls for arrow keys
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+        e.preventDefault(); // Prevent default browser actions (e.g., scrolling)
+        switch (e.key) {
+          case 'ArrowUp':
+            makeMove('up');
+            break;
+          case 'ArrowDown':
+            makeMove('down');
+            break;
+          case 'ArrowLeft':
+            makeMove('left');
+            break;
+          case 'ArrowRight':
+            makeMove('right');
+            break;
+        }
       }
     };
 

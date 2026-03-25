@@ -11,10 +11,20 @@
 
 // --- Paddle Properties ---
 /**
- * The width of the player's paddle in pixels.
+ * The width of the player's paddle as a percentage of canvas width (0.2 = 20%).
  * @constant {number}
  */
-export const PADDLE_WIDTH = 100;
+export const PADDLE_WIDTH_RATIO = 0.2;
+/**
+ * The maximum width of the player's paddle in pixels.
+ * @constant {number}
+ */
+export const PADDLE_WIDTH_MAX = 150;
+/**
+ * The minimum width of the player's paddle in pixels.
+ * @constant {number}
+ */
+export const PADDLE_WIDTH_MIN = 60;
 /**
  * The height of the player's paddle in pixels.
  * @constant {number}

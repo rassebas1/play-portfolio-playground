@@ -396,6 +396,7 @@ export function ScoreSubmitter({ game, finalScore, session, metrics, isNewHighSc
           aria-describedby="username-hint"
           aria-invalid={usernameError ? 'true' : 'false'}
           autoComplete="off"
+          autoFocus
         />
         <p id="username-hint" className="text-xs text-muted-foreground">
           {t('high_scores.username_hint') || `Enter ${USERNAME_MIN_LENGTH}-${USERNAME_MAX_LENGTH} letters or numbers`}

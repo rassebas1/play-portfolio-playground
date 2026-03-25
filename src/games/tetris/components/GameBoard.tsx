@@ -13,6 +13,8 @@ interface GameBoardProps {
   currentPiece: Piece | null;
   ghostPosition: Position | null;
   clearedLines: number[];
+  isMobile?: boolean;
+  gameStatus?: string;
   className?: string;
 }
 
@@ -53,6 +55,8 @@ export const GameBoard = memo(function GameBoard({
   currentPiece,
   ghostPosition,
   clearedLines,
+  isMobile = false,
+  gameStatus = 'idle',
   className,
 }: GameBoardProps) {
   // Create a 2D array for rendering
@@ -126,8 +130,8 @@ export const GameBoard = memo(function GameBoard({
         style={{
           gridTemplateColumns: `repeat(${BOARD_WIDTH}, minmax(0, 1fr))`,
           gridTemplateRows: `repeat(${BOARD_HEIGHT}, minmax(0, 1fr))`,
-          width: 'min(90vw, 350px)',
-          height: 'min(90vw * 2, 700px)',
+          width: 'min(85vw, 280px)',
+          height: 'min(85vw * 2, 560px)',
           aspectRatio: `${BOARD_WIDTH}/${BOARD_HEIGHT}`,
         }}
       >
@@ -158,6 +162,32 @@ export const GameBoard = memo(function GameBoard({
           background: 'linear-gradient(to top, rgba(0,245,255,0.3), transparent)',
         }}
       />
+
+      {/* Game status text overlay */}
+      {(gameStatus === 'idle' || gameStatus === 'paused' || gameStatus === 'game_over') && (
+        <div
+          className="absolute inset-0 flex items-center justify-center"
+          style={{ backgroundColor: gameStatus === 'idle' ? 'rgba(0,0,0,0.7)' : 'rgba(0,0,0,0.85)' }}
+        >
+          <div className="text-center">
+            {gameStatus === 'idle' && (
+              <p className="text-white text-lg font-bold animate-pulse">
+                {isMobile ? 'Tap to Start' : 'Press SPACE to Start'}
+              </p>
+            )}
+            {gameStatus === 'paused' && (
+              <p className="text-white text-lg font-bold">
+                {isMobile ? 'Tap to Resume' : 'Press P to Resume'}
+              </p>
+            )}
+            {gameStatus === 'game_over' && (
+              <p className="text-white text-lg font-bold">
+                {isMobile ? 'Double-tap to Restart' : 'Press R to Restart'}
+              </p>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 });
