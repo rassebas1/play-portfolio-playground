@@ -6,8 +6,8 @@
  * keyboard input for snake movement, and interacts with the high score system.
  */
 import { useEffect, useReducer, useCallback } from 'react';
-import { snakeGameReducer, initialSnakeGameState } from '../GameReducer';
-import { Direction, GameAction, Difficulty } from '../types';
+import { snakeGameReducer, initialSnakeGameState } from '@/games/snake/GameReducer';
+import { Direction, GameAction, Difficulty } from '@/games/snake/types';
 import { useSnakeInput } from './useSnakeInput';
 import { useHighScores } from '@/hooks/useHighScores'; // Import useHighScores
 

@@ -7,16 +7,16 @@
  */
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { useGame } from '@/hooks/useGame';
-import { GAME_DIMENSIONS, PHYSICS } from '@/utils/flappy_bird_const';
+import { GAME_DIMENSIONS, PHYSICS } from '@/games/flappy-bird/constants';
 import {
   createInitialBird,
   updateBirdPhysics,
   updatePipes,
   generatePipesIfNeeded,
   checkCollision,
-  birdJump, // Import birdJump
-} from '../gameLogic';
-import type { Bird, Pipe } from '../types';
+  birdJump, // Import birdLogic
+} from './gameLogic';
+import type { Bird, Pipe } from '@/games/flappy-bird/types';
 
 /**
  * Manages the core logic and state for the Flappy Bird game.

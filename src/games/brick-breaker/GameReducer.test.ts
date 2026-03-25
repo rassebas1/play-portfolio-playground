@@ -1,10 +1,10 @@
 /**
  * src/games/brick-breaker/GameReducer.test.ts
  */
-import { describe, it, expect } from 'vitest';
+import { beforeEach, describe, it, expect } from 'vitest';
 import { gameReducer, getInitialState } from './GameReducer';
 import { GameStatus, GameState } from './types';
-import * as Constants from '../../utils/brick_breaker_const';
+import * as Constants from './constants';
 
 describe('Brick Breaker GameReducer', () => {
   const canvasWidth = 800;

@@ -1,5 +1,5 @@
 import { useEffect, useCallback } from 'react';
-import { Direction, GameAction } from '../types';
+import { Direction, GameAction } from '@/games/snake/types';
 
 interface UseSnakeInputProps {
   dispatch: React.Dispatch<GameAction>;

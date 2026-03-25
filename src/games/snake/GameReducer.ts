@@ -14,7 +14,7 @@ import {
   INITIAL_DIRECTION,
   INITIAL_GAME_SPEED,
   FOOD_SCORE_INCREMENT,
-} from '../../utils/snake_const';
+} from './constants';
 
 /**
  * Generates a random coordinate for food, ensuring it doesn't overlap with the snake's body.

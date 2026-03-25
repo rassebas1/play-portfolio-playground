@@ -1,6 +1,6 @@
 import React from 'react';
 import { cn } from '@/lib/utils'; // Utility for conditionally joining class names
-import type { Pipe as PipeType, GameDimensions } from '../types';
+import type { Pipe as PipeType, GameDimensions } from '@/games/flappy-bird/types';
 
 /**
  * Props for the Pipe component.

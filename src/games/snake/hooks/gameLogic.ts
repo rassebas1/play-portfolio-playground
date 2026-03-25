@@ -1,4 +1,4 @@
-// src/games/snake/gameLogic.ts
+// src/games/snake/hooks/gameLogic.ts
 
 // This file can contain pure helper functions for game mechanics
 // For example, functions to calculate next position, check collisions, etc.
@@ -6,8 +6,8 @@
 // As the game grows, more complex logic can be extracted here.
 
 // Example: Function to get a random coordinate on the board
-import { Coordinate } from './types';
-import { BOARD_WIDTH, BOARD_HEIGHT } from '../../utils/snake_const';
+import { Coordinate } from '@/games/snake/types';
+import { BOARD_WIDTH, BOARD_HEIGHT } from '@/games/snake/constants';
 
 export const getRandomBoardCoordinate = (): Coordinate => {
   return {

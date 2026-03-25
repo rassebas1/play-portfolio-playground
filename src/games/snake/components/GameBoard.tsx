@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import { SnakeGameState, Coordinate } from '../types';
+import { SnakeGameState, Coordinate } from '@/games/snake/types';
 
 /**
  * Props for the GameBoard component.

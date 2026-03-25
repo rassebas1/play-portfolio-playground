@@ -1,6 +1,6 @@
 import { useReducer, useEffect, useCallback } from 'react';
-import type { GameState, GameAction, Difficulty, Cell } from '../types';
-import { DIFFICULTY_CONFIG, INITIAL_DIFFICULTY } from '../constants';
+import type { GameState, GameAction, Difficulty, Cell } from '@/games/minesweeper/types';
+import { DIFFICULTY_CONFIG, INITIAL_DIFFICULTY } from '@/games/minesweeper/constants';
 
 const createEmptyBoard = (rows: number, cols: number): Cell[][] => {
   const board: Cell[][] = [];

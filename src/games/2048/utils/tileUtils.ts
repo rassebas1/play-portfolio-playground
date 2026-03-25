@@ -1,6 +1,6 @@
-import type { Board, Tile } from '../types';
+import type { Board, Tile } from '@/games/2048/types';
 import { getEmptyPositions } from './boardUtils';
-import { TILE_COUNT_PER_ROW_OR_COLUMN } from '../../../utils/2048_const';
+import { TILE_COUNT_PER_ROW_OR_COLUMN } from '@/games/2048/constants';
 
 /**
  * Adds a random tile (2 or 4) to an empty position on the board.

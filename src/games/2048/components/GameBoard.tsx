@@ -1,7 +1,7 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 import { Tile } from './Tile';
-import { Tile as TileType } from '../types'; // Import TileType for clarity
+import { Tile as TileType } from '@/games/2048/types'; // Import TileType for clarity
 
 /**
  * Props for the GameBoard component.

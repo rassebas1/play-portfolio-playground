@@ -1,6 +1,6 @@
-import type { Board, Tile } from '../types';
+import type { Board, Tile } from '@/games/2048/types';
 import { addRandomTile } from './tileUtils';
-import { GameState, initialState } from '../GameReducer';
+import { GameState, initialState } from '@/games/2048/GameReducer';
 
 /**
  * Creates an empty 4x4 board.

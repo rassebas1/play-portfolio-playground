@@ -1,5 +1,5 @@
 /**
- * src/utils/2048_const.ts
+ * src/games/2048/constants.ts
  *
  * Defines constants used throughout the 2048 game.
  * These constants help in configuring game board dimensions and animation timings.

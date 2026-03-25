@@ -1,12 +1,12 @@
 /**
- * src/games/flappy-bird/gameLogic.ts
+ * src/games/flappy-bird/hooks/gameLogic.ts
  *
  * Contains core game logic functions for the Flappy Bird game,
  * including bird and pipe creation, physics updates, and collision detection.
  */
 
-import type { Bird, Pipe, CollisionResult } from './types';
-import { GAME_DIMENSIONS, PHYSICS } from '../../utils/flappy_bird_const';
+import type { Bird, Pipe, CollisionResult } from '@/games/flappy-bird/types';
+import { GAME_DIMENSIONS, PHYSICS } from '@/games/flappy-bird/constants';
 
 /**
  * Creates and returns the initial state of the bird.

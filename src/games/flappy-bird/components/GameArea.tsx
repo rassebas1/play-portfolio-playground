@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils'; // Utility for conditionally joining class nam
 import Bird from './Bird';
 import Pipe from './Pipe';
 import Ground from './Ground';
-import type { FlappyBirdState } from '../types';
+import type { FlappyBirdState } from '@/games/flappy-bird/types';
 import type { GameDimensions } from '@/types/global';
 
 /**

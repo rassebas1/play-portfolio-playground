@@ -1,6 +1,6 @@
 import { useEffect, useCallback, useRef, RefObject } from "react";
 import { GameStatus, Action } from "../types";
-import { PADDLE_SPEED } from "../../../utils/brick_breaker_const";
+import { PADDLE_SPEED } from "../constants";
 
 interface UseGameInputProps {
   dispatch: React.Dispatch<Action>;
