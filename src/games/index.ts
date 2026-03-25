@@ -59,6 +59,13 @@ export const GAME_REGISTRY: Record<GameType, GameRegistryEntry> = {
     icon: '🟦',
     color: 'hsl(200, 100%, 50%)',
   },
+  minesweeper: {
+    component: lazy(() => import('./minesweeper/Minesweeper')),
+    difficulty: 'Medium',
+    category: 'Puzzle',
+    icon: '💣',
+    color: 'hsl(0, 100%, 50%)',
+  },
 };
 
 export const getGameEntry = (gameId: GameType): GameRegistryEntry | undefined => {
