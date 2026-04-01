@@ -27,5 +27,9 @@
   "tetris": {
     "name": "Tetris",
     "description": "Apila bloques que caen para borrar líneas. ¡Acción clásica de puzzles!"
+  },
+  "minesweeper": {
+    "name": "Buscaminas",
+    "description": "Despeja el campo de minas sin detonar ninguna mina. ¡Usa la lógica para encontrar los cuadros seguros!"
   }
 }

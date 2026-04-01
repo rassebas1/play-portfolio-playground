@@ -27,5 +27,9 @@
   "tetris": {
     "name": "Tetris",
     "description": "Stack falling blocks to clear lines. Classic puzzle action!"
+  },
+  "minesweeper": {
+    "name": "Minesweeper",
+    "description": "Clear the minefield without detonating any mines. Use logic to find the safe squares!"
   }
 }
