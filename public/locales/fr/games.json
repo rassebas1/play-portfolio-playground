@@ -27,5 +27,9 @@
   "tetris": {
     "name": "Tetris",
     "description": "Empilez des blocs qui tombent pour effacer des lignes. Action classique de puzzle !"
+  },
+  "minesweeper": {
+    "name": "Démineur",
+    "description": "Effacez le champ de mines sans déclencher aucune mine. Utilisez la logique pour trouver les cases sûres !"
   }
-}
+  }

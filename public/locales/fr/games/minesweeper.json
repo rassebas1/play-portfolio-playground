@@ -1,0 +1,117 @@
+{
+  "title": "Démineur",
+  "description": "Jeu classique de recherche de mines. Placez les drapeaux et révélez les cellules sûres !",
+  "short_description": "Jeu classique de démineur",
+  "instructions": {
+    "title": "Comment Jouer",
+    "goal": "Révélez toutes les cellules sûres sans toucher une mine",
+    "steps": [
+      "Cliquez sur une cellule pour la révéler",
+      "Les nombres indiquent combien de mines sont adjacentes à cette cellule",
+      "Faites un clic droit ou utilisez le mode drapeau pour marquer les cellules qui contiennent des mines",
+      "Cliquez d'accord (double-clic sur nombre révélé) pour révéler toutes les cellules adjacentes si le bon nombre de drapeaux sont placés",
+      "Gagnez en révélant toutes les cellules qui ne sont pas des mines"
+    ],
+    "mobile": {
+      "tap": "Appuyez pour révéler",
+      "double_tap": "Double-appui pour accord",
+      "swipe": "Glissez pour naviguer",
+      "flag_button": "Utilisez le bouton drapeau pour activer le mode drapeau"
+    },
+    "desktop": {
+      "click": "Clic gauche pour révéler",
+      "right_click": "Clic droit pour marquer",
+      "double_click": "Double-clic pour accord",
+      "arrows": "Flèches pour naviguer",
+      "f_key": "F pour marquer",
+      "d_key": "D ou C pour accord"
+    }
+  },
+  "difficulty": {
+    "easy": "Facile",
+    "medium": "Moyen",
+    "hard": "Difficile"
+  },
+  "status": {
+    "idle": "Prêt",
+    "playing": "En cours",
+    "won": "Victoire !",
+    "lost": "Partie terminée"
+  },
+  "face": {
+    "idle": "🙂",
+    "playing": "😊",
+    "won": "😎",
+    "lost": "💀"
+  },
+  "stats": {
+    "time": "Temps",
+    "best_time": "Meilleur Temps",
+    "mines_remaining": "Mines",
+    "moves": "Mouvements"
+  },
+  "modal": {
+    "victory": {
+      "title": "🎉 Victoire !",
+      "subtitle": "Vous avez dégagé toutes les mines !",
+      "time": "Temps : {{time}}",
+      "best_time": "Meilleur : {{time}}",
+      "new_record": "🏆 Nouveau Record !",
+      "play_again": "Rejouer",
+      "back_to_games": "Retour aux Jeux"
+    },
+    "defeat": {
+      "title": "💥 Partie Terminée",
+      "subtitle": "Vous avez touched une mine !",
+      "time": "Temps : {{time}}",
+      "play_again": "Rejouer",
+      "back_to_games": "Retour aux Jeux"
+    }
+  },
+  "controls": {
+    "flag_mode": "Drapeau",
+    "flag_mode_on": "Drapeau ON",
+    "new_game": "Nouvelle Partie",
+    "chord": "Accord",
+    "reveal": "Révéler"
+  },
+  "leaderboard": {
+    "title": "Meilleurs Temps",
+    "no_scores": "Aucun temps enregistré"
+  },
+  "a11y": {
+    "board_label": "Plateau de jeu Démineur",
+    "cell_hidden": "Ligne {{row}}, Colonne {{col}}, cachée",
+    "cell_flagged": "Ligne {{row}}, Colonne {{col}}, marquée d'un drapeau",
+    "cell_revealed": "Ligne {{row}}, Colonne {{col}}, révélée, {{count}} mines adjacentes",
+    "cell_empty": "Ligne {{row}}, Colonne {{col}}, vide",
+    "cell_mine": "Ligne {{row}}, Colonne {{col}}, mine",
+    "flag_mode_on": "Le mode drapeau est activé",
+    "flag_mode_off": "Le mode drapeau est désactivé",
+    "mines_remaining": "{{count}} mines restantes",
+    "game_won": "Félicitations ! Vous avez gagné en {{time}}",
+    "game_lost": "Partie terminée. Vous avez touché une mine",
+    "cell_reveal_announcement": "Cellule révélée. {{count}} mines adjacentes"
+  }
+}
+  },
+  "controls": {
+    "flag_mode": "Mode Drapeau",
+    "flag_mode_on": "Mode Drapeau Activé",
+    "new_game": "Nouvelle Partie"
+  },
+  "a11y": {
+    "board_label": "Plateau de jeu Démineur",
+    "cell_hidden": "Ligne {{row}}, Colonne {{col}}, cachée",
+    "cell_flagged": "Ligne {{row}}, Colonne {{col}}, marquée d'un drapeau",
+    "cell_revealed": "Ligne {{row}}, Colonne {{col}}, révélée, {{count}} mines adjacentes",
+    "cell_empty": "Ligne {{row}}, Colonne {{col}}, vide",
+    "cell_mine": "Ligne {{row}}, Colonne {{col}}, mine",
+    "flag_mode_on": "Le mode drapeau est activé",
+    "flag_mode_off": "Le mode drapeau est désactivé",
+    "mines_remaining": "{{count}} mines restantes",
+    "game_won": "Félicitations ! Vous avez gagné en {{time}}",
+    "game_lost": "Partie terminée. Vous avez touché une mine",
+    "cell_reveal_announcement": "Cellule révélée. {{count}} mines adjacentes"
+  }
+}

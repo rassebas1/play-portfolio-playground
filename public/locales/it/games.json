@@ -27,5 +27,9 @@
   "tetris": {
     "name": "Tetris",
     "description": "Impila i blocchi che cadono per eliminare le linee. Azione classica di puzzle!"
+  },
+  "minesweeper": {
+    "name": "Campo Minato",
+    "description": "Svuota il campo minato senza far esplodere nessuna mina. Usa la logica per trovare le caselle sicure!"
   }
 }

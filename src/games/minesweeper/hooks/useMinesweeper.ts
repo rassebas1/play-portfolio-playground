@@ -187,6 +187,113 @@ const gameReducer = (state: GameState, action: GameAction): GameState => {
       };
     }
 
+    case 'CHORD_REVEAL': {
+      const { row, col } = action.payload;
+      const cell = state.board[row][col];
+
+      // Ignore chord on hidden cells, revealed 'empty' cells, or during game over
+      if (
+        !cell.isRevealed ||
+        cell.value === 'empty' ||
+        cell.value === 0 ||
+        cell.value === 'mine' ||
+        state.gameStatus === 'won' ||
+        state.gameStatus === 'lost'
+      ) {
+        return state;
+      }
+
+      const cellValue = cell.value as number;
+      
+      // Get adjacent cells (8 neighbors)
+      const adjacentCells: { r: number; c: number; isFlagged: boolean }[] = [];
+      for (let dr = -1; dr <= 1; dr++) {
+        for (let dc = -1; dc <= 1; dc++) {
+          if (dr === 0 && dc === 0) continue;
+          const nr = row + dr;
+          const nc = col + dc;
+          if (nr >= 0 && nr < state.board.length && nc >= 0 && nc < state.board[0].length) {
+            adjacentCells.push({
+              r: nr,
+              c: nc,
+              isFlagged: state.board[nr][nc].isFlagged,
+            });
+          }
+        }
+      }
+
+      // Count flagged cells among neighbors
+      const flaggedCount = adjacentCells.filter(ac => ac.isFlagged).length;
+
+      // If flag count equals cell value, reveal all non-flagged adjacent cells
+      if (flaggedCount !== cellValue) {
+        return state;
+      }
+
+      let newBoard = state.board.map(r => r.map(c => ({ ...c })));
+      let newRevealedCount = state.revealedCount;
+      let hitMine = false;
+      let newGameStatus: 'idle' | 'playing' | 'won' | 'lost' = state.gameStatus;
+
+      const revealCell = (r: number, c: number) => {
+        const currentCell = newBoard[r][c];
+        if (currentCell.isRevealed || currentCell.isFlagged) return;
+        
+        currentCell.isRevealed = true;
+        currentCell.state = 'revealed';
+        newRevealedCount++;
+
+        if (currentCell.value === 'mine') {
+          hitMine = true;
+          return;
+        }
+
+        if (currentCell.value === 'empty' || currentCell.value === 0) {
+          for (let dr = -1; dr <= 1; dr++) {
+            for (let dc = -1; dc <= 1; dc++) {
+              const nr = r + dr;
+              const nc = c + dc;
+              if (nr >= 0 && nr < newBoard.length && nc >= 0 && nc < newBoard[0].length) {
+                revealCell(nr, nc);
+              }
+            }
+          }
+        }
+      };
+
+      // Reveal all non-flagged adjacent cells
+      for (const ac of adjacentCells) {
+        if (!ac.isFlagged) {
+          revealCell(ac.r, ac.c);
+        }
+      }
+
+      if (hitMine) {
+        newGameStatus = 'lost';
+        // Reveal all mines
+        newBoard = newBoard.map(row =>
+          row.map(cell => {
+            if (cell.value === 'mine' && !cell.isRevealed) {
+              return { ...cell, isRevealed: true };
+            }
+            return cell;
+          })
+        );
+      } else {
+        const totalNonMineCells = state.config.rows * state.config.cols - state.config.mines;
+        if (newRevealedCount >= totalNonMineCells) {
+          newGameStatus = 'won';
+        }
+      }
+
+      return {
+        ...state,
+        board: newBoard,
+        gameStatus: newGameStatus,
+        revealedCount: newRevealedCount,
+      };
+    }
+
     case 'RESTART': {
       return getInitialState(state.difficulty);
     }
@@ -231,6 +338,10 @@ export const useMinesweeper = () => {
     dispatch({ type: 'TOGGLE_FLAG', payload: { row, col } });
   }, []);
 
+  const chordReveal = useCallback((row: number, col: number) => {
+    dispatch({ type: 'CHORD_REVEAL', payload: { row, col } });
+  }, []);
+
   const restart = useCallback(() => {
     dispatch({ type: 'RESTART' });
   }, []);
@@ -243,6 +354,7 @@ export const useMinesweeper = () => {
     state,
     initialize,
     revealCell,
+    chordReveal,
     toggleFlag,
     restart,
     setDifficulty,

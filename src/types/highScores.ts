@@ -1,4 +1,4 @@
-export type GameName = 'snake' | '2048' | 'flappy-bird' | 'brick-breaker' | 'memory-game' | 'tetris'
+export type GameName = 'snake' | '2048' | 'flappy-bird' | 'brick-breaker' | 'memory-game' | 'tetris' | 'minesweeper'
 
 export const ALLOWED_GAMES: GameName[] = [
   'snake',
@@ -6,7 +6,8 @@ export const ALLOWED_GAMES: GameName[] = [
   'flappy-bird',
   'brick-breaker',
   'memory-game',
-  'tetris'
+  'tetris',
+  'minesweeper'
 ]
 
 export const EXCLUDED_GAMES = ['tic-tac-toe'] as const
@@ -65,7 +66,8 @@ export const GAME_MINIMUMS: Record<GameName, GameMinimums> = {
   'flappy-bird': { minDuration: 3000, minMoves: 5 },
   'brick-breaker': { minDuration: 5000, minMoves: 10 },
   'memory-game': { minDuration: 10000, minMoves: 8 },
-  tetris: { minDuration: 3000, minMoves: 5 }
+  tetris: { minDuration: 3000, minMoves: 5 },
+  minesweeper: { minDuration: 5000, minMoves: 5 }
 }
 
 export function isValidGameName(game: string): game is GameName {
