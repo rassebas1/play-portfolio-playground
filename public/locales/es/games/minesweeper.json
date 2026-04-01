@@ -1,0 +1,96 @@
+{
+  "title": "Buscaminas",
+  "description": "Clásico juego de búsqueda de minas. ¡Marca las minas y revela las celdas seguras!",
+  "short_description": "Clásico buscaminas",
+  "instructions": {
+    "title": "Cómo Jugar",
+    "goal": "Revela todas las celdas seguras sin tocar una mina",
+    "steps": [
+      "Haz clic en una celda para revelarla",
+      "Los números muestran cuántas minas hay adyacentes a esa celda",
+      "Haz clic derecho o usa el modo bandera para marcar las celdas que crees que tienen minas",
+      "Haz clic de acordes (doble clic en número revelado) para revelar todas las celdas adyacentes si las banderas correctas están colocadas",
+      "Gana revelando todas las celdas que no son minas"
+    ],
+    "mobile": {
+      "tap": "Toca para revelar",
+      "double_tap": "Doble toque para acorde",
+      "swipe": "Desliza para navegar",
+      "flag_button": "Usa el botón de bandera para activar el modo bandera"
+    },
+    "desktop": {
+      "click": "Clic izquierdo para revelar",
+      "right_click": "Clic derecho para marcar",
+      "double_click": "Doble clic para acorde",
+      "arrows": "Flechas para navegar",
+      "f_key": "F para marcar",
+      "d_key": "D o C para acorde"
+    }
+  },
+  "difficulty": {
+    "easy": "Fácil",
+    "medium": "Medio",
+    "hard": "Difícil"
+  },
+  "status": {
+    "idle": "Listo",
+    "playing": "Jugando",
+    "won": "¡Victoria!",
+    "lost": "Fin del Juego"
+  },
+  "face": {
+    "idle": "🙂",
+    "playing": "😊",
+    "won": "😎",
+    "lost": "💀"
+  },
+  "stats": {
+    "time": "Tiempo",
+    "best_time": "Mejor Tiempo",
+    "mines_remaining": "Minas",
+    "moves": "Movimientos"
+  },
+  "modal": {
+    "victory": {
+      "title": "¡🎉 Victoria!",
+      "subtitle": "¡Desactivaste todas las minas!",
+      "time": "Tiempo: {{time}}",
+      "best_time": "Mejor: {{time}}",
+      "new_record": "🏆 ¡Nuevo Récord!",
+      "play_again": "Jugar de Nuevo",
+      "back_to_games": "Volver a los Juegos"
+    },
+    "defeat": {
+      "title": "💥 Fin del Juego",
+      "subtitle": "¡Tocaste una mina!",
+      "time": "Tiempo: {{time}}",
+      "play_again": "Jugar de Nuevo",
+      "back_to_games": "Volver a los Juegos"
+    }
+  },
+  "controls": {
+    "flag_mode": "Bandera",
+    "flag_mode_on": "Bandera ON",
+    "new_game": "Nuevo Juego",
+    "chord": "Acorde",
+    "reveal": "Revelar"
+  },
+  "leaderboard": {
+    "title": "Mejores Tiempos",
+    "no_scores": "No hay tiempos registrados"
+  },
+  "a11y": {
+    "board_label": "Tablero de juego Buscaminas",
+    "cell_hidden": "Fila {{row}}, Columna {{col}}, oculta",
+    "cell_flagged": "Fila {{row}}, Columna {{col}}, marcada con bandera",
+    "cell_revealed": "Fila {{row}}, Columna {{col}}, revelada, {{count}} minas adyacentes",
+    "cell_empty": "Fila {{row}}, Columna {{col}}, vacía",
+    "cell_mine": "Fila {{row}}, Columna {{col}}, mina",
+    "flag_mode_on": "El modo bandera está activado",
+    "flag_mode_off": "El modo bandera está desactivado",
+    "mines_remaining": "{{count}} minas restantes",
+    "game_won": "¡Felicitaciones! Ganaste en {{time}}",
+    "game_lost": "Fin del juego. Tocaste una mina",
+    "cell_reveal_announcement": "Celda revelada. {{count}} minas adyacentes"
+  }
+}

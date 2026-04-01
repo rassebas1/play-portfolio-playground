@@ -1,0 +1,96 @@
+{
+  "title": "Campo Minato",
+  "description": "Classico gioco di ricerca delle mine. Segna le mine e rivela le celle sicure!",
+  "short_description": "Classico campo minato",
+  "instructions": {
+    "title": "Come Giocare",
+    "goal": "Rivela tutte le celle sicure senza colpire una mina",
+    "steps": [
+      "Clicca su una cella per rivelarla",
+      "I numeri mostrano quante mine sono adiacenti a quella cella",
+      "Clicca con il tasto destro o usa la modalità bandiera per segnare le celle che pensano contenere mine",
+      "Clicca accordo (doppio clic su numero rivelato) per rivelare tutte le celle adiacenti se il numero corretto di bandiere sono posizionate",
+      "Vinci rivelando tutte le celle che non sono mine"
+    ],
+    "mobile": {
+      "tap": "Tocca per rivelare",
+      "double_tap": "Doppio tocco per accordo",
+      "swipe": "Scorri per navigare",
+      "flag_button": "Usa il pulsante bandiera per attivare la modalità bandiera"
+    },
+    "desktop": {
+      "click": "Clic sinistro per rivelare",
+      "right_click": "Clic destro per segnare",
+      "double_click": "Doppio clic per accordo",
+      "arrows": "Frecce per navigare",
+      "f_key": "F per segnare",
+      "d_key": "D o C per accordo"
+    }
+  },
+  "difficulty": {
+    "easy": "Facile",
+    "medium": "Medio",
+    "hard": "Difficile"
+  },
+  "status": {
+    "idle": "Pronto",
+    "playing": "In gioco",
+    "won": "Vittoria!",
+    "lost": "Partita Finita"
+  },
+  "face": {
+    "idle": "🙂",
+    "playing": "😊",
+    "won": "😎",
+    "lost": "💀"
+  },
+  "stats": {
+    "time": "Tempo",
+    "best_time": "Miglior Tempo",
+    "mines_remaining": "Mine",
+    "moves": "Mosse"
+  },
+  "modal": {
+    "victory": {
+      "title": "🎉 Vittoria!",
+      "subtitle": "Hai disinnescato tutte le mine!",
+      "time": "Tempo: {{time}}",
+      "best_time": "Migliore: {{time}}",
+      "new_record": "🏆 Nuovo Record!",
+      "play_again": "Gioca Ancora",
+      "back_to_games": "Torna ai Giochi"
+    },
+    "defeat": {
+      "title": "💥 Partita Finita",
+      "subtitle": "Hai colpito una mina!",
+      "time": "Tempo: {{time}}",
+      "play_again": "Gioca Ancora",
+      "back_to_games": "Torna ai Giochi"
+    }
+  },
+  "controls": {
+    "flag_mode": "Bandiera",
+    "flag_mode_on": "Bandiera ON",
+    "new_game": "Nuovo Gioco",
+    "chord": "Accordo",
+    "reveal": "Rivela"
+  },
+  "leaderboard": {
+    "title": "Migliori Tempi",
+    "no_scores": "Nessun tempo registrato"
+  },
+  "a11y": {
+    "board_label": "Campo da gioco Campo Minato",
+    "cell_hidden": "Riga {{row}}, Colonna {{col}}, nascosta",
+    "cell_flagged": "Riga {{row}}, Colonna {{col}}, segnata con bandiera",
+    "cell_revealed": "Riga {{row}}, Colonna {{col}}, rivelata, {{count}} mine adiacenti",
+    "cell_empty": "Riga {{row}}, Colonna {{col}}, vuota",
+    "cell_mine": "Riga {{row}}, Colonna {{col}}, mina",
+    "flag_mode_on": "La modalità bandiera è attiva",
+    "flag_mode_off": "La modalità bandiera è disattivata",
+    "mines_remaining": "{{count}} mine rimaste",
+    "game_won": "Congratulazioni! Hai vinto in {{time}}",
+    "game_lost": "Partita finita. Hai colpito una mina",
+    "cell_reveal_announcement": "Cella rivelata. {{count}} mine adiacenti"
+  }
+}

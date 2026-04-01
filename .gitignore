@@ -33,4 +33,7 @@ Gemini.md
 .opencode/skills/*
 Integration.md
 .openspec
-.openspec/*
+openspec
+openspec/*
+.atl
+.opencode/*

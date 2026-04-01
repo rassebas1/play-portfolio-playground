@@ -3,7 +3,7 @@
  * Defines available metrics for each game for leaderboard functionality
  */
 
-export type MetricKey = 'score' | 'lines' | 'bricks' | 'highestTile' | 'level';
+export type MetricKey = 'score' | 'lines' | 'bricks' | 'highestTile' | 'level' | 'time';
 
 export interface GameMetric {
   key: MetricKey;
@@ -53,6 +53,12 @@ export const GAME_METRICS: Record<string, GameMetricsConfig> = {
     primary: 'score',
     metrics: [
       { key: 'score', labelKey: 'leaderboard.score', strategy: 'highest' },
+    ],
+  },
+  minesweeper: {
+    primary: 'time',
+    metrics: [
+      { key: 'time', labelKey: 'leaderboard.time', strategy: 'lowest' },
     ],
   },
 } as const;

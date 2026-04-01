@@ -11,6 +11,7 @@ import brickBreaker from '../public/locales/en/games/brick-breaker.json';
 import memoryGame from '../public/locales/en/games/memory-game.json';
 import flappyBird from '../public/locales/en/games/flappy-bird.json';
 import tetris from '../public/locales/en/games/tetris.json';
+import minesweeper from '../public/locales/en/games/minesweeper.json';
 
 import 'i18next';
 
@@ -31,6 +32,7 @@ declare module 'i18next' {
       'games/memory-game': typeof memoryGame;
       'games/flappy-bird': typeof flappyBird;
       'games/tetris': typeof tetris;
+      'games/minesweeper': typeof minesweeper;
     };
   }
 }

@@ -34,6 +34,7 @@ export interface GameState {
 export type GameAction =
   | { type: 'INITIALIZE'; payload: { difficulty: Difficulty } }
   | { type: 'REVEAL_CELL'; payload: { row: number; col: number } }
+  | { type: 'CHORD_REVEAL'; payload: { row: number; col: number } }
   | { type: 'TOGGLE_FLAG'; payload: { row: number; col: number } }
   | { type: 'RESTART' }
   | { type: 'TICK' }

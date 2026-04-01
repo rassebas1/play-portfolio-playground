@@ -1,0 +1,96 @@
+{
+  "title": "Minesweeper",
+  "description": "Classic mine-sweeping puzzle game. Flag the mines and reveal the safe cells!",
+  "short_description": "Classic mine-sweeping puzzle",
+  "instructions": {
+    "title": "How to Play",
+    "goal": "Reveal all safe cells without hitting a mine",
+    "steps": [
+      "Click on a cell to reveal it",
+      "Numbers show how many mines are adjacent to that cell",
+      "Right-click or use flag mode to mark cells you think contain mines",
+      "Chord click (double-click on revealed number) to reveal all adjacent cells if correct flags are placed",
+      "Win by revealing all non-mine cells"
+    ],
+    "mobile": {
+      "tap": "Tap to reveal",
+      "double_tap": "Double-tap to chord",
+      "swipe": "Swipe to navigate",
+      "flag_button": "Use flag button to toggle flag mode"
+    },
+    "desktop": {
+      "click": "Left click to reveal",
+      "right_click": "Right click to flag",
+      "double_click": "Double click to chord",
+      "arrows": "Arrow keys to navigate",
+      "f_key": "F to flag",
+      "d_key": "D or C for chord"
+    }
+  },
+  "difficulty": {
+    "easy": "Easy",
+    "medium": "Medium",
+    "hard": "Hard"
+  },
+  "status": {
+    "idle": "Ready",
+    "playing": "Playing",
+    "won": "Victory!",
+    "lost": "Game Over"
+  },
+  "face": {
+    "idle": "🙂",
+    "playing": "😊",
+    "won": "😎",
+    "lost": "💀"
+  },
+  "stats": {
+    "time": "Time",
+    "best_time": "Best Time",
+    "mines_remaining": "Mines",
+    "moves": "Moves"
+  },
+  "modal": {
+    "victory": {
+      "title": "🎉 Victory!",
+      "subtitle": "You cleared all the mines!",
+      "time": "Time: {{time}}",
+      "best_time": "Best: {{time}}",
+      "new_record": "🏆 New Record!",
+      "play_again": "Play Again",
+      "back_to_games": "Back to Games"
+    },
+    "defeat": {
+      "title": "💥 Game Over",
+      "subtitle": "You hit a mine!",
+      "time": "Time: {{time}}",
+      "play_again": "Play Again",
+      "back_to_games": "Back to Games"
+    }
+  },
+  "controls": {
+    "flag_mode": "Flag",
+    "flag_mode_on": "Flag ON",
+    "new_game": "New Game",
+    "chord": "Chord",
+    "reveal": "Reveal"
+  },
+  "leaderboard": {
+    "title": "Best Times",
+    "no_scores": "No recorded times yet"
+  },
+  "a11y": {
+    "board_label": "Minesweeper game board",
+    "cell_hidden": "Row {{row}}, Column {{col}}, hidden",
+    "cell_flagged": "Row {{row}}, Column {{col}}, flagged",
+    "cell_revealed": "Row {{row}}, Column {{col}}, revealed, {{count}} adjacent mines",
+    "cell_empty": "Row {{row}}, Column {{col}}, empty",
+    "cell_mine": "Row {{row}}, Column {{col}}, mine",
+    "flag_mode_on": "Flag mode is on",
+    "flag_mode_off": "Flag mode is off",
+    "mines_remaining": "{{count}} mines remaining",
+    "game_won": "Congratulations! You won in {{time}}",
+    "game_lost": "Game over. You hit a mine",
+    "cell_reveal_announcement": "Cell revealed. {{count}} mines adjacent"
+  }
+}

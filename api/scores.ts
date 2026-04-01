@@ -6,9 +6,9 @@ const supabase = createClient(
   process.env.SUPABASE_ANON_KEY!
 )
 
-const ALLOWED_GAMES = ['snake', '2048', 'flappy-bird', 'brick-breaker', 'memory-game', 'tetris']
+const ALLOWED_GAMES = ['snake', '2048', 'flappy-bird', 'brick-breaker', 'memory-game', 'tetris', 'minesweeper']
 
-const ALLOWED_METRICS = ['score', 'lines', 'level', 'bricks', 'highestTile']
+const ALLOWED_METRICS = ['score', 'lines', 'level', 'bricks', 'highestTile', 'time']
 
 const PROFANITY_LIST = [
   'fuck', 'shit', 'ass', 'bitch', 'damn', 'bastard', 'crap', 'dick',
@@ -37,7 +37,8 @@ const GAME_MINIMUMS: Record<string, { minDuration: number; minMoves: number }> =
   'flappy-bird': { minDuration: 3000, minMoves: 5 },
   'brick-breaker': { minDuration: 5000, minMoves: 10 },
   'memory-game': { minDuration: 10000, minMoves: 8 },
-  tetris: { minDuration: 3000, minMoves: 5 }
+  tetris: { minDuration: 3000, minMoves: 5 },
+  minesweeper: { minDuration: 5000, minMoves: 5 }
 }
 
 export default async function handler(
@@ -158,7 +159,7 @@ export default async function handler(
       .select('username, score, created_at')
       .eq('game', game)
       .eq('metric', metric)
-      .order('score', { ascending: false })
+      .order('score', { ascending: metric === 'time' })  // time = lowest first, others = highest first
       .limit(limit)
 
     if (error) {
