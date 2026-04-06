@@ -3,7 +3,7 @@
  * Defines available metrics for each game for leaderboard functionality
  */
 
-export type MetricKey = 'score' | 'lines' | 'bricks' | 'highestTile' | 'level' | 'time';
+export type MetricKey = 'score' | 'lines' | 'bricks' | 'highestTile' | 'level' | 'time' | 'waves';
 
 export interface GameMetric {
   key: MetricKey;
@@ -59,6 +59,13 @@ export const GAME_METRICS: Record<string, GameMetricsConfig> = {
     primary: 'time',
     metrics: [
       { key: 'time', labelKey: 'leaderboard.time', strategy: 'lowest' },
+    ],
+  },
+  'tower-defense': {
+    primary: 'score',
+    metrics: [
+      { key: 'score', labelKey: 'leaderboard.score', strategy: 'highest' },
+      { key: 'waves', labelKey: 'leaderboard.waves', strategy: 'highest' },
     ],
   },
 } as const;

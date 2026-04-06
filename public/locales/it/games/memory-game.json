@@ -4,7 +4,9 @@
   "short_description": "Abbina le coppie di carte",
   "instructions": {
     "desktop": "Clicca sulle carte per girarle. Trova tutte le coppie.",
-    "mobile": "Tocca le carte per girarle. Trova tutte le coppie."
+    "mobile": "Tocca le carte per girarle. Trova tutte le coppie.",
+    "tap_cards": "Tocca le carte per girarle e trovare le coppie corrispondenti",
+    "mobile_hint": "Tocca una carta per rivelarla, poi toccane un'altra per trovare la sua coppia"
   },
   "how_to_play": {
     "title": "Come Giocare",

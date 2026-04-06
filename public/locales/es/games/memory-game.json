@@ -4,7 +4,9 @@
   "short_description": "Empareja parejas de cartas",
   "instructions": {
     "desktop": "Haz clic en las cartas para voltearlas. Encuentra todas las parejas.",
-    "mobile": "Toca las cartas para voltearlas. Encuentra todas las parejas."
+    "mobile": "Toca las cartas para voltearlas. Encuentra todas las parejas.",
+    "tap_cards": "Toca las cartas para voltearlas y encontrar pares coincidentes",
+    "mobile_hint": "Toca cualquier carta para revelarla, luego toca otra para encontrar su par"
   },
   "how_to_play": {
     "title": "Cómo Jugar",

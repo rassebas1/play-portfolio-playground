@@ -66,6 +66,13 @@ export const GAME_REGISTRY: Record<GameType, GameRegistryEntry> = {
     icon: '💣',
     color: 'hsl(0, 100%, 50%)',
   },
+  'tower-defense': {
+    component: lazy(() => import('./tower-defense/TowerDefense')),
+    difficulty: 'Hard',
+    category: 'Strategy',
+    icon: '🏰',
+    color: 'hsl(280, 100%, 50%)',
+  },
 };
 
 export const getGameEntry = (gameId: GameType): GameRegistryEntry | undefined => {

@@ -2,8 +2,10 @@
 /* src/games/memory-game/components/Card.css */
 
 .card {
-  width: 100px;
-  height: 140px;
+  width: 100%;
+  aspect-ratio: 5/7; /* maintains 100:140 ratio responsively */
+  min-width: 55px;
+  max-width: 100px;
   perspective: 1000px;
   cursor: pointer;
 }
@@ -31,7 +33,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.5rem;
+  font-size: clamp(1.2rem, 4vw, 2.5rem);
   border-radius: 8px;
   border: 2px solid #333;
 }

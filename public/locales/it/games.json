@@ -31,5 +31,9 @@
   "minesweeper": {
     "name": "Campo Minato",
     "description": "Svuota il campo minato senza far esplodere nessuna mina. Usa la logica per trovare le caselle sicure!"
+  },
+  "towerDefense": {
+    "name": "Difesa delle Torri",
+    "description": "Difendi la tua base da ondate di nemici! Posiziona torri strategiche e sopravvivi 20 ondate."
   }
 }

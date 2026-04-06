@@ -118,7 +118,6 @@ const Tetris: React.FC = () => {
   const [prevPieceType, setPrevPieceType] = useState<string | null>(null);
   const [showGameOver, setShowGameOver] = useState(false);
   const isMobile = useIsMobile();
-  const lastTapRef = useRef<number | null>(null);
 
   // Initialize game on mount
   useEffect(() => {
@@ -143,7 +142,7 @@ const Tetris: React.FC = () => {
     }
   }, [status]);
 
-  // Swipe gestures for mobile
+  // Swipe gestures for mobile — increased minSwipeDistance to prevent accidental swipes
   const { onTouchStart, onTouchEnd } = useSwipeGesture({
     onSwipe: (direction) => {
       if (status !== 'playing') return;
@@ -163,34 +162,20 @@ const Tetris: React.FC = () => {
           break;
       }
     },
+    minSwipeDistance: 40, // Increased from default 25 to prevent accidental swipes
   });
 
-  // Handle tap for start/pause/resume
+  // Handle tap for start/pause/resume — immediate response, no setTimeout delay
   const handleBoardTap = useCallback(() => {
-    const now = Date.now();
-    
-    // Double-tap to restart (within 300ms)
-    if (lastTapRef.current && now - lastTapRef.current < 300) {
-      if (status === 'game_over') {
-        handleRestart();
-      } else if (status === 'idle' || status === 'paused') {
-        startGame();
-      }
-      lastTapRef.current = null;
-      return;
+    if (status === 'idle') {
+      startGame();
+    } else if (status === 'paused') {
+      resumeGame();
+    } else if (status === 'playing') {
+      rotateClockwise();
+    } else if (status === 'game_over') {
+      handleRestart();
     }
-    lastTapRef.current = now;
-
-    // Single tap actions
-    setTimeout(() => {
-      if (status === 'idle') {
-        startGame();
-      } else if (status === 'paused') {
-        resumeGame();
-      } else if (status === 'playing') {
-        rotateClockwise();
-      }
-    }, 300);
   }, [status, startGame, resumeGame, rotateClockwise]);
 
   const handleRestart = () => {

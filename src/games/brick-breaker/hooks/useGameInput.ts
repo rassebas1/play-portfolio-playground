@@ -87,24 +87,17 @@ export const useGameInput = ({ dispatch, stateRef, isMobile, gameBoardRef }: Use
     const touch = e.touches[0];
     touchStartRef.current = { x: touch.clientX, y: touch.clientY, time: Date.now() };
 
-    // Handle tap when not playing (to start game)
-    const gameStatus = stateRef.current?.gameStatus;
-    if (gameStatus !== GameStatus.PLAYING && gameBoardRef.current) {
-      e.preventDefault();
-    }
-  }, [stateRef.current, gameBoardRef.current]);
+    // Always prevent default on game board to avoid scroll interference
+    e.preventDefault();
+  }, []);
 
   const handleTouchMove = useCallback((e: TouchEvent) => {
-    if (stateRef.current?.gameStatus !== GameStatus.PLAYING) {
-      // If not playing, this might be a tap attempt - don't move paddle
-      return;
-    }
-
-    // Explicitly check gameBoardRef.current here
+    const currentState = stateRef.current;
     const currentGameBoard = gameBoardRef.current;
-    if (!currentGameBoard) {
-        return;
-    }
+    
+    if (!currentState || !currentGameBoard) return;
+
+    if (currentState.gameStatus !== GameStatus.PLAYING) return;
 
     const touchX = e.touches[0].clientX;
     const touchY = e.touches[0].clientY;
@@ -123,11 +116,6 @@ export const useGameInput = ({ dispatch, stateRef, isMobile, gameBoardRef }: Use
 
     let newPaddleX = touchX - gameBoardRect.left;
 
-    const currentState = stateRef.current;
-    if (!currentState) {
-        return;
-    }
-
     newPaddleX = Math.max(
       0,
       Math.min(newPaddleX, currentState.canvas.width - currentState.paddle.width)
@@ -135,7 +123,7 @@ export const useGameInput = ({ dispatch, stateRef, isMobile, gameBoardRef }: Use
 
     dispatch({ type: "UPDATE_PADDLE_POSITION", payload: { x: newPaddleX } });
     e.preventDefault();
-  }, [dispatch, stateRef.current, gameBoardRef.current]);
+  }, [dispatch]);
 
   const handleTouchEnd = useCallback((e: TouchEvent) => {
     // If touchStartRef is still set, it means the touch didn't move much - it's a tap
@@ -143,14 +131,14 @@ export const useGameInput = ({ dispatch, stateRef, isMobile, gameBoardRef }: Use
       handleTap(touchStartRef.current.x, touchStartRef.current.y);
     }
     touchStartRef.current = null;
-  }, [handleTap, stateRef.current]);
+  }, [handleTap]);
 
   useEffect(() => {
     const gameBoardElement = gameBoardRef.current;
     if (gameBoardElement && isMobile) {
       gameBoardElement.addEventListener('touchstart', handleTouchStart, { passive: false });
       gameBoardElement.addEventListener('touchmove', handleTouchMove, { passive: false });
-      gameBoardElement.addEventListener('touchend', handleTouchEnd, { passive: true });
+      gameBoardElement.addEventListener('touchend', handleTouchEnd, { passive: false });
 
       return () => {
         gameBoardElement.removeEventListener('touchstart', handleTouchStart);
@@ -158,5 +146,5 @@ export const useGameInput = ({ dispatch, stateRef, isMobile, gameBoardRef }: Use
         gameBoardElement.removeEventListener('touchend', handleTouchEnd);
       };
     }
-  }, [isMobile, gameBoardRef.current, handleTouchStart, handleTouchMove, handleTouchEnd]);
+  }, [isMobile, gameBoardRef, handleTouchStart, handleTouchMove, handleTouchEnd]);
 };
