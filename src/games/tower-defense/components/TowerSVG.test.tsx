@@ -5,6 +5,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { TowerSVG } from './TowerSVG';
+import { TOWER_SVG_SHAPES, TOWER_COLORS } from '../constants';
 import { Tower } from '../types';
 
 // Mock i18n
@@ -56,7 +57,7 @@ describe('TowerSVG', () => {
     render(<TowerSVG tower={tower} isSelected={false} onClick={() => {}} />);
 
     const path = document.querySelector('svg path');
-    expect(path).toHaveAttribute('d', 'M -8 8 L 0 -8 L 8 8 Z');
+    expect(path).toHaveAttribute('d', TOWER_SVG_SHAPES.basic.body);
   });
 
   it('renders the correct body shape for sniper tower (square)', () => {
@@ -64,7 +65,7 @@ describe('TowerSVG', () => {
     render(<TowerSVG tower={tower} isSelected={false} onClick={() => {}} />);
 
     const path = document.querySelector('svg path');
-    expect(path).toHaveAttribute('d', 'M -8 -8 L 8 -8 L 8 8 L -8 8 Z');
+    expect(path).toHaveAttribute('d', TOWER_SVG_SHAPES.sniper.body);
   });
 
   it('renders the correct body shape for slow tower (circle)', () => {
@@ -72,7 +73,7 @@ describe('TowerSVG', () => {
     render(<TowerSVG tower={tower} isSelected={false} onClick={() => {}} />);
 
     const path = document.querySelector('svg path');
-    expect(path).toHaveAttribute('d', 'M 0 -10 A 10 10 0 1 1 0 10 A 10 10 0 1 1 0 -10 Z');
+    expect(path).toHaveAttribute('d', TOWER_SVG_SHAPES.slow.body);
   });
 
   it('renders the correct body shape for splash tower (diamond)', () => {
@@ -80,7 +81,7 @@ describe('TowerSVG', () => {
     render(<TowerSVG tower={tower} isSelected={false} onClick={() => {}} />);
 
     const path = document.querySelector('svg path');
-    expect(path).toHaveAttribute('d', 'M 0 -10 L 10 0 L 0 10 L -10 0 Z');
+    expect(path).toHaveAttribute('d', TOWER_SVG_SHAPES.splash.body);
   });
 
   it('applies rotation to the cannon barrel', () => {
@@ -96,7 +97,7 @@ describe('TowerSVG', () => {
     render(<TowerSVG tower={tower} isSelected={false} onClick={() => {}} />);
 
     const path = document.querySelector('svg path');
-    expect(path).toHaveAttribute('fill', '#f472b6');
+    expect(path).toHaveAttribute('fill', TOWER_COLORS.sniper);
   });
 
   it('shows level indicator when level > 1', () => {
