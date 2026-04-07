@@ -58,6 +58,7 @@ const Minesweeper: React.FC = () => {
         setSession(prev => prev ? { 
           ...prev, 
           score: state.config.rows * state.config.cols - state.config.mines - state.elapsedTime,
+          moves: state.moveCount,
           won: true 
         } : null);
       }
@@ -69,6 +70,7 @@ const Minesweeper: React.FC = () => {
       if (session) {
         setSession(prev => prev ? { 
           ...prev, 
+          moves: state.moveCount,
           won: false 
         } : null);
       }

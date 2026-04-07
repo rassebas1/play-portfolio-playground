@@ -82,6 +82,7 @@ const getInitialState = (difficulty: Difficulty): GameState => {
     elapsedTime: 0,
     difficulty,
     revealedCount: 0,
+    moveCount: 0,
     firstClick: true,
   };
 };
@@ -163,6 +164,7 @@ const gameReducer = (state: GameState, action: GameAction): GameState => {
         gameStatus: newGameStatus,
         revealedCount: newRevealedCount,
         firstClick: newFirstClick,
+        moveCount: state.moveCount + 1,
       };
     }
 
@@ -184,6 +186,7 @@ const gameReducer = (state: GameState, action: GameAction): GameState => {
         ...state,
         board: newBoard,
         flagCount,
+        moveCount: state.moveCount + 1,
       };
     }
 
@@ -291,6 +294,7 @@ const gameReducer = (state: GameState, action: GameAction): GameState => {
         board: newBoard,
         gameStatus: newGameStatus,
         revealedCount: newRevealedCount,
+        moveCount: state.moveCount + 1,
       };
     }
 
