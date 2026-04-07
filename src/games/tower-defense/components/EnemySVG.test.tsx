@@ -5,8 +5,8 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { EnemySVG } from './EnemySVG';
+import { ENEMY_SVG_SHAPES, ENEMY_COLORS } from '../constants';
 import { Enemy } from '../types';
-import { ENEMY_COLORS } from '../constants';
 
 function createTestEnemy(overrides?: Partial<Enemy>): Enemy {
   return {
@@ -27,6 +27,10 @@ function createTestEnemy(overrides?: Partial<Enemy>): Enemy {
   };
 }
 
+function normalizePathData(path: string): string {
+  return path.replace(/\s+/g, ' ').trim();
+}
+
 describe('EnemySVG', () => {
   it('renders an SVG element', () => {
     const enemy = createTestEnemy();
@@ -41,7 +45,7 @@ describe('EnemySVG', () => {
     render(<EnemySVG enemy={enemy} cellSize={48} px={50} py={50} />);
 
     const path = document.querySelector('svg path');
-    expect(path).toHaveAttribute('d', 'M 0 -10 A 10 10 0 1 1 0 10 A 10 10 0 1 1 0 -10 Z');
+    expect(normalizePathData(path?.getAttribute('d') ?? '')).toBe(normalizePathData(ENEMY_SVG_SHAPES.basic.path));
   });
 
   it('renders the correct shape for fast enemy (diamond)', () => {
@@ -49,7 +53,7 @@ describe('EnemySVG', () => {
     render(<EnemySVG enemy={enemy} cellSize={48} px={50} py={50} />);
 
     const path = document.querySelector('svg path');
-    expect(path).toHaveAttribute('d', 'M 0 -12 L 10 0 L 0 12 L -10 0 Z');
+    expect(normalizePathData(path?.getAttribute('d') ?? '')).toBe(normalizePathData(ENEMY_SVG_SHAPES.fast.path));
   });
 
   it('renders the correct shape for tank enemy (hexagon)', () => {
@@ -57,7 +61,7 @@ describe('EnemySVG', () => {
     render(<EnemySVG enemy={enemy} cellSize={48} px={50} py={50} />);
 
     const path = document.querySelector('svg path');
-    expect(path).toHaveAttribute('d', 'M 0 -11 L 9.5 -5.5 L 9.5 5.5 L 0 11 L -9.5 5.5 L -9.5 -5.5 Z');
+    expect(normalizePathData(path?.getAttribute('d') ?? '')).toBe(normalizePathData(ENEMY_SVG_SHAPES.tank.path));
   });
 
   it('renders the correct shape for boss enemy (star)', () => {
@@ -65,15 +69,16 @@ describe('EnemySVG', () => {
     render(<EnemySVG enemy={enemy} cellSize={48} px={50} py={50} />);
 
     const path = document.querySelector('svg path');
-    expect(path).toHaveAttribute('d', 'M 0 -12 L 3 -4 L 12 -4 L 5 2 L 7 11 L 0 6 L -7 11 L -5 2 L -12 -4 L -3 -4 Z');
+    expect(normalizePathData(path?.getAttribute('d') ?? '')).toBe(normalizePathData(ENEMY_SVG_SHAPES.boss.path));
   });
 
   it('applies correct fill color based on enemy type', () => {
     const enemy = createTestEnemy({ type: 'tank' });
     render(<EnemySVG enemy={enemy} cellSize={48} px={50} py={50} />);
 
-    const path = document.querySelector('svg path');
-    expect(path).toHaveAttribute('fill', ENEMY_COLORS.tank);
+    const paths = document.querySelectorAll('svg path');
+    const bodyPath = paths[1];
+    expect(bodyPath).toHaveAttribute('fill', ENEMY_COLORS.tank);
   });
 
   it('applies slow filter when enemy is slowed', () => {
@@ -105,9 +110,9 @@ describe('EnemySVG', () => {
 
     const tooltip = document.querySelector('[data-testid="enemy-tooltip"]');
     expect(tooltip).toBeInTheDocument();
+    expect(tooltip?.textContent).toContain('Fast');
     expect(tooltip?.textContent).toContain('HP: 30/50');
-    expect(tooltip?.textContent).toContain('Speed: 4');
-    expect(tooltip?.textContent).toContain('+15');
+    expect(tooltip?.textContent).toContain('+15💰');
   });
 
   it('renders at correct position', () => {

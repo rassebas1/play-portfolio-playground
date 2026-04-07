@@ -25,7 +25,7 @@ import {
   retargetProjectile,
   calculateTowerRotation,
 } from './gameLogic';
-import { GRID_CONFIG, TOWER_STATS, ENEMY_STATS, SLOW_DURATION, SLOW_FACTOR } from './constants';
+import { GRID_CONFIG, TOWER_STATS, ENEMY_STATS, SLOW_DURATION, SLOW_FACTOR, PROJECTILE_SPEED } from './constants';
 import { Cell, Enemy, Tower, Projectile, TowerType, EnemyType } from './types';
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
@@ -68,14 +68,14 @@ function createTestEnemy(overrides?: Partial<Enemy>): Enemy {
   return {
     id: 'enemy-1',
     type: 'basic',
-    health: 50,
-    maxHealth: 50,
-    speed: 3,
+    health: ENEMY_STATS.basic.baseHealth,
+    maxHealth: ENEMY_STATS.basic.baseHealth,
+    speed: ENEMY_STATS.basic.baseSpeed,
     row: GRID_CONFIG.path[0].row,
     col: GRID_CONFIG.path[0].col,
     pathIndex: 0,
     accumulatedDistance: 0,
-    reward: 10,
+    reward: ENEMY_STATS.basic.reward,
     isSlowed: false,
     slowTimer: 0,
     spawnTime: Date.now(),
@@ -91,7 +91,7 @@ function createTestProjectile(overrides?: Partial<Projectile>): Projectile {
     damage: 10,
     row: 0,
     col: 0,
-    speed: 5,
+    speed: PROJECTILE_SPEED,
     isSplash: false,
     splashRadius: undefined,
     color: '#4ade80',
@@ -160,21 +160,21 @@ describe('canPlaceTower()', () => {
 
 describe('canAffordTower()', () => {
   it('returns true when resources equal tower cost', () => {
-    expect(canAffordTower(50, 'basic')).toBe(true);
+    expect(canAffordTower(TOWER_STATS.basic.baseCost, 'basic')).toBe(true);
   });
 
   it('returns true when resources exceed tower cost', () => {
-    expect(canAffordTower(100, 'basic')).toBe(true);
+    expect(canAffordTower(TOWER_STATS.basic.baseCost * 2, 'basic')).toBe(true);
   });
 
   it('returns false when resources are below tower cost', () => {
-    expect(canAffordTower(49, 'basic')).toBe(false);
+    expect(canAffordTower(TOWER_STATS.basic.baseCost - 1, 'basic')).toBe(false);
   });
 
   it('works for all tower types', () => {
-    expect(canAffordTower(100, 'sniper')).toBe(true);
-    expect(canAffordTower(75, 'slow')).toBe(true);
-    expect(canAffordTower(125, 'splash')).toBe(true);
+    expect(canAffordTower(TOWER_STATS.sniper.baseCost, 'sniper')).toBe(true);
+    expect(canAffordTower(TOWER_STATS.slow.baseCost, 'slow')).toBe(true);
+    expect(canAffordTower(TOWER_STATS.splash.baseCost, 'splash')).toBe(true);
   });
 });
 

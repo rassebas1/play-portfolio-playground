@@ -4,6 +4,7 @@
 import { beforeEach, describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { WaveIndicator } from './WaveIndicator';
+import { MAX_WAVES } from '../constants';
 
 // Mock i18n
 vi.mock('react-i18next', () => ({
@@ -26,11 +27,6 @@ vi.mock('react-i18next', () => ({
   }),
 }));
 
-// Mock MAX_WAVES constant
-vi.mock('../constants', () => ({
-  MAX_WAVES: 20,
-}));
-
 const defaultProps = {
   currentWave: 1,
   phase: 'planning',
@@ -47,7 +43,7 @@ describe('WaveIndicator', () => {
   it('shows current wave number and max waves', () => {
     render(<WaveIndicator {...defaultProps} />);
 
-    expect(screen.getByText('Wave 1 / 20')).toBeInTheDocument();
+    expect(screen.getByText(`Wave 1 / ${MAX_WAVES}`)).toBeInTheDocument();
   });
 
   it('shows status text based on phase', () => {
@@ -115,7 +111,7 @@ describe('WaveIndicator', () => {
       <WaveIndicator {...defaultProps} currentWave={10} />
     );
 
-    // Progress should be (10 / 20) * 100 = 50%
+    // Progress should be (10 / MAX_WAVES) * 100 = 50%
     const progressBar = container.querySelector('[style*="width"]');
     expect(progressBar).toHaveStyle({ width: '50%' });
 
