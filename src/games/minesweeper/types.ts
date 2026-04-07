@@ -28,6 +28,7 @@ export interface GameState {
   elapsedTime: number;
   difficulty: Difficulty;
   revealedCount: number;
+  moveCount: number;
   firstClick: boolean;
 }
 

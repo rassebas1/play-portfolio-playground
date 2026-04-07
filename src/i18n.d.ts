@@ -12,6 +12,8 @@ import memoryGame from '../public/locales/en/games/memory-game.json';
 import flappyBird from '../public/locales/en/games/flappy-bird.json';
 import tetris from '../public/locales/en/games/tetris.json';
 import minesweeper from '../public/locales/en/games/minesweeper.json';
+import towerDefense from '../public/locales/en/games/tower-defense.json';
+import chatbot from '../public/locales/en/chatbot.json';
 
 import 'i18next';
 
@@ -33,6 +35,8 @@ declare module 'i18next' {
       'games/flappy-bird': typeof flappyBird;
       'games/tetris': typeof tetris;
       'games/minesweeper': typeof minesweeper;
+      'games/tower-defense': typeof towerDefense;
+      chatbot: typeof chatbot;
     };
   }
 }

@@ -116,6 +116,16 @@ export default {
 					'50%': { transform: 'rotate(45deg)' },
 					'100%': { transform: 'rotate(0deg)' },
 				},
+				'float-up': {
+					'0%': {
+						opacity: '1',
+						transform: 'translate(-50%, -50%) translateY(0)',
+					},
+					'100%': {
+						opacity: '0',
+						transform: 'translate(-50%, -50%) translateY(-40px)',
+					},
+				},
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
@@ -123,6 +133,7 @@ export default {
 				'scroll-bg': 'scroll-bg 60s linear infinite', // Adjust duration as needed
 				'bounce': 'bounce 1s infinite',
 				'flap': 'flap 0.1s ease-in-out forwards', // Play once, then stay at 100%
+				'float-up': 'float-up 1s ease-out forwards',
 			},
 			transitionProperty: {
 				'transform': 'transform'

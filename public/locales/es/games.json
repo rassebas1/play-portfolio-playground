@@ -31,5 +31,9 @@
   "minesweeper": {
     "name": "Buscaminas",
     "description": "Despeja el campo de minas sin detonar ninguna mina. ¡Usa la lógica para encontrar los cuadros seguros!"
+  },
+  "towerDefense": {
+    "name": "Defensa de Torres",
+    "description": "¡Defiende tu base de oleadas de enemigos! Coloca torres estratégicas y sobrevive 20 oleadas."
   }
 }

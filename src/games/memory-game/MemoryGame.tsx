@@ -19,6 +19,8 @@ import { Scoreboard } from '@/components/game/Scoreboard';
 import { Leaderboard } from '@/components/ui/Leaderboard';
 import { useTranslation } from 'react-i18next';
 import { GameSession, createGameSession } from '@/types/highScores';
+import { Instructions } from '@/components/game/Instructions';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 /**
  * React functional component for the Memory Game.
@@ -28,6 +30,7 @@ import { GameSession, createGameSession } from '@/types/highScores';
 const MemoryGame: React.FC = () => {
   const { state, startGame, flipCard, resetGame, highScore } = useMemoryGame();
   const { t } = useTranslation('games/memory-game');
+  const isMobile = useIsMobile();
   const [session, setSession] = useState<GameSession | null>(null);
 
   useEffect(() => {
@@ -105,6 +108,14 @@ const MemoryGame: React.FC = () => {
             <Button onClick={resetGame}>{t('actions.restart')}</Button>
           )}
         </div>
+
+        {/* Instructions */}
+        <Instructions>
+          <p><strong>{t('instructions.tap_cards')}</strong></p>
+          {isMobile && (
+            <p className="text-xs text-muted-foreground">📱 {t('instructions.mobile_hint')}</p>
+          )}
+        </Instructions>
 
         {/* Game Board: Renders the cards if the game is playing */}
         {state.gameStatus === 'playing' && <GameBoard state={state} onCardClick={flipCard} />}

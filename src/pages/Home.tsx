@@ -7,6 +7,8 @@ import { HeroCTA } from '@/components/landing/HeroCTA';
 import { BentoGrid } from '@/components/landing/BentoGrid';
 import { ProjectsCarousel } from '@/components/landing/ProjectsCarousel';
 import { SeniorityBadges } from '@/components/landing/SeniorityBadges';
+import { DeveloperProfile } from '@/components/landing/DeveloperProfile';
+import { WhatImLearning } from '@/components/landing/WhatImLearning';
 
 const Home: React.FC = () => {
   const { t } = useTranslation('common');
@@ -95,6 +97,11 @@ const Home: React.FC = () => {
       {/* Seniority Badges Section */}
       <section className="container mx-auto px-4 pb-20">
         <SeniorityBadges />
+      </section>
+
+      {/* What I'm Learning Section (NEW) */}
+      <section className="container mx-auto px-4 py-20">
+        <WhatImLearning />
       </section>
     </div>
   );

@@ -1,0 +1,65 @@
+{
+  "name": "Défense de Tours",
+  "description": "Défendez votre base contre des vagues d'ennemis ! Placez des tours stratégiques et survivez 20 vagues.",
+  "title": "Défense de Tours",
+  "instructions": {
+    "title": "Comment Jouer",
+    "placement": "Sélectionnez un type de tour, puis cliquez sur une cellule pour la placer",
+    "upgrades": "Cliquez sur une tour existante pour l'améliorer ou la vendre",
+    "waves": "Appuyez sur Démarrer Vague pour commencer la prochaine vague d'ennemis",
+    "goal": "Empêchez les ennemis d'atteindre votre base en construisant des tours le long de leur chemin",
+    "tips": [
+      "Placez des tours près du chemin pour une couverture maximale",
+      "Combinez les types de tours pour une défense équilibrée",
+      "Les tours de ralentissement aident les autres tours à infliger plus de dégâts",
+      "Économisez des ressources pour les améliorations entre les vagues"
+    ]
+  },
+  "towers": {
+    "basic": "Tour de Base",
+    "sniper": "Tour Sniper",
+    "slow": "Tour de Ralentissement",
+    "splash": "Tour de Zone",
+    "basic_desc": "Dégâts fiables à faible coût",
+    "sniper_desc": "Dégâts élevés, longue portée, cadence lente",
+    "slow_desc": "Ralentit les ennemis pour aider les autres tours",
+    "splash_desc": "Dégâts de zone à plusieurs ennemis"
+  },
+  "enemies": {
+    "basic": "Ennemi de Base",
+    "fast": "Ennemi Rapide",
+    "tank": "Ennemi Tank",
+    "boss": "Ennemi Boss"
+  },
+  "ui": {
+    "resources": "Ressources: {{count}}",
+    "lives": "Vies: {{count}}",
+    "wave": "Vague {{count}}",
+    "score": "Score: {{count}}",
+    "start_wave": "Démarrer Vague",
+    "next_wave": "Vague Suivante",
+    "upgrade": "Améliorer",
+    "sell": "Vendre",
+    "cost": "Coût: {{count}}",
+    "damage": "Dégâts: {{count}}",
+    "range": "Portée: {{count}}",
+    "fire_rate": "Cadence: {{count}}/s",
+    "sell_confirm": "Vendre pour {{count}} ressources ?",
+    "upgrade_confirm": "Améliorer pour {{count}} ressources ?",
+    "level": "Niveau {{count}}",
+    "no_towers": "Aucune tour placée",
+    "select_tower": "Sélectionnez une tour à placer"
+  },
+  "status": {
+    "planning": "Phase de Planification",
+    "wave_active": "Vague en Cours",
+    "wave_complete": "Vague Terminée !",
+    "game_over": "Fin de Partie",
+    "victory": "Victoire !",
+    "paused": "En Pause"
+  },
+  "leaderboard": {
+    "score": "Score",
+    "waves": "Vagues Survécues"
+  }
+}

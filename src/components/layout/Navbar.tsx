@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { Menu, Languages } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -32,6 +32,8 @@ const navItems = [
 export const Navbar: React.FC = () => {
   // `useTranslation` hook for internationalization, providing translation function `t` and i18n instance.
   const { t, i18n } = useTranslation(['games','common']);
+  // Mobile menu state — allows programmatic close after navigation
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   /**
    * Changes the application's language using i18next.
@@ -41,6 +43,11 @@ export const Navbar: React.FC = () => {
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
   };
+
+  /**
+   * Closes the mobile menu — called on every navigation link click
+   */
+  const closeMobileMenu = () => setMobileMenuOpen(false);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -94,7 +101,7 @@ export const Navbar: React.FC = () => {
           </nav>
 
           {/* Mobile Navigation (Sheet/Sidebar) */}
-          <Sheet>
+          <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
             <SheetTrigger asChild>
               <Button
                 variant="ghost"
@@ -105,12 +112,13 @@ export const Navbar: React.FC = () => {
                 <span className="sr-only">{t('toggle_menu_aria_label')}</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="w-[300px] sm:w-[400px] pt-12">
+            <SheetContent side="left" className="w-[300px] sm:w-[400px] pt-12 overflow-y-auto max-h-[calc(100vh-3.5rem)]">
               <SheetTitle className="sr-only">{t('mobile_navigation_aria_label')}</SheetTitle>
               <nav className="flex flex-col gap-2">
                 <Link 
                   to="/" 
                   className="mb-4 flex items-center space-x-2 text-lg font-semibold px-3 py-2 rounded-md hover:bg-accent"
+                  onClick={closeMobileMenu}
                 >
                   <span>{t('portfolio', { ns: 'common' })}</span>
                 </Link>
@@ -118,6 +126,7 @@ export const Navbar: React.FC = () => {
                   <NavLink
                     key={item.name}
                     to={item.href}
+                    onClick={closeMobileMenu}
                     className={({ isActive }) =>
                       `text-base font-medium transition-colors rounded-md px-3 py-3 min-h-[44px] flex items-center ${
                         isActive 
@@ -137,6 +146,7 @@ export const Navbar: React.FC = () => {
                       <Link
                         key={game.id}
                         to={`/game/${game.id}`}
+                        onClick={closeMobileMenu}
                         className="text-base text-muted-foreground hover:text-primary hover:bg-accent rounded-md px-3 py-3 min-h-[44px] flex items-center"
                       >
                         <span className="mr-3 text-xl">{game.icon}</span>

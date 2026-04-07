@@ -31,5 +31,9 @@
   "minesweeper": {
     "name": "Minesweeper",
     "description": "Clear the minefield without detonating any mines. Use logic to find the safe squares!"
+  },
+  "towerDefense": {
+    "name": "Tower Defense",
+    "description": "Defend your base from waves of enemies! Place strategic towers and survive 20 waves."
   }
 }

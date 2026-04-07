@@ -4,7 +4,9 @@
   "short_description": "Associez les paires de cartes",
   "instructions": {
     "desktop": "Cliquez sur les cartes pour les retourner. Trouvez toutes les paires.",
-    "mobile": "Touchez les cartes pour les retourner. Trouvez toutes les paires."
+    "mobile": "Touchez les cartes pour les retourner. Trouvez toutes les paires.",
+    "tap_cards": "Touchez les cartes pour les retourner et trouver les paires",
+    "mobile_hint": "Touchez une carte pour la révéler, puis touchez-en une autre pour trouver sa paire"
   },
   "how_to_play": {
     "title": "Comment Jouer",

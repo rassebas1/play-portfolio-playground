@@ -93,6 +93,16 @@ export const games: GameInfo[] = [
     color: 'hsl(var(--game-danger))',
     status: 'status.ready_to_play',
   },
+  {
+    id: 'tower-defense',
+    name: 'towerDefense.name',
+    description: 'towerDefense.description',
+    difficulty: 'difficulty.hard',
+    category: 'category.strategy',
+    icon: '🏰',
+    color: 'hsl(var(--game-warning))',
+    status: 'status.ready_to_play',
+  },
 ];
 
 /**

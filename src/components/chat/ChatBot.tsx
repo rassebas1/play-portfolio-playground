@@ -1,158 +1,158 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, Loader2, MessageCircle, X, Bot, Sparkles } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import type { Message, ChatBotProps } from './types';
-import { findRelevantContext } from './portfolio-context';
+import { MessageCircle, Loader2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import type { Message, QuickReply, Personality } from './types';
+import { KnowledgeEngine } from './engine/KnowledgeEngine';
+import { ContextTracker } from './engine/context';
+import { resolveResponse } from './engine/responses';
+import { generateQuickReplies } from './engine/quickReplies';
+import { ChatHeader } from './components/ChatHeader';
+import { MessageBubble } from './components/MessageBubble';
+import { ChatInput } from './components/ChatInput';
+import type { ChatBotProps } from './types';
 
-const INITIAL_MESSAGE: Message = {
-  id: '1',
-  text: "Hey! I'm your portfolio assistant. Ask me anything about the work shown here.",
-  sender: 'bot',
-  timestamp: new Date()
-};
+const PERSONALITY_STORAGE_KEY = 'chatbot-personality';
+
+function getInitialPersonality(): Personality {
+  try {
+    const stored = localStorage.getItem(PERSONALITY_STORAGE_KEY);
+    if (stored === 'manager' || stored === 'friend') return stored;
+  } catch {
+    // localStorage not available
+  }
+  return 'friend';
+}
+
+function createInitialMessage(t: (key: string) => string): Message {
+  return {
+    id: '1',
+    text: t('intents.greeting.friend'),
+    sender: 'bot',
+    timestamp: new Date(),
+    quickReplies: [
+      { label: t('quickReplies.about_me'), intentKey: 'about_me' },
+      { label: t('quickReplies.experience'), intentKey: 'experience' },
+      { label: t('quickReplies.projects'), intentKey: 'projects' },
+      { label: t('quickReplies.games'), intentKey: 'games' },
+    ],
+  };
+}
+
+const engine = new KnowledgeEngine();
+const tracker = new ContextTracker();
 
 export function ChatBot({
   defaultOpen = false,
   position = 'bottom-right',
-  className = ''
+  className = '',
 }: ChatBotProps) {
+  const { t } = useTranslation('chatbot');
   const [isOpen, setIsOpen] = useState(defaultOpen);
-  const [messages, setMessages] = useState<Message[]>([INITIAL_MESSAGE]);
+  const [personality, setPersonality] = useState<Personality>(getInitialPersonality);
+  const [messages, setMessages] = useState<Message[]>(() => [createInitialMessage(t)]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
-  const [modelReady, setModelReady] = useState(false);
-  
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const generatorRef = useRef<((prompt: string, options: object) => Promise<{ generated_text: string }[]>) | null>(null);
 
-  const positionClasses = position === 'bottom-right'
-    ? 'bottom-6 right-6'
-    : 'bottom-6 left-6';
-
-  const initModel = useCallback(async () => {
-    try {
-      const { pipeline } = await import('https://cdn.jsdelivr.net/npm/@xenova/transformers@2.6.0');
-      generatorRef.current = await pipeline('text-generation', 'Xenova/gpt2');
-      setModelReady(true);
-    } catch (error) {
-      console.error('Model loading error:', error);
-    }
-  }, []);
-
+  // Re-initialize messages when language changes
   useEffect(() => {
-    initModel();
-  }, [initModel]);
+    setMessages((prev) => {
+      if (prev.length === 1 && prev[0].sender === 'bot') {
+        return [createInitialMessage(t)];
+      }
+      return prev;
+    });
+  }, [t]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  const generateResponse = async (userMessage: string): Promise<string> => {
-    // First, try to find a rule-based or keyword-based response
-    const contextResponse = findRelevantContext(userMessage);
-    
-    // If context response is a direct answer (rule-based), return it
-    if (contextResponse.includes('\n') || contextResponse.length < 100) {
-      const isShortAnswer = contextResponse.split('\n').length <= 3 && contextResponse.length < 150;
-      if (isShortAnswer) {
-        return contextResponse;
-      }
-    }
+  const handleProcessMessage = useCallback(
+    async (text: string, isQuickReply = false) => {
+      if (!text.trim() || loading) return;
 
-    // Use AI with portfolio context
-    if (!generatorRef.current) {
-      return "I'm still loading the AI model. Please wait a moment!";
-    }
+      const userMessage: Message = {
+        id: Date.now().toString(),
+        text: isQuickReply ? t(`quickReplies.${text}`) : text,
+        sender: 'user',
+        timestamp: new Date(),
+      };
 
-    try {
+      setMessages((prev) => [...prev, userMessage]);
+      setInput('');
       setLoading(true);
 
-      // Get relevant context
-      const relevantContext = findRelevantContext(userMessage);
-      
-      // Simple Q&A format with few-shot example
-      const prompt = `Helpful assistant for a developer portfolio.
+      // Small delay for UX feel
+      await new Promise((r) => setTimeout(r, 300));
 
-Context: ${relevantContext}
+      const context = tracker.getContext();
+      const match = engine.matchIntent(text, context);
 
-Q: ${userMessage}
-A:`;
-
-      const result = await generatorRef.current(prompt, {
-        max_new_tokens: 60,
-        temperature: 0.5,
-        top_k: 50,
-        top_p: 0.9,
-        do_sample: true,
-      });
-
-      let generatedText = result[0].generated_text;
-      
-      // Extract only the answer part
-      const answerPart = generatedText.split('A:')[1] || generatedText;
-      generatedText = answerPart.trim();
-
-      // Clean up - take first meaningful sentence
-      const sentences = generatedText.split(/[.!?]/).filter(s => s.trim().length > 5);
-      generatedText = sentences[0]?.trim() || '';
-
-      // If generation is too short or empty, use context
-      if (!generatedText || generatedText.length < 15) {
-        return contextResponse;
+      // Update conversation context
+      if (match.intent.key !== 'fallback') {
+        tracker.update(match.intent.key, match.params);
+      } else {
+        tracker.update('fallback');
       }
 
-      // If generated text is basically the same as context, use context
-      const contextWords = contextResponse.toLowerCase().split(/\s+/);
-      const generatedWords = generatedText.toLowerCase().split(/\s+/);
-      const overlap = generatedWords.filter(w => w.length > 3 && contextWords.includes(w)).length;
-      
-      if (overlap > generatedWords.length * 0.7) {
-        return contextResponse;
+      // Escalate after consecutive fallbacks
+      let responseText = resolveResponse(match, personality, t);
+      if (tracker.shouldEscalate()) {
+        responseText = t('fallback.escalation');
+        tracker.reset();
       }
 
-      return generatedText + '.';
-    } catch (error) {
-      console.error('Generation error:', error);
-      return contextResponse;
-    } finally {
+      // Generate quick replies
+      const quickReplies = generateQuickReplies(match, t);
+
+      const botMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        text: responseText,
+        sender: 'bot',
+        timestamp: new Date(),
+        intent: match.intent.key,
+        quickReplies: quickReplies.length > 0 ? quickReplies : undefined,
+      };
+
+      setMessages((prev) => [...prev, botMessage]);
       setLoading(false);
-    }
-  };
+    },
+    [loading, personality, t],
+  );
 
-  const handleSendMessage = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleQuickReply = useCallback(
+    (reply: QuickReply) => {
+      handleProcessMessage(reply.intentKey, true);
+    },
+    [handleProcessMessage],
+  );
 
-    if (!input.trim() || loading || !modelReady) return;
-
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      text: input,
-      sender: 'user',
-      timestamp: new Date()
-    };
-
-    setMessages(prev => [...prev, userMessage]);
-    setInput('');
-
-    const botResponse = await generateResponse(input);
-
-    const assistantMessage: Message = {
-      id: (Date.now() + 1).toString(),
-      text: botResponse,
-      sender: 'bot',
-      timestamp: new Date()
-    };
-
-    setMessages(prev => [...prev, assistantMessage]);
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+  const handleSendMessage = useCallback(
+    async (e: React.FormEvent) => {
       e.preventDefault();
-      handleSendMessage(e);
-    }
-  };
+      if (!input.trim()) return;
+      await handleProcessMessage(input);
+    },
+    [input, handleProcessMessage],
+  );
+
+  const handleTogglePersonality = useCallback(() => {
+    setPersonality((prev) => {
+      const next = prev === 'friend' ? 'manager' : 'friend';
+      try {
+        localStorage.setItem(PERSONALITY_STORAGE_KEY, next);
+      } catch {
+        // localStorage not available
+      }
+      return next;
+    });
+  }, []);
+
+  const positionClasses =
+    position === 'bottom-right' ? 'bottom-6 right-6' : 'bottom-6 left-6';
 
   return (
     <div className={`fixed ${positionClasses} z-50 ${className}`}>
@@ -165,13 +165,13 @@ A:`;
             exit={{ scale: 0, opacity: 0 }}
             transition={{ type: 'spring', stiffness: 400, damping: 17 }}
           >
-            <Button
+            <button
               onClick={() => setIsOpen(true)}
-              size="icon"
-              className="w-14 h-14 rounded-full bg-gradient-to-br from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 shadow-lg shadow-violet-500/25 border-2 border-white/20"
+              className="w-14 h-14 rounded-full bg-gradient-to-br from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 shadow-lg shadow-violet-500/25 border-2 border-white/20 flex items-center justify-center cursor-pointer transition-colors"
+              aria-label="Open chat"
             >
               <MessageCircle className="w-6 h-6 text-white" />
-            </Button>
+            </button>
           </motion.div>
         ) : (
           <motion.div
@@ -182,42 +182,21 @@ A:`;
             transition={{ type: 'spring', stiffness: 300, damping: 25 }}
             className="w-[380px] h-[520px] max-w-[calc(100vw-3rem)] flex flex-col bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 rounded-2xl shadow-2xl shadow-violet-500/10 border border-slate-700/50 overflow-hidden"
           >
-            {/* Header */}
-            <div className="flex items-center justify-between px-4 py-3 bg-slate-900/80 backdrop-blur border-b border-slate-700/50">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center">
-                  <Bot className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-sm font-semibold text-white">Portfolio Assistant</h3>
-                  <p className="text-xs text-slate-400">AI-powered help</p>
-                </div>
-              </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setIsOpen(false)}
-                className="text-slate-400 hover:text-white hover:bg-slate-700/50"
-              >
-                <X className="w-5 h-5" />
-              </Button>
-            </div>
+            {/* Header with personality toggle */}
+            <ChatHeader
+              onClose={() => setIsOpen(false)}
+              personality={personality}
+              onTogglePersonality={handleTogglePersonality}
+            />
 
             {/* Status indicator */}
             <div className="px-4 py-2 bg-slate-900/50 border-b border-slate-700/30">
-              {modelReady ? (
-                <div className="flex items-center gap-2 text-xs">
-                  <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-                  <span className="text-emerald-400">Ready</span>
-                  <span className="text-slate-500">•</span>
-                  <span className="text-slate-400">Running locally</span>
-                </div>
-              ) : (
-                <div className="flex items-center gap-2 text-xs">
-                  <Loader2 className="w-3 h-3 animate-spin text-amber-400" />
-                  <span className="text-amber-400">Loading AI model...</span>
-                </div>
-              )}
+              <div className="flex items-center gap-2 text-xs">
+                <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
+                <span className="text-emerald-400">{t('status.ready')}</span>
+                <span className="text-slate-500">•</span>
+                <span className="text-slate-400">{t('status.running_locally')}</span>
+              </div>
             </div>
 
             {/* Messages */}
@@ -227,25 +206,14 @@ A:`;
                   key={message.id}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
-                  <div
-                    className={`max-w-[85%] px-4 py-2.5 rounded-2xl text-sm ${
-                      message.sender === 'user'
-                        ? 'bg-gradient-to-br from-violet-600 to-indigo-600 text-white rounded-br-md'
-                        : 'bg-slate-800/80 text-slate-100 border border-slate-700/50 rounded-bl-md'
-                    }`}
-                  >
-                    <p className="leading-relaxed">{message.text}</p>
-                    <span className={`text-[10px] mt-1.5 block opacity-60 ${
-                      message.sender === 'user' ? 'text-violet-200' : 'text-slate-500'
-                    }`}>
-                      {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                    </span>
-                  </div>
+                  <MessageBubble
+                    message={message}
+                    onQuickReply={handleQuickReply}
+                  />
                 </motion.div>
               ))}
-              
+
               {loading && (
                 <motion.div
                   initial={{ opacity: 0 }}
@@ -254,9 +222,18 @@ A:`;
                 >
                   <div className="bg-slate-800/80 border border-slate-700/50 rounded-2xl rounded-bl-md px-4 py-3">
                     <div className="flex gap-1.5">
-                      <div className="w-2 h-2 bg-slate-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                      <div className="w-2 h-2 bg-slate-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                      <div className="w-2 h-2 bg-slate-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                      <div
+                        className="w-2 h-2 bg-slate-500 rounded-full animate-bounce"
+                        style={{ animationDelay: '0ms' }}
+                      />
+                      <div
+                        className="w-2 h-2 bg-slate-500 rounded-full animate-bounce"
+                        style={{ animationDelay: '150ms' }}
+                      />
+                      <div
+                        className="w-2 h-2 bg-slate-500 rounded-full animate-bounce"
+                        style={{ animationDelay: '300ms' }}
+                      />
                     </div>
                   </div>
                 </motion.div>
@@ -265,34 +242,14 @@ A:`;
             </div>
 
             {/* Input Area */}
-            <form
+            <ChatInput
+              value={input}
+              onChange={setInput}
               onSubmit={handleSendMessage}
-              className="p-3 bg-slate-900/80 backdrop-blur border-t border-slate-700/50"
-            >
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  placeholder={modelReady ? "Ask me anything..." : "Loading..."}
-                  disabled={!modelReady || loading}
-                  className="flex-1 bg-slate-800/80 border border-slate-700/50 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/20 transition disabled:opacity-50 disabled:cursor-not-allowed"
-                />
-                <Button
-                  type="submit"
-                  disabled={!modelReady || loading || !input.trim()}
-                  size="icon"
-                  className="rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 disabled:from-slate-700 disabled:to-slate-700 border-0"
-                >
-                  {loading ? (
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                  ) : (
-                    <Send className="w-4 h-4" />
-                  )}
-                </Button>
-              </div>
-            </form>
+              disabled={false}
+              loading={loading}
+              placeholder={t('input.placeholder')}
+            />
           </motion.div>
         )}
       </AnimatePresence>

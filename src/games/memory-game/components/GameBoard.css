@@ -5,16 +5,19 @@
   display: grid;
   gap: 10px;
   justify-content: center;
+  margin: 0 auto;
+  max-width: min(95vw, 660px);
+  padding: 0 8px;
 }
 
 .game-board.easy {
-  grid-template-columns: repeat(4, 100px);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .game-board.medium {
-  grid-template-columns: repeat(4, 100px);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .game-board.hard {
-  grid-template-columns: repeat(6, 100px);
+  grid-template-columns: repeat(6, minmax(0, 1fr));
 }

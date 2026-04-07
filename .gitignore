@@ -37,3 +37,4 @@ openspec
 openspec/*
 .atl
 .opencode/*
+.changes

@@ -1,0 +1,65 @@
+{
+  "name": "Difesa delle Torri",
+  "description": "Difendi la tua base da ondate di nemici! Posiziona torri strategiche e sopravvivi 20 ondate.",
+  "title": "Difesa delle Torri",
+  "instructions": {
+    "title": "Come Giocare",
+    "placement": "Seleziona un tipo di torre, poi clicca su una cella per posizionarla",
+    "upgrades": "Clicca su una torre esistente per migliorarla o venderla",
+    "waves": "Premi Inizia Ondata per iniziare la prossima ondata di nemici",
+    "goal": "Impedisci ai nemici di raggiungere la tua base costruendo torri lungo il loro percorso",
+    "tips": [
+      "Posiziona le torri vicino al percorso per la massima copertura",
+      "Combina tipi di torri per una difesa equilibrata",
+      "Le torri di rallentamento aiutano le altre torri a fare più danni",
+      "Risparmia risorse per i miglioramenti tra le ondate"
+    ]
+  },
+  "towers": {
+    "basic": "Torre Base",
+    "sniper": "Torre Cecchino",
+    "slow": "Torre di Rallentamento",
+    "splash": "Torre ad Area",
+    "basic_desc": "Danni affidabili a basso costo",
+    "sniper_desc": "Alti danni, lunga gittata, cadenza lenta",
+    "slow_desc": "Rallenta i nemici per aiutare le altre torri",
+    "splash_desc": "Danni ad area a più nemici"
+  },
+  "enemies": {
+    "basic": "Nemico Base",
+    "fast": "Nemico Veloce",
+    "tank": "Nemico Carro Armato",
+    "boss": "Nemico Boss"
+  },
+  "ui": {
+    "resources": "Risorse: {{count}}",
+    "lives": "Vite: {{count}}",
+    "wave": "Ondata {{count}}",
+    "score": "Punteggio: {{count}}",
+    "start_wave": "Inizia Ondata",
+    "next_wave": "Prossima Ondata",
+    "upgrade": "Migliora",
+    "sell": "Vendi",
+    "cost": "Costo: {{count}}",
+    "damage": "Danni: {{count}}",
+    "range": "Gittata: {{count}}",
+    "fire_rate": "Cadenza: {{count}}/s",
+    "sell_confirm": "Vendere per {{count}} risorse?",
+    "upgrade_confirm": "Migliorare per {{count}} risorse?",
+    "level": "Livello {{count}}",
+    "no_towers": "Nessuna torre posizionata",
+    "select_tower": "Seleziona una torre da posizionare"
+  },
+  "status": {
+    "planning": "Fase di Pianificazione",
+    "wave_active": "Ondata in Corso",
+    "wave_complete": "Ondata Completata!",
+    "game_over": "Fine del Gioco",
+    "victory": "Vittoria!",
+    "paused": "In Pausa"
+  },
+  "leaderboard": {
+    "score": "Punteggio",
+    "waves": "Ondate Sopravvissute"
+  }
+}

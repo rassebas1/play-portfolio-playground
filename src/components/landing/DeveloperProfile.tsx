@@ -18,7 +18,7 @@ export const DeveloperProfile: React.FC = () => {
     <Card className="overflow-hidden group hover:shadow-xl transition-all duration-300">
       {/* Gradient border effect on hover */}
       <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/50 to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl" />
-      <div className="relative bg-card m-0.5 rounded-xl">
+      <div className="relative z-10 bg-card m-0.5 rounded-xl">
         <CardHeader className="text-center">
           {/* Developer Avatar with ring effect */}
           <div className="relative inline-block">

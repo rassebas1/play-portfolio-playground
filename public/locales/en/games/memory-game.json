@@ -4,7 +4,9 @@
   "short_description": "Match pairs of cards",
   "instructions": {
     "desktop": "Click cards to flip them. Find all matching pairs.",
-    "mobile": "Tap cards to flip them. Find all matching pairs."
+    "mobile": "Tap cards to flip them. Find all matching pairs.",
+    "tap_cards": "Tap cards to flip and find matching pairs",
+    "mobile_hint": "Tap any card to reveal it, then tap another to find its match"
   },
   "how_to_play": {
     "title": "How to Play",

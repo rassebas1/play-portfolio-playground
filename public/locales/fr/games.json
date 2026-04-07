@@ -31,5 +31,9 @@
   "minesweeper": {
     "name": "Démineur",
     "description": "Effacez le champ de mines sans déclencher aucune mine. Utilisez la logique pour trouver les cases sûres !"
+  },
+  "towerDefense": {
+    "name": "Défense de Tours",
+    "description": "Défendez votre base contre des vagues d'ennemis ! Placez des tours stratégiques et survivez 20 vagues."
   }
-  }
+}

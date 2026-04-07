@@ -1,0 +1,68 @@
+{
+  "name": "Defensa de Torres",
+  "description": "¡Defiende tu base de oleadas de enemigos! Coloca torres estratégicas y sobrevive 20 oleadas.",
+  "title": "Defensa de Torres",
+  "instructions": {
+    "title": "Cómo Jugar",
+    "placement": "Selecciona un tipo de torre, luego haz clic en una celda para colocarla",
+    "upgrades": "Haz clic en una torre existente para mejorarla o venderla",
+    "waves": "Presiona Iniciar Oleada para comenzar la siguiente oleada de enemigos",
+    "goal": "Evita que los enemigos lleguen a tu base construyendo torres a lo largo de su camino",
+    "tips": [
+      "Coloca torres cerca del camino para máxima cobertura",
+      "Combina tipos de torres para una defensa equilibrada",
+      "Las torres de ralentización ayudan a otras torres a hacer más daño",
+      "Guarda recursos para mejoras entre oleadas"
+    ]
+  },
+  "towers": {
+    "basic": "Torre Básica",
+    "sniper": "Torre Francotiradora",
+    "slow": "Torra de Ralentización",
+    "splash": "Torra de Área",
+    "basic_desc": "Daño confiable a bajo costo",
+    "sniper_desc": "Alto daño, largo alcance, baja cadencia",
+    "slow_desc": "Ralentiza enemigos para ayudar a otras torres",
+    "splash_desc": "Daño en área a múltiples enemigos"
+  },
+  "enemies": {
+    "basic": "Enemigo Básico",
+    "fast": "Enemigo Rápido",
+    "tank": "Enemigo Tanque",
+    "boss": "Enemigo Jefe"
+  },
+  "ui": {
+    "resources": "Recursos: {{count}}",
+    "lives": "Vidas: {{count}}",
+    "wave": "Oleada {{count}}",
+    "score": "Puntuación: {{count}}",
+    "start_wave": "Iniciar Oleada",
+    "next_wave": "Siguiente Oleada",
+    "upgrade": "Mejorar",
+    "sell": "Vender",
+    "cost": "Costo: {{count}}",
+    "damage": "Daño: {{count}}",
+    "range": "Alcance: {{count}}",
+    "fire_rate": "Cadencia: {{count}}/s",
+    "sell_confirm": "¿Vender por {{count}} recursos?",
+    "upgrade_confirm": "¿Mejorar por {{count}} recursos?",
+    "level": "Nivel {{count}}",
+    "no_towers": "Aún no hay torres colocadas",
+    "select_tower": "Selecciona una torre para colocar",
+    "enemies_remaining": "Enemigos restantes: {{count}}",
+    "tower_details": "Detalles de la Torre",
+    "max_level": "Nivel Máximo"
+  },
+  "status": {
+    "planning": "Fase de Planificación",
+    "wave_active": "Oleada en Progreso",
+    "wave_complete": "¡Oleada Completada!",
+    "game_over": "Fin del Juego",
+    "victory": "¡Victoria!",
+    "paused": "Pausado"
+  },
+  "leaderboard": {
+    "score": "Puntuación",
+    "waves": "Oleadas Sobrevividas"
+  }
+}

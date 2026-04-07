@@ -8,7 +8,7 @@
  * Defines the available game types in the portfolio.
  * @typedef {'tic-tac-toe' | '2048' | 'flappy-bird' | 'snake' | 'memory' | 'brick-breaker'} GameType
  */
-export type GameType = 'tic-tac-toe' | '2048' | 'flappy-bird' | 'snake' | 'memory-game' | 'brick-breaker' | 'tetris' | 'minesweeper';
+export type GameType = 'tic-tac-toe' | '2048' | 'flappy-bird' | 'snake' | 'memory-game' | 'brick-breaker' | 'tetris' | 'minesweeper' | 'tower-defense';
 
 /**
  * Interface for game metadata used for displaying games in the portfolio.

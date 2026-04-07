@@ -24,7 +24,7 @@ i18n
       loadPath: '/play-portfolio-playground/locales/{{lng}}/{{ns}}.json',
     },
     ns: [
-      'common', 
+      'common',
       'games',
       'games/2048',
       'games/tic-tac-toe',
@@ -33,9 +33,13 @@ i18n
       'games/brick-breaker',
       'games/memory-game',
       'games/flappy-bird',
+      'games/tetris',
+      'games/minesweeper',
+      'games/tower-defense',
       'experience',
       'education',
-      'skills'
+      'skills',
+      'chatbot',
     ],
     defaultNS: 'common',
   });

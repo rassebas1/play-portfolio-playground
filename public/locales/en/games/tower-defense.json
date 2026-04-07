@@ -1,0 +1,68 @@
+{
+  "name": "Tower Defense",
+  "description": "Defend your base from waves of enemies! Place strategic towers and survive 20 waves.",
+  "title": "Tower Defense",
+  "instructions": {
+    "title": "How to Play",
+    "placement": "Select a tower type, then click a cell to place it",
+    "upgrades": "Click an existing tower to upgrade or sell it",
+    "waves": "Press Start Wave to begin the next wave of enemies",
+    "goal": "Prevent enemies from reaching your base by building towers along their path",
+    "tips": [
+      "Place towers near the path for maximum coverage",
+      "Mix tower types for balanced defense",
+      "Slow towers help other towers deal more damage",
+      "Save resources for upgrades between waves"
+    ]
+  },
+  "towers": {
+    "basic": "Basic Tower",
+    "sniper": "Sniper Tower",
+    "slow": "Slow Tower",
+    "splash": "Splash Tower",
+    "basic_desc": "Reliable damage at low cost",
+    "sniper_desc": "High damage, long range, slow fire rate",
+    "slow_desc": "Slows enemies to help other towers",
+    "splash_desc": "Area damage to multiple enemies"
+  },
+  "enemies": {
+    "basic": "Basic Enemy",
+    "fast": "Fast Enemy",
+    "tank": "Tank Enemy",
+    "boss": "Boss Enemy"
+  },
+  "ui": {
+    "resources": "Resources: {{count}}",
+    "lives": "Lives: {{count}}",
+    "wave": "Wave {{count}}",
+    "score": "Score: {{count}}",
+    "start_wave": "Start Wave",
+    "next_wave": "Next Wave",
+    "upgrade": "Upgrade",
+    "sell": "Sell",
+    "cost": "Cost: {{count}}",
+    "damage": "Damage: {{count}}",
+    "range": "Range: {{count}}",
+    "fire_rate": "Fire Rate: {{count}}/s",
+    "sell_confirm": "Sell for {{count}} resources?",
+    "upgrade_confirm": "Upgrade for {{count}} resources?",
+    "level": "Level {{count}}",
+    "no_towers": "No towers placed yet",
+    "select_tower": "Select a tower to place",
+    "enemies_remaining": "Enemies remaining: {{count}}",
+    "tower_details": "Tower Details",
+    "max_level": "Max Level"
+  },
+  "status": {
+    "planning": "Planning Phase",
+    "wave_active": "Wave in Progress",
+    "wave_complete": "Wave Complete!",
+    "game_over": "Game Over",
+    "victory": "Victory!",
+    "paused": "Paused"
+  },
+  "leaderboard": {
+    "score": "Score",
+    "waves": "Waves Survived"
+  }
+}

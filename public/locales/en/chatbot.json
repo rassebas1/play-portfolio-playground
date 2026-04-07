@@ -1,0 +1,95 @@
+{
+  "intents": {
+    "greeting": {
+      "friend": "Hey there! 👋 I'm the portfolio assistant. Ask me anything about Sebastián, his work, projects, or the games here!",
+      "manager": "Hello. I'm here to help you navigate this portfolio. You can ask about Sebastián's professional background, technical expertise, projects, or the interactive games available."
+    },
+    "about_me": {
+      "friend": "Sebastián Espitia Londoño is a Software Engineer from Colombia, currently based in Spain. He has a background in Electronics Engineering and is doing a Master's in Big Data. He's passionate about building modern web apps, middleware security, and data pipelines. Fun fact: he won 2nd and 4th place internationally at BioDCASE 2025 with a TinyML bird classifier!",
+      "manager": "Sebastián Espitia Londoño is a Software Engineer specializing in modern web architectures, enterprise middleware, and Big Data. He holds a degree in Electronics Engineering from Central University (Bogotá) and is currently pursuing an MSc in Big Data at Ramon Llull - La Salle (Barcelona). His expertise spans frontend frameworks (React, Angular, Vue), backend systems (Node.js, REST, SOAP), cloud infrastructure (Azure AKS, AWS), and enterprise integration (IBM DataPower, WebLogic). Notable achievement: BioDCASE 2025 — 2nd and 4th place internationally with a 98% accuracy TinyML model optimized to 16KB for microcontrollers."
+    },
+    "experience_by_year": {
+      "friend": "Great question! In 2024-2025 Sebastián was at Telefónica with NTT DATA doing the Angular migration. In 2023-2024 he was at Banco Popular building hybrid cloud architecture. In 2022 he did training programs with IBM and BBVA through NTT DATA, and in 2021-2022 he was at 4CODERS working with React and Vue!",
+      "manager": "Sebastián's experience by year:\n\n**2024-2025**: Telefónica – NTT DATA — Angular 8→18 migration, NgRx, MFA/JWT, CI/CD pipelines (weekly→daily deployments).\n\n**2023-2024**: Banco Popular – NTT DATA — Hybrid cloud architecture, IBM DataPower + AWS integration, mutual TLS, WebLogic, JMeter.\n\n**2022**: NTT DATA training programs — IBM Toolkit + MuleSoft (Oct-Nov), Web Components + Lit Element at BBVA program (Aug-Sept).\n\n**2021-2022**: 4CODERS — React, VueJS, TypeScript, Micro-Frontends, Node.js."
+    },
+    "experience": {
+      "friend": "Sebastián has worked at some great places! Most recently at Telefónica with NTT DATA (Oct 2024 – Feb 2025), where he led the Angular 8→18 migration and set up CI/CD pipelines. Before that, he was at Banco Popular with NTT DATA for almost 2 years, working on hybrid cloud architecture with AWS and DataPower. He also did training programs with IBM and BBVA through NTT DATA, and started at 4CODERS working with React and Vue.",
+      "manager": "Sebastián's professional experience spans 5 roles:\n\n1. **Telefónica – NTT DATA** (Oct 2024 – Feb 2025): Led Angular 8→18 migration, implemented NgRx state management, MFA/JWT authentication, and CI/CD pipelines. Key impact: deployment frequency increased from weekly to daily.\n\n2. **Banco Popular – NTT DATA** (Jan 2023 – Sept 2024): Designed hybrid integration between on-premises microservices and AWS using IBM DataPower Gateway with mutual TLS. Technologies: WebLogic, JMeter, API Gateway.\n\n3. **NTT DATA / IBM Training** (Oct–Nov 2022): IBM Toolkit, MuleSoft, API Gateway patterns.\n\n4. **NTT DATA / BBVA Training** (Aug–Sept 2022): Web Components, Lit Element, HTML/CSS.\n\n5. **4CODERS** (Sept 2021 – Mar 2022): React, VueJS, TypeScript, Micro-Frontends, Node.js."
+    },
+    "skills": {
+      "friend": "Sebastián works with a solid tech stack! On the frontend: React, Angular, Vue, TypeScript. Backend: Node.js, REST, SOAP. Cloud: Azure, AWS, Kubernetes, Docker. He also knows Python, Java, SQL, and has experience with tools like DataPower, JMeter, and Figma. Pretty versatile!",
+      "manager": "Sebastián's technical stack is organized across six domains:\n\n**Languages**: TypeScript, JavaScript, Python, Java, SQL, HTML/CSS, C/C++\n**Frontend**: React, Angular, Vue, Lit Elements, Web Components, NgRx\n**Backend**: Node.js, REST APIs, SOAP, Protobuf, WSDL, Swagger/OpenAPI\n**Cloud/DevOps**: Azure (AKS, CI/CD), AWS, Kubernetes, Docker, Git, SVN\n**Enterprise Tools**: IBM DataPower, WebLogic, JMeter, Vite, Webpack, Rollup\n**Methodologies**: Agile/Scrum, CI/CD pipelines, Micro-Frontends, System Architecture, TDD"
+    },
+    "projects": {
+      "friend": "Some standout projects: At Telefónica, he led the Angular 8→18 migration that went from weekly to daily deployments. At Banco Popular, he designed a hybrid cloud setup connecting on-prem systems with AWS. And his BioDCASE project — a tiny ML bird classifier that got 98% accuracy in just 16KB — won international recognition!",
+      "manager": "Three signature projects define Sebastián's portfolio:\n\n1. **Digital Transformation (Telefónica-NTT DATA)**: Angular 8→18 migration with NgRx state management, MFA/JWT auth, and CI/CD pipelines. Result: deployment frequency increased from weekly to daily.\n\n2. **Hybrid Cloud Architecture (Banco Popular-NTT DATA)**: Integration between on-premises microservices and AWS using IBM DataPower Gateway with mutual TLS authentication. Combined DataPower + AWS API Gateway for secure hybrid connectivity.\n\n3. **BioDCASE 2025 - TinyML Bird Classifier**: ML models achieving 98% accuracy, optimized to 16KB for microcontrollers. Won 2nd and 4th place at the BioDCASE 2025 international workshop."
+    },
+    "games": {
+      "friend": "There are 9 games to play here! Tic-Tac-Toe (with 5 AI difficulty levels), 2048, Snake, Flappy Bird, Brick Breaker, Memory Game, Tetris, Minesweeper, and Tower Defense. Most have leaderboards and high score tracking. Check the Games section in the navigation!",
+      "manager": "The portfolio includes 9 interactive games built with React and TypeScript:\n\n- **Tic-Tac-Toe**: 5 AI difficulty levels using minimax algorithm\n- **2048**: Classic sliding tile puzzle with score tracking\n- **Snake**: Classic arcade game with growing mechanics\n- **Flappy Bird**: Physics-based obstacle avoidance\n- **Brick Breaker**: Breakout-style with collision detection\n- **Memory Game**: Card matching with flip animations\n- **Tetris**: Classic falling blocks with line clearing\n- **Minesweeper**: Grid-based logic puzzle with chord reveal\n- **Tower Defense**: Strategic tower placement with wave system\n\nMost games feature local high score tracking via Supabase, leaderboards, and full i18n support."
+    },
+    "education": {
+      "friend": "Sebastián has quite the academic journey! He's currently doing a Master's in Big Data in Barcelona (2025-2026), where he's learning ML, Spark, Hadoop, and cloud platforms. He has an Electronics Engineering degree from Central University in Bogotá, and went to a French lycée where he became trilingual!",
+      "manager": "Sebastián's academic background:\n\n1. **MSc Big Data** — Ramon Llull - La Salle, Barcelona (2025-2026): Machine Learning, Spark, Hadoop, Azure, AWS, GCP. BioDCASE 2025: 2nd & 4th place internationally, 98% accuracy, 16KB TinyML model.\n\n2. **Electronics Engineering** — Central University, Bogotá (2017-2022): MATLAB, OpenCV, STM32, ECG processing. RuniBot competition: 4th place.\n\n3. **Baccalaureate** — Lycée Français Louis Pasteur, Bogotá (1996-2012): Trilingual education (Spanish, French, English). Research project on bioluminescent bacteria."
+    },
+    "contact": {
+      "friend": "You can find Sebastián on GitHub and LinkedIn — just check the footer of the website for the links. He's always open to connecting!",
+      "manager": "Sebastián can be reached through his professional profiles. Links to GitHub and LinkedIn are available in the footer of this portfolio."
+    },
+    "how_built": {
+      "friend": "This portfolio was built with React 18, TypeScript, and Vite for the build tool. The styling uses Tailwind CSS with Radix UI for accessible components. Animations are done with Framer Motion, routing with React Router, and translations with i18next supporting 4 languages. The games all run client-side with no backend needed except for high scores on Supabase!",
+      "manager": "Technical architecture of this portfolio:\n\n**Stack**: React 18 + TypeScript + Vite\n**Styling**: Tailwind CSS + Radix UI primitives + CVA (class-variance-authority)\n**Animations**: Framer Motion with AnimatePresence for page transitions\n**Routing**: React Router DOM v6 with lazy-loaded route components\n**State**: React hooks + React Context + TanStack React Query for data fetching\n**i18n**: i18next with HTTP backend loading external JSON files (EN/ES/FR/IT)\n**Data**: Supabase for persistent high score storage with offline caching\n**Forms**: React Hook Form + Zod validation\n**Theming**: next-themes for dark/light mode with system preference detection\n**Error Handling**: Custom error boundaries + async handler hooks + toast notifications\n\nThe architecture follows component-based design with clear separation between UI components, pages, games, hooks, and utilities. All pages are lazy-loaded for optimal performance."
+    },
+    "how_work": {
+      "friend": "Sebastián works with an agile mindset — he's all about clean code, testing, and continuous improvement. He uses Spec-Driven Development (SDD) for planning, writes tests before code when possible, and believes in understanding concepts before jumping into frameworks. He's worked in Scrum teams and values CI/CD pipelines for smooth deployments.",
+      "manager": "Sebastián's work methodology:\n\n**Development Process**: Spec-Driven Development (SDD) — exploration → proposal → spec → design → tasks → implementation → verification. This ensures every change has clear requirements and technical design before coding begins.\n\n**Testing**: TDD approach where feasible. Unit tests with Vitest + Testing Library, integration tests, and E2E with Playwright. Tests follow AAA pattern (Arrange, Act, Assert).\n\n**Architecture**: Clean architecture principles, component-based design, separation of concerns. Prefers understanding fundamentals (design patterns, bundlers, architecture) before adopting frameworks.\n\n**CI/CD**: Experience with automated pipelines, daily deployments at Telefónica. Values automated testing gates and zero-downtime deployments.\n\n**Collaboration**: Agile/Scrum methodology, Jira for task management, Git for version control with atomic commits and feature branches."
+    },
+    "thanks": {
+      "friend": "You're welcome! 😊 Happy to help. Let me know if you have any more questions!",
+      "manager": "You're welcome. Feel free to ask if you need any additional information."
+    },
+    "goodbye": {
+      "friend": "Goodbye! 👋 Thanks for visiting the portfolio. Come back soon to play some games!",
+      "manager": "Thank you for your time. Feel free to return if you have further questions."
+    },
+    "help": {
+      "friend": "I can help you learn about:\n• Sebastián and his background\n• Skills and technologies he works with\n• Portfolio projects and achievements\n• Games available to play\n• Education and certifications\n• How to get in touch\n\nJust ask me anything, or click one of the suggestions below!",
+      "manager": "I can provide information on the following topics:\n• Professional background and experience\n• Technical skills and technology stack\n• Signature projects and achievements\n• Interactive games portfolio\n• Education and certifications\n• Contact information\n\nSelect a topic below or type your question."
+    },
+    "follow_up": {
+      "friend": "Sure! What would you like to know more about?",
+      "manager": "Certainly. Which specific aspect would you like me to elaborate on?"
+    },
+    "fallback": {
+      "friend": "Hmm, I'm not sure about that one! But I can tell you about Sebastián's experience, skills, projects, games, education, or how to get in touch. What interests you?",
+      "manager": "I don't have specific information on that topic. However, I can discuss Sebastián's professional experience, technical skills, projects, games, education, or contact details. Which would you like to explore?",
+      "escalation": "I'm having trouble understanding your questions. For specific inquiries, I'd recommend reaching out to Sebastián directly through his LinkedIn or GitHub — links are in the footer!"
+    }
+  },
+  "quickReplies": {
+    "about_me": "About Sebastián",
+    "experience": "Work Experience",
+    "skills": "Tech Stack",
+    "projects": "Key Projects",
+    "games": "Play Games",
+    "education": "Education",
+    "contact": "Get in Touch",
+    "how_built": "How This Was Built",
+    "how_work": "How He Works",
+    "help": "What Can You Do"
+  },
+  "status": {
+    "ready": "Ready",
+    "running_locally": "Running locally",
+    "loading": "Loading..."
+  },
+  "input": {
+    "placeholder": "Ask me anything...",
+    "send_aria": "Send message"
+  },
+  "personality": {
+    "friend": "Friend mode",
+    "manager": "Manager mode",
+    "toggle_aria": "Switch personality mode"
+  }
+}
