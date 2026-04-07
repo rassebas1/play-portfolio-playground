@@ -1,16 +1,18 @@
 /**
  * Game Board Component
  * 
- * Renders the tower defense grid with towers, enemies, and projectiles.
+ * Renders the tower defense grid with SVG towers, SVG enemies,
+ * projectiles with trails, impact effects, and range indicators.
  * Handles click interactions for tower placement and selection.
  */
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Cell, Enemy, Tower, Projectile, TowerType, FloatingText } from '../types';
+import { Cell, Enemy, Tower, Projectile, TowerType, FloatingText, ImpactEffect } from '../types';
 import { GRID_CONFIG, TOWER_COLORS } from '../constants';
-import { TowerComponent } from './Tower';
-import { EnemyComponent } from './Enemy';
+import { TowerSVG } from './TowerSVG';
+import { EnemySVG } from './EnemySVG';
 import { FloatingTextComponent } from './FloatingText';
+import { ImpactEffect as ImpactEffectSvg } from './ImpactEffect';
 import { chebyshevDistance, distance } from '../gameLogic';
 
 interface GameBoardProps {
@@ -24,8 +26,12 @@ interface GameBoardProps {
   onTowerClick: (towerId: string) => void;
   canPlaceTower: (row: number, col: number) => boolean;
   floatingTexts: FloatingText[];
+  impactEffects: ImpactEffect[];
   hoveredTowerId: string | null;
+  hoveredCell: { row: number; col: number } | null;
   onTowerHover: (towerId: string | null) => void;
+  onCellHover: (row: number, col: number) => void;
+  onCellLeave: () => void;
 }
 
 export const GameBoard: React.FC<GameBoardProps> = ({
@@ -39,8 +45,12 @@ export const GameBoard: React.FC<GameBoardProps> = ({
   onTowerClick,
   canPlaceTower,
   floatingTexts,
+  impactEffects,
   hoveredTowerId,
+  hoveredCell,
   onTowerHover,
+  onCellHover,
+  onCellLeave,
 }) => {
   const handleCellClick = useCallback(
     (row: number, col: number) => {
@@ -60,10 +70,11 @@ export const GameBoard: React.FC<GameBoardProps> = ({
     [grid, selectedTowerType, canPlaceTower, onCellClick, onTowerClick]
   );
 
-  // Calculate which cells are in range of the hovered tower
+  // Calculate which cells are in range of the hovered/selected tower
   const rangeCells = useMemo(() => {
-    if (!hoveredTowerId) return new Set<string>();
-    const tower = towers.find((t) => t.id === hoveredTowerId);
+    const towerId = hoveredTowerId || selectedTowerId;
+    if (!towerId) return new Set<string>();
+    const tower = towers.find((t) => t.id === towerId);
     if (!tower) return new Set<string>();
     
     const inRange = new Set<string>();
@@ -75,17 +86,39 @@ export const GameBoard: React.FC<GameBoardProps> = ({
       }
     }
     return inRange;
-  }, [hoveredTowerId, towers]);
+  }, [hoveredTowerId, selectedTowerId, towers]);
+
+  // Placement preview range (when selecting a tower type and hovering a cell)
+  const placementRange = useMemo(() => {
+    if (!selectedTowerType || !hoveredCell) return null;
+    const { row, col } = hoveredCell;
+    if (!canPlaceTower(row, col)) return null;
+
+    // Get range from tower stats
+    const rangeMap: Record<TowerType, number> = { basic: 2, sniper: 5, slow: 3, splash: 2 };
+    const range = rangeMap[selectedTowerType];
+
+    const inRange = new Set<string>();
+    for (let r = 0; r < GRID_CONFIG.rows; r++) {
+      for (let c = 0; c < GRID_CONFIG.cols; c++) {
+        if (chebyshevDistance(row, col, r, c) <= range) {
+          inRange.add(`${r}-${c}`);
+        }
+      }
+    }
+    return { row, col, range, cells: inRange };
+  }, [selectedTowerType, hoveredCell, canPlaceTower]);
 
   const getCellClassName = useCallback(
     (cell: Cell): string => {
       const baseClasses = 'relative border border-border/30 transition-colors duration-150';
       const cellKey = `${cell.row}-${cell.col}`;
       const isInRange = rangeCells.has(cellKey);
+      const isPlacementRange = placementRange?.cells.has(cellKey);
       
       switch (cell.type) {
         case 'path':
-          return `${baseClasses} ${isInRange ? 'bg-emerald-500/20' : 'bg-amber-900/20'}`;
+          return `${baseClasses} ${isInRange ? 'bg-emerald-500/20' : isPlacementRange ? 'bg-emerald-500/10' : 'bg-amber-900/20'}`;
         case 'spawn':
           return `${baseClasses} bg-red-900/30 border-red-500/50`;
         case 'base':
@@ -97,13 +130,15 @@ export const GameBoard: React.FC<GameBoardProps> = ({
           return `${baseClasses} ${
             isInRange
               ? 'bg-emerald-500/20'
-              : isValidPlacement
-                ? 'bg-primary/10 hover:bg-primary/20 cursor-pointer'
-                : 'hover:bg-muted/20'
+              : isPlacementRange
+                ? 'bg-emerald-500/15'
+                : isValidPlacement
+                  ? 'bg-primary/10 hover:bg-primary/20 cursor-pointer'
+                  : 'hover:bg-muted/20'
           }`;
       }
     },
-    [selectedTowerType, canPlaceTower, rangeCells]
+    [selectedTowerType, canPlaceTower, rangeCells, placementRange]
   );
 
   // Measure actual rendered grid dimensions for precise enemy positioning
@@ -128,7 +163,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({
   // Calculate actual cell size from measured grid dimensions for responsive overlays
   const cellWidth = gridSize.width > 0 ? gridSize.width / GRID_CONFIG.cols : 48;
   const cellHeight = gridSize.height > 0 ? gridSize.height / GRID_CONFIG.rows : 48;
-  const measuredCellSize = Math.min(cellWidth, cellHeight); // Use smaller dimension for consistency
+  const measuredCellSize = Math.min(cellWidth, cellHeight);
 
   // Fallback cell size for overlays when measurement hasn't completed yet
   const overlayCellSize = measuredCellSize > 0 ? measuredCellSize : 48;
@@ -150,12 +185,14 @@ export const GameBoard: React.FC<GameBoardProps> = ({
               key={`${rowIndex}-${colIndex}`}
               className={getCellClassName(cell)}
               onClick={() => handleCellClick(rowIndex, colIndex)}
+              onMouseEnter={() => onCellHover(rowIndex, colIndex)}
+              onMouseLeave={onCellLeave}
               role="gridcell"
               aria-label={`${cell.type} cell at row ${rowIndex + 1}, column ${colIndex + 1}`}
             >
               {/* Render tower if present */}
               {cell.towerId && (
-                <TowerComponent
+                <TowerSVG
                   tower={towers.find((t) => t.id === cell.towerId)!}
                   isSelected={cell.towerId === selectedTowerId}
                   onClick={() => onTowerClick(cell.towerId!)}
@@ -164,17 +201,21 @@ export const GameBoard: React.FC<GameBoardProps> = ({
                 />
               )}
 
-              {/* Spawn indicator */}
+              {/* Spawn indicator — SVG arrow */}
               {cell.type === 'spawn' && (
-                <div className="absolute inset-0 flex items-center justify-center text-xs font-bold text-red-400">
-                  ▶
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <svg viewBox="0 0 24 24" className="w-5 h-5 text-red-400 animate-pulse">
+                    <path d="M5 3l14 9-14 9V3z" fill="currentColor" />
+                  </svg>
                 </div>
               )}
 
-              {/* Base indicator */}
+              {/* Base indicator — SVG shield */}
               {cell.type === 'base' && (
-                <div className="absolute inset-0 flex items-center justify-center text-xs font-bold text-green-400">
-                  🏠
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <svg viewBox="0 0 24 24" className="w-5 h-5 text-emerald-400">
+                    <path d="M12 2L3 7v5c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-5z" fill="currentColor" opacity={0.8} />
+                  </svg>
                 </div>
               )}
             </div>
@@ -183,12 +224,13 @@ export const GameBoard: React.FC<GameBoardProps> = ({
       </div>
 
       {/* Enemies overlay — percentage-based positioning for immediate visibility */}
-      <div className="absolute inset-0 pointer-events-none">
+      <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 10 }}>
         {enemies.map((enemy) => {
-          const px = (enemy.col / GRID_CONFIG.cols) * 100;
-          const py = (enemy.row / GRID_CONFIG.rows) * 100;
+          // Center of cell: (col + 0.5) / cols * 100
+          const px = ((enemy.col + 0.5) / GRID_CONFIG.cols) * 100;
+          const py = ((enemy.row + 0.5) / GRID_CONFIG.rows) * 100;
           return (
-            <EnemyComponent
+            <EnemySVG
               key={enemy.id}
               enemy={enemy}
               cellSize={overlayCellSize}
@@ -200,15 +242,15 @@ export const GameBoard: React.FC<GameBoardProps> = ({
       </div>
 
       {/* Projectiles overlay with colored trails */}
-      <div className="absolute inset-0 pointer-events-none">
+      <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 15 }}>
         {projectiles.map((proj) => (
           <React.Fragment key={proj.id}>
             {/* Trail effect — smaller, faded dots behind the projectile */}
             <div
               className="absolute rounded-full"
               style={{
-                left: `${(proj.col / GRID_CONFIG.cols) * 100}%`,
-                top: `${(proj.row / GRID_CONFIG.rows) * 100}%`,
+                left: `${((proj.col + 0.5) / GRID_CONFIG.cols) * 100}%`,
+                top: `${((proj.row + 0.5) / GRID_CONFIG.rows) * 100}%`,
                 transform: 'translate(-50%, -50%)',
                 width: '6px',
                 height: '6px',
@@ -221,8 +263,8 @@ export const GameBoard: React.FC<GameBoardProps> = ({
             <div
               className="absolute rounded-full"
               style={{
-                left: `${(proj.col / GRID_CONFIG.cols) * 100}%`,
-                top: `${(proj.row / GRID_CONFIG.rows) * 100}%`,
+                left: `${((proj.col + 0.5) / GRID_CONFIG.cols) * 100}%`,
+                top: `${((proj.row + 0.5) / GRID_CONFIG.rows) * 100}%`,
                 transform: 'translate(-50%, -50%)',
                 width: '8px',
                 height: '8px',
@@ -234,8 +276,18 @@ export const GameBoard: React.FC<GameBoardProps> = ({
         ))}
       </div>
 
+      {/* Impact effects overlay — SVG layer */}
+      <svg
+        className="absolute inset-0 pointer-events-none"
+        style={{ zIndex: 20, width: '100%', height: '100%' }}
+      >
+        {impactEffects.map((effect) => (
+          <ImpactEffectSvg key={effect.id} effect={effect} cellSize={overlayCellSize} />
+        ))}
+      </svg>
+
       {/* Floating texts overlay */}
-      <div className="absolute inset-0 pointer-events-none">
+      <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 25 }}>
         {floatingTexts.map((ft) => (
           <FloatingTextComponent key={ft.id} text={ft} cellSize={overlayCellSize} />
         ))}

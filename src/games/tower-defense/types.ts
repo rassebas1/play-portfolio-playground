@@ -39,6 +39,18 @@ export interface Cell {
 }
 
 /**
+ * Visual effect that appears briefly when a projectile hits an enemy
+ */
+export interface ImpactEffect {
+  id: string;
+  row: number;
+  col: number;
+  color: string;
+  createdAt: number; // timestamp (ms)
+  ttl: number; // time-to-live in ms (typically 300)
+}
+
+/**
  * Tower configuration and state
  */
 export interface Tower {
@@ -53,6 +65,8 @@ export interface Tower {
   lastFired: number; // timestamp
   totalDamage: number; // for stats/upgrades
   kills: number; // for stats
+  rotation: number; // angle in degrees, 0 = pointing right
+  targetId: string | null; // current target enemy ID
 }
 
 /**
@@ -160,6 +174,7 @@ export interface GameState {
   spawnQueue: { type: EnemyType; spawnTime: number }[];
   elapsedTime: number; // cumulative ms since wave started (replaces Date.now() for game logic)
   floatingTexts: FloatingText[];
+  impactEffects: ImpactEffect[];
   hoveredTowerId: string | null;
   difficulty: Difficulty;
 }

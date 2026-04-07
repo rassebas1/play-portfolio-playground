@@ -4,7 +4,7 @@
  */
 
 import { Cell, Enemy, Tower, Projectile, TowerType, EnemyType, Difficulty } from './types';
-import { GRID_CONFIG, TOWER_STATS, ENEMY_STATS, SLOW_DURATION, SLOW_FACTOR, TOWER_COLORS, DIFFICULTY_CONFIG } from './constants';
+import { GRID_CONFIG, TOWER_STATS, ENEMY_STATS, SLOW_DURATION, SLOW_FACTOR, TOWER_COLORS, DIFFICULTY_CONFIG, RETARGET_RADIUS } from './constants';
 
 // Re-export collision utilities from dedicated module
 export { hasProjectileReachedTarget, calculateSplashDamage, isInRange } from './utils/collision';
@@ -251,4 +251,77 @@ export function updateSlowTimer(enemy: Enemy, deltaTime: number): Enemy {
   }
 
   return { ...enemy, slowTimer: newTimer };
+}
+
+/**
+ * Find the enemy furthest along the path within tower range.
+ * Scoring: (pathIndex × 1000) + accumulatedDistance.
+ * Tiebreaker: lowest HP first.
+ */
+export function findFurthestAlongPath(
+  tower: Tower,
+  enemies: Enemy[]
+): Enemy | null {
+  let best: Enemy | null = null;
+  let bestScore = -Infinity;
+  let bestHp = Infinity;
+
+  for (const enemy of enemies) {
+    const dist = chebyshevDistance(tower.row, tower.col, enemy.row, enemy.col);
+    if (dist > tower.range) continue;
+
+    const score = enemy.pathIndex * 1000 + enemy.accumulatedDistance;
+    if (score > bestScore || (score === bestScore && enemy.health < bestHp)) {
+      bestScore = score;
+      bestHp = enemy.health;
+      best = enemy;
+    }
+  }
+
+  return best;
+}
+
+/**
+ * Calculate the angle (in degrees) from tower to target.
+ * 0° = right, 90° = down, 180°/-180° = left, -90° = up.
+ */
+export function calculateTowerRotation(
+  towerRow: number,
+  towerCol: number,
+  targetRow: number,
+  targetCol: number
+): number {
+  const dy = targetRow - towerRow;
+  const dx = targetCol - towerCol;
+  return (Math.atan2(dy, dx) * 180) / Math.PI;
+}
+
+/**
+ * Re-target a projectile when its target dies.
+ * Finds the enemy furthest along the path within RETARGET_RADIUS cells.
+ */
+export function retargetProjectile(
+  projectile: Projectile,
+  enemies: Enemy[]
+): Enemy | null {
+  if (enemies.length === 0) return null;
+
+  // Create a temporary tower object at projectile position with retarget range
+  const tempTower: Tower = {
+    id: 'retarget-temp',
+    type: 'basic',
+    row: projectile.row,
+    col: projectile.col,
+    level: 1,
+    damage: 0,
+    range: RETARGET_RADIUS,
+    fireRate: 0,
+    lastFired: 0,
+    totalDamage: 0,
+    kills: 0,
+    rotation: 0,
+    targetId: null,
+  };
+
+  return findFurthestAlongPath(tempTower, enemies);
 }

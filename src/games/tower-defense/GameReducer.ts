@@ -25,7 +25,7 @@ import {
 import {
   canPlaceTower,
   canAffordTower,
-  findClosestEnemy,
+  findFurthestAlongPath,
   getNextPosition,
   createEnemy,
   createProjectile,
@@ -37,7 +37,10 @@ import {
   updateSlowTimer,
   getUpgradeCost,
   getSellValue,
+  calculateTowerRotation,
+  retargetProjectile,
 } from './gameLogic';
+import { ROTATION_LERP, IMPACT_DURATION } from './constants';
 
 /**
  * Creates the initial game state
@@ -78,6 +81,7 @@ export function createInitialState(input: Difficulty | null = null): GameState {
     spawnQueue: [],
     elapsedTime: 0,
     floatingTexts: [],
+    impactEffects: [],
     hoveredTowerId: null,
     difficulty,
   };
@@ -144,6 +148,8 @@ function handlePlaceTower(
     lastFired: 0,
     totalDamage: 0,
     kills: 0,
+    rotation: 0,
+    targetId: null,
   };
 
   // Update grid
@@ -287,12 +293,15 @@ function handleTick(
   // 7. Check game over conditions
   newState = checkGameConditions(newState);
 
-  // 8. Cleanup expired floating texts
+  // 8. Cleanup expired floating texts and impact effects
   const now = Date.now();
   newState = {
     ...newState,
     floatingTexts: newState.floatingTexts.filter(
       (ft) => now - ft.createdAt < ft.ttl
+    ),
+    impactEffects: newState.impactEffects.filter(
+      (ie) => now - ie.createdAt < ie.ttl
     ),
   };
 
@@ -382,15 +391,38 @@ function towerFiring(state: GameState): GameState {
   const newProjectiles = [...state.projectiles];
   const newTowers = state.towers.map((tower) => {
     const fireInterval = 1000 / tower.fireRate;
-    if (now - tower.lastFired < fireInterval) return tower;
+    if (now - tower.lastFired < fireInterval) {
+      // Still update rotation toward current target even if not firing
+      const currentTarget = tower.targetId
+        ? state.enemies.find((e) => e.id === tower.targetId)
+        : null;
+      if (currentTarget) {
+        const targetRotation = calculateTowerRotation(tower.row, tower.col, currentTarget.row, currentTarget.col);
+        const newRotation = tower.rotation + (targetRotation - tower.rotation) * ROTATION_LERP;
+        return { ...tower, rotation: newRotation };
+      }
+      return tower;
+    }
 
-    const target = findClosestEnemy(tower, state.enemies);
-    if (!target) return tower;
+    const target = findFurthestAlongPath(tower, state.enemies);
+    if (!target) {
+      // No target in range — reset targetId
+      return { ...tower, targetId: null };
+    }
+
+    // Update tower's target and rotation
+    const targetRotation = calculateTowerRotation(tower.row, tower.col, target.row, target.col);
+    const newRotation = tower.rotation + (targetRotation - tower.rotation) * ROTATION_LERP;
 
     const projectile = createProjectile(tower, target, crypto.randomUUID());
     newProjectiles.push(projectile);
 
-    return { ...tower, lastFired: now };
+    return {
+      ...tower,
+      lastFired: now,
+      targetId: target.id,
+      rotation: newRotation,
+    };
   });
 
   return {
@@ -407,23 +439,36 @@ function moveProjectiles(state: GameState, deltaTime: number): GameState {
   const newProjectiles: Projectile[] = [];
 
   for (const proj of state.projectiles) {
-    const target = state.enemies.find((e) => e.id === proj.targetId);
-    if (!target) continue; // Target already dead
+    let target = state.enemies.find((e) => e.id === proj.targetId);
+    let currentProj = proj;
 
-    const dist = distance(proj.row, proj.col, target.row, target.col);
+    // Target dead — try to re-target
+    if (!target) {
+      const newTarget = retargetProjectile(proj, state.enemies);
+      if (newTarget) {
+        target = newTarget;
+        currentProj = { ...proj, targetId: newTarget.id };
+      } else {
+        // No new target found — remove projectile
+        continue;
+      }
+    }
+
+    const dist = distance(currentProj.row, currentProj.col, target.row, target.col);
     const moveAmount = PROJECTILE_SPEED * (deltaTime / 1000);
 
     if (moveAmount >= dist) {
-      // Projectile reached target
-      continue; // Will be handled in checkProjectileHits
+      // Projectile reached target — keep it in the list so checkProjectileHits processes the hit
+      newProjectiles.push(currentProj);
+      continue;
     }
 
     // Move toward target
     const ratio = moveAmount / dist;
     newProjectiles.push({
-      ...proj,
-      row: proj.row + (target.row - proj.row) * ratio,
-      col: proj.col + (target.col - proj.col) * ratio,
+      ...currentProj,
+      row: currentProj.row + (target.row - currentProj.row) * ratio,
+      col: currentProj.col + (target.col - currentProj.col) * ratio,
     });
   }
 
@@ -438,8 +483,10 @@ function checkProjectileHits(state: GameState): GameState {
   const newEnemies = [...state.enemies];
   const newTowers = [...state.towers];
   const newFloatingTexts: FloatingText[] = [];
+  const newImpactEffects = [...state.impactEffects];
   let newResources = state.resources;
   let newScore = state.score;
+  const now = Date.now();
 
   for (const proj of state.projectiles) {
     const target = newEnemies.find((e) => e.id === proj.targetId);
@@ -451,7 +498,16 @@ function checkProjectileHits(state: GameState): GameState {
 
     const projDist = distance(proj.row, proj.col, target.row, target.col);
     if (projDist < 0.5) {
-      // Hit!
+      // Hit! — Spawn impact effect
+      newImpactEffects.push({
+        id: crypto.randomUUID(),
+        row: target.row,
+        col: target.col,
+        color: proj.color,
+        createdAt: now,
+        ttl: IMPACT_DURATION,
+      });
+
       const enemyIndex = newEnemies.findIndex((e) => e.id === proj.targetId);
 
       // Apply slow effect if splash tower
@@ -465,6 +521,15 @@ function checkProjectileHits(state: GameState): GameState {
               ...newEnemies[hitIndex],
               health: newEnemies[hitIndex].health - hit.damage,
             };
+            // Impact effect for each splash hit
+            newImpactEffects.push({
+              id: crypto.randomUUID(),
+              row: newEnemies[hitIndex].row,
+              col: newEnemies[hitIndex].col,
+              color: proj.color,
+              createdAt: now,
+              ttl: IMPACT_DURATION,
+            });
           }
         }
       }
@@ -493,7 +558,7 @@ function checkProjectileHits(state: GameState): GameState {
           text: `+${deadEnemy.reward}💰`,
           x: deadEnemy.col,
           y: deadEnemy.row,
-          createdAt: Date.now(),
+          createdAt: now,
           ttl: 1000,
         });
 
@@ -525,6 +590,7 @@ function checkProjectileHits(state: GameState): GameState {
     resources: newResources,
     score: newScore,
     floatingTexts: [...state.floatingTexts, ...newFloatingTexts],
+    impactEffects: newImpactEffects,
   };
 }
 

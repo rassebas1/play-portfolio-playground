@@ -13,7 +13,7 @@
  * - Full i18n support (en, es, fr, it)
  */
 
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { GameHeader } from '@/components/game/GameHeader';
 import { GameControls } from '@/components/game/GameControls';
@@ -70,9 +70,13 @@ const TowerDefense: React.FC = () => {
     selectedTowerType,
     selectedTowerId,
     floatingTexts,
+    impactEffects,
     hoveredTowerId,
     difficulty,
   } = gameState;
+
+  // Hovered cell for placement preview
+  const [hoveredCell, setHoveredCell] = useState<{ row: number; col: number } | null>(null);
 
   // Selected tower details
   const selectedTower = useMemo(
@@ -263,8 +267,12 @@ const TowerDefense: React.FC = () => {
                 onTowerClick={handleTowerClick}
                 canPlaceTower={canPlaceTower}
                 floatingTexts={floatingTexts}
+                impactEffects={impactEffects}
                 hoveredTowerId={hoveredTowerId}
+                hoveredCell={hoveredCell}
                 onTowerHover={handleTowerHover}
+                onCellHover={(row, col) => setHoveredCell({ row, col })}
+                onCellLeave={() => setHoveredCell(null)}
               />
             </div>
 

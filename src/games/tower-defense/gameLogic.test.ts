@@ -21,6 +21,9 @@ import {
   hasProjectileReachedTarget,
   calculateSplashDamage,
   isInRange,
+  findFurthestAlongPath,
+  retargetProjectile,
+  calculateTowerRotation,
 } from './gameLogic';
 import { GRID_CONFIG, TOWER_STATS, ENEMY_STATS, SLOW_DURATION, SLOW_FACTOR } from './constants';
 import { Cell, Enemy, Tower, Projectile, TowerType, EnemyType } from './types';
@@ -55,6 +58,8 @@ function createTestTower(overrides?: Partial<Tower>): Tower {
     lastFired: 0,
     totalDamage: 0,
     kills: 0,
+    rotation: 0,
+    targetId: null,
     ...overrides,
   };
 }
@@ -73,6 +78,7 @@ function createTestEnemy(overrides?: Partial<Enemy>): Enemy {
     reward: 10,
     isSlowed: false,
     slowTimer: 0,
+    spawnTime: Date.now(),
     ...overrides,
   };
 }
@@ -88,6 +94,7 @@ function createTestProjectile(overrides?: Partial<Projectile>): Projectile {
     speed: 5,
     isSplash: false,
     splashRadius: undefined,
+    color: '#4ade80',
     ...overrides,
   };
 }
@@ -687,5 +694,135 @@ describe('isInRange()', () => {
     const tower = createTestTower({ row: 0, col: 0, range: 2 });
     const enemy = createTestEnemy({ row: 3, col: 0 }); // distance = 3
     expect(isInRange(tower, enemy)).toBe(false);
+  });
+});
+
+// ─── findFurthestAlongPath() ────────────────────────────────────────────────
+
+describe('findFurthestAlongPath()', () => {
+  it('returns null when no enemies exist', () => {
+    const tower = createTestTower({ row: 0, col: 0, range: 5 });
+    expect(findFurthestAlongPath(tower, [])).toBeNull();
+  });
+
+  it('returns null when all enemies are out of range', () => {
+    const tower = createTestTower({ row: 0, col: 0, range: 1 });
+    const enemies = [createTestEnemy({ id: 'e1', row: 5, col: 5 })];
+    expect(findFurthestAlongPath(tower, enemies)).toBeNull();
+  });
+
+  it('returns the enemy with highest path progress (higher pathIndex)', () => {
+    const tower = createTestTower({ row: 3, col: 3, range: 10 });
+    const enemies = [
+      createTestEnemy({ id: 'early', pathIndex: 2, accumulatedDistance: 0, row: 1, col: 2 }),
+      createTestEnemy({ id: 'ahead', pathIndex: 5, accumulatedDistance: 0, row: 2, col: 5 }),
+      createTestEnemy({ id: 'mid', pathIndex: 3, accumulatedDistance: 0, row: 3, col: 5 }),
+    ];
+    const result = findFurthestAlongPath(tower, enemies);
+    expect(result?.id).toBe('ahead');
+  });
+
+  it('uses accumulatedDistance as tiebreaker when pathIndex is equal', () => {
+    const tower = createTestTower({ row: 3, col: 3, range: 10 });
+    const enemies = [
+      createTestEnemy({ id: 'less', pathIndex: 3, accumulatedDistance: 0.2, row: 3, col: 2 }),
+      createTestEnemy({ id: 'more', pathIndex: 3, accumulatedDistance: 0.8, row: 3, col: 3 }),
+    ];
+    const result = findFurthestAlongPath(tower, enemies);
+    expect(result?.id).toBe('more');
+  });
+
+  it('uses lowest HP as final tiebreaker when path progress is equal', () => {
+    const tower = createTestTower({ row: 3, col: 3, range: 10 });
+    const enemies = [
+      createTestEnemy({ id: 'tanky', pathIndex: 4, accumulatedDistance: 0.5, row: 3, col: 4, health: 100 }),
+      createTestEnemy({ id: 'weak', pathIndex: 4, accumulatedDistance: 0.5, row: 3, col: 5, health: 20 }),
+    ];
+    const result = findFurthestAlongPath(tower, enemies);
+    expect(result?.id).toBe('weak');
+  });
+
+  it('only considers enemies within tower range', () => {
+    const tower = createTestTower({ row: 0, col: 0, range: 2 });
+    const enemies = [
+      createTestEnemy({ id: 'close', pathIndex: 1, accumulatedDistance: 0, row: 1, col: 1, health: 50 }),
+      createTestEnemy({ id: 'far-ahead', pathIndex: 10, accumulatedDistance: 0, row: 5, col: 5, health: 50 }),
+    ];
+    const result = findFurthestAlongPath(tower, enemies);
+    expect(result?.id).toBe('close');
+  });
+});
+
+// ─── retargetProjectile() ───────────────────────────────────────────────────
+
+describe('retargetProjectile()', () => {
+  it('returns null when no enemies exist', () => {
+    const proj = createTestProjectile({ row: 3, col: 3, targetId: 'dead-enemy' });
+    expect(retargetProjectile(proj, [])).toBeNull();
+  });
+
+  it('returns the furthest-along enemy within retarget radius', () => {
+    const proj = createTestProjectile({ row: 3, col: 3, targetId: 'dead-enemy' });
+    const enemies = [
+      createTestEnemy({ id: 'near-ahead', row: 4, col: 3, pathIndex: 5, accumulatedDistance: 0.5 }),
+      createTestEnemy({ id: 'near-behind', row: 3, col: 4, pathIndex: 2, accumulatedDistance: 0 }),
+      createTestEnemy({ id: 'far-away', row: 10, col: 10, pathIndex: 15, accumulatedDistance: 0 }),
+    ];
+    const result = retargetProjectile(proj, enemies);
+    expect(result?.id).toBe('near-ahead');
+  });
+
+  it('returns null when no enemies are within retarget radius', () => {
+    const proj = createTestProjectile({ row: 0, col: 0, targetId: 'dead-enemy' });
+    const enemies = [
+      createTestEnemy({ id: 'distant', row: 8, col: 8, pathIndex: 10, accumulatedDistance: 0 }),
+    ];
+    const result = retargetProjectile(proj, enemies);
+    expect(result).toBeNull();
+  });
+
+  it('uses same furthest-along-path scoring for retargeting', () => {
+    const proj = createTestProjectile({ row: 5, col: 5, targetId: 'dead' });
+    const enemies = [
+      createTestEnemy({ id: 'behind', row: 5, col: 6, pathIndex: 3, accumulatedDistance: 0 }),
+      createTestEnemy({ id: 'ahead', row: 6, col: 5, pathIndex: 7, accumulatedDistance: 0.3 }),
+    ];
+    const result = retargetProjectile(proj, enemies);
+    expect(result?.id).toBe('ahead');
+  });
+});
+
+// ─── calculateTowerRotation() ───────────────────────────────────────────────
+
+describe('calculateTowerRotation()', () => {
+  it('returns 0 degrees when target is directly to the right', () => {
+    const angle = calculateTowerRotation(0, 0, 0, 5);
+    expect(angle).toBeCloseTo(0, 1);
+  });
+
+  it('returns 90 degrees when target is directly below', () => {
+    const angle = calculateTowerRotation(0, 0, 5, 0);
+    expect(angle).toBeCloseTo(90, 1);
+  });
+
+  it('returns 180 or -180 degrees when target is directly to the left', () => {
+    const angle = calculateTowerRotation(0, 5, 0, 0);
+    expect(Math.abs(angle)).toBeCloseTo(180, 1);
+  });
+
+  it('returns -90 degrees when target is directly above', () => {
+    const angle = calculateTowerRotation(5, 0, 0, 0);
+    expect(angle).toBeCloseTo(-90, 1);
+  });
+
+  it('returns 45 degrees when target is diagonally down-right', () => {
+    const angle = calculateTowerRotation(0, 0, 5, 5);
+    expect(angle).toBeCloseTo(45, 1);
+  });
+
+  it('returns consistent angle regardless of distance', () => {
+    const angle1 = calculateTowerRotation(0, 0, 1, 1);
+    const angle2 = calculateTowerRotation(0, 0, 10, 10);
+    expect(angle1).toBeCloseTo(angle2, 1);
   });
 });
