@@ -10,6 +10,62 @@ export const ProjectsCarousel: React.FC = () => {
   const [isPaused, setIsPaused] = useState(false);
 
   const projects = [
+    // Academic projects
+    {
+      company: 'Academic Project',
+      title: t('project_academic_mammography_title'),
+      description: t('project_academic_mammography_desc'),
+      period: '2021-2022',
+      technologies: t('project_academic_mammography_tech').split(', '),
+      achievement: t('project_academic_mammography_achievement'),
+      category: 'academic' as const,
+    },
+    {
+      company: 'Academic Project',
+      title: t('project_academic_fingerprint_title'),
+      description: t('project_academic_fingerprint_desc'),
+      period: '2021-2022',
+      technologies: t('project_academic_fingerprint_tech').split(', '),
+      achievement: t('project_academic_fingerprint_achievement'),
+      category: 'academic' as const,
+    },
+    {
+      company: 'Academic Project',
+      title: t('project_academic_linefollower_title'),
+      description: t('project_academic_linefollower_desc'),
+      period: '2021',
+      technologies: t('project_academic_linefollower_tech').split(', '),
+      achievement: t('project_academic_linefollower_achievement'),
+      category: 'academic' as const,
+    },
+    {
+      company: 'Academic Project',
+      title: t('project_academic_propeller_title'),
+      description: t('project_academic_propeller_desc'),
+      period: '2020',
+      technologies: t('project_academic_propeller_tech').split(', '),
+      achievement: '',
+      category: 'academic' as const,
+    },
+    {
+      company: 'Academic Project',
+      title: t('project_academic_voice_title'),
+      description: t('project_academic_voice_desc'),
+      period: '2022',
+      technologies: t('project_academic_voice_tech').split(', '),
+      achievement: t('project_academic_voice_achievement'),
+      category: 'academic' as const,
+    },
+    {
+      company: 'Academic Project',
+      title: t('project_academic_dssc_title'),
+      description: t('project_academic_dssc_desc'),
+      period: '2022-2023',
+      technologies: t('project_academic_dssc_tech').split(', '),
+      achievement: t('project_academic_dssc_achievement'),
+      category: 'academic' as const,
+    },
+    // Professional projects
     {
       company: t('project_telefonica_company'),
       title: t('project_telefonica_title'),
@@ -28,6 +84,7 @@ export const ProjectsCarousel: React.FC = () => {
       achievement: t('project_banco_achievement'),
       category: 'professional' as const,
     },
+    // Research projects
     {
       company: t('project_biodcase_company'),
       title: t('project_biodcase_title'),

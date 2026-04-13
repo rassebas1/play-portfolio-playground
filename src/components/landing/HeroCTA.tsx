@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Github, Linkedin, Gamepad2, ArrowDown, FileDown } from 'lucide-react';
+import { Github, Linkedin, Gamepad2, ArrowDown, FileDown, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export const HeroCTA: React.FC = () => {
@@ -63,6 +63,16 @@ export const HeroCTA: React.FC = () => {
         >
           <FileDown className="w-5 h-5 group-hover:scale-110 transition-transform" />
           <span className="font-medium">{t('hero_cta_cv')}</span>
+        </a>
+      </motion.div>
+
+      <motion.div variants={itemVariants}>
+        <a
+          href="mailto:sebas.espitia@gmail.com"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-200 group"
+        >
+          <MessageCircle className="w-5 h-5 group-hover:scale-110 transition-transform" />
+          <span className="font-medium">{t('hero_cta_lets_talk')}</span>
         </a>
       </motion.div>
 

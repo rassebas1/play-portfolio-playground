@@ -17,6 +17,7 @@ const Experience = React.lazy(() => import("./pages/Experience"));
 const Education = React.lazy(() => import("./pages/Education"));
 const GamePage = React.lazy(() => import("./pages/GamePage"));
 const LabAI = React.lazy(() => import("./pages/LabAI"));
+const Projects = React.lazy(() => import("./pages/Projects"));
 const NotFound = React.lazy(() => import("./pages/NotFound"));
 
 /**
@@ -71,6 +72,8 @@ const router = createBrowserRouter([
       { path: "game/:gameId", element: <motion.div key="game-page" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }}><GamePage /></motion.div> },
       // Route for the Lab AI page.
       { path: "lab-ai", element: <motion.div key="lab-ai" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }}><LabAI /></motion.div> },
+      // Route for the Projects page.
+      { path: "projects", element: <motion.div key="projects" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }}><Projects /></motion.div> },
       // Catch-all route for any undefined paths, leading to a 404 Not Found page.
       { path: "*", element: <motion.div key="not-found" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }}><NotFound /></motion.div> },
     ],
