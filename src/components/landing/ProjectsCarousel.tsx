@@ -65,6 +65,15 @@ export const ProjectsCarousel: React.FC = () => {
       achievement: t('project_academic_dssc_achievement'),
       category: 'academic' as const,
     },
+    {
+      company: 'Academic Project',
+      title: t('project_academic_secgle_title'),
+      description: t('project_academic_secgle_desc'),
+      period: '2023',
+      technologies: t('project_academic_secgle_tech').split(', '),
+      achievement: t('project_academic_secgle_achievement'),
+      category: 'academic' as const,
+    },
     // Professional projects
     {
       company: t('project_telefonica_company'),

@@ -33,6 +33,25 @@ const cardVariants = {
   }),
 };
 
+// Enhanced card entry with diagonal slide
+const enhancedCardVariants = {
+  hidden: (isLeft: boolean) => ({ 
+    opacity: 0, 
+    x: isLeft ? -100 : 100,
+    rotate: isLeft ? -5 : 5 
+  }),
+  visible: (index: number) => ({
+    opacity: 1,
+    x: 0,
+    rotate: 0,
+    transition: {
+      delay: index * 0.2,
+      duration: 0.8,
+      ease: [0.25, 0.46, 0.45, 0.94] as const,
+    },
+  }),
+};
+
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: (i: number) => ({
@@ -72,7 +91,7 @@ export const EducationCard: React.FC<EducationCardProps> = ({
       animate={isInView ? "visible" : "hidden"}
       className={`relative flex items-center ${isLeft ? 'justify-start' : 'justify-end'}`}
     >
-      {/* Timeline node */}
+      {/* Timeline node with enhanced amber glow */}
       <motion.div 
         className="absolute left-1/2 top-8 -translate-x-1/2 z-20"
         initial={{ scale: 0 }}
@@ -80,10 +99,10 @@ export const EducationCard: React.FC<EducationCardProps> = ({
         transition={{ delay: 0.2 + index * 0.2, duration: 0.4, type: "spring" }}
       >
         <div className="relative">
-          <div className="w-4 h-4 rounded-full bg-primary shadow-[0_0_20px_rgba(142,76,36,0.6)]" />
+          <div className="w-4 h-4 rounded-full bg-amber-500 shadow-[0_0_20px_rgba(217,119,6,0.8)]" />
           <motion.div 
-            className="absolute inset-0 rounded-full bg-primary"
-            animate={{ scale: [1, 1.5, 1], opacity: [0.5, 0, 0.5] }}
+            className="absolute inset-0 rounded-full border-2 border-amber-500/50"
+            animate={{ scale: [1, 2], opacity: [0.5, 0] }}
             transition={{ duration: 2, repeat: Infinity }}
           />
         </div>
@@ -93,20 +112,31 @@ export const EducationCard: React.FC<EducationCardProps> = ({
       <div className={`w-full md:w-[calc(50%-2rem)] ${isLeft ? 'md:mr-auto' : 'md:ml-auto'}`}>
         <motion.div
           className="group relative glass-card rounded-2xl overflow-hidden"
+          custom={index}
+          variants={enhancedCardVariants}
           whileHover={{ y: -8 }}
           transition={{ duration: 0.4, ease: "easeOut" }}
         >
+          {/* Gold-tinted border gradient */}
+          <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-amber-500/20 via-transparent to-amber-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          
           {/* Ambient glow on hover */}
           <motion.div
             className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
           />
 
-          {/* Corner accents */}
-          <div className="absolute top-0 left-0 w-16 h-16 overflow-hidden">
-            <div className="absolute top-2 left-2 w-8 h-8 border-t-2 border-l-2 border-primary/30 rounded-tl-lg" />
+          {/* Corner decorations - Gold/amber */}
+          <div className="absolute top-0 left-0 w-20 h-20 overflow-hidden pointer-events-none">
+            <div className="absolute top-3 left-3 w-10 h-10 border-t-2 border-l-2 border-amber-500/50 rounded-tl-lg" />
           </div>
-          <div className="absolute top-0 right-0 w-16 h-16 overflow-hidden">
-            <div className="absolute top-2 right-2 w-8 h-8 border-t-2 border-r-2 border-primary/30 rounded-tr-lg" />
+          <div className="absolute top-0 right-0 w-20 h-20 overflow-hidden pointer-events-none">
+            <div className="absolute top-3 right-3 w-10 h-10 border-t-2 border-r-2 border-amber-500/50 rounded-tr-lg" />
+          </div>
+          <div className="absolute bottom-0 left-0 w-20 h-20 overflow-hidden pointer-events-none">
+            <div className="absolute bottom-3 left-3 w-10 h-10 border-b-2 border-l-2 border-amber-500/50 rounded-bl-lg" />
+          </div>
+          <div className="absolute bottom-0 right-0 w-20 h-20 overflow-hidden pointer-events-none">
+            <div className="absolute bottom-3 right-3 w-10 h-10 border-b-2 border-r-2 border-amber-500/50 rounded-br-lg" />
           </div>
 
           {/* Content */}

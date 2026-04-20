@@ -75,6 +75,17 @@ const projectsData = [
     demoLink: '',
     repoLink: '',
   },
+  {
+    id: 'secgle',
+    titleKey: 'project_academic_secgle_title',
+    descriptionKey: 'project_academic_secgle_desc',
+    period: '2021',
+    techKey: 'project_academic_secgle_tech',
+    achievementKey: 'project_academic_secgle_achievement',
+    category: 'academic' as const,
+    demoLink: '',
+    repoLink: '',
+  },
   // Professional
   {
     id: 'telefonica',
