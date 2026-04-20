@@ -82,6 +82,37 @@ const TetrominoPreview = ({
   );
 };
 
+// Mobile tetromino preview - renders correctly sized piece
+const MobilePiecePreview = ({
+  type,
+}: {
+  type: keyof typeof TETROMINOES;
+}) => {
+  const color = getTetrominoColor(type);
+  const shape = TETROMINOES[type].shape;
+
+  return (
+    <div
+      className="grid gap-px"
+      style={{
+        gridTemplateColumns: `repeat(${shape[0].length}, 1fr)`,
+      }}
+    >
+      {shape.map((row, rowIndex) =>
+        row.map((cell, colIndex) => (
+          <div
+            key={`${rowIndex}-${colIndex}`}
+            className={cn('w-2 h-2', cell !== 0 && 'shadow-[0_0_4px_currentColor]')}
+            style={{
+              backgroundColor: cell !== 0 ? color : 'transparent',
+            }}
+          />
+        ))
+      )}
+    </div>
+  );
+};
+
 /**
  * Main Tetris Game Component
  */
@@ -294,34 +325,18 @@ const Tetris: React.FC = () => {
           <div className="flex justify-center gap-6 mb-3 text-xs">
             <div className={cn("flex items-center gap-2", !canHold && "opacity-50")}>
               <span className="text-muted-foreground">{t('scoreboard.hold')}:</span>
-              <div className="w-8 h-8 flex items-center justify-center">
+              <div className="w-10 h-10 flex items-center justify-center">
                 {holdPiece && (
-                  <div className="grid gap-[1px]" style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}>
-                    {TETROMINOES[holdPiece as keyof typeof TETROMINOES]?.shape.flat().slice(0, 8).map((cell, i) => (
-                      <div
-                        key={i}
-                        className="w-1.5 h-1.5"
-                        style={{ backgroundColor: cell ? TETROMINOES[holdPiece as keyof typeof TETROMINOES].color : 'transparent' }}
-                      />
-                    ))}
-                  </div>
+                  <MobilePiecePreview type={holdPiece as keyof typeof TETROMINOES} />
                 )}
                 {!holdPiece && <span className="text-muted-foreground/50">-</span>}
               </div>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-muted-foreground">{t('scoreboard.next')}:</span>
-              <div className="w-8 h-8 flex items-center justify-center">
+              <div className="w-10 h-10 flex items-center justify-center">
                 {nextPiece && (
-                  <div className="grid gap-[1px]" style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}>
-                    {TETROMINOES[nextPiece as keyof typeof TETROMINOES]?.shape.flat().slice(0, 8).map((cell, i) => (
-                      <div
-                        key={i}
-                        className="w-1.5 h-1.5"
-                        style={{ backgroundColor: cell ? TETROMINOES[nextPiece as keyof typeof TETROMINOES].color : 'transparent' }}
-                      />
-                    ))}
-                  </div>
+                  <MobilePiecePreview type={nextPiece as keyof typeof TETROMINOES} />
                 )}
               </div>
             </div>

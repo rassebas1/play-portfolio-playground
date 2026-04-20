@@ -120,6 +120,23 @@ const Education: React.FC = () => {
         transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
       />
 
+      {/* Spotlight beams */}
+      <motion.div 
+        className="absolute left-0 top-0 w-[60vw] h-full bg-gradient-to-b from-amber-500/8 to-transparent pointer-events-none"
+        style={{ filter: 'blur(60px)', transform: 'skewX(-15deg)' }}
+        animate={{ opacity: [0.3, 0.5, 0.3] }}
+        transition={{ duration: 10, repeat: Infinity }}
+      />
+      <motion.div 
+        className="absolute right-0 top-0 w-[60vw] h-full bg-gradient-to-b from-primary/8 to-transparent pointer-events-none"
+        style={{ filter: 'blur(60px)', transform: 'skewX(15deg)' }}
+        animate={{ opacity: [0.4, 0.6, 0.4] }}
+        transition={{ duration: 12, repeat: Infinity }}
+      />
+
+      {/* Grain overlay */}
+      <div className="absolute inset-0 grain-overlay pointer-events-none" />
+
       <div className="container mx-auto px-4 py-20 relative z-10">
         {/* Header */}
         <motion.div 
@@ -159,7 +176,17 @@ const Education: React.FC = () => {
               className="h-full w-full bg-gradient-to-b from-transparent via-primary/30 to-transparent"
               style={{ scaleY }}
             />
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-primary shadow-[0_0_20px_rgba(142,76,36,0.5)]" />
+            {/* Enhanced timeline node with pulsing ring */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2">
+              <div className="relative">
+                <div className="w-3 h-3 rounded-full bg-amber-500 shadow-[0_0_20px_rgba(217,119,6,0.8)]" />
+                <motion.div 
+                  className="absolute inset-0 rounded-full border-2 border-amber-500/50"
+                  animate={{ scale: [1, 2], opacity: [0.5, 0] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                />
+              </div>
+            </div>
           </div>
 
           {/* Cards */}

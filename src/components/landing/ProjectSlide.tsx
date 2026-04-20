@@ -1,6 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Calendar, Trophy } from 'lucide-react';
+import { Calendar, Trophy, ArrowRight } from 'lucide-react';
 
 interface ProjectSlideProps {
   company: string;
@@ -9,7 +11,7 @@ interface ProjectSlideProps {
   period: string;
   technologies: string[];
   achievement?: string;
-  category: 'professional' | 'research';
+  category: 'professional' | 'research' | 'academic' | 'personal';
   isActive: boolean;
 }
 
@@ -23,6 +25,7 @@ export const ProjectSlide: React.FC<ProjectSlideProps> = ({
   category,
   isActive,
 }) => {
+  const { t } = useTranslation('common');
   return (
     <motion.div
       className="flex-shrink-0 w-full px-4"
@@ -39,8 +42,12 @@ export const ProjectSlide: React.FC<ProjectSlideProps> = ({
           <div>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <span className={`px-2 py-0.5 rounded text-xs font-medium ${
-                category === 'research' 
+                category === 'personal'
+                  ? 'bg-orange-500/20 text-orange-400'
+                  : category === 'research' 
                   ? 'bg-purple-500/20 text-purple-400' 
+                  : category === 'academic'
+                  ? 'bg-green-500/20 text-green-400'
                   : 'bg-blue-500/20 text-blue-400'
               }`}>
                 {company}
@@ -75,11 +82,20 @@ export const ProjectSlide: React.FC<ProjectSlideProps> = ({
 
         {/* Achievement */}
         {achievement && (
-          <div className="flex items-center gap-2 text-primary font-medium">
+          <div className="flex items-center gap-2 text-primary font-medium mb-4">
             <Trophy className="w-5 h-5" />
             <span>{achievement}</span>
           </div>
         )}
+
+        {/* Learn More Link */}
+        <Link
+          to="/projects"
+          className="inline-flex items-center gap-2 text-sm text-primary hover:underline group"
+        >
+          <span>{t('projects_learn_more')}</span>
+          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+        </Link>
       </div>
     </motion.div>
   );

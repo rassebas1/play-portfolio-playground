@@ -3,23 +3,33 @@
   "nttDataTelefonica": {
     "title": "Ingegnere del Software",
     "activities": {
-      "0": "Ho servito come ingegnere front-end principale, fungendo da ponte tra i team aziendali e tecnici traducendo i requisiti del cliente in specifiche tecniche attuabili, mentre guidavo la pianificazione degli sprint, la valutazione dei rischi, la stima degli sforzi e l'implementazione delle funzionalità.",
-      "1": "Ho architettato e eseguito la modernizzazione dell'applicazione di vendita legacy usando Angular, riducendo il tempo del ciclo di sviluppo e migliorando la velocità del team attraverso una progettazione strategica basata sui componenti.",
-      "2": "Ho distribuito l'infrastruttura cloud Azure incorporando il controllo versione, pipeline CI/CD automatizzate e orchestrazione Kubernetes (AKS) per ottimizzare la distribuzione di applicazioni containerizzate, migliorando la frequenza di distribuzione da settimanale a giornaliera."
+      "0": "Tradotto la migrazione da Angular 8 a Angular 18 con pattern NgRx reattivi (signals, observables, pipes)",
+      "1": "Implementato librerie di componenti PrimeNG, Angular Material e Tailwind CSS",
+      "2": "Applicato pattern di design Factory e Chain of Responsibility per il consumo di servizi e il controllo del flusso di vendite",
+      "3": "Ottimizzato le performance con Lazy Loading e moduli di funzionalità indipendenti con bundling",
+      "4": "Implementato test unitari usando Karma e Jasmine per la qualità del codice e l'automazione dei test",
+      "5": "Gestito il controllo degli accessi con login MFA, autenticazione JWT e guard per l'accesso basato sui ruoli",
+      "6": "Progettato mockup Figma per presentazioni ai clienti e allineamento con gli stakeholder",
+      "7": "Creato componenti riutilizzabili e adattabili per diversi flussi applicativi",
+      "8": "Costruito pipeline CI/CD con Azure AKS, migliorando la frequenza di distribuzione da settimanale a giornaliera"
     }
   },
   "nttDataBancoPopular": {
     "title": "Ingegnere del Software",
     "activities": {
-      "0": "Ho diretto la pianificazione strategica e la mitigazione dei rischi su più trimestri, tutelando le tempistiche dei progetti e rafforzando la fiducia degli stakeholder affrontando proattivamente i rischi operativi.",
-      "1": "Ho architettato e guidato una soluzione di integrazione cloud ibrida per automatizzare i processi dei clienti, orchestrando servizi on-premises con AWS. Ho applicato una sicurezza robusta tramite DataPower Gateway usando certificati di autenticazione firmati e mutui.",
-      "2": "Ho redatto contratti di servizio completi (WSDL, YAML e SWAGGER) per snellire la collaborazione tra team, garantendo un'integrazione del sistema senza soluzione di continuità e ottenendo l'approvazione del Comitato di Architettura.",
-      "3": "Ho gestito l'intero ciclo di vita dello sviluppo del servizio: ho progettato l'architettura del sistema, gestito le distribuzioni su WebLogic e validato le prestazioni attraverso test rigorosi (unità, carico, stress usando JMeter), con documentazione dettagliata dei processi di progettazione e distribuzione.",
-      "4": "Ho mantenuto e supportato microservizi legacy e pipeline ETL in ambienti di produzione, risolvendo problemi critici modernizzando progressivamente i protocolli di autenticazione e sicurezza usando Java 8."
+      "0": "Diretto la pianificazione strategica e la mitigazione dei rischi negli ambienti middleware",
+      "1": "Architettato soluzioni ibride integrando microservizi on-premises con il cloud AWS",
+      "2": "Implementato DataPower Gateway con certificati di autenticazione mutua per l'esposizione sicura delle API",
+      "3": "Creato contratti di servizio WSDL, YAML e Swagger per la collaborazione tra team",
+      "4": "Supportato la migrazione Angular 15 micro-frontend su AWS con implementazione CloudFront",
+      "5": "Sviluppato test unitari con Mocha e Chai, più test di carico/stress con JMeter",
+      "6": "Stilizzato applicazioni usando post-processori SCSS",
+      "7": "Gestito l'intero ciclo di vita dello sviluppo: architettura, distribuzione WebLogic, validazione, documentazione",
+      "8": "Implementato OAuth 2.0 con principi di sicurezza OWASP per l'autenticazione moderna"
     }
   },
   "nttDataIbm": {
-    "title": "Ingenere del Software",
+    "title": "Ingegnere del Software",
     "activities": {
       "0": "Ho sfruttato le tecnologie di integrazione aziendale ricevendo formazione in IBM Toolkit e MuleSoft, e implementando soluzioni API Gateway con sviluppo completo di contratti di servizio in formato WSDL, YAML e SWAGGER."
     }
@@ -33,9 +43,11 @@
   "4coders": {
     "title": "Ingegnere del Software Junior",
     "activities": {
-      "0": "Ho sviluppato componenti front-end riutilizzabili e modulari usando React e VueJS con TypeScript, implementando componenti basati su librerie npm personalizzate collaborando strettamente con i team di design UX/UI per tradurre template Figma in architetture Micro-Frontend funzionali.",
-      "1": "Ho sviluppato interfacce utente internazionalizzate (i18n) e accessibili (a11y), garantendo un'esperienza utente senza soluzione di continuità in più lingue, regioni e dispositivi.",
-      "2": "Praticante back-end usando NodeJS per microservizi e risposte REST con query SQL."
+      "0": "Sviluppato micro-frontends modulari usando React e Vue con TypeScript",
+      "1": "Creato pacchetti di librerie npm riutilizzabili per il bundling di componenti",
+      "2": "Collaborato con team UX/UI per tradurre design Figma in elementi web",
+      "3": "Gestito lo stato con Redux, Vuex e Pinia per l'archiviazione delle informazioni backend",
+      "4": "Costruito servizi REST Node.js con integrazione di query SQL"
     }
   }
 }

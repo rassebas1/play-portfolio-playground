@@ -3,19 +3,29 @@
   "nttDataTelefonica": {
     "title": "Ingénieur Logiciel",
     "activities": {
-      "0": "A servi d'ingénieur front-end principal, faisant le pont entre les équipes commerciales et techniques en traduisant les exigences des clients en spécifications techniques exploitables, tout en dirigeant la planification des sprints, l'évaluation des risques, l'estimation des efforts et la mise en œuvre des fonctionnalités.",
-      "1": "A architecturé et exécuté la modernisation de l'application de vente héritée à l'aide d'Angular, réduisant le temps de cycle de développement et améliorant la vélocité de l'équipe grâce à une conception stratégique basée sur les composants.",
-      "2": "A déployé l'infrastructure cloud Azure en intégrant le contrôle de version, les pipelines CI/CD automatisés et l'orchestration Kubernetes (AKS) pour optimiser la livraison d'applications conteneurisées, améliorant la fréquence de déploiement de hebdomadaire à quotidienne."
+      "0": "Traduit la migration Angular 8 vers Angular 18 avec des patterns NgRx réactifs (signals, observables, pipes)",
+      "1": "Implémenté les bibliothèques de composants PrimeNG, Angular Material et Tailwind CSS",
+      "2": "Appliqué les patterns de conception Factory et Chain of Responsibility pour la consommation de services et le contrôle du flux de ventes",
+      "3": "Optimisé les performances avec le Lazy Loading et les modules de fonctionnalités indépendants avec bundling",
+      "4": "Implémenté des tests unitaires avec Karma et Jasmine pour la qualité du code et l'automatisation des tests",
+      "5": "Géré le contrôle d'accès avec login MFA, authentification JWT et guards d'accès basés sur les rôles",
+      "6": "Conçu des maquettes Figma pour les présentations clients et l'alignement avec les parties prenantes",
+      "7": "Créé des composants réutilisables et adaptables pour différents flux d'applications",
+      "8": "Construit des pipelines CI/CD avec Azure AKS, améliorant la fréquence de déploiement de hebdomadaire à quotidienne"
     }
   },
   "nttDataBancoPopular": {
     "title": "Ingénieur Logiciel",
     "activities": {
-      "0": "A dirigé la planification stratégique et l'atténuation des risques sur plusieurs trimestres, protégeant les délais des projets et renforçant la confiance des parties prenantes en traitant de manière proactive les risques opérationnels.",
-      "1": "A architecturé et dirigé une solution d'intégration de cloud hybride pour automatiser les processus des clients, en orchestrant les services sur site avec AWS. A appliqué une sécurité robuste via DataPower Gateway à l'aide de certificats d'authentification mutuelle et signés.",
-      "2": "A rédigé des contrats de service complets (WSDL, YAML et SWAGHER) pour rationaliser la collaboration entre les équipes, garantissant une intégration transparente du système et obtenant l'approbation du comité d'architecture.",
-      "3": "A possédé le cycle de vie complet du développement de services : a conçu l'architecture du système, géré les déploiements sur WebLogic et validé les performances par des tests rigoureux (unitaires, de charge, de stress avec JMeter), avec une documentation détaillée des processus de conception et de déploiement.",
-      "4": "A maintenu et pris en charge les microservices hérités et les pipelines ETL dans les environnements de production, résolvant les problèmes critiques tout en modernisant progressivement les protocoles d'authentification et de sécurité à l'aide de Java 8."
+      "0": "Dirigé la planification stratégique et l'atténuation des risques dans les environnements middleware",
+      "1": "Architecturé des solutions hybrides intégrant des microservices on-premises avec le cloud AWS",
+      "2": "Implémenté DataPower Gateway avec des certificats d'authentification mutuelle pour l'exposition sécurisée des APIs",
+      "3": "Créé des contrats de service WSDL, YAML et Swagger pour la collaboration inter-équipes",
+      "4": "Soutenu la migration Angular 15 micro-frontend vers AWS avec implémentation CloudFront",
+      "5": "Développé des tests unitaires avec Mocha et Chai, plus des tests de charge/stress avec JMeter",
+      "6": "Stylisé des applications en utilisant des post-processeurs SCSS",
+      "7": "Géré le cycle de vie complet du développement: architecture, déploiement WebLogic, validation, documentation",
+      "8": "Implémenté OAuth 2.0 avec les principes de sécurité OWASP pour l'authentification moderne"
     }
   },
   "nttDataIbm": {
@@ -33,9 +43,11 @@
   "4coders": {
     "title": "Ingénieur Logiciel Junior",
     "activities": {
-      "0": "A développé des composants front-end modulaires et réutilisables à l'aide de React et VueJS avec TypeScript, en mettant en œuvre des composants personnalisés basés sur la bibliothèque npm tout en collaborant étroitement avec les équipes de conception UX/UI pour traduire les modèles Figma en architectures de micro-frontend fonctionnelles.",
-      "1": "A développé des interfaces utilisateur internationalisées (i18n) et accessibles (a11y), garantissant une expérience utilisateur transparente dans plusieurs langues, régions et appareils.",
-      "2": "Praticien back-end utilisant NodeJS pour les microservices et les réponses REST avec des requêtes SQL."
+      "0": "Développé des micro-frontends modulaires en utilisant React et Vue avec TypeScript",
+      "1": "Créé des packages de bibliothèques npm réutilisables pour le bundling de composants",
+      "2": "Collaboré avec les équipes UX/UI pour traduire les designs Figma en éléments web",
+      "3": "Géré l'état avec Redux, Vuex et Pinia pour le stockage des informations backend",
+      "4": "Construit des services REST Node.js avec intégration de requêtes SQL"
     }
   }
 }

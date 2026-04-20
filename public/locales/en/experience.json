@@ -3,19 +3,29 @@
   "nttDataTelefonica": {
     "title": "Software Engineer",
     "activities": {
-      "0": "Served as lead front-end engineer, bridging business and technical teams by translating client requirements into actionable technical specifications, while driving sprint planning, risk assessment, effort estimation, and feature implementation.",
-      "1": "Architected and executed modernization of legacy sales application using Angular, reducing development cycle time and enhancing team velocity through strategic component-based design.",
-      "2": "Deployed Azure cloud infrastructure incorporating version control, automated CI/CD pipelines, and Kubernetes orchestration (AKS) to optimize containerized application delivery, improving deployment frequency from weekly to daily."
+      "0": "Translated Angular 8 to Angular 18 migration with reactive NgRx patterns (signals, observables, pipes)",
+      "1": "Implemented PrimeNG, Angular Material, and Tailwind CSS component libraries",
+      "2": "Applied Factory and Chain of Responsibility design patterns for service consumption and sales flow control",
+      "3": "Optimized performance with Lazy Loading and independent feature modules with bundling",
+      "4": "Implemented unit tests using Karma and Jasmine for code quality and test automation",
+      "5": "Managed access control with MFA login, JWT authentication, and role-based access guards",
+      "6": "Designed Figma mockups for client presentations and stakeholder alignment",
+      "7": "Created reusable adaptable components for different application flows",
+      "8": "Built CI/CD pipelines with Azure AKS, improving deployment frequency from weekly to daily"
     }
   },
   "nttDataBancoPopular": {
     "title": "Software Engineer",
     "activities": {
-      "0": "Directed strategic planning and risk mitigation across multiple quarters, safeguarding project timelines and bolstering stakeholder confidence by proactively addressing operational risks.",
-      "1": "Architected and led a hybrid cloud integration solution to automate client processes, orchestrating on-premises services with AWS. Enforced robust security via DataPower Gateway using signed and mutual authentication certificates.",
-      "2": "Authored comprehensive service contracts (WSDL, YAML and SWAGGER) to streamline cross-team collaboration, ensuring seamless system integration and securing Architecture Committee approval.",
-      "3": "Owned the end-to-end service development lifecycle: designed system architecture, managed deployments on WebLogic, and validated performance through rigorous testing (unit, load, stress using JMeter), with detailed documentation of design and deployment processes.",
-      "4": "Maintained and supported legacy microservices and ETL pipelines in production environments, resolving critical issues while progressively modernizing authentication and security protocols using Java 8."
+      "0": "Led strategic planning and risk mitigation across quarters in middleware environments",
+      "1": "Architected hybrid solutions integrating on-premises microservices with AWS cloud",
+      "2": "Implemented DataPower Gateway with mutual authentication certificates for secure API exposure",
+      "3": "Created WSDL, YAML, and Swagger service contracts for cross-team collaboration",
+      "4": "Supported Angular 15 micro-frontend migration to AWS with CloudFront implementation",
+      "5": "Developed unit tests with Mocha and Chai, plus load/stress testing with JMeter",
+      "6": "Styled applications using SCSS post-processors",
+      "7": "Managed full development lifecycle: architecture, WebLogic deployment, validation, documentation",
+      "8": "Implemented OAuth 2.0 with OWASP security principles for modern authentication"
     }
   },
   "nttDataIbm": {
@@ -33,9 +43,11 @@
   "4coders": {
     "title": "Junior Software Engineer",
     "activities": {
-      "0": "Developed reusable, modular front-end components using React and VueJS with TypeScript, implementing custom npm library-based components while collaborating closely with UX/UI design teams to translate Figma templates into functional Micro-Frontend architectures.",
-      "1": "Developed internationalized (i18n) and accessible (a11y) user interfaces, ensuring seamless user experience across multiple languages, regions, and devices.",
-      "2": "Back-end practitioner using NodeJS for microservices and REST responses with SQL queries."
+      "0": "Developed modular micro-frontends using React and Vue with TypeScript",
+      "1": "Created reusable npm library packages for component bundling",
+      "2": "Collaborated with UX/UI teams to translate Figma designs into web elements",
+      "3": "Managed state with Redux, Vuex, and Pinia for backend information storage",
+      "4": "Built Node.js REST services with SQL query integration"
     }
   }
 }

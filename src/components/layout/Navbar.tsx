@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next';
  */
 const navItems = [
   { name: 'Home', href: '/' },
+  { name: 'Projects', href: '/projects', lazyLoad: true },
   { name: 'Experience', href: '/experience' },
   { name: 'Education', href: '/education' },
   { name: 'Lab AI', href: '/lab-ai' },
