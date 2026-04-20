@@ -10,9 +10,11 @@ import { inferenceEngine } from '@/lab-ai/core/model/InferenceEngine';
 import { useLabAIStore } from '@/lab-ai/store/labAIStore';
 import type { ModelType, AudioSignal, SpectrogramData, ClassificationResult, MelSpectrogram } from '@/lab-ai/types';
 import { Sparkles, FlaskConical, Binary } from 'lucide-react';
+import { usePageView } from '@/hooks/useAnalytics';
 
 const LabAI: React.FC = () => {
   const { t } = useTranslation('common');
+  usePageView('lab-ai')
   
   const {
     audioSignal,

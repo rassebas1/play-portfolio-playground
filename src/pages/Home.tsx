@@ -9,9 +9,11 @@ import { ProjectsCarousel } from '@/components/landing/ProjectsCarousel';
 import { SeniorityBadges } from '@/components/landing/SeniorityBadges';
 import { DeveloperProfile } from '@/components/landing/DeveloperProfile';
 import { WhatImLearning } from '@/components/landing/WhatImLearning';
+import { usePageView } from '@/hooks/useAnalytics';
 
 const Home: React.FC = () => {
   const { t } = useTranslation('common');
+  usePageView('home')
 
   const roles = ['hero_role_1', 'hero_role_2', 'hero_role_3'];
 

@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Calendar, ExternalLink, Github } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { usePageView } from '@/hooks/useAnalytics';
 
 type ProjectCategory = 'all' | 'academic' | 'professional' | 'research' | 'personal';
 
@@ -287,6 +288,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
 
 const Projects: React.FC = () => {
   const { t } = useTranslation('common');
+  usePageView('projects')
   const [activeCategory, setActiveCategory] = useState<ProjectCategory>('all');
 
   const filteredProjects = activeCategory === 'all'

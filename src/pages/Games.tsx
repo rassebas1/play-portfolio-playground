@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import type { GameInfo } from '@/types/global';
 import { useTranslation } from 'react-i18next';
+import { usePageView } from '@/hooks/useAnalytics';
 
 /**
  * Array of game information objects.
@@ -114,6 +115,7 @@ export const games: GameInfo[] = [
  */
 const Games: React.FC = () => {
   const { t } = useTranslation(['games', 'common']);
+  usePageView('games')
   return (
     <div className="container mx-auto px-4 py-16">
       {/* Page Header */}

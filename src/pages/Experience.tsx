@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Skills } from '@/components/landing/Skills';
 import { ExperienceCard } from '@/components/landing/ExperienceCard';
 import { motion } from 'framer-motion';
+import { usePageView } from '@/hooks/useAnalytics';
 
 const experienceData = [
   {
@@ -64,6 +65,7 @@ const experienceData = [
  */
 const Experience: React.FC = () => {
   const { t } = useTranslation(['experience', 'common']);
+  usePageView('experience')
 
   return (
     <div className="container mx-auto px-4 py-16">
