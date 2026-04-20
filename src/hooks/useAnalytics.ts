@@ -1,6 +1,9 @@
 import { useEffect, useCallback } from 'react'
 
-const ANALYTICS_API = '/api/analytics/track'
+// Analytics API URL - pointing to Vercel deployment
+const ANALYTICS_API = import.meta.env.VITE_API_URL 
+  ? `${import.meta.env.VITE_API_URL}/api/analytics/track`
+  : '/api/analytics/track'
 
 function getOrCreateSessionId(): string {
   const STORAGE_KEY = 'portfolio_session_id'
