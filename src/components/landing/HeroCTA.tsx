@@ -18,7 +18,11 @@ function getOrCreateSessionId(): string {
 async function trackEvent(event: string, game?: string) {
   try {
     const sessionId = getOrCreateSessionId()
-    await fetch('/api/analytics/track', {
+    const apiUrl = import.meta.env.VITE_API_URL
+    const analyticsUrl = apiUrl 
+      ? `${apiUrl}/api/analytics/track` 
+      : '/api/analytics/track'
+    await fetch(analyticsUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ event, sessionId, game })
