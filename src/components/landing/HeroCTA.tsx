@@ -1,12 +1,41 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Github, Linkedin, Gamepad2, ArrowDown, FileDown, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
+function getOrCreateSessionId(): string {
+  const STORAGE_KEY = 'portfolio_session_id'
+  const existing = localStorage.getItem(STORAGE_KEY)
+  if (existing) return existing
+  
+  const newId = crypto.randomUUID()
+  localStorage.setItem(STORAGE_KEY, newId)
+  return newId
+}
+
+async function trackEvent(event: string, game?: string) {
+  try {
+    const sessionId = getOrCreateSessionId()
+    await fetch('/api/analytics/track', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ event, sessionId, game })
+    })
+  } catch (err) {
+    console.error('Failed to track event:', err)
+  }
+}
+
 export const HeroCTA: React.FC = () => {
   const { t } = useTranslation('common');
+
+  const handleCvDownload = useCallback(async () => {
+    await trackEvent('cv_download')
+    // El redirect real se maneja con el href del link
+    window.open(`${import.meta.env.BASE_URL}CV.pdf`, '_blank')
+  }, [])
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -56,16 +85,13 @@ export const HeroCTA: React.FC = () => {
       </motion.div>
 
       <motion.div variants={itemVariants}>
-        <a
-          href={`${import.meta.env.BASE_URL}CV.pdf`}
-          target="_blank"
-          rel="noopener noreferrer"
-          download="Sebastian_Espitia_Resume.pdf"
+        <button
+          onClick={handleCvDownload}
           className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-primary/30 text-primary hover:bg-primary/10 hover:border-primary/50 transition-all duration-200 group"
         >
           <FileDown className="w-5 h-5 group-hover:scale-110 transition-transform" />
           <span className="font-medium">{t('hero_cta_cv')}</span>
-        </a>
+        </button>
       </motion.div>
 
       <motion.div variants={itemVariants}>

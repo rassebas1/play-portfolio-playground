@@ -1,4 +1,4 @@
-name: Deploy to Vercel
+name: Deploy APIs to Vercel
 
 on:
   push:
@@ -9,8 +9,33 @@ on:
       - 'package-lock.json'
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate translations
+        run: npm run validate:i18n
+
+      - name: Lint
+        run: npm run lint
+
   deploy:
+    needs: validate
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code

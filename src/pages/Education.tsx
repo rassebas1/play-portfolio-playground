@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { EducationCard } from '@/components/landing/EducationCard';
+import { usePageView } from '@/hooks/useAnalytics';
 
 const educationData = [
   {
@@ -77,6 +78,7 @@ const educationData = [
 
 const Education: React.FC = () => {
   const { t } = useTranslation(['education', 'common']);
+  usePageView('education')
   const containerRef = useRef<HTMLDivElement>(null);
   
   const { scrollYProgress } = useScroll({

@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams, useNavigate, Navigate } from 'react-router-dom';
 import { GAME_REGISTRY, getAllGameIds } from '@/games';
 import type { GameType } from '@/types/global';
 import useTitle from '@/hooks/use-title';
 import { Button } from '@/components/ui/button';
+import { useAnalytics } from '@/hooks/useAnalytics';
 
 /**
  * GamePage component.
@@ -18,6 +19,14 @@ const GamePage: React.FC = () => {
   const { gameId } = useParams<{ gameId: string }>();
   // `useNavigate` hook for programmatic navigation.
   const navigate = useNavigate();
+  const { trackGameStart, trackGameEnd } = useAnalytics()
+
+  // Track game_start when entering a game
+  useEffect(() => {
+    if (gameId) {
+      trackGameStart(gameId)
+    }
+  }, [gameId, trackGameStart])
 
   /**
    * Validates if the provided game ID string is one of the supported game types.
