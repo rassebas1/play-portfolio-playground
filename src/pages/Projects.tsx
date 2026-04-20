@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { Calendar, ExternalLink, Github } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-type ProjectCategory = 'all' | 'academic' | 'professional' | 'research';
+type ProjectCategory = 'all' | 'academic' | 'professional' | 'research' | 'personal';
 
 const projectsData = [
   // Academic
@@ -121,6 +121,51 @@ const projectsData = [
     demoLink: '',
     repoLink: '',
   },
+  // Personal
+  {
+    id: 'play-portfolio-playground',
+    titleKey: 'project_personal_play_portfolio_title',
+    descriptionKey: 'project_personal_play_portfolio_desc',
+    period: '2025',
+    techKey: 'project_personal_play_portfolio_tech',
+    achievementKey: 'project_personal_play_portfolio_achievement',
+    category: 'personal' as const,
+    demoLink: 'https://rassebas1.github.io/play-portfolio-playground/',
+    repoLink: 'https://github.com/rassebas1/play-portfolio-playground',
+  },
+  {
+    id: 'pokedex',
+    titleKey: 'project_personal_pokedex_title',
+    descriptionKey: 'project_personal_pokedex_desc',
+    period: '2024-2025',
+    techKey: 'project_personal_pokedex_tech',
+    achievementKey: 'project_personal_pokedex_achievement',
+    category: 'personal' as const,
+    demoLink: 'https://pokedex-pi-ochre-85.vercel.app/',
+    repoLink: 'https://github.com/rassebas1/pokedex',
+  },
+  {
+    id: 'project-abyss',
+    titleKey: 'project_personal_project_abyss_title',
+    descriptionKey: 'project_personal_project_abyss_desc',
+    period: '2024',
+    techKey: 'project_personal_project_abyss_tech',
+    achievementKey: 'project_personal_project_abyss_achievement',
+    category: 'personal' as const,
+    demoLink: '',
+    repoLink: 'https://github.com/rassebas1/arpg-angular',
+  },
+  {
+    id: 'spark-ecosystem-cluster',
+    titleKey: 'project_personal_spark_cluster_title',
+    descriptionKey: 'project_personal_spark_cluster_desc',
+    period: '2024',
+    techKey: 'project_personal_spark_cluster_tech',
+    achievementKey: 'project_personal_spark_cluster_achievement',
+    category: 'personal' as const,
+    demoLink: '',
+    repoLink: 'https://github.com/rassebas1/spark-ecosystem-cluster',
+  },
 ];
 
 interface ProjectCardProps {
@@ -133,6 +178,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
 
   const getCategoryColor = (category: string) => {
     switch (category) {
+      case 'personal':
+        return 'bg-orange-500/20 text-orange-400 border-orange-500/30';
       case 'research':
         return 'bg-purple-500/20 text-purple-400 border-purple-500/30';
       case 'academic':
@@ -145,6 +192,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
 
   const getCategoryLabel = (category: string) => {
     switch (category) {
+      case 'personal':
+        return t('projects_category_personal');
       case 'research':
         return t('projects_category_research');
       case 'academic':
@@ -246,6 +295,7 @@ const Projects: React.FC = () => {
 
   const categories: { key: ProjectCategory; label: string }[] = [
     { key: 'all', label: t('projects_category_all') },
+    { key: 'personal', label: t('projects_category_personal') },
     { key: 'academic', label: t('projects_category_academic') },
     { key: 'professional', label: t('projects_category_professional') },
     { key: 'research', label: t('projects_category_research') },

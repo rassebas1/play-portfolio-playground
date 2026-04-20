@@ -57,7 +57,9 @@ export const HeroCTA: React.FC = () => {
 
       <motion.div variants={itemVariants}>
         <a
-          href="/CV.pdf"
+          href={`${import.meta.env.BASE_URL}CV.pdf`}
+          target="_blank"
+          rel="noopener noreferrer"
           download="Sebastian_Espitia_Resume.pdf"
           className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-primary/30 text-primary hover:bg-primary/10 hover:border-primary/50 transition-all duration-200 group"
         >

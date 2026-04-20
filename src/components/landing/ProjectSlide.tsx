@@ -11,7 +11,7 @@ interface ProjectSlideProps {
   period: string;
   technologies: string[];
   achievement?: string;
-  category: 'professional' | 'research' | 'academic';
+  category: 'professional' | 'research' | 'academic' | 'personal';
   isActive: boolean;
 }
 
@@ -42,7 +42,9 @@ export const ProjectSlide: React.FC<ProjectSlideProps> = ({
           <div>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <span className={`px-2 py-0.5 rounded text-xs font-medium ${
-                category === 'research' 
+                category === 'personal'
+                  ? 'bg-orange-500/20 text-orange-400'
+                  : category === 'research' 
                   ? 'bg-purple-500/20 text-purple-400' 
                   : category === 'academic'
                   ? 'bg-green-500/20 text-green-400'

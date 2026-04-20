@@ -10,6 +10,43 @@ export const ProjectsCarousel: React.FC = () => {
   const [isPaused, setIsPaused] = useState(false);
 
   const projects = [
+    // Personal projects (shown first - most impressive)
+    {
+      company: 'Personal Project',
+      title: t('project_personal_play_portfolio_title'),
+      description: t('project_personal_play_portfolio_desc'),
+      period: '2025',
+      technologies: t('project_personal_play_portfolio_tech').split(', '),
+      achievement: t('project_personal_play_portfolio_achievement'),
+      category: 'personal' as const,
+    },
+    {
+      company: 'Personal Project',
+      title: t('project_personal_pokedex_title'),
+      description: t('project_personal_pokedex_desc'),
+      period: '2024-2025',
+      technologies: t('project_personal_pokedex_tech').split(', '),
+      achievement: t('project_personal_pokedex_achievement'),
+      category: 'personal' as const,
+    },
+    {
+      company: 'Personal Project',
+      title: t('project_personal_project_abyss_title'),
+      description: t('project_personal_project_abyss_desc'),
+      period: '2024',
+      technologies: t('project_personal_project_abyss_tech').split(', '),
+      achievement: t('project_personal_project_abyss_achievement'),
+      category: 'personal' as const,
+    },
+    {
+      company: 'Personal Project',
+      title: t('project_personal_spark_cluster_title'),
+      description: t('project_personal_spark_cluster_desc'),
+      period: '2024',
+      technologies: t('project_personal_spark_cluster_tech').split(', '),
+      achievement: t('project_personal_spark_cluster_achievement'),
+      category: 'personal' as const,
+    },
     // Academic projects
     {
       company: 'Academic Project',
