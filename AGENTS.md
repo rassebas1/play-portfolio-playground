@@ -505,3 +505,189 @@ Checking fr...
 - **Forms**: React Hook Form + Zod
 - **i18n**: i18next
 - **Animations**: Framer Motion
+
+## Testing Guidelines
+
+This project uses **Vitest** with **React Testing Library** for testing. Follow these guidelines to write maintainable, professional tests.
+
+### Commands
+
+```bash
+npm test             # Run all tests (watch mode)
+npm run test:run     # Run all tests once
+npm test <file>      # Run single test file
+npm test <file> -t "test name"  # Run specific test by name
+npm run test:ui      # Run tests with Vitest UI
+npm run test:coverage # Run tests with coverage report
+```
+
+### Test File Structure
+
+Tests are **co-located** with the components they test:
+
+```
+src/
+├── components/
+│   └── ui/
+│       └── Button.tsx
+│       └── Button.test.tsx    # ← Test next to component
+├── games/
+│   └── tower-defense/
+│       └── GameReducer.ts
+│       └── GameReducer.test.ts  # ← Test next to reducer
+└── tests/
+    ├── setup.ts              # Global test setup
+    ├── utils/                # Test utilities
+    │   ├── render.tsx        # Custom render with providers
+    │   └── i18n-test.ts      # i18n config for tests
+    ├── fixtures/             # Test data factories
+    │   ├── game.fixture.ts
+    │   └── user.fixture.ts
+    ├── __mocks__/            # Shared mocks
+    │   ├── i18n.ts
+    │   ├── router.tsx
+    │   └── store.ts
+    └── integration/          # Integration tests
+        └── router.test.tsx
+```
+
+### Test Infrastructure
+
+This project provides a comprehensive testing infrastructure:
+
+#### Custom Render with Providers
+
+Use `renderWithProviders` to wrap components with all necessary providers:
+
+```typescript
+import { renderWithProviders } from '@/tests/utils/render';
+
+test('renders component with routing', () => {
+  renderWithProviders(<MyComponent />);
+  // Component has access to Router, Query, i18n
+});
+```
+
+#### Fixtures
+
+Use factory functions for consistent test data:
+
+```typescript
+import { createGameStateFixture, createPlayingGameState } from '@/tests/fixtures';
+
+// Create base state
+const state = createGameStateFixture();
+
+// Create state with overrides
+const playingState = createPlayingGameState({
+  resources: 500,
+  lives: 15,
+});
+```
+
+#### Mocks
+
+Import pre-configured mocks for common dependencies:
+
+```typescript
+// Router mock
+import { setMockLocation, setMockParams, mockNavigate } from '@/tests/__mocks__/router';
+
+// i18n mock
+import { setMockTranslations } from '@/tests/__mocks__/i18n';
+
+// Store mock
+import { createMockStore } from '@/tests/__mocks__/store';
+```
+
+### Test Patterns
+
+#### Component Tests
+
+```typescript
+import { renderWithProviders, screen } from '@/tests/utils/render';
+import { MyComponent } from './MyComponent';
+
+describe('MyComponent', () => {
+  it('renders correctly', () => {
+    renderWithProviders(<MyComponent />);
+    expect(screen.getByText('Hello')).toBeInTheDocument();
+  });
+
+  it('handles click events', () => {
+    const onClick = vi.fn();
+    renderWithProviders(<MyComponent onClick={onClick} />);
+    
+    fireEvent.click(screen.getByRole('button'));
+    expect(onClick).toHaveBeenCalled();
+  });
+});
+```
+
+#### Reducer Tests
+
+```typescript
+import { gameReducer } from './gameReducer';
+import { createGameStateFixture } from '@/tests/fixtures';
+
+describe('gameReducer', () => {
+  it('handles PLACE_TOWER action', () => {
+    const state = createGameStateFixture();
+    const action = { type: 'PLACE_TOWER', towerType: 'basic', row: 2, col: 3 };
+    
+    const newState = gameReducer(state, action);
+    
+    expect(newState.towers).toHaveLength(1);
+    expect(newState.resources).toBeLessThan(state.resources);
+  });
+});
+```
+
+#### Integration Tests
+
+```typescript
+import { renderWithProviders, screen } from '@/tests/utils/render';
+import { MemoryRouter } from 'react-router-dom';
+import { ExperiencePage } from '@/pages/Experience';
+
+describe('Router Integration', () => {
+  it('navigates to experience page', () => {
+    renderWithProviders(
+      <MemoryRouter initialEntries={['/experience']}>
+        <Routes>
+          <Route path="/experience" element={<ExperiencePage />} />
+        </Routes>
+      </MemoryRouter>
+    );
+    
+    expect(screen.getByTestId('experience-page')).toBeInTheDocument();
+  });
+});
+```
+
+### Best Practices
+
+1. **Test behavior, not implementation** - Focus on what users see and do
+2. **Use semantic queries** - Prefer `getByRole`, `getByText` over `getByTestId`
+3. **Follow AAA pattern** - Arrange, Act, Assert
+4. **Keep tests independent** - Each test should work in isolation
+5. **Use meaningful descriptions** - Test names should describe the scenario
+6. **Test edge cases** - Not just happy paths
+7. **Mock external dependencies** - Keep tests fast and focused
+
+### Coverage Thresholds
+
+This project targets **80% coverage** for statements, lines, functions, and **70%** for branches. Run coverage with:
+
+```bash
+npm run test:coverage
+```
+
+### Migration from Old Tests
+
+If updating existing tests:
+
+1. Replace `render(<Component />)` with `renderWithProviders(<Component />)`
+2. Import fixtures from `@/tests/fixtures` instead of creating inline data
+3. Use mocks from `@tests/__mocks__/` for router, i18n, store
+4. Remove hardcoded test data, use factories instead
