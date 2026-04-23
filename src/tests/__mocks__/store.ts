@@ -23,7 +23,8 @@ export function createMockStore<T extends Record<string, unknown>>(initialState:
   const getState = vi.fn(() => state);
   const setState = vi.fn((partial: Partial<T> | ((prev: T) => Partial<T>)) => {
     if (typeof partial === 'function') {
-      state = { ...state, partial(state) };
+      const updates = partial(state);
+      state = { ...state, ...updates };
     } else {
       state = { ...state, ...partial };
     }
