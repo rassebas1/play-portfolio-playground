@@ -25,6 +25,10 @@ export default defineConfig(({ mode }) => ({
     globals: true,
     environment: 'jsdom',
     setupFiles: './src/tests/setup.ts',
+    exclude: [
+      'e2e/**',
+      'playwright.config.ts',
+    ],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html', 'lcov'],
@@ -35,6 +39,8 @@ export default defineConfig(({ mode }) => ({
         'src/**/*.config.*',
         'src/tests/**',
         'src/vite-env.d.ts',
+        'e2e/**',
+        'playwright.config.ts',
       ],
       thresholds: {
         lines: 80,
