@@ -10,6 +10,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "test:ui": "vitest --ui",
     "validate:i18n": "tsx scripts/validate-i18n.ts",
     "prebuild": "npm run validate:i18n"
@@ -87,6 +89,7 @@
     "@types/react-dom": "^18.3.0",
     "@vercel/node": "^5.6.9",
     "@vitejs/plugin-react-swc": "^3.5.0",
+    "@vitest/coverage-v8": "^4.1.5",
     "@vitest/ui": "^4.0.8",
     "autoprefixer": "^10.4.20",
     "eslint": "^9.9.0",
