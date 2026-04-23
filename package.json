@@ -13,6 +13,9 @@
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
     "test:ui": "vitest --ui",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:debug": "playwright test --debug",
     "validate:i18n": "tsx scripts/validate-i18n.ts",
     "prebuild": "npm run validate:i18n"
   },
@@ -80,6 +83,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
+    "@playwright/test": "^1.59.1",
     "@tailwindcss/typography": "^0.5.15",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
@@ -98,6 +102,7 @@
     "globals": "^15.9.0",
     "jsdom": "^27.2.0",
     "lovable-tagger": "^1.1.7",
+    "playwright": "^1.59.1",
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.11",
     "tsx": "^4.21.0",
