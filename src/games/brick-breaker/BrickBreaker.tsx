@@ -87,9 +87,7 @@ const BrickBreaker: React.FC = () => {
       <Instructions>
         {isMobile ? (
           <>
-            <p><strong>Drag</strong>: {t('instructions.mobile')}</p>
-            <p><strong>Tap</strong>: {t('actions.start')} / {t('status.paused')} / {t('actions.resume')}</p>
-            <p><strong>Double-tap</strong>: {t('actions.restart')}</p>
+            <p>{t('instructions.mobile')}</p>
           </>
         ) : (
           <>
@@ -100,21 +98,36 @@ const BrickBreaker: React.FC = () => {
         )}
       </Instructions>
 
-      {/* Game Board: The main canvas where the game is played, integrates touch input */}
+      {/* Game Board: The main canvas where the game is played — pointer events for mobile drag */}
       <div
-        ref={gameBoardRef} // Attach ref to the game board element
-        className="touch-none relative my-4" // Prevents default browser touch behaviors, add vertical margin
+        ref={gameBoardRef}
+        className="touch-none relative my-4"
         style={{ width: state.canvas.width, height: state.canvas.height }}
       >
         <GameBoard state={state} isMobile={isMobile} />
       </div>
 
-      {/* Main Game Control Button: Changes text based on game status */}
-      <Button onClick={handleGameControl} className="mt-4 w-48">
-        {state.gameStatus === GameStatus.IDLE && t('actions.start')}
-        {state.gameStatus === GameStatus.PLAYING && t('actions.pause')}
-        {state.gameStatus === GameStatus.PAUSED && t('actions.resume')}
-      </Button>
+      {/* Control buttons: always outside the game board — no false positives */}
+      <div className="flex gap-3 mt-4">
+        <Button
+          onClick={handleGameControl}
+          className={isMobile ? "min-w-[140px] min-h-[48px] text-base" : "w-48"}
+        >
+          {state.gameStatus === GameStatus.IDLE && t('actions.start')}
+          {state.gameStatus === GameStatus.PLAYING && t('actions.pause')}
+          {state.gameStatus === GameStatus.PAUSED && t('actions.resume')}
+        </Button>
+
+        {(state.gameStatus === GameStatus.IDLE || state.gameStatus === GameStatus.GAME_OVER || state.gameStatus === GameStatus.LEVEL_CLEARED) && (
+          <Button
+            onClick={restartGame}
+            variant="outline"
+            className={isMobile ? "min-w-[120px] min-h-[48px] text-base" : ""}
+          >
+            {t('actions.restart')}
+          </Button>
+        )}
+      </div>
 
       {/* Game Over Modal: Displays when the game is over */}
       {isGameOver && (

@@ -13,11 +13,17 @@ interface UseGameInputProps {
   gameBoardRef: RefObject<HTMLDivElement>;
 }
 
-export const useGameInput = ({ dispatch, stateRef, isMobile, gameBoardRef }: UseGameInputProps) => {
-  const touchStartRef = useRef<{ x: number; y: number; time: number } | null>(null);
-  const lastTapRef = useRef<number | null>(null);
+/**
+ * Dead zone ratio: 50% of the paddle width centered on the paddle.
+ * If the touch is within this zone, dx = 0 (paddle stops).
+ * If the touch is outside, the paddle moves toward the touch direction.
+ */
+const DEAD_ZONE_RATIO = 0.5;
 
-  // Effect to handle keyboard input for paddle movement and game control.
+export const useGameInput = ({ dispatch, stateRef, isMobile, gameBoardRef }: UseGameInputProps) => {
+  const pointerStartRef = useRef<{ x: number; y: number } | null>(null);
+
+  // --- Keyboard input (desktop, unchanged) ---
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (stateRef.current?.gameStatus === GameStatus.PLAYING) {
@@ -27,8 +33,8 @@ export const useGameInput = ({ dispatch, stateRef, isMobile, gameBoardRef }: Use
           dispatch({ type: "SET_PADDLE_VELOCITY", payload: { dx: PADDLE_SPEED } });
         }
       }
-      if (e.key === " ") { // Spacebar to start/pause/resume
-        e.preventDefault(); // Prevent default scroll behavior
+      if (e.key === " ") {
+        e.preventDefault();
         if (stateRef.current?.gameStatus === GameStatus.IDLE) {
           dispatch({ type: "START_GAME" });
         } else if (stateRef.current?.gameStatus === GameStatus.PLAYING) {
@@ -37,14 +43,13 @@ export const useGameInput = ({ dispatch, stateRef, isMobile, gameBoardRef }: Use
           dispatch({ type: "RESUME_GAME" });
         }
       }
-      if (e.key === "r" || e.key === "R") { // 'R' to reset
+      if (e.key === "r" || e.key === "R") {
         dispatch({ type: "RESET_GAME" });
       }
     };
 
     const handleKeyUp = (e: KeyboardEvent) => {
       if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
-        // Stop paddle movement when arrow keys are released
         dispatch({ type: "SET_PADDLE_VELOCITY", payload: { dx: 0 } });
       }
     };
@@ -57,94 +62,61 @@ export const useGameInput = ({ dispatch, stateRef, isMobile, gameBoardRef }: Use
     };
   }, [dispatch, stateRef]);
 
-  // Handle tap/double-tap for start/pause/restart
-  const handleTap = useCallback((touchX: number, touchY: number) => {
-    const now = Date.now();
-    const gameStatus = stateRef.current?.gameStatus;
+  // --- Pointer input (mobile: drag paddle via dead zone) ---
+  const handlePointerDown = useCallback((e: PointerEvent) => {
+    const element = e.target as HTMLElement;
 
-    // Check for double-tap (within 300ms) to restart
-    if (lastTapRef.current && now - lastTapRef.current < 300) {
-      dispatch({ type: "RESET_GAME" });
-      lastTapRef.current = null;
-      return;
-    }
-    lastTapRef.current = now;
+    // Capture: all subsequent pointer events go here, even if finger leaves the element
+    element.setPointerCapture(e.pointerId);
 
-    // Handle tap based on game status
-    if (gameStatus === GameStatus.IDLE) {
-      dispatch({ type: "START_GAME" });
-    } else if (gameStatus === GameStatus.PLAYING) {
-      dispatch({ type: "PAUSE_GAME" });
-    } else if (gameStatus === GameStatus.PAUSED) {
-      dispatch({ type: "RESUME_GAME" });
-    } else if (gameStatus === GameStatus.GAME_OVER || gameStatus === GameStatus.LEVEL_CLEARED) {
-      dispatch({ type: "RESET_GAME" });
-    }
-  }, [dispatch]);
-
-  // Touch handling for mobile
-  const handleTouchStart = useCallback((e: TouchEvent) => {
-    const touch = e.touches[0];
-    touchStartRef.current = { x: touch.clientX, y: touch.clientY, time: Date.now() };
-
-    // Always prevent default on game board to avoid scroll interference
+    pointerStartRef.current = { x: e.clientX, y: e.clientY };
     e.preventDefault();
   }, []);
 
-  const handleTouchMove = useCallback((e: TouchEvent) => {
+  const handlePointerMove = useCallback((e: PointerEvent) => {
     const currentState = stateRef.current;
     const currentGameBoard = gameBoardRef.current;
-    
-    if (!currentState || !currentGameBoard) return;
 
+    if (!currentState || !currentGameBoard) return;
     if (currentState.gameStatus !== GameStatus.PLAYING) return;
 
-    const touchX = e.touches[0].clientX;
-    const touchY = e.touches[0].clientY;
     const gameBoardRect = currentGameBoard.getBoundingClientRect();
+    const touchX = e.clientX - gameBoardRect.left;
 
-    // Check if this is a tap (minimal movement) vs a drag
-    if (touchStartRef.current) {
-      const dx = Math.abs(touchX - touchStartRef.current.x);
-      const dy = Math.abs(touchY - touchStartRef.current.y);
-      
-      // If moved more than 10px, it's a drag, not a tap - clear the tap reference
-      if (dx > 10 || dy > 10) {
-        touchStartRef.current = null;
-      }
+    const paddleCenter = currentState.paddle.x + currentState.paddle.width / 2;
+    const deadZoneHalf = (currentState.paddle.width * DEAD_ZONE_RATIO) / 2;
+    const distance = touchX - paddleCenter;
+
+    let dx = 0;
+    if (Math.abs(distance) > deadZoneHalf) {
+      dx = distance > 0 ? PADDLE_SPEED : -PADDLE_SPEED;
     }
 
-    let newPaddleX = touchX - gameBoardRect.left;
-
-    newPaddleX = Math.max(
-      0,
-      Math.min(newPaddleX, currentState.canvas.width - currentState.paddle.width)
-    );
-
-    dispatch({ type: "UPDATE_PADDLE_POSITION", payload: { x: newPaddleX } });
+    dispatch({ type: "SET_PADDLE_VELOCITY", payload: { dx } });
     e.preventDefault();
   }, [dispatch]);
 
-  const handleTouchEnd = useCallback((e: TouchEvent) => {
-    // If touchStartRef is still set, it means the touch didn't move much - it's a tap
-    if (touchStartRef.current && stateRef.current?.gameStatus !== GameStatus.PLAYING) {
-      handleTap(touchStartRef.current.x, touchStartRef.current.y);
-    }
-    touchStartRef.current = null;
-  }, [handleTap]);
+  const handlePointerUp = useCallback((e: PointerEvent) => {
+    // Stop paddle movement — no tap detection, no game commands
+    dispatch({ type: "SET_PADDLE_VELOCITY", payload: { dx: 0 } });
+    pointerStartRef.current = null;
+    e.preventDefault();
+  }, [dispatch]);
 
   useEffect(() => {
     const gameBoardElement = gameBoardRef.current;
-    if (gameBoardElement && isMobile) {
-      gameBoardElement.addEventListener('touchstart', handleTouchStart, { passive: false });
-      gameBoardElement.addEventListener('touchmove', handleTouchMove, { passive: false });
-      gameBoardElement.addEventListener('touchend', handleTouchEnd, { passive: false });
+    if (!gameBoardElement || !isMobile) return;
 
-      return () => {
-        gameBoardElement.removeEventListener('touchstart', handleTouchStart);
-        gameBoardElement.removeEventListener('touchmove', handleTouchMove);
-        gameBoardElement.removeEventListener('touchend', handleTouchEnd);
-      };
-    }
-  }, [isMobile, gameBoardRef, handleTouchStart, handleTouchMove, handleTouchEnd]);
+    gameBoardElement.addEventListener("pointerdown", handlePointerDown, { passive: false });
+    gameBoardElement.addEventListener("pointermove", handlePointerMove, { passive: false });
+    gameBoardElement.addEventListener("pointerup", handlePointerUp, { passive: false });
+    gameBoardElement.addEventListener("pointercancel", handlePointerUp, { passive: false });
+
+    return () => {
+      gameBoardElement.removeEventListener("pointerdown", handlePointerDown);
+      gameBoardElement.removeEventListener("pointermove", handlePointerMove);
+      gameBoardElement.removeEventListener("pointerup", handlePointerUp);
+      gameBoardElement.removeEventListener("pointercancel", handlePointerUp);
+    };
+  }, [isMobile, gameBoardRef, handlePointerDown, handlePointerMove, handlePointerUp]);
 };

@@ -18,29 +18,39 @@ import * as Constants from "./constants";
  */
 const createBricks = (level: number, canvasWidth: number): Brick[] => {
   const bricks: Brick[] = [];
-  // Use the level parameter to vary the number of rows, for example
-  const brickRows = Constants.BRICK_ROWS + (level - 1); // Increase rows with levels
-  // Calculate BRICK_COLUMNS dynamically based on canvasWidth
-  const BRICK_COLUMNS = Math.floor((canvasWidth - 2 * Constants.BRICK_OFFSET_LEFT) / (Constants.BRICK_WIDTH + Constants.BRICK_PADDING));
-  // Calculate BRICK_OFFSET_LEFT dynamically to center the bricks
-  const BRICK_OFFSET_LEFT = (canvasWidth - (BRICK_COLUMNS * (Constants.BRICK_WIDTH + Constants.BRICK_PADDING) - Constants.BRICK_PADDING)) / 2;
+  const brickRows = Constants.BRICK_ROWS + (level - 1);
 
-  if (BRICK_COLUMNS <= 0 || brickRows <= 0) {
-    return bricks;
-  }
+  // Target consistent columns across screen sizes:
+  // brick width adapts to fit TARGET_COLS, capped at BRICK_WIDTH max (70px)
+  const TARGET_COLS = 8;
+  const brickWidth = Math.min(
+    Constants.BRICK_WIDTH,
+    Math.floor(
+      (canvasWidth
+        - 2 * Constants.BRICK_OFFSET_LEFT
+        - (TARGET_COLS - 1) * Constants.BRICK_PADDING)
+      / TARGET_COLS
+    )
+  );
+
+  if (brickWidth <= 0 || brickRows <= 0) return bricks;
+
+  const BRICK_COLUMNS = TARGET_COLS;
+  const totalBrickWidth = BRICK_COLUMNS * brickWidth + (BRICK_COLUMNS - 1) * Constants.BRICK_PADDING;
+  const BRICK_OFFSET_LEFT = (canvasWidth - totalBrickWidth) / 2;
 
   for (let r = 0; r < brickRows; r++) {
     for (let c = 0; c < BRICK_COLUMNS; c++) {
-      const x = c * (Constants.BRICK_WIDTH + Constants.BRICK_PADDING) + BRICK_OFFSET_LEFT;
+      const x = c * (brickWidth + Constants.BRICK_PADDING) + BRICK_OFFSET_LEFT;
       const y = r * (Constants.BRICK_HEIGHT + Constants.BRICK_PADDING) + Constants.BRICK_OFFSET_TOP;
       bricks.push({
         x,
         y,
-        width: Constants.BRICK_WIDTH,
+        width: brickWidth,
         height: Constants.BRICK_HEIGHT,
-        hits: 1, // All bricks take 1 hit for now
-        isBroken: false, // Initially not broken
-        color: Constants.BRICK_COLORS[r % Constants.BRICK_COLORS.length], // Color based on row
+        hits: 1,
+        isBroken: false,
+        color: Constants.BRICK_COLORS[r % Constants.BRICK_COLORS.length],
       });
     }
   }

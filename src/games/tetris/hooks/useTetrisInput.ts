@@ -44,9 +44,13 @@ export const useTetrisInput = ({
         'ArrowUp',
         ' ',
         'x',
+        'X',
         'z',
+        'Z',
         'c',
+        'C',
         'p',
+        'P',
         'Escape',
       ];
 
