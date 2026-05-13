@@ -45,42 +45,33 @@ export default defineConfig({
   globalTeardown: './e2e/global-teardown.ts',
 
   // Configure browsers for testing
+  // CI runs only chromium for speed; local runs all browsers for thoroughness
   projects: [
-    // Setup project for Chromium (all platforms)
     {
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
-        // Collect trace on first retry of a failed test
         trace: 'on-first-retry',
-        // Take screenshot on failure
         screenshot: 'only-on-failure',
       },
     },
 
-    // Mobile Safari (iOS) - optional but good to have
-    {
-      name: 'Mobile Safari',
-      use: {
-        ...devices['iPhone 12'],
-      },
-    },
-
-    // Firefox - recommended for cross-browser testing
-    {
-      name: 'Firefox',
-      use: {
-        ...devices['Desktop Firefox'],
-      },
-    },
-
-    // WebKit - for Safari on macOS
-    {
-      name: 'WebKit',
-      use: {
-        ...devices['Desktop Safari'],
-      },
-    },
+    ...(process.env.CI
+      ? []
+      : [
+          {
+            name: 'Mobile Safari',
+            use: { ...devices['iPhone 12'] },
+          },
+          {
+            name: 'Firefox',
+            use: { ...devices['Desktop Firefox'] },
+          },
+          {
+            name: 'WebKit',
+            use: { ...devices['Desktop Safari'] },
+          },
+        ]),
   ],
 
   // Output directory for test artifacts (screenshots, traces, videos)
