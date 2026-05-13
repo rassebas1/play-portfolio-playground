@@ -2,6 +2,8 @@ import '@testing-library/jest-dom';
 import { cleanup } from '@testing-library/react';
 import { afterEach, vi } from 'vitest';
 
+
+
 // Cleanup after each test - prevents memory leaks and test pollution
 afterEach(() => {
   cleanup();
@@ -29,3 +31,13 @@ Object.defineProperty(globalThis, 'crypto', {
     randomUUID: vi.fn(() => `test-uuid-${Math.random().toString(36).slice(2)}`),
   },
 });
+
+// Polyfill ResizeObserver for components that use Radix UI sizing hooks
+class ResizeObserverMock {
+  observe = vi.fn();
+  unobserve = vi.fn();
+  disconnect = vi.fn();
+}
+globalThis.ResizeObserver = ResizeObserverMock;
+
+Element.prototype.scrollIntoView = vi.fn();
