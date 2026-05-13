@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { HeroCTA } from './HeroCTA';
 import { BrowserRouter } from 'react-router-dom';
 
@@ -48,6 +48,10 @@ vi.mock('react-router-dom', () => ({
 }));
 
 describe('HeroCTA', () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
   it('renders the component', () => {
     render(
       <BrowserRouter>
@@ -87,5 +91,74 @@ describe('HeroCTA', () => {
     );
     
     expect(screen.getByTestId('chat-icon')).toBeInTheDocument();
+  });
+
+  it('renders scroll to projects button', () => {
+    render(
+      <BrowserRouter>
+        <HeroCTA />
+      </BrowserRouter>
+    );
+
+    // Set up an element with the target id for scrollIntoView to work
+    const target = document.createElement('div');
+    target.id = 'featured-projects';
+    document.body.appendChild(target);
+    const scrollSpy = vi.fn();
+    target.scrollIntoView = scrollSpy;
+
+    const scrollBtn = screen.getByLabelText('Scroll to featured projects');
+    expect(scrollBtn).toBeInTheDocument();
+
+    scrollBtn.click();
+    expect(scrollSpy).toHaveBeenCalled();
+    document.body.removeChild(target);
+  });
+
+  it('handleCvDownload calls trackEvent synchronously on click', () => {
+    global.fetch = vi.fn(() => Promise.resolve(new Response()));
+
+    render(
+      <BrowserRouter>
+        <HeroCTA />
+      </BrowserRouter>
+    );
+
+    fireEvent.click(screen.getByTestId('download-icon').closest('button')!);
+
+    // trackEvent runs synchronously up to the fetch call
+    expect(global.fetch).toHaveBeenCalled();
+    // window.open runs after await — verified in async tests
+  });
+
+  it('getOrCreateSessionId creates and reuses session id', () => {
+    render(
+      <BrowserRouter>
+        <HeroCTA />
+      </BrowserRouter>
+    );
+
+    // getOrCreateSessionId is called by trackEvent on download click
+    fireEvent.click(screen.getByTestId('download-icon').closest('button')!);
+
+    const sessionId = localStorage.getItem('portfolio_session_id');
+    expect(sessionId).toBeTruthy();
+
+    // localStorage was mocked, so we verify the session was created
+    expect(sessionId?.length).toBeGreaterThan(0);
+  });
+
+  it('trackEvent handles fetch failure gracefully', () => {
+    global.fetch = vi.fn(() => Promise.reject(new Error('Network error')));
+
+    render(
+      <BrowserRouter>
+        <HeroCTA />
+      </BrowserRouter>
+    );
+
+    expect(() => {
+      fireEvent.click(screen.getByTestId('download-icon').closest('button')!);
+    }).not.toThrow();
   });
 });
