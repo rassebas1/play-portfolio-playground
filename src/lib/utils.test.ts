@@ -26,7 +26,7 @@ describe('cn', () => {
 
   describe('falsy values and conditionals', () => {
     it('filters out false booleans', () => {
-      const result = cn('base', false && 'hidden', 'visible');
+      const result = cn('base', false, 'visible');
 
       expect(result).toBe('base visible');
     });
