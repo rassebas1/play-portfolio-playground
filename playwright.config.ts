@@ -74,6 +74,11 @@ export default defineConfig({
         ]),
   ],
 
+  // Base URL for all tests — enables relative page.goto('/') in page objects
+  use: {
+    baseURL: 'http://localhost:8080',
+  },
+
   // Output directory for test artifacts (screenshots, traces, videos)
   outputDir: './test-results',
 

@@ -124,7 +124,7 @@ test.describe('Home Page - Responsive', () => {
     await expect(page.locator('body')).toBeVisible();
     
     // Navigation should still be accessible
-    const nav = page.locator('nav, header');
+    const nav = page.locator('header');
     await expect(nav).toBeVisible();
   });
 

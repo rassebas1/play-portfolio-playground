@@ -28,7 +28,7 @@ export class HomePage {
 
     // Define selectors for this page
     this.heading = page.locator('h1, [data-testid="hero-heading"], h2').first();
-    this.navigation = page.locator('nav, [data-testid="navbar"]');
+    this.navigation = page.locator('header');
     this.gameLinks = page.locator('a[href*="/game/"], a[href="/games"]');
     this.playButton = page.getByRole('button', { name: /play/i }).or(
       page.getByRole('link', { name: /play/i })
