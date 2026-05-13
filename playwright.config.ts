@@ -77,13 +77,11 @@ export default defineConfig({
   // Output directory for test artifacts (screenshots, traces, videos)
   outputDir: './test-results',
 
-  // Web server configuration for running tests
-  webServer: process.env.CI
-    ? undefined
-    : {
-        command: 'npm run dev',
-        url: 'http://localhost:8080',
-        reuseExistingServer: true,
-        timeout: 120 * 1000,
-      },
+  // Web server: Playwright starts it automatically before tests
+  webServer: {
+    command: 'npm run dev',
+    url: 'http://localhost:8080',
+    reuseExistingServer: true,
+    timeout: 120 * 1000,
+  },
 });
